@@ -2,8 +2,9 @@
 
 namespace at\externet\eps_bank_transfer;
 
-use WpOrg\Requests\Exception\Transport;
-use WpOrg\Requests\Requests;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
+
 
 /**
  * Handles the communication with the EPS scheme operator
@@ -18,13 +19,6 @@ class SoCommunicator
      * @var callable
      */
     public $LogCallback;
-
-    /**
-     * requests transport
-     * @internal
-     * @var Transport
-     */
-    public $Transport;
 
     /**
      * Number of hash chars to append to RemittanceIdentifier.
@@ -47,18 +41,38 @@ class SoCommunicator
     public $BaseUrl;
 
     /**
+     * HTTP client (Guzzle)
+     * @var Client
+     */
+    private $HttpClient;
+
+    /**
      * Creates new Instance of SoCommunicator
      */
-    public function __construct($testMode = false)
+    public function __construct($testMode = false, Client $httpClient = null)
     {
         $this->BaseUrl = $testMode ? self::TEST_MODE_URL : self::LIVE_MODE_URL;
+        $this->HttpClient = $httpClient ?: new Client([
+            'timeout' => 10.0,
+            'http_errors' => false, // handle non-2xx manually
+        ]);
+    }
+
+    /**
+     * Allows injecting/replacing the HTTP client (useful for tests with MockHandler).
+     * @param Client $client
+     * @return void
+     */
+    public function setHttpClient(Client $client)
+    {
+        $this->HttpClient = $client;
     }
 
     /**
      * Failsafe version of GetBanksArray(). All Exceptions will be swallowed
      * @return null or result of GetBanksArray()
      */
-    public function TryGetBanksArray()
+    public function TryGetBanksArray(): ?array
     {
         try
         {
@@ -72,12 +86,10 @@ class SoCommunicator
     }
 
     /**
-     * Get associative array of banks from Scheme Operator. The bank name (bezeichnung)
-     * will be used as key.
-     * @throws XmlValidationException when the returned BankList does not validate against XSD
-     * @return array of banks with bank name as key. The values are arrays with: bic, bezeichnung, land, epsUrl
+     * @throws XmlValidationException
+     * @throws \Exception
      */
-    public function GetBanksArray()
+    public function GetBanksArray(): array
     {
         $xmlBanks = new \SimpleXMLElement($this->GetBanks(true));
         $banks = array();
@@ -98,10 +110,9 @@ class SoCommunicator
      * Get XML of banks from scheme operator.
      * Will throw an exception if data cannot be fetched, or XSD validation fails.
      * @param bool $validateXml validate against XSD
-     * @throws XmlValidationException when the returned BankList does not validate against XSD and $validateXSD is set to TRUE
      * @return string
      */
-    public function GetBanks($validateXml = true)
+    public function GetBanks(bool $validateXml = true): string
     {
         $url = $this->BaseUrl . '/data/haendler/v2_6';
         $body = $this->GetUrl($url, 'Requesting bank list');
@@ -114,12 +125,12 @@ class SoCommunicator
     /**
      * Sends the given TransferInitiatorDetails to the Scheme Operator
      * @param TransferInitiatorDetails $transferInitiatorDetails
-     * @param string $targetUrl url with preselected bank identifier
-     * @throws XmlValidationException when the returned BankResponseDetails does not validate against XSD
-     * @throws \UnexpectedValueException when using security suffix without security seed
+     * @param string|null $targetUrl url with preselected bank identifier
      * @return string BankResponseDetails
+     *@throws \UnexpectedValueException when using security suffix without security seed
+     * @throws XmlValidationException when the returned BankResponseDetails does not validate against XSD
      */
-    public function SendTransferInitiatorDetails($transferInitiatorDetails, $targetUrl = null)
+    public function SendTransferInitiatorDetails(TransferInitiatorDetails $transferInitiatorDetails, string $targetUrl = null): string
     {
         if ($transferInitiatorDetails->RemittanceIdentifier != null)
             $transferInitiatorDetails->RemittanceIdentifier = $this->AppendHash($transferInitiatorDetails->RemittanceIdentifier);
@@ -146,7 +157,7 @@ class SoCommunicator
      * @param callable $confirmationCallback a callable to send BankConfirmationDetails to.
      * Will be called with the raw post data as first parameter and an Instance of
      * BankConfirmationDetails as second parameter. This callable must return TRUE.
-     * @param callable $vitalityCheckCallback an optional callable for the vitalityCheck
+     * @param callable|null $vitalityCheckCallback an optional callable for the vitalityCheck
      * Will be called with the raw post data as first parameter and an Instance of
      * VitalityCheckDetails as second parameter. This callable must return TRUE.
      * @param string $rawPostStream will read from this stream or file with file_get_contents
@@ -156,7 +167,7 @@ class SoCommunicator
      * @throws CallbackResponseException when callback does not return TRUE
      * @throws XmlValidationException when $rawInputStream does not validate against XSD
      * @throws \UnexpectedValueException when using security suffix without security seed
-     * @throws UnknownRemittanceIdentifierException when security suffix does not match
+     * @throws UnknownRemittanceIdentifierException|ShopResponseException when security suffix does not match
      */
     public function HandleConfirmationUrl($confirmationCallback, $vitalityCheckCallback = null, $rawPostStream = 'php://input', $outputStream = 'php://output')
     {
@@ -223,6 +234,9 @@ class SoCommunicator
 
     // Private functions
 
+    /**
+     * @throws CallbackResponseException
+     */
     private function ConfirmationUrlCallback($callback, $name, $args)
     {
         if (call_user_func_array($callback, $args) !== true)
@@ -233,6 +247,9 @@ class SoCommunicator
         }
     }
 
+    /**
+     * @throws InvalidCallbackException
+     */
     private function TestCallability(&$callback, $name)
     {
         if (!is_callable($callback))
@@ -244,50 +261,68 @@ class SoCommunicator
     }
 
     /**
-     * @param $url target url
-     * @param $logMessage log message
-     * @return string response body
-     * @throws HttpResponseException if returned status code is not 200
+     * Internal: GET helper using Guzzle
+     * @param string $url
+     * @param string $logMessage
+     * @return string
+     * @throws \RuntimeException on HTTP/transport error
      */
-    private function GetUrl($url, $logMessage)
+    private function GetUrl(string $url, string $logMessage = ''): string
     {
-        $this->WriteLog($logMessage);
-        $options = $this->Transport === null ? array() : array(
-            'transport' => $this->Transport
-        );
-        $response = Requests::get($url, array(), $options);
-        if ($response->status_code != 200)
-        {
-            $this->WriteLog($logMessage, false);
-            throw new HttpResponseException('Could not load document. Server returned code: ' . $response->status_code);
+        $this->WriteLog($logMessage !== '' ? $logMessage : ('GET ' . $url));
+        try {
+            $response = $this->HttpClient->request('GET', $url, [
+                'headers' => [
+                    'Accept' => 'application/xml,text/xml,*/*',
+                ],
+            ]);
+        } catch (GuzzleException $e) {
+            $this->WriteLog($logMessage !== '' ? $logMessage : ('GET ' . $url), false);
+            throw new \RuntimeException('GET request failed: ' . $e->getMessage(), 0, $e);
         }
-        $this->WriteLog($logMessage, true);
-        return $response->body;
+
+        $status = $response->getStatusCode();
+        if ($status < 200 || $status >= 300) {
+            $this->WriteLog($logMessage !== '' ? $logMessage : ('GET ' . $url), false);
+            throw new \RuntimeException(sprintf('GET %s failed with HTTP %d', $url, $status));
+        }
+
+        $this->WriteLog($logMessage !== '' ? $logMessage : ('GET ' . $url), true);
+        return (string)$response->getBody();
     }
 
     /**
-     * @param $url target url
-     * @param $data post parameters
-     * @param $message log message
-     * @return string response body
-     * @throws HttpResponseException if returned status code is not 200
+     * Internal: POST helper using Guzzle
+     * @param string $url
+     * @param string $xmlBody
+     * @param string $logMessage
+     * @return string
+     * @throws \RuntimeException on HTTP/transport error
      */
-    private function PostUrl($url, $data, $message)
+    private function PostUrl(string $url, string $xmlBody, string $logMessage = ''): string
     {
-        $this->WriteLog($message);
-        $options = $this->Transport === null ? array() : array(
-            'transport' => $this->Transport
-        );
-        $response = Requests::post($url, array('Content-Type' => 'text/xml; charset=UTF-8'), $data, $options);
-
-        if ($response->status_code != 200)
-        {
-            $this->WriteLog($message, false);
-            throw new HttpResponseException('Could not load document. Server returned code: ' . $response->status_code);
+        $this->WriteLog($logMessage !== '' ? $logMessage : ('POST ' . $url));
+        try {
+            $response = $this->HttpClient->request('POST', $url, [
+                'headers' => [
+                    'Content-Type' => 'application/xml; charset=UTF-8',
+                    'Accept' => 'application/xml,text/xml,*/*',
+                ],
+                'body' => $xmlBody,
+            ]);
+        } catch (GuzzleException $e) {
+            $this->WriteLog($logMessage !== '' ? $logMessage : ('POST ' . $url), false);
+            throw new \RuntimeException('POST request failed: ' . $e->getMessage(), 0, $e);
         }
 
-        $this->WriteLog($message, true);
-        return $response->body;
+        $status = $response->getStatusCode();
+        if ($status < 200 || $status >= 300) {
+            $this->WriteLog($logMessage !== '' ? $logMessage : ('POST ' . $url), false);
+            throw new \RuntimeException(sprintf('POST %s failed with HTTP %d', $url, $status));
+        }
+
+        $this->WriteLog($logMessage !== '' ? $logMessage : ('POST ' . $url), true);
+        return (string)$response->getBody();
     }
 
     private function WriteLog($message, $success = null)
@@ -313,6 +348,9 @@ class SoCommunicator
         return $string . substr($hash, 0, $this->ObscuritySuffixLength);
     }
 
+    /**
+     * @throws UnknownRemittanceIdentifierException
+     */
     private function StripHash($suffixed)
     {
         if ($this->ObscuritySuffixLength == 0)
@@ -333,9 +371,8 @@ class SoCommunicator
      * @param string|null $targetUrl Optional endpoint URL for EPS refund requests. Defaults to the base URL with refund path.
      * @param string|null $logMessage Optional custom log message for tracking the refund process.
      * @return string The response body from the refund request.
-     * @throws HttpResponseException If the request fails with a non-200 HTTP status code.
      */
-    public function ProcessRefund(EpsRefundRequest $refundRequest, $targetUrl = null, $logMessage = null)
+    public function ProcessRefund(EpsRefundRequest $refundRequest, string $targetUrl = null, string $logMessage = null): string
     {
         $this->WriteLog($logMessage ?? 'Initiating refund request.');
 
