@@ -3,7 +3,7 @@
     "description": "Stuzza e-payment standard implementation for PHP",
     "keywords": ["eps", "payments", "stuzza", "bank transfer"],
     "type": "library",
-    "version": "3.0.1",
+    "version": "3.0.2",
     "license": "GPL-2.0",
     "homepage": "https://github.com/hakito/PHP-Stuzza-EPS-BankTransfer",
     "authors": [
@@ -14,17 +14,23 @@
     ],
     "require": {
         "php": ">=7.3.0",
-        "guzzlehttp/guzzle": "^7.9",
-        "ext-simplexml": "*"
+        "psr/http-client": "^1.0",
+        "psr/http-message": "^2.0",
+        "psr/http-factory": "^1.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "9.*",
-        "php-coveralls/php-coveralls": "^2.7"
+      "phpunit/phpunit": "9.*",
+      "php-coveralls/php-coveralls": "^2.7"
     },
     "autoload": {
         "files": [ "src/functions.php"],
         "psr-4": {
             "at\\externet\\eps_bank_transfer\\": "src/"
         }
+    },
+    "autoload-dev": {
+      "classmap": [
+        "tests/unit/at/externet/eps_bank_transfer/BaseTest.php"
+      ]
     }
 }

@@ -2,16 +2,24 @@
 
 namespace at\externet\eps_bank_transfer;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\GuzzleException;
-
+use Psr\Http\Client\ClientExceptionInterface;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestFactoryInterface;
+use Psr\Http\Message\StreamFactoryInterface;
 
 /**
- * Handles the communication with the EPS scheme operator
+ * Handles the communication with the EPS scheme operator for bank transfers
  */
 class SoCommunicator
 {
+    /**
+     * URL endpoint for test mode communications
+     */
     const TEST_MODE_URL = 'https://routing.eps.or.at/appl/epsSO-test';
+
+    /**
+     * URL endpoint for live mode communications
+     */
     const LIVE_MODE_URL = 'https://routing.eps.or.at/appl/epsSO';
 
     /**
@@ -21,80 +29,114 @@ class SoCommunicator
     public $LogCallback;
 
     /**
-     * Number of hash chars to append to RemittanceIdentifier.
-     * If set greater as 0 you'll also have to set a ObscuritySeed
+     * Number of hash characters to append to RemittanceIdentifier.
+     * If set greater than 0, ObscuritySeed must also be set.
      * @var int
      */
     public $ObscuritySuffixLength = 0;
 
     /**
-     * Seed to be used by hash function for RemittanceIdentifier
+     * Seed string used by hash function for RemittanceIdentifier
      * @var string
      */
     public $ObscuritySeed;
 
     /**
-     * The base url SoCommunicator sends requests to
-     * Defaults to SoCommunicator::LIVE_MODE_URL when constructor is called with $testMode == false
-     * Defaults to SoCommunicator::TEST_MODE_URL when constructor is called with $testMode == true
+     * Base URL for sending requests to the EPS system.
+     * Defaults to LIVE_MODE_URL in production or TEST_MODE_URL in test mode.
+     * @var string
      */
     public $BaseUrl;
 
     /**
-     * HTTP client (Guzzle)
-     * @var Client
+     * PSR-18 compliant HTTP client for making requests
+     * @var ClientInterface|null
      */
     private $HttpClient;
 
     /**
-     * Creates new Instance of SoCommunicator
+     * PSR-17 compliant request factory
+     * @var RequestFactoryInterface|null
      */
-    public function __construct($testMode = false, Client $httpClient = null)
+    private $RequestFactory;
+
+    /**
+     * PSR-17 compliant stream factory
+     * @var StreamFactoryInterface|null
+     */
+    private $StreamFactory;
+
+    /**
+     * Creates new instance of SoCommunicator
+     *
+     * @param bool $testMode Whether to use test mode endpoint
+     * @param ClientInterface|null $httpClient PSR-18 HTTP client
+     * @param RequestFactoryInterface|null $requestFactory PSR-17 request factory
+     * @param StreamFactoryInterface|null $streamFactory PSR-17 stream factory
+     */
+    public function __construct($testMode = false, ClientInterface $httpClient = null, RequestFactoryInterface $requestFactory = null, StreamFactoryInterface $streamFactory = null)
     {
         $this->BaseUrl = $testMode ? self::TEST_MODE_URL : self::LIVE_MODE_URL;
-        $this->HttpClient = $httpClient ?: new Client([
-            'timeout' => 10.0,
-            'http_errors' => false, // handle non-2xx manually
-        ]);
+        $this->HttpClient = $httpClient;
+        $this->RequestFactory = $requestFactory;
+        $this->StreamFactory = $streamFactory;
     }
 
     /**
-     * Allows injecting/replacing the HTTP client (useful for tests with MockHandler).
-     * @param Client $client
+     * Allows injecting/replacing the HTTP client (useful for tests or frameworks).
+     * @param ClientInterface $client PSR-18 compliant HTTP client
      * @return void
      */
-    public function setHttpClient(Client $client)
+    public function setHttpClient(ClientInterface $client)
     {
         $this->HttpClient = $client;
     }
 
     /**
-     * Failsafe version of GetBanksArray(). All Exceptions will be swallowed
-     * @return null or result of GetBanksArray()
+     * Allows injecting/replacing the request factory
+     * @param RequestFactoryInterface $factory PSR-17 compliant request factory
+     * @return void
+     */
+    public function setRequestFactory(RequestFactoryInterface $factory)
+    {
+        $this->RequestFactory = $factory;
+    }
+
+    /**
+     * Allows injecting/replacing the stream factory
+     * @param StreamFactoryInterface $factory PSR-17 compliant stream factory
+     * @return void
+     */
+    public function setStreamFactory(StreamFactoryInterface $factory)
+    {
+        $this->StreamFactory = $factory;
+    }
+
+    /**
+     * Failsafe version of GetBanksArray(). Catches and logs all exceptions.
+     * @return array|null Array of bank details or null on error
      */
     public function TryGetBanksArray(): ?array
     {
-        try
-        {
+        try {
             return $this->GetBanksArray();
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             $this->WriteLog('Could not get Bank Array. ' . $e);
             return null;
         }
     }
 
     /**
-     * @throws XmlValidationException
-     * @throws \Exception
+     * Gets array of available banks from EPS system
+     * @return array Array of bank details including BIC, name, country and EPS URL
+     * @throws XmlValidationException If bank list XML validation fails
+     * @throws \Exception On other errors
      */
     public function GetBanksArray(): array
     {
         $xmlBanks = new \SimpleXMLElement($this->GetBanks(true));
         $banks = array();
-        foreach ($xmlBanks as $xmlBank)
-        {
+        foreach ($xmlBanks as $xmlBank) {
             $bezeichnung = '' . $xmlBank->bezeichnung;
             $banks[$bezeichnung] = array(
                 'bic' => '' . $xmlBank->bic,
@@ -107,10 +149,12 @@ class SoCommunicator
     }
 
     /**
-     * Get XML of banks from scheme operator.
-     * Will throw an exception if data cannot be fetched, or XSD validation fails.
-     * @param bool $validateXml validate against XSD
-     * @return string
+     * Retrieves XML list of banks from EPS scheme operator
+     *
+     * @param bool $validateXml Whether to validate response against XSD schema
+     * @return string Raw XML response
+     * @throws XmlValidationException If XML validation fails
+     * @throws \RuntimeException On HTTP/transport errors
      */
     public function GetBanks(bool $validateXml = true): string
     {
@@ -123,12 +167,13 @@ class SoCommunicator
     }
 
     /**
-     * Sends the given TransferInitiatorDetails to the Scheme Operator
-     * @param TransferInitiatorDetails $transferInitiatorDetails
-     * @param string|null $targetUrl url with preselected bank identifier
-     * @return string BankResponseDetails
-     *@throws \UnexpectedValueException when using security suffix without security seed
-     * @throws XmlValidationException when the returned BankResponseDetails does not validate against XSD
+     * Sends payment initiation request to EPS scheme operator
+     *
+     * @param TransferInitiatorDetails $transferInitiatorDetails Payment details
+     * @param string|null $targetUrl Optional custom endpoint URL
+     * @return string Bank response XML
+     * @throws \UnexpectedValueException When using security suffix without seed
+     * @throws XmlValidationException When response validation fails
      */
     public function SendTransferInitiatorDetails(TransferInitiatorDetails $transferInitiatorDetails, string $targetUrl = null): string
     {
@@ -150,30 +195,23 @@ class SoCommunicator
     }
 
     /**
-     * Call this function when the confirmation URL is called by the Scheme Operator.
-     * The function will write ShopResponseDetails to the $outputStream in case of
-     * BankConfirmationDetails.
+     * Handles confirmation URL callbacks from EPS scheme operator
      *
-     * @param callable $confirmationCallback a callable to send BankConfirmationDetails to.
-     * Will be called with the raw post data as first parameter and an Instance of
-     * BankConfirmationDetails as second parameter. This callable must return TRUE.
-     * @param callable|null $vitalityCheckCallback an optional callable for the vitalityCheck
-     * Will be called with the raw post data as first parameter and an Instance of
-     * VitalityCheckDetails as second parameter. This callable must return TRUE.
-     * @param string $rawPostStream will read from this stream or file with file_get_contents
-     * @param string $outputStream will write to this stream the expected responses for the
-     * Scheme Operator
-     * @throws InvalidCallbackException when callback is not callable
-     * @throws CallbackResponseException when callback does not return TRUE
-     * @throws XmlValidationException when $rawInputStream does not validate against XSD
-     * @throws \UnexpectedValueException when using security suffix without security seed
-     * @throws UnknownRemittanceIdentifierException|ShopResponseException when security suffix does not match
+     * @param callable $confirmationCallback Callback for bank confirmations
+     * @param callable|null $vitalityCheckCallback Optional callback for vitality checks
+     * @param string $rawPostStream Input stream for raw POST data
+     * @param string $outputStream Output stream for responses
+     * @throws InvalidCallbackException If callback is invalid
+     * @throws CallbackResponseException If callback returns non-TRUE
+     * @throws XmlValidationException If XML validation fails
+     * @throws UnknownRemittanceIdentifierException If remittance ID hash mismatch
+     * @throws \UnexpectedValueException When using security suffix without seed
+     * @throws ShopResponseException On other errors
      */
     public function HandleConfirmationUrl($confirmationCallback, $vitalityCheckCallback = null, $rawPostStream = 'php://input', $outputStream = 'php://output')
     {
         $shopResponseDetails = new ShopResponseDetails();
-        try
-        {
+        try {
             $this->TestCallability($confirmationCallback, 'confirmationCallback');
             if ($vitalityCheckCallback != null)
                 $this->TestCallability($vitalityCheckCallback, 'vitalityCheckCallback');
@@ -185,20 +223,16 @@ class SoCommunicator
             $epspChildren = $xml->children(XMLNS_epsp);
             $firstChildName = $epspChildren[0]->getName();
 
-            if ($firstChildName == 'VitalityCheckDetails')
-            {
+            if ($firstChildName == 'VitalityCheckDetails') {
                 $this->WriteLog('Vitality Check');
-                if ($vitalityCheckCallback != null)
-                {
+                if ($vitalityCheckCallback != null) {
                     $VitalityCheckDetails = new VitalityCheckDetails($xml);
                     $this->ConfirmationUrlCallback($vitalityCheckCallback, 'vitality check', array($HTTP_RAW_POST_DATA, $VitalityCheckDetails));
                 }
 
-                // 7.1.9 Schritt III-3: Bestätigung Vitality Check Händler-eps SO
+                // Step III-3: Confirm vitality check
                 file_put_contents($outputStream, $HTTP_RAW_POST_DATA);
-            }
-            else if ($firstChildName == 'BankConfirmationDetails')
-            {
+            } else if ($firstChildName == 'BankConfirmationDetails') {
                 $this->WriteLog('Bank Confirmation');
                 $BankConfirmationDetails = new BankConfirmationDetails($xml);
 
@@ -212,13 +246,11 @@ class SoCommunicator
                 $this->WriteLog(sprintf('Calling confirmationUrlCallback for remittance identifier "%s" with status code %s', $BankConfirmationDetails->GetRemittanceIdentifier(), $BankConfirmationDetails->GetStatusCode()));
                 $this->ConfirmationUrlCallback($confirmationCallback, 'confirmation', array($HTTP_RAW_POST_DATA, $BankConfirmationDetails));
 
-                // Schritt III-8: Bestätigung Erhalt eps Zahlungsbestätigung Händler-eps SO
+                // Step III-8: Confirm payment receipt
                 $this->WriteLog('III-8 Confirming payment receipt');
                 file_put_contents($outputStream, $shopResponseDetails->GetSimpleXml()->asXml());
             }
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             $this->WriteLog($e->getMessage());
 
             if (is_subclass_of($e, 'at\externet\eps_bank_transfer\ShopResponseException'))
@@ -232,15 +264,17 @@ class SoCommunicator
         }
     }
 
-    // Private functions
-
     /**
-     * @throws CallbackResponseException
+     * Executes confirmation URL callback and validates return value
+     *
+     * @param callable $callback The callback to execute
+     * @param string $name Callback name for error messages
+     * @param array $args Arguments to pass to callback
+     * @throws CallbackResponseException If callback does not return TRUE
      */
     private function ConfirmationUrlCallback($callback, $name, $args)
     {
-        if (call_user_func_array($callback, $args) !== true)
-        {
+        if (call_user_func_array($callback, $args) !== true) {
             $message = 'The given ' . $name . ' confirmation callback function did not return TRUE';
             $fullMessage = 'Cannot handle confirmation URL. ' . $message;
             throw new CallbackResponseException($fullMessage);
@@ -248,12 +282,15 @@ class SoCommunicator
     }
 
     /**
-     * @throws InvalidCallbackException
+     * Validates that a callback is actually callable
+     *
+     * @param callable $callback The callback to test
+     * @param string $name Callback name for error messages
+     * @throws InvalidCallbackException If callback is not callable
      */
     private function TestCallability(&$callback, $name)
     {
-        if (!is_callable($callback))
-        {
+        if (!is_callable($callback)) {
             $message = 'The given callback function for "' . $name . '" is not a callable';
             $fullMessage = 'Cannot handle confirmation URL. ' . $message;
             throw new InvalidCallbackException($fullMessage);
@@ -261,22 +298,22 @@ class SoCommunicator
     }
 
     /**
-     * Internal: GET helper using Guzzle
-     * @param string $url
-     * @param string $logMessage
-     * @return string
-     * @throws \RuntimeException on HTTP/transport error
+     * Makes HTTP GET request using configured PSR-18 client
+     *
+     * @param string $url Target URL
+     * @param string $logMessage Optional log message
+     * @return string Response body
+     * @throws \RuntimeException On HTTP/transport errors
      */
-    private function GetUrl(string $url, string $logMessage = ''): string
+    private function GetUrl($url, $logMessage = '')
     {
+        $this->ensureHttpDependencies();
         $this->WriteLog($logMessage !== '' ? $logMessage : ('GET ' . $url));
         try {
-            $response = $this->HttpClient->request('GET', $url, [
-                'headers' => [
-                    'Accept' => 'application/xml,text/xml,*/*',
-                ],
-            ]);
-        } catch (GuzzleException $e) {
+            $request = $this->RequestFactory->createRequest('GET', $url)
+                ->withHeader('Accept', 'application/xml,text/xml,*/*');
+            $response = $this->HttpClient->sendRequest($request);
+        } catch (ClientExceptionInterface $e) {
             $this->WriteLog($logMessage !== '' ? $logMessage : ('GET ' . $url), false);
             throw new \RuntimeException('GET request failed: ' . $e->getMessage(), 0, $e);
         }
@@ -292,25 +329,26 @@ class SoCommunicator
     }
 
     /**
-     * Internal: POST helper using Guzzle
-     * @param string $url
-     * @param string $xmlBody
-     * @param string $logMessage
-     * @return string
-     * @throws \RuntimeException on HTTP/transport error
+     * Makes HTTP POST request using configured PSR-18 client
+     *
+     * @param string $url Target URL
+     * @param string $xmlBody XML request body
+     * @param string $logMessage Optional log message
+     * @return string Response body
+     * @throws \RuntimeException On HTTP/transport errors
      */
-    private function PostUrl(string $url, string $xmlBody, string $logMessage = ''): string
+    private function PostUrl($url, $xmlBody, $logMessage = '')
     {
+        $this->ensureHttpDependencies();
         $this->WriteLog($logMessage !== '' ? $logMessage : ('POST ' . $url));
         try {
-            $response = $this->HttpClient->request('POST', $url, [
-                'headers' => [
-                    'Content-Type' => 'application/xml; charset=UTF-8',
-                    'Accept' => 'application/xml,text/xml,*/*',
-                ],
-                'body' => $xmlBody,
-            ]);
-        } catch (GuzzleException $e) {
+            $stream = $this->StreamFactory->createStream($xmlBody);
+            $request = $this->RequestFactory->createRequest('POST', $url)
+                ->withHeader('Content-Type', 'application/xml; charset=UTF-8')
+                ->withHeader('Accept', 'application/xml,text/xml,*/*')
+                ->withBody($stream);
+            $response = $this->HttpClient->sendRequest($request);
+        } catch (ClientExceptionInterface $e) {
             $this->WriteLog($logMessage !== '' ? $logMessage : ('POST ' . $url), false);
             throw new \RuntimeException('POST request failed: ' . $e->getMessage(), 0, $e);
         }
@@ -325,10 +363,15 @@ class SoCommunicator
         return (string)$response->getBody();
     }
 
+    /**
+     * Writes message to configured log callback if available
+     *
+     * @param string $message Log message
+     * @param bool|null $success Optional success flag to prefix message
+     */
     private function WriteLog($message, $success = null)
     {
-        if (is_callable($this->LogCallback))
-        {
+        if (is_callable($this->LogCallback)) {
             if ($success !== null)
                 $message = ($success ? "SUCCESS:" : "FAILED:") . ' ' . $message;
 
@@ -336,20 +379,31 @@ class SoCommunicator
         }
     }
 
+    /**
+     * Appends security hash to input string if configured
+     *
+     * @param string $string Input string
+     * @return string String with optional hash appended
+     * @throws \UnexpectedValueException When using suffix without seed
+     */
     private function AppendHash($string)
     {
         if ($this->ObscuritySuffixLength == 0)
             return $string;
 
         if (empty($this->ObscuritySeed))
-                throw new \UnexpectedValueException('No security seed set when using security suffix.');
+            throw new \UnexpectedValueException('No security seed set when using security suffix.');
 
         $hash = base64_encode(crypt($string, $this->ObscuritySeed));
         return $string . substr($hash, 0, $this->ObscuritySuffixLength);
     }
 
     /**
-     * @throws UnknownRemittanceIdentifierException
+     * Strips and validates security hash from input string
+     *
+     * @param string $suffixed Input string with hash
+     * @return string Original string without hash
+     * @throws UnknownRemittanceIdentifierException If hash validation fails
      */
     private function StripHash($suffixed)
     {
@@ -363,14 +417,15 @@ class SoCommunicator
         return $remittanceIdentifier;
     }
 
-
     /**
-     * Executes a refund request using the EpsRefundRequest object.
+     * Executes a refund request using the EpsRefundRequest object
      *
-     * @param EpsRefundRequest $refundRequest The refund request data to be sent.
-     * @param string|null $targetUrl Optional endpoint URL for EPS refund requests. Defaults to the base URL with refund path.
-     * @param string|null $logMessage Optional custom log message for tracking the refund process.
-     * @return string The response body from the refund request.
+     * @param EpsRefundRequest $refundRequest The refund request data
+     * @param string|null $targetUrl Optional custom endpoint URL
+     * @param string|null $logMessage Optional custom log message
+     * @return string Response XML from refund request
+     * @throws XmlValidationException If response validation fails
+     * @throws \RuntimeException On HTTP/transport errors
      */
     public function ProcessRefund(EpsRefundRequest $refundRequest, string $targetUrl = null, string $logMessage = null): string
     {
@@ -390,4 +445,19 @@ class SoCommunicator
         return $response;
     }
 
+    /**
+     * Ensures required HTTP dependencies are configured
+     *
+     * @throws \RuntimeException If dependencies missing
+     */
+    private function ensureHttpDependencies()
+    {
+        if (!$this->HttpClient || !$this->RequestFactory || !$this->StreamFactory) {
+            throw new \RuntimeException(
+                'HTTP client and PSR-17 factories are not configured. ' .
+                'Please provide a PSR-18 ClientInterface and RequestFactoryInterface/StreamFactoryInterface ' .
+                'via constructor or setHttpClient/setRequestFactory/setStreamFactory.'
+            );
+        }
+    }
 }
