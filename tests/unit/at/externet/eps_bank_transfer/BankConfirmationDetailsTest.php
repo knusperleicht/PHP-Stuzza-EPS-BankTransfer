@@ -9,6 +9,9 @@ class BankConfirmationDetailsTest extends BaseTest
     /** @var \SimpleXMLElement[] */
     public $simpleXmls;
 
+    /**
+     * @throws \Exception
+     */
     protected function setUp(): void
     {
         parent::setUp();
