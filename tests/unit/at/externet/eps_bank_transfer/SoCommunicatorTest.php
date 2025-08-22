@@ -433,45 +433,53 @@ class SoCommunicatorTest extends BaseTest
     }
 
     /**
-     * Test refund response with success status
+     * Test that SendRefundRequest throws XML validation exception on invalid data
+     *
+     * @return void
+     * @throws XmlValidationException
      */
-    function testRefundResponseAccepted()
+    function testSendRefundRequestThrowsValidationException()
     {
+        $refundRequest = $this->getMockedRefundRequest();
+        $this->http->pushResponse(200, array('Content-Type' => 'application/xml'), 'invalidData');
+
+        $this->expectException(XmlValidationException::class);
+        $this->target->SendRefundRequest($refundRequest);
+    }
+
+    /**
+     * Test that SendRefundRequest sends to the correct production URL
+     *
+     * @return void
+     * @throws XmlValidationException
+     */
+    function testSendRefundRequestToCorrectUrl()
+    {
+        $refundRequest = $this->getMockedRefundRequest();
         $this->http->pushResponse(200, array('Content-Type' => 'application/xml'), $this->GetEpsData('RefundResponseAccepted000.xml'));
 
-        $refundRequest = $this->getMockedRefundRequest();
-        $response = $this->target->ProcessRefund($refundRequest);
+        $this->target->SendRefundRequest($refundRequest);
 
-        $this->assertStringContainsString('Keine Fehler - dt accepted', $response);
-        $this->assertStringContainsString('StatusCode>000<', $response);
+        $info = $this->http->getLastRequestInfo();
+        $this->assertEquals('https://routing.eps.or.at/appl/epsSO/refund/eps/v2_6', $info['url']);
     }
 
     /**
-     * Test refund response with fingerprint failure
+     * Test that SendRefundRequest sends to the test URL in test mode
+     *
+     * @return void
+     * @throws XmlValidationException
      */
-    function testRefundResponseFingerprintFailed()
+    function testSendRefundRequestToTestUrl()
     {
-        $this->http->pushResponse(200, array('Content-Type' => 'application/xml'), $this->GetEpsData('RefundResponseFingerprintFailed004.xml'));
-
+        $this->target = new SoCommunicator(true, $this->http, new HttpFactory(), new HttpFactory());
         $refundRequest = $this->getMockedRefundRequest();
-        $response = $this->target->ProcessRefund($refundRequest);
+        $this->http->pushResponse(200, array('Content-Type' => 'application/xml'), $this->GetEpsData('RefundResponseAccepted000.xml'));
 
-        $this->assertStringContainsString('Autorisierungsdaten fehlerhaft - SHA256 fingerprint check failed', $response);
-        $this->assertStringContainsString('StatusCode>004<', $response);
-    }
+        $this->target->SendRefundRequest($refundRequest);
 
-    /**
-     * Test refund response with invalid IBAN
-     */
-    function testRefundResponseInvalidIban()
-    {
-        $this->http->pushResponse(200, array('Content-Type' => 'application/xml'), $this->GetEpsData('RefundResponseInvalidIban010.xml'));
-
-        $refundRequest = $this->getMockedRefundRequest();
-        $response = $this->target->ProcessRefund($refundRequest);
-
-        $this->assertStringContainsString('IBAN ungueltig - customer data not available', $response);
-        $this->assertStringContainsString('StatusCode>010<', $response);
+        $info = $this->http->getLastRequestInfo();
+        $this->assertEquals('https://routing.eps.or.at/appl/epsSO-test/refund/eps/v2_6', $info['url']);
     }
 
     /**
@@ -685,7 +693,7 @@ class SoCommunicatorTest extends BaseTest
     /**
      * Creates a mocked RefundRequest instance for testing
      *
-     * @return RefundRequest
+     * @return EpsRefundRequest
      */
     private function getMockedRefundRequest()
     {

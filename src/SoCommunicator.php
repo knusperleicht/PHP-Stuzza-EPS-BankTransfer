@@ -418,7 +418,7 @@ class SoCommunicator
     }
 
     /**
-     * Executes a refund request using the EpsRefundRequest object
+     * Sends a refund request using the EpsRefundRequest object.
      *
      * @param EpsRefundRequest $refundRequest The refund request data
      * @param string|null $targetUrl Optional custom endpoint URL
@@ -427,7 +427,7 @@ class SoCommunicator
      * @throws XmlValidationException If response validation fails
      * @throws \RuntimeException On HTTP/transport errors
      */
-    public function ProcessRefund(EpsRefundRequest $refundRequest, string $targetUrl = null, string $logMessage = null): string
+    public function SendRefundRequest(EpsRefundRequest $refundRequest, $targetUrl = null, $logMessage = null)
     {
         if ($targetUrl === null)
             $targetUrl = $this->BaseUrl . '/refund/eps/v2_6';
