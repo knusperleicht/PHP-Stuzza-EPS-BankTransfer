@@ -429,8 +429,6 @@ class SoCommunicator
      */
     public function ProcessRefund(EpsRefundRequest $refundRequest, string $targetUrl = null, string $logMessage = null): string
     {
-        $this->WriteLog($logMessage ?? 'Initiating refund request.');
-
         if ($targetUrl === null)
             $targetUrl = $this->BaseUrl . '/refund/eps/v2_6';
 
@@ -439,8 +437,6 @@ class SoCommunicator
 
         $response = $this->PostUrl($targetUrl, $xmlData, $logMessage ?? 'Sending refund request to ' . $targetUrl);
         XmlValidator::ValidateEpsRefund($response);
-
-        $this->WriteLog('Refund request completed successfully.');
 
         return $response;
     }

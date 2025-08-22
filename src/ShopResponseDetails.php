@@ -18,22 +18,6 @@ class ShopResponseDetails
     public $PaymentReferenceIdentifier;
 
     /**
-     * Constructor for initializing properties.
-     *
-     * @param string $ErrorMsg
-     * @param string $SessionId
-     * @param string $StatusCode
-     * @param string $PaymentReferenceIdentifier
-     */
-    public function __construct($ErrorMsg = null, $SessionId = null, $StatusCode = null, $PaymentReferenceIdentifier = null)
-    {
-        $this->ErrorMsg = $ErrorMsg;
-        $this->SessionId = $SessionId;
-        $this->StatusCode = $StatusCode;
-        $this->PaymentReferenceIdentifier = $PaymentReferenceIdentifier;
-    }
-
-    /**
      *
      * @return SimpleXmlElement
      */
