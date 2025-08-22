@@ -1,6 +1,8 @@
 <?php
 require_once('../vendor/autoload.php');
 use at\externet\eps_bank_transfer;
+use GuzzleHttp\Psr7\HttpFactory;
+use unit\at\externet\eps_bank_transfer\Psr18TestHttp;
 
 // Connection credentials. Override them for test mode.
 $userID = 'AKLJS231534';            // Eps "Händler-ID"/UserID = epsp:UserId
@@ -43,8 +45,12 @@ $transferInitiatorDetails->WebshopArticles[] = $article;
 
 // Send TransferInitiatorDetails to Scheme Operator
 $testMode = true; // To use live mode call the SoCommunicator constructor with $testMode = false
-$soCommunicator = new eps_bank_transfer\SoCommunicator($testMode);
-
+$soCommunicator = new eps_bank_transfer\SoCommunicator(
+    new Psr18TestHttp(),
+    new HttpFactory(),
+    new HttpFactory(),
+    $testMode
+);
 // Optional: You can provide a bank selection on your payment site
 // $bankList = $soCommunicator->GetBanksArray(); // Alternative: TryGetBanksArray
 

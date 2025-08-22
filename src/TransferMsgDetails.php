@@ -22,9 +22,9 @@ class TransferMsgDetails
 
     /**
      *
-     * @param type $ConfirmationUrl
-     * @param type $TransactionOkUrl
-     * @param type $TransactionNokUrl
+     * @param string $ConfirmationUrl
+     * @param string $TransactionOkUrl
+     * @param string $TransactionNokUrl
      */
     public function __construct($ConfirmationUrl, $TransactionOkUrl, $TransactionNokUrl)
     {

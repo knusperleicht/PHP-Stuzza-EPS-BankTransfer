@@ -7,6 +7,8 @@ This file handles the confirmation call from the Scheme Operator (after a paymen
 
 require_once('../vendor/autoload.php');
 use at\externet\eps_bank_transfer;
+use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\HttpFactory;
 
 /**
  * @param string $plainXml Raw XML message, according to "Abbildung 6-6: PaymentConfirmationDetails" (eps Pflichtenheft 2.5)
@@ -26,7 +28,13 @@ $paymentConfirmationCallback = function($plainXml, $bankConfirmationDetails)
   return true; 
 };
 
-$soCommunicator = new eps_bank_transfer\SoCommunicator();
+$testMode = "yes";
+$soCommunicator = new eps_bank_transfer\SoCommunicator(
+    new Client(), // PSR-18 HTTP client
+    new HttpFactory(), // PSR-17 request factory
+    new HttpFactory(),  // PSR-17 stream factory
+    $testMode == "yes", // boolean - if true uses test URL, if false uses live URL
+);
 $soCommunicator->HandleConfirmationUrl(
   $paymentConfirmationCallback,
   null,                 // Optional: a callback function which is called in case of Vitality-Check

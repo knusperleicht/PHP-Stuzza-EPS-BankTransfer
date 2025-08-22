@@ -6,6 +6,8 @@ This file handles the refund process of a previous EPS payment
 require_once('../vendor/autoload.php');
 
 use at\externet\eps_bank_transfer;
+use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\HttpFactory;
 
 $userID = 'AKLJS231534';            // Eps "Händler-ID"/UserID = epsr:UserId
 $pin = 'topSecret';                 // Secret for authentication / PIN = part of epsr:SHA256Fingerprint
@@ -23,7 +25,12 @@ $refundRequest = new eps_bank_transfer\EpsRefundRequest(
 );
 
 $testMode = "yes";
-$soCommunicator = new eps_bank_transfer\SoCommunicator($testMode == "yes");
+$soCommunicator = new eps_bank_transfer\SoCommunicator(
+    new Client(), // PSR-18 HTTP client
+    new HttpFactory(), // PSR-17 request factory
+    new HttpFactory(),  // PSR-17 stream factory
+    $testMode == "yes", // boolean - if true uses test URL, if false uses live URL
+);
 $refundResponse = $soCommunicator->SendRefundRequest($refundRequest);
 
 $xml = new \SimpleXMLElement($refundResponse);

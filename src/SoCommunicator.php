@@ -6,75 +6,82 @@ use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
+use RuntimeException;
 
 /**
- * Handles the communication with the EPS scheme operator for bank transfers
+ * Communicates with the EPS scheme operator for bank transfers.
+ *
+ * Provides methods to:
+ * - Retrieve available banks
+ * - Send transfer initiator requests
+ * - Handle confirmation callbacks
+ * - Send refund requests
+ *
+ * Uses PSR-18 (HTTP client) and PSR-17 (request/stream factory) interfaces.
  */
 class SoCommunicator
 {
-    /**
-     * URL endpoint for test mode communications
-     */
-    const TEST_MODE_URL = 'https://routing.eps.or.at/appl/epsSO-test';
+    /** @var string EPS test mode endpoint */
+    private const TEST_MODE_URL = 'https://routing.eps.or.at/appl/epsSO-test';
+
+    /** @var string EPS live mode endpoint */
+    private const LIVE_MODE_URL = 'https://routing.eps.or.at/appl/epsSO';
 
     /**
-     * URL endpoint for live mode communications
-     */
-    const LIVE_MODE_URL = 'https://routing.eps.or.at/appl/epsSO';
-
-    /**
-     * Optional function to send log messages to
-     * @var callable
+     * Optional callback for logging messages.
+     *
+     * Signature: function(string $message): void
+     *
+     * @var callable|null
      */
     public $LogCallback;
 
     /**
-     * Number of hash characters to append to RemittanceIdentifier.
-     * If set greater than 0, ObscuritySeed must also be set.
+     * Number of hash characters appended to the RemittanceIdentifier.
+     * Requires {@see $ObscuritySeed} if greater than 0.
+     *
      * @var int
      */
     public $ObscuritySuffixLength = 0;
 
     /**
-     * Seed string used by hash function for RemittanceIdentifier
-     * @var string
+     * Seed string used by the hash function for RemittanceIdentifier.
+     *
+     * @var string|null
      */
     public $ObscuritySeed;
 
     /**
-     * Base URL for sending requests to the EPS system.
-     * Defaults to LIVE_MODE_URL in production or TEST_MODE_URL in test mode.
+     * Base URL for EPS system requests.
+     * Defaults to LIVE or TEST mode depending on constructor argument.
+     *
      * @var string
      */
     public $BaseUrl;
 
-    /**
-     * PSR-18 compliant HTTP client for making requests
-     * @var ClientInterface|null
-     */
+    /** @var ClientInterface|null PSR-18 HTTP client */
     private $HttpClient;
 
-    /**
-     * PSR-17 compliant request factory
-     * @var RequestFactoryInterface|null
-     */
+    /** @var RequestFactoryInterface|null PSR-17 request factory */
     private $RequestFactory;
 
-    /**
-     * PSR-17 compliant stream factory
-     * @var StreamFactoryInterface|null
-     */
+    /** @var StreamFactoryInterface|null PSR-17 stream factory */
     private $StreamFactory;
 
     /**
-     * Creates new instance of SoCommunicator
+     * Constructor.
      *
-     * @param bool $testMode Whether to use test mode endpoint
-     * @param ClientInterface|null $httpClient PSR-18 HTTP client
-     * @param RequestFactoryInterface|null $requestFactory PSR-17 request factory
-     * @param StreamFactoryInterface|null $streamFactory PSR-17 stream factory
+     * @param bool $testMode If true, uses EPS test endpoint.
+     * @param ClientInterface|null $httpClient PSR-18 HTTP client.
+     * @param RequestFactoryInterface|null $requestFactory PSR-17 request factory.
+     * @param StreamFactoryInterface|null $streamFactory PSR-17 stream factory.
      */
-    public function __construct($testMode = false, ClientInterface $httpClient = null, RequestFactoryInterface $requestFactory = null, StreamFactoryInterface $streamFactory = null)
+    public function __construct(
+        ClientInterface         $httpClient,
+        RequestFactoryInterface $requestFactory,
+        StreamFactoryInterface  $streamFactory,
+        bool                    $testMode = false
+    )
     {
         $this->BaseUrl = $testMode ? self::TEST_MODE_URL : self::LIVE_MODE_URL;
         $this->HttpClient = $httpClient;
@@ -83,111 +90,97 @@ class SoCommunicator
     }
 
     /**
-     * Allows injecting/replacing the HTTP client (useful for tests or frameworks).
-     * @param ClientInterface $client PSR-18 compliant HTTP client
-     * @return void
-     */
-    public function setHttpClient(ClientInterface $client)
-    {
-        $this->HttpClient = $client;
-    }
-
-    /**
-     * Allows injecting/replacing the request factory
-     * @param RequestFactoryInterface $factory PSR-17 compliant request factory
-     * @return void
-     */
-    public function setRequestFactory(RequestFactoryInterface $factory)
-    {
-        $this->RequestFactory = $factory;
-    }
-
-    /**
-     * Allows injecting/replacing the stream factory
-     * @param StreamFactoryInterface $factory PSR-17 compliant stream factory
-     * @return void
-     */
-    public function setStreamFactory(StreamFactoryInterface $factory)
-    {
-        $this->StreamFactory = $factory;
-    }
-
-    /**
-     * Failsafe version of GetBanksArray(). Catches and logs all exceptions.
-     * @return array|null Array of bank details or null on error
+     * Safe wrapper around {@see GetBanksArray()}.
+     * Returns null instead of throwing exceptions.
+     *
+     * @return array<string,array<string,string>>|null
      */
     public function TryGetBanksArray(): ?array
     {
         try {
             return $this->GetBanksArray();
         } catch (\Exception $e) {
-            $this->WriteLog('Could not get Bank Array. ' . $e);
+            $this->WriteLog('Could not get bank array. ' . $e->getMessage());
             return null;
         }
     }
 
     /**
-     * Gets array of available banks from EPS system
-     * @return array Array of bank details including BIC, name, country and EPS URL
-     * @throws XmlValidationException If bank list XML validation fails
-     * @throws \Exception On other errors
+     * Retrieves available banks from the EPS system.
+     *
+     * @return array<string,array<string,string>> Bank list indexed by bank name.
+     *
+     * @throws XmlValidationException If the EPS XML fails validation.
+     * @throws \Exception On transport or parsing errors.
      */
     public function GetBanksArray(): array
     {
         $xmlBanks = new \SimpleXMLElement($this->GetBanks(true));
-        $banks = array();
+        $banks = [];
+
         foreach ($xmlBanks as $xmlBank) {
-            $bezeichnung = '' . $xmlBank->bezeichnung;
-            $banks[$bezeichnung] = array(
-                'bic' => '' . $xmlBank->bic,
+            $bezeichnung = (string)$xmlBank->bezeichnung;
+            $banks[$bezeichnung] = [
+                'bic' => (string)$xmlBank->bic,
                 'bezeichnung' => $bezeichnung,
-                'land' => '' . $xmlBank->land,
-                'epsUrl' => '' . $xmlBank->epsUrl,
-            );
+                'land' => (string)$xmlBank->land,
+                'epsUrl' => (string)$xmlBank->epsUrl,
+            ];
         }
+
         return $banks;
     }
 
     /**
-     * Retrieves XML list of banks from EPS scheme operator
+     * Fetches the XML list of banks from EPS.
      *
-     * @param bool $validateXml Whether to validate response against XSD schema
-     * @return string Raw XML response
-     * @throws XmlValidationException If XML validation fails
-     * @throws \RuntimeException On HTTP/transport errors
+     * @param bool $validateXml Whether to validate the response XML.
+     *
+     * @return string Raw XML response.
+     *
+     * @throws RuntimeException On HTTP or transport errors.
      */
     public function GetBanks(bool $validateXml = true): string
     {
         $url = $this->BaseUrl . '/data/haendler/v2_6';
         $body = $this->GetUrl($url, 'Requesting bank list');
 
-        if ($validateXml)
+        if ($validateXml) {
             XmlValidator::ValidateBankList($body);
+        }
+
         return $body;
     }
 
     /**
-     * Sends payment initiation request to EPS scheme operator
+     * Sends a payment initiation request to EPS.
      *
-     * @param TransferInitiatorDetails $transferInitiatorDetails Payment details
-     * @param string|null $targetUrl Optional custom endpoint URL
-     * @return string Bank response XML
-     * @throws \UnexpectedValueException When using security suffix without seed
-     * @throws XmlValidationException When response validation fails
+     * @param TransferInitiatorDetails $transferInitiatorDetails Payment request details.
+     * @param string|null $targetUrl Optional target URL.
+     *
+     * @return string Raw XML response.
+     *
+     * @throws \UnexpectedValueException If using security suffix without seed.
+     * @throws XmlValidationException If response validation fails.
      */
-    public function SendTransferInitiatorDetails(TransferInitiatorDetails $transferInitiatorDetails, string $targetUrl = null): string
+    public function SendTransferInitiatorDetails(
+        TransferInitiatorDetails $transferInitiatorDetails,
+        ?string                  $targetUrl = null
+    ): string
     {
-        if ($transferInitiatorDetails->RemittanceIdentifier != null)
-            $transferInitiatorDetails->RemittanceIdentifier = $this->AppendHash($transferInitiatorDetails->RemittanceIdentifier);
+        if ($transferInitiatorDetails->RemittanceIdentifier !== null) {
+            $transferInitiatorDetails->RemittanceIdentifier =
+                $this->AppendHash($transferInitiatorDetails->RemittanceIdentifier);
+        }
 
-        if ($transferInitiatorDetails->UnstructuredRemittanceIdentifier != null)
-            $transferInitiatorDetails->UnstructuredRemittanceIdentifier = $this->AppendHash($transferInitiatorDetails->UnstructuredRemittanceIdentifier);
+        if ($transferInitiatorDetails->UnstructuredRemittanceIdentifier !== null) {
+            $transferInitiatorDetails->UnstructuredRemittanceIdentifier =
+                $this->AppendHash($transferInitiatorDetails->UnstructuredRemittanceIdentifier);
+        }
 
-        if ($targetUrl === null)
-            $targetUrl = $this->BaseUrl . '/transinit/eps/v2_6';
+        $targetUrl = $targetUrl ?? $this->BaseUrl . '/transinit/eps/v2_6';
+        $xmlData = $transferInitiatorDetails->GetSimpleXml()->asXML();
 
-        $data = $transferInitiatorDetails->GetSimpleXml();
-        $xmlData = $data->asXML();
         $response = $this->PostUrl($targetUrl, $xmlData, 'Send payment order');
 
         XmlValidator::ValidateEpsProtocol($response);
@@ -195,26 +188,32 @@ class SoCommunicator
     }
 
     /**
-     * Handles confirmation URL callbacks from EPS scheme operator
+     * Handles confirmation callbacks from EPS.
      *
-     * @param callable $confirmationCallback Callback for bank confirmations
-     * @param callable|null $vitalityCheckCallback Optional callback for vitality checks
-     * @param string $rawPostStream Input stream for raw POST data
-     * @param string $outputStream Output stream for responses
-     * @throws InvalidCallbackException If callback is invalid
-     * @throws CallbackResponseException If callback returns non-TRUE
-     * @throws XmlValidationException If XML validation fails
-     * @throws UnknownRemittanceIdentifierException If remittance ID hash mismatch
-     * @throws \UnexpectedValueException When using security suffix without seed
-     * @throws ShopResponseException On other errors
+     * @param callable $confirmationCallback Callback for payment confirmation.
+     * @param callable|null $vitalityCheckCallback Optional callback for vitality checks.
+     * @param string $rawPostStream Input stream (default: php://input).
+     * @param string $outputStream Output stream (default: php://output).
+     *
+     * @throws InvalidCallbackException If a callback is not callable.
+     * @throws CallbackResponseException If a callback does not return TRUE.
+     * @throws XmlValidationException If XML validation fails.
+     * @throws UnknownRemittanceIdentifierException If hash mismatch occurs.
+     * @throws ShopResponseException On shop-related errors.
      */
-    public function HandleConfirmationUrl($confirmationCallback, $vitalityCheckCallback = null, $rawPostStream = 'php://input', $outputStream = 'php://output')
+    public function HandleConfirmationUrl(
+        $confirmationCallback = null,
+        $vitalityCheckCallback = null,
+        $rawPostStream = 'php://input',
+        $outputStream = 'php://output'
+    ): void
     {
         $shopResponseDetails = new ShopResponseDetails();
         try {
             $this->TestCallability($confirmationCallback, 'confirmationCallback');
-            if ($vitalityCheckCallback != null)
+            if ($vitalityCheckCallback != null) {
                 $this->TestCallability($vitalityCheckCallback, 'vitalityCheckCallback');
+            }
 
             $HTTP_RAW_POST_DATA = file_get_contents($rawPostStream);
             XmlValidator::ValidateEpsProtocol($HTTP_RAW_POST_DATA);
@@ -223,56 +222,70 @@ class SoCommunicator
             $epspChildren = $xml->children(XMLNS_epsp);
             $firstChildName = $epspChildren[0]->getName();
 
-            if ($firstChildName == 'VitalityCheckDetails') {
+            if ($firstChildName === 'VitalityCheckDetails') {
                 $this->WriteLog('Vitality Check');
                 if ($vitalityCheckCallback != null) {
                     $VitalityCheckDetails = new VitalityCheckDetails($xml);
-                    $this->ConfirmationUrlCallback($vitalityCheckCallback, 'vitality check', array($HTTP_RAW_POST_DATA, $VitalityCheckDetails));
+                    $this->ConfirmationUrlCallback(
+                        $vitalityCheckCallback,
+                        'vitality check',
+                        [$HTTP_RAW_POST_DATA, $VitalityCheckDetails]
+                    );
                 }
-
-                // Step III-3: Confirm vitality check
                 file_put_contents($outputStream, $HTTP_RAW_POST_DATA);
-            } else if ($firstChildName == 'BankConfirmationDetails') {
+            } elseif ($firstChildName === 'BankConfirmationDetails') {
                 $this->WriteLog('Bank Confirmation');
                 $BankConfirmationDetails = new BankConfirmationDetails($xml);
 
-                // Strip security hash from remittance identifier
-                $BankConfirmationDetails->SetRemittanceIdentifier($this->StripHash($BankConfirmationDetails->GetRemittanceIdentifier()));
+                // Strip hash
+                $BankConfirmationDetails->SetRemittanceIdentifier(
+                    $this->StripHash($BankConfirmationDetails->GetRemittanceIdentifier())
+                );
 
                 $shopResponseDetails->SessionId = $BankConfirmationDetails->GetSessionId();
                 $shopResponseDetails->StatusCode = $BankConfirmationDetails->GetStatusCode();
-                $shopResponseDetails->PaymentReferenceIdentifier = $BankConfirmationDetails->GetPaymentReferenceIdentifier();
+                $shopResponseDetails->PaymentReferenceIdentifier =
+                    $BankConfirmationDetails->GetPaymentReferenceIdentifier();
 
-                $this->WriteLog(sprintf('Calling confirmationUrlCallback for remittance identifier "%s" with status code %s', $BankConfirmationDetails->GetRemittanceIdentifier(), $BankConfirmationDetails->GetStatusCode()));
-                $this->ConfirmationUrlCallback($confirmationCallback, 'confirmation', array($HTTP_RAW_POST_DATA, $BankConfirmationDetails));
+                $this->WriteLog(sprintf(
+                    'Calling confirmationUrlCallback for remittance identifier "%s" with status code %s',
+                    $BankConfirmationDetails->GetRemittanceIdentifier(),
+                    $BankConfirmationDetails->GetStatusCode()
+                ));
+                $this->ConfirmationUrlCallback(
+                    $confirmationCallback,
+                    'confirmation',
+                    [$HTTP_RAW_POST_DATA, $BankConfirmationDetails]
+                );
 
-                // Step III-8: Confirm payment receipt
                 $this->WriteLog('III-8 Confirming payment receipt');
                 file_put_contents($outputStream, $shopResponseDetails->GetSimpleXml()->asXml());
             }
         } catch (\Exception $e) {
             $this->WriteLog($e->getMessage());
 
-            if (is_subclass_of($e, 'at\externet\eps_bank_transfer\ShopResponseException'))
+            if (is_subclass_of($e, 'at\externet\eps_bank_transfer\ShopResponseException')) {
                 $shopResponseDetails->ErrorMsg = $e->GetShopResponseErrorMessage();
-            else
-                $shopResponseDetails->ErrorMsg = 'An exception of type "' . get_class($e) . '" occurred during handling of the confirmation url';
+            } else {
+                $shopResponseDetails->ErrorMsg =
+                    'An exception of type "' . get_class($e) . '" occurred during handling of the confirmation url';
+            }
 
             file_put_contents($outputStream, $shopResponseDetails->GetSimpleXml()->asXml());
-
             throw $e;
         }
     }
 
     /**
-     * Executes confirmation URL callback and validates return value
+     * Executes the confirmation callback and validates return value.
      *
-     * @param callable $callback The callback to execute
-     * @param string $name Callback name for error messages
-     * @param array $args Arguments to pass to callback
-     * @throws CallbackResponseException If callback does not return TRUE
+     * @param callable $callback The callback to execute.
+     * @param string $name Name of the callback (for error reporting).
+     * @param array $args Arguments to pass to the callback.
+     *
+     * @throws CallbackResponseException If callback does not return TRUE.
      */
-    private function ConfirmationUrlCallback($callback, $name, $args)
+    private function ConfirmationUrlCallback(callable $callback, string $name, array $args): void
     {
         if (call_user_func_array($callback, $args) !== true) {
             $message = 'The given ' . $name . ' confirmation callback function did not return TRUE';
@@ -282,13 +295,14 @@ class SoCommunicator
     }
 
     /**
-     * Validates that a callback is actually callable
+     * Ensures a callback is callable.
      *
-     * @param callable $callback The callback to test
-     * @param string $name Callback name for error messages
-     * @throws InvalidCallbackException If callback is not callable
+     * @param mixed $callback The callback reference.
+     * @param string $name Name of the callback (for error reporting).
+     *
+     * @throws InvalidCallbackException If not callable.
      */
-    private function TestCallability(&$callback, $name)
+    private function TestCallability(&$callback, string $name): void
     {
         if (!is_callable($callback)) {
             $message = 'The given callback function for "' . $name . '" is not a callable';
@@ -298,16 +312,17 @@ class SoCommunicator
     }
 
     /**
-     * Makes HTTP GET request using configured PSR-18 client
+     * Performs an HTTP GET request.
      *
-     * @param string $url Target URL
-     * @param string $logMessage Optional log message
-     * @return string Response body
-     * @throws \RuntimeException On HTTP/transport errors
+     * @param string $url Target URL.
+     * @param string $logMessage Optional log message.
+     *
+     * @return string Response body.
+     *
+     * @throws RuntimeException On request/response errors.
      */
-    private function GetUrl($url, $logMessage = '')
+    private function GetUrl(string $url, string $logMessage = ''): string
     {
-        $this->ensureHttpDependencies();
         $this->WriteLog($logMessage !== '' ? $logMessage : ('GET ' . $url));
         try {
             $request = $this->RequestFactory->createRequest('GET', $url)
@@ -315,13 +330,13 @@ class SoCommunicator
             $response = $this->HttpClient->sendRequest($request);
         } catch (ClientExceptionInterface $e) {
             $this->WriteLog($logMessage !== '' ? $logMessage : ('GET ' . $url), false);
-            throw new \RuntimeException('GET request failed: ' . $e->getMessage(), 0, $e);
+            throw new RuntimeException('GET request failed: ' . $e->getMessage(), 0, $e);
         }
 
         $status = $response->getStatusCode();
         if ($status < 200 || $status >= 300) {
             $this->WriteLog($logMessage !== '' ? $logMessage : ('GET ' . $url), false);
-            throw new \RuntimeException(sprintf('GET %s failed with HTTP %d', $url, $status));
+            throw new RuntimeException(sprintf('GET %s failed with HTTP %d', $url, $status));
         }
 
         $this->WriteLog($logMessage !== '' ? $logMessage : ('GET ' . $url), true);
@@ -329,17 +344,18 @@ class SoCommunicator
     }
 
     /**
-     * Makes HTTP POST request using configured PSR-18 client
+     * Performs an HTTP POST request with XML payload.
      *
-     * @param string $url Target URL
-     * @param string $xmlBody XML request body
-     * @param string $logMessage Optional log message
-     * @return string Response body
-     * @throws \RuntimeException On HTTP/transport errors
+     * @param string $url Target URL.
+     * @param string $xmlBody XML payload.
+     * @param string $logMessage Optional log message.
+     *
+     * @return string Response body.
+     *
+     * @throws RuntimeException On request/response errors.
      */
-    private function PostUrl($url, $xmlBody, $logMessage = '')
+    private function PostUrl(string $url, string $xmlBody, string $logMessage = ''): string
     {
-        $this->ensureHttpDependencies();
         $this->WriteLog($logMessage !== '' ? $logMessage : ('POST ' . $url));
         try {
             $stream = $this->StreamFactory->createStream($xmlBody);
@@ -350,13 +366,13 @@ class SoCommunicator
             $response = $this->HttpClient->sendRequest($request);
         } catch (ClientExceptionInterface $e) {
             $this->WriteLog($logMessage !== '' ? $logMessage : ('POST ' . $url), false);
-            throw new \RuntimeException('POST request failed: ' . $e->getMessage(), 0, $e);
+            throw new RuntimeException('POST request failed: ' . $e->getMessage(), 0, $e);
         }
 
         $status = $response->getStatusCode();
         if ($status < 200 || $status >= 300) {
             $this->WriteLog($logMessage !== '' ? $logMessage : ('POST ' . $url), false);
-            throw new \RuntimeException(sprintf('POST %s failed with HTTP %d', $url, $status));
+            throw new RuntimeException(sprintf('POST %s failed with HTTP %d', $url, $status));
         }
 
         $this->WriteLog($logMessage !== '' ? $logMessage : ('POST ' . $url), true);
@@ -364,96 +380,99 @@ class SoCommunicator
     }
 
     /**
-     * Writes message to configured log callback if available
+     * Writes a message to the log callback, if configured.
      *
-     * @param string $message Log message
-     * @param bool|null $success Optional success flag to prefix message
+     * @param string $message Log message.
+     * @param bool|null $success If provided, prefixes message with SUCCESS/FAILED.
      */
-    private function WriteLog($message, $success = null)
+    private function WriteLog(string $message, ?bool $success = null): void
     {
         if (is_callable($this->LogCallback)) {
-            if ($success !== null)
+            if ($success !== null) {
                 $message = ($success ? "SUCCESS:" : "FAILED:") . ' ' . $message;
-
+            }
             call_user_func($this->LogCallback, $message);
         }
     }
 
     /**
-     * Appends security hash to input string if configured
+     * Appends a security hash suffix to a string.
      *
-     * @param string $string Input string
-     * @return string String with optional hash appended
-     * @throws \UnexpectedValueException When using suffix without seed
+     * @param string $string Input string.
+     *
+     * @return string String with appended hash.
+     *
+     * @throws \UnexpectedValueException If suffix is enabled but seed not set.
      */
-    private function AppendHash($string)
+    private function AppendHash(string $string): string
     {
-        if ($this->ObscuritySuffixLength == 0)
+        if ($this->ObscuritySuffixLength == 0) {
             return $string;
+        }
 
-        if (empty($this->ObscuritySeed))
+        if (empty($this->ObscuritySeed)) {
             throw new \UnexpectedValueException('No security seed set when using security suffix.');
+        }
 
         $hash = base64_encode(crypt($string, $this->ObscuritySeed));
         return $string . substr($hash, 0, $this->ObscuritySuffixLength);
     }
 
     /**
-     * Strips and validates security hash from input string
+     * Strips and validates a security hash suffix from a string.
      *
-     * @param string $suffixed Input string with hash
-     * @return string Original string without hash
-     * @throws UnknownRemittanceIdentifierException If hash validation fails
+     * @param string $suffixed Input string with hash.
+     *
+     * @return string Original string without hash.
+     *
+     * @throws UnknownRemittanceIdentifierException If validation fails.
      */
-    private function StripHash($suffixed)
+    private function StripHash(string $suffixed): string
     {
-        if ($this->ObscuritySuffixLength == 0)
+        if ($this->ObscuritySuffixLength == 0) {
             return $suffixed;
+        }
 
         $remittanceIdentifier = substr($suffixed, 0, -$this->ObscuritySuffixLength);
-        if ($this->AppendHash($remittanceIdentifier) != $suffixed)
-            throw new UnknownRemittanceIdentifierException('Unknown RemittanceIdentifier supplied: ' . $suffixed);
+        if ($this->AppendHash($remittanceIdentifier) !== $suffixed) {
+            throw new UnknownRemittanceIdentifierException(
+                'Unknown RemittanceIdentifier supplied: ' . $suffixed
+            );
+        }
 
         return $remittanceIdentifier;
     }
 
     /**
-     * Sends a refund request using the EpsRefundRequest object.
+     * Sends a refund request to EPS.
      *
-     * @param EpsRefundRequest $refundRequest The refund request data
-     * @param string|null $targetUrl Optional custom endpoint URL
-     * @param string|null $logMessage Optional custom log message
-     * @return string Response XML from refund request
-     * @throws XmlValidationException If response validation fails
-     * @throws \RuntimeException On HTTP/transport errors
+     * @param EpsRefundRequest $refundRequest Refund request object.
+     * @param string|null $targetUrl Optional target URL.
+     * @param string|null $logMessage Optional log message.
+     *
+     * @return string Raw XML response.
+     *
+     * @throws XmlValidationException If response validation fails.
+     * @throws RuntimeException On HTTP/transport errors.
      */
-    public function SendRefundRequest(EpsRefundRequest $refundRequest, $targetUrl = null, $logMessage = null)
+    public function SendRefundRequest(
+        EpsRefundRequest $refundRequest,
+        ?string          $targetUrl = null,
+        ?string          $logMessage = null
+    ): string
     {
-        if ($targetUrl === null)
+        if ($targetUrl === null) {
             $targetUrl = $this->BaseUrl . '/refund/eps/v2_6';
-
-        $data = $refundRequest->GetSimpleXml();
-        $xmlData = $data->asXML();
-
-        $response = $this->PostUrl($targetUrl, $xmlData, $logMessage ?? 'Sending refund request to ' . $targetUrl);
-        XmlValidator::ValidateEpsRefund($response);
-
-        return $response;
-    }
-
-    /**
-     * Ensures required HTTP dependencies are configured
-     *
-     * @throws \RuntimeException If dependencies missing
-     */
-    private function ensureHttpDependencies()
-    {
-        if (!$this->HttpClient || !$this->RequestFactory || !$this->StreamFactory) {
-            throw new \RuntimeException(
-                'HTTP client and PSR-17 factories are not configured. ' .
-                'Please provide a PSR-18 ClientInterface and RequestFactoryInterface/StreamFactoryInterface ' .
-                'via constructor or setHttpClient/setRequestFactory/setStreamFactory.'
-            );
         }
+
+        $xmlData = $refundRequest->GetSimpleXml()->asXML();
+        $response = $this->PostUrl(
+            $targetUrl,
+            $xmlData,
+            $logMessage ?? 'Sending refund request to ' . $targetUrl
+        );
+
+        XmlValidator::ValidateEpsRefund($response);
+        return $response;
     }
 }
