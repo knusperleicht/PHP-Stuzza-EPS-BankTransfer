@@ -1,6 +1,6 @@
 <?php
 
-namespace at\externet\eps_bank_transfer;
+namespace at\externet\eps_bank_transfer\exceptions;
 
 /**
  * Exception if callback returns an invalid value

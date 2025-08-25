@@ -2,6 +2,8 @@
 
 namespace at\externet\eps_bank_transfer;
 
+use SimpleXMLElement;
+
 class EpsRefundRequest
 {
 
@@ -46,11 +48,7 @@ class EpsRefundRequest
      */
     public $Pin;
 
-    /**
-     * Generates the SimpleXML representation of the EpsRefundRequest.
-     *
-     * @return SimpleXMLElement The XML element representing the refund request.
-     */
+
     public function __construct(
         string  $CreDtTm,
         string  $TransactionId,
@@ -72,7 +70,10 @@ class EpsRefundRequest
         $this->Pin = $Pin;
     }
 
-    public function GetSimpleXml()
+    /**
+     * @throws \Exception
+     */
+    public function GetSimpleXml(): EpsXmlElement
     {
         // Create an empty XML document with the root element and proper namespaces.
         // The root element is "epsr:EpsRefundRequest" in the refund namespace.
@@ -117,7 +118,7 @@ class EpsRefundRequest
         return $xml;
     }
 
-    private function generateSHA256Fingerprint($pin, $creationDateTime, $transactionId, $merchantIban, $amountValue, $amountCurrency, $userId, $refundReference = null)
+    private function generateSHA256Fingerprint($pin, $creationDateTime, $transactionId, $merchantIban, $amountValue, $amountCurrency, $userId, $refundReference = null): string
     {
         $inputData = $pin .
             $creationDateTime .

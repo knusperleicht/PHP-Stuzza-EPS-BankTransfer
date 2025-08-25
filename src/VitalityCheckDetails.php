@@ -2,10 +2,12 @@
 
 namespace at\externet\eps_bank_transfer;
 
+use SimpleXMLElement;
+
 class VitalityCheckDetails
 {
 
-    /** @var \SimpleXMLElement */
+    /** @var SimpleXMLElement */
     public $simpleXml;
 
     private $remittanceIdentifier;
@@ -20,7 +22,7 @@ class VitalityCheckDetails
      *
      * @param \SimpleXMLElement $simpleXml
      */
-    private function init($simpleXml)
+    private function init(\SimpleXMLElement $simpleXml)
     {
         $epspChildren = $simpleXml->children(XMLNS_epsp);
         $VitalityCheckDetails = $epspChildren[0];

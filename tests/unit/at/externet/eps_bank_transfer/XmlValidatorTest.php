@@ -2,6 +2,8 @@
 
 namespace at\externet\eps_bank_transfer;
 
+use at\externet\eps_bank_transfer\exceptions\XmlValidationException;
+
 class XmlValidatorTest extends BaseTest
 {
     /** @var \at\externet\eps_bank_transfer\XmlValidator validator */

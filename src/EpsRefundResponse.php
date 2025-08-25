@@ -2,6 +2,9 @@
 
 namespace at\externet\eps_bank_transfer;
 
+use Exception;
+use SimpleXMLElement;
+
 class EpsRefundResponse
 {
     /** @var string Response status code (max length 3) */
@@ -13,9 +16,10 @@ class EpsRefundResponse
     /**
      * Convert the object to a SimpleXmlElement structure.
      *
-     * @return SimpleXmlElement
+     * @return EpsXmlElement
+     * @throws Exception
      */
-    public function GetSimpleXml()
+    public function GetSimpleXml(): EpsXmlElement
     {
         $xml = EpsXmlElement::CreateEmptySimpleXml('epsr:EpsRefundResponse xmlns:epsr="http://www.stuzza.at/namespaces/eps/refund/2018/09"');
 

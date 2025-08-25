@@ -2,26 +2,33 @@
 
 namespace at\externet\eps_bank_transfer;
 
+use DOMDocument;
+use SimpleXMLElement;
+
 class EpsXmlElement
 {
 
     // replace with http://php.net/manual/en/class.arrayaccess.php
     private $simpleXml;
 
+    /**
+     * @throws \Exception
+     */
     public function __construct($data, $options = 0, $data_is_url = false, $ns = "", $is_prefix = false)
     {
         if (is_a($data, "SimpleXMLElement"))
             $this->simpleXml = $data;
         else
-            $this->simpleXml = new \SimpleXMLElement($data, $options, $data_is_url, $ns, $is_prefix);
+            $this->simpleXml = new SimpleXMLElement($data, $options, $data_is_url, $ns, $is_prefix);
     }
 
     /**
-     * 
-     * @param type $rootNode
+     *
+     * @param string $rootNode
      * @return EpsXmlElement element
+     * @throws \Exception
      */
-    public static function CreateEmptySimpleXml($rootNode)
+    public static function CreateEmptySimpleXml(string $rootNode): EpsXmlElement
     {
         $xml = '<?xml version="1.0" encoding="UTF-8"?><' . $rootNode . '/>';
         return new EpsXmlElement($xml);
@@ -62,7 +69,7 @@ class EpsXmlElement
 
     public function asXML($filename = null)
     {
-        $dom = new \DOMDocument();
+        $dom = new DOMDocument();
         $dom->loadXML($this->simpleXml->asXML());
         $dom->formatOutput = true;
         if ($filename == null)

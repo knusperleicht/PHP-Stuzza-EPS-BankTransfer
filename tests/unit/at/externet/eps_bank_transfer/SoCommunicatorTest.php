@@ -13,6 +13,10 @@
 
 namespace at\externet\eps_bank_transfer;
 
+use at\externet\eps_bank_transfer\exceptions\CallbackResponseException;
+use at\externet\eps_bank_transfer\exceptions\InvalidCallbackException;
+use at\externet\eps_bank_transfer\exceptions\UnknownRemittanceIdentifierException;
+use at\externet\eps_bank_transfer\exceptions\XmlValidationException;
 use unit\at\externet\eps_bank_transfer\Psr18TestHttp;
 use GuzzleHttp\Psr7\HttpFactory;
 
@@ -295,7 +299,7 @@ class SoCommunicatorTest extends BaseTest
         $message = null;
         try {
             $this->target->HandleConfirmationUrl(null, null, null, $temp);
-        } catch (\at\externet\eps_bank_transfer\InvalidCallbackException $e) {
+        } catch (InvalidCallbackException $e) {
             $message = $e->getMessage();
         }
         $actual = file_get_contents($temp);
@@ -368,7 +372,7 @@ class SoCommunicatorTest extends BaseTest
         try {
             $this->target->HandleConfirmationUrl(function ($data) {
             }, null, $dataPath, $temp);
-        } catch (\at\externet\eps_bank_transfer\CallbackResponseException $e) {
+        } catch (CallbackResponseException $e) {
             $message = $e->getMessage();
         }
 
@@ -416,7 +420,7 @@ class SoCommunicatorTest extends BaseTest
         try {
             $this->target->HandleConfirmationUrl(function ($data) {
             }, "invalid", null, $temp);
-        } catch (\at\externet\eps_bank_transfer\InvalidCallbackException $e) {
+        } catch (InvalidCallbackException $e) {
             $message = $e->getMessage();
         }
         $actual = file_get_contents($temp);
@@ -461,13 +465,13 @@ class SoCommunicatorTest extends BaseTest
         try {
             $this->target->HandleConfirmationUrl(function () {
             }, null, $dataPath, $temp);
-        } catch (\at\externet\eps_bank_transfer\XmlValidationException $e) {
+        } catch (XmlValidationException $e) {
             // expected
         }
         $actual = file_get_contents($temp);
         XmlValidator::ValidateEpsProtocol($actual);
         $this->assertStringContainsString('ShopResponseDetails>', $actual);
-        $this->assertStringContainsString('ErrorMsg>Error occured during XML validation</', $actual);
+        $this->assertStringContainsString('ErrorMsg>Error occurred during XML validation</', $actual);
     }
 
     /**

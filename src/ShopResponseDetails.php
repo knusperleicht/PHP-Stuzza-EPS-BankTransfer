@@ -2,6 +2,8 @@
 
 namespace at\externet\eps_bank_transfer;
 
+use SimpleXMLElement;
+
 class ShopResponseDetails
 {
 
@@ -18,27 +20,27 @@ class ShopResponseDetails
     public $PaymentReferenceIdentifier;
 
     /**
-     *
-     * @return SimpleXmlElement
+     * @return EpsXmlElement
      */
-    public function GetSimpleXml()
+    public function GetSimpleXml(): EpsXmlElement
     {
-        /** @var SimpleXmlElmenet */
+        /** @var SimpleXMLElement $xml */
         $xml = EpsXmlElement::CreateEmptySimpleXml('epsp:EpsProtocolDetails xmlns:epsp="' . XMLNS_epsp . '" xmlns:atrul="http://www.stuzza.at/namespaces/eps/austrianrules/2014/10" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:epi="' . XMLNS_epi . '" xmlns:eps="' . XMLNS_eps . '" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.stuzza.at/namespaces/eps/protocol/2014/10 EPSProtocol-V26.xsd" SessionLanguage="DE"');
 
         $ShopResponseDetails = $xml->addChildExt('ShopResponseDetails', '', 'epsp');
 
         if (!empty($this->ErrorMsg)) {
-            if (!empty($this->ErrorMsg))
-                $ShopResponseDetails->addChildExt('ErrorMsg', $this->ErrorMsg, 'epsp');
+            $ShopResponseDetails->addChildExt('ErrorMsg', $this->ErrorMsg, 'epsp');
         } else {
-            if (!empty($this->SessionId))
+            if (!empty($this->SessionId)) {
                 $ShopResponseDetails->addChildExt('SessionId', $this->SessionId, 'epsp');
+            }
 
             $ShopConfirmationDetails = $ShopResponseDetails->addChildExt('ShopConfirmationDetails', '', 'eps');
             $ShopConfirmationDetails->addChildExt('StatusCode', $this->StatusCode, 'eps');
-            if (isset($this->PaymentReferenceIdentifier))
+            if (isset($this->PaymentReferenceIdentifier)) {
                 $ShopConfirmationDetails->addChildExt('PaymentReferenceIdentifier', $this->PaymentReferenceIdentifier, 'eps');
+            }
         }
         return $xml;
     }

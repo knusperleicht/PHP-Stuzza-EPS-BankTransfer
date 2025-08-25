@@ -2,10 +2,12 @@
 
 namespace at\externet\eps_bank_transfer;
 
+use SimpleXMLElement;
+
 class BankConfirmationDetails
 {
 
-    /** @var \SimpleXMLElement */
+    /** @var SimpleXMLElement */
     public $simpleXml;
 
     private $remittanceIdentifier;
@@ -25,9 +27,9 @@ class BankConfirmationDetails
 
     /**
      *
-     * @param \SimpleXMLElement $simpleXml
+     * @param SimpleXMLElement $simpleXml
      */
-    private function init($simpleXml)
+    private function init(SimpleXMLElement $simpleXml)
     {
         $epspChildren = $simpleXml->children(XMLNS_epsp);
         $BankConfirmationDetails = $epspChildren[0];
@@ -107,7 +109,7 @@ class BankConfirmationDetails
      * Die von der Bank generierte Ersterfasserreferenz
      * @return string
      */
-    public function GetPaymentReferenceIdentifier()
+    public function GetPaymentReferenceIdentifier(): string
     {
         return $this->paymentReferenceIdentifier;
     }
@@ -122,7 +124,6 @@ class BankConfirmationDetails
     {
         return $this->referenceIdentifier;
     }
-
 
     /**
      * Set the identification of ordering customer (name and/or address of the buyer) in non-coded form
@@ -176,8 +177,6 @@ class BankConfirmationDetails
         return $this->orderingCustomerBIC;
     }
 
-
-
     public function SetSessionId($a)
     {
         $this->sessionId = (string) $a;
@@ -187,7 +186,7 @@ class BankConfirmationDetails
      * Die von der Bank generierte Session Kennung
      * @return string
      */
-    public function GetSessionId()
+    public function GetSessionId(): string
     {
         return $this->sessionId;
     }
@@ -201,7 +200,7 @@ class BankConfirmationDetails
      * Status Code
      * @return string
      */
-    public function GetStatusCode()
+    public function GetStatusCode(): string
     {
         return $this->statusCode;
     }

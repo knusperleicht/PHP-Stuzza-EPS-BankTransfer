@@ -2,31 +2,42 @@
 
 namespace at\externet\eps_bank_transfer;
 
+use at\externet\eps_bank_transfer\exceptions\XmlValidationException;
+
 class XmlValidator
 {
-    public static function ValidateBankList($xml)
+    /**
+     * @throws XmlValidationException
+     */
+    public static function ValidateBankList($xml): bool
     {
         return self::ValidateXml($xml, self::GetXSD('epsSOBankListProtocol.xsd'));
     }
 
-    public static function ValidateEpsProtocol($xml)
+    /**
+     * @throws XmlValidationException
+     */
+    public static function ValidateEpsProtocol($xml): bool
     {
         return self::ValidateXml($xml, self::GetXSD('EPSProtocol-V26.xsd'));
     }
 
-    public static function ValidateEpsRefund($xml)
+    /**
+     * @throws XmlValidationException
+     */
+    public static function ValidateEpsRefund($xml): bool
     {
         return self::ValidateXml($xml, self::GetXSD('EPSRefund-V26.xsd'));
     }
 
     // HELPER FUNCTIONS
 
-    private static function GetXSD($filename)
+    private static function GetXSD($filename): string
     {
         return dirname(__DIR__) . DIRECTORY_SEPARATOR . 'XSD' . DIRECTORY_SEPARATOR . $filename;
     }
 
-    private static function ValidateXml($xml, $xsd)
+    private static function ValidateXml($xml, $xsd): bool
     {
         if (empty($xml))
         {

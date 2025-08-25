@@ -1,6 +1,6 @@
 <?php
 
-namespace at\externet\eps_bank_transfer;
+namespace at\externet\eps_bank_transfer\exceptions;
 
 class InvalidCallbackException extends ShopResponseException
 {

@@ -2,6 +2,11 @@
 
 namespace at\externet\eps_bank_transfer;
 
+use at\externet\eps_bank_transfer\exceptions\CallbackResponseException;
+use at\externet\eps_bank_transfer\exceptions\InvalidCallbackException;
+use at\externet\eps_bank_transfer\exceptions\ShopResponseException;
+use at\externet\eps_bank_transfer\exceptions\UnknownRemittanceIdentifierException;
+use at\externet\eps_bank_transfer\exceptions\XmlValidationException;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
@@ -190,7 +195,7 @@ class SoCommunicator
     /**
      * Handles confirmation callbacks from EPS.
      *
-     * @param callable $confirmationCallback Callback for payment confirmation.
+     * @param callable|null $confirmationCallback Callback for payment confirmation.
      * @param callable|null $vitalityCheckCallback Optional callback for vitality checks.
      * @param string $rawPostStream Input stream (default: php://input).
      * @param string $outputStream Output stream (default: php://output).
@@ -264,7 +269,7 @@ class SoCommunicator
         } catch (\Exception $e) {
             $this->WriteLog($e->getMessage());
 
-            if (is_subclass_of($e, 'at\externet\eps_bank_transfer\ShopResponseException')) {
+            if ($e instanceof ShopResponseException) {
                 $shopResponseDetails->ErrorMsg = $e->GetShopResponseErrorMessage();
             } else {
                 $shopResponseDetails->ErrorMsg =
@@ -302,7 +307,7 @@ class SoCommunicator
      *
      * @throws InvalidCallbackException If not callable.
      */
-    private function TestCallability(&$callback, string $name): void
+    private function TestCallability($callback, string $name): void
     {
         if (!is_callable($callback)) {
             $message = 'The given callback function for "' . $name . '" is not a callable';

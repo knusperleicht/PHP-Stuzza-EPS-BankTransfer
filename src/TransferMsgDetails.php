@@ -26,7 +26,7 @@ class TransferMsgDetails
      * @param string $TransactionOkUrl
      * @param string $TransactionNokUrl
      */
-    public function __construct($ConfirmationUrl, $TransactionOkUrl, $TransactionNokUrl)
+    public function __construct(string $ConfirmationUrl, string $TransactionOkUrl, string $TransactionNokUrl)
     {
         $this->ConfirmationUrl = $ConfirmationUrl;
         $this->TransactionOkUrl = $TransactionOkUrl;
@@ -34,4 +34,3 @@ class TransferMsgDetails
     }
 
 }
-?>
