@@ -192,9 +192,9 @@ class TransferInitiatorDetails
 
             foreach ($this->webshopArticles as $article) {
                 $WebshopArticle = $WebshopDetails->addChildExt('WebshopArticle', '', 'epsp');
-                $WebshopArticle->addAttribute('ArticleName', $article->Name);
-                $WebshopArticle->addAttribute('ArticleCount', $article->Count);
-                $WebshopArticle->addAttribute('ArticlePrice', $article->Price);
+                $WebshopArticle->addAttribute('ArticleName', $article->name);
+                $WebshopArticle->addAttribute('ArticleCount', $article->count);
+                $WebshopArticle->addAttribute('ArticlePrice', $article->price);
             }
         }
 

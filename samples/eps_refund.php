@@ -11,8 +11,6 @@ require_once('../vendor/autoload.php');
 
 use Externet\EpsBankTransfer\Api\SoCommunicator;
 use Externet\EpsBankTransfer\EpsRefundRequest;
-use Externet\EpsBankTransfer\Utilities\Constants;
-use Externet\EpsBankTransfer\Utilities\XmlValidator;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Symfony\Component\HttpClient\Psr18Client;
 
@@ -42,16 +40,9 @@ $soCommunicator = new SoCommunicator(
 );
 
 try {
-    $plain = $soCommunicator->SendRefundRequest($refundRequest);
+    $refundResponse = $soCommunicator->sendRefundRequest($refundRequest);
 
-    $xml = new \SimpleXMLElement($plain);
-    XmlValidator::ValidateEpsRefund($plain);
-
-    $soAnswer = $xml->children(Constants::XMLNS_epsr);
-    $statusCode = (string)$soAnswer->StatusCode;
-    $errorMsg = (string)$soAnswer->ErrorMsg;
-
-    echo $statusCode . ', ' . $errorMsg;
+    echo $refundResponse->statusCode . ', ' . $refundResponse->errorMsg;
     // Return code 000 (No Errors) only means the refund request was accepted by the bank.
     // A manual approval might be required.
 

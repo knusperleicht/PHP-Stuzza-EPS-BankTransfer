@@ -9,13 +9,13 @@ class WebshopArticle
 {
 
     /** @var string name */
-    public $Name;
+    public $name;
     
     /** @var number of items */
-    public $Count;
+    public $count;
     
     /** @var string representation of price */
-    public $Price;
+    public $price;
 
     /**
      * 
@@ -25,18 +25,18 @@ class WebshopArticle
      */
     public function __construct(string $name, int $count, int $price)
     {
-        $this->Name = $name;
-        $this->Count = $count;
-        $this->SetPrice($price);
+        $this->name = $name;
+        $this->count = $count;
+        $this->setPrice($price);
     }
 
     /**
      * 
      * @param int $value in cents
      */
-    public function SetPrice(int $value)
+    public function setPrice(int $value)
     {
-        $this->Price = MoneyFormatter::formatXsdDecimal($value);
+        $this->price = MoneyFormatter::formatXsdDecimal($value);
     }
 }
 

@@ -24,7 +24,7 @@ class VitalityCheckDetailsTest extends BaseTest
     public function testGetRemittanceIdentifier()
     {
         $vitalityCheckDetails = new VitalityCheckDetails($this->simpleXml);
-        $actual = $vitalityCheckDetails->GetRemittanceIdentifier();
+        $actual = $vitalityCheckDetails->getRemittanceIdentifier();
 
         $this->assertEquals('AT1234567890XYZ', $actual);
     }

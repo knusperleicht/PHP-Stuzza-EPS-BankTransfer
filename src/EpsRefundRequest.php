@@ -71,7 +71,7 @@ class EpsRefundRequest
      */
     public function getSimpleXml(): EpsXmlElement
     {
-        // Create XML document with root element and namespaces
+        // Create an XML document with a root element and namespaces
         $xml = EpsXmlElement::createEmptySimpleXml(
             'epsr:EpsRefundRequest xmlns:epsr="http://www.stuzza.at/namespaces/eps/refund/2018/09" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#"'
         );

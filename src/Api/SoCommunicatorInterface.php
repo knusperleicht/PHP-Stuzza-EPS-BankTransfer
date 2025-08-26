@@ -3,6 +3,7 @@
 namespace Externet\EpsBankTransfer\Api;
 
 use Externet\EpsBankTransfer\EpsRefundRequest;
+use Externet\EpsBankTransfer\EpsRefundResponse;
 use Externet\EpsBankTransfer\TransferInitiatorDetails;
 
 interface SoCommunicatorInterface
@@ -71,7 +72,7 @@ interface SoCommunicatorInterface
         EpsRefundRequest $refundRequest,
         ?string $targetUrl = null,
         ?string $logMessage = null
-    ): string;
+    ): EpsRefundResponse;
 
     /**
      * Registers a callback for logging.

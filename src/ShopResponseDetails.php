@@ -26,7 +26,7 @@ class ShopResponseDetails
      * @return EpsXmlElement
      * @throws Exception
      */
-    public function GetSimpleXml(): EpsXmlElement
+    public function getSimpleXml(): EpsXmlElement
     {
         $xml = EpsXmlElement::createEmptySimpleXml('epsp:EpsProtocolDetails xmlns:epsp="' . Constants::XMLNS_epsp . '" xmlns:atrul="http://www.stuzza.at/namespaces/eps/austrianrules/2014/10" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:epi="' . Constants::XMLNS_epi . '" xmlns:eps="' . Constants::XMLNS_eps . '" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.stuzza.at/namespaces/eps/protocol/2014/10 EPSProtocol-V26.xsd" SessionLanguage="DE"');
 

@@ -8,7 +8,6 @@ use SimpleXMLElement;
 
 class BankConfirmationDetails
 {
-
     /** @var SimpleXMLElement */
     public $simpleXml;
 
@@ -27,58 +26,51 @@ class BankConfirmationDetails
         $this->init($this->simpleXml);
     }
 
-    /**
-     * Initialize object from SimpleXMLElement
-     * @param SimpleXMLElement $simpleXml
-     */
     private function init(SimpleXMLElement $simpleXml)
     {
-        $epspChildren = $simpleXml->children(Constants::XMLNS_epsp);
-        $bankConfirmationDetails = $epspChildren[0];
-        $t1 = $bankConfirmationDetails->children(Constants::XMLNS_eps); // Necessary because of missing language feature in PHP 5.3
-        $paymentConfirmationDetails = $t1[0];
-        $t2 = $paymentConfirmationDetails->children(Constants::XMLNS_epi);
-        $this->remittanceIdentifier = null;
+        $bankConfirmationDetails = $simpleXml->children(Constants::XMLNS_epsp)[0];
+        $paymentConfirmationDetails = $bankConfirmationDetails->children(Constants::XMLNS_eps)[0];
+        $epiChildren = $paymentConfirmationDetails->children(Constants::XMLNS_epi);
 
         $this->setPaymentReferenceIdentifier($paymentConfirmationDetails->PaymentReferenceIdentifier);
         $this->setSessionId($bankConfirmationDetails->SessionId);
         $this->setStatusCode($paymentConfirmationDetails->StatusCode);
 
-        if (isset($t2->RemittanceIdentifier)) {
-            $this->setRemittanceIdentifier($t2->RemittanceIdentifier);
-        } elseif (isset($t2->UnstructuredRemittanceIdentifier)) {
-            $this->setRemittanceIdentifier($t2->UnstructuredRemittanceIdentifier);
-        } else {
-            $t3 = $paymentConfirmationDetails->PaymentInitiatorDetails->children(Constants::XMLNS_epi);
-            $epiDetails = $t3[0];
-            $t4 = $epiDetails->PaymentInstructionDetails;
-            if (isset($t4->RemittanceIdentifier)) {
-                $this->setRemittanceIdentifier($t4->RemittanceIdentifier);
-            } else {
-                $this->setRemittanceIdentifier($t4->UnstructuredRemittanceIdentifier);
-            }
-
-            // ReferenceIdentifier used in TransferInitiatorDetails as internal reference ID
-            $t5 = $epiDetails->IdentificationDetails;
-            $this->setReferenceIdentifier($t5->ReferenceIdentifier);
-
-            // The following 3 data elements could be used e.g. for routing information within additional business scenarios (e.g. EBPP)
-            // These are optional data elements
-            if (isset($t5->OrderingCustomerNameAddressText)) {
-                $this->setOrderingCustomerNameAddressText($t5->OrderingCustomerNameAddressText);
-            }
-
-            if (isset($t5->OrderingCustomerIdentifier)) {
-                $this->setOrderingCustomerIdentifier($t5->OrderingCustomerIdentifier);
-            }
-
-            if (isset($t5->OrderingCustomerOfiIdentifier)) {
-                $this->setOrderingCustomerBIC($t5->OrderingCustomerOfiIdentifier);
-            }
+        if (isset($epiChildren->RemittanceIdentifier)) {
+            $this->setRemittanceIdentifier($epiChildren->RemittanceIdentifier);
+            return;
         }
 
-        if ($this->remittanceIdentifier == null)
+        if (isset($epiChildren->UnstructuredRemittanceIdentifier)) {
+            $this->setRemittanceIdentifier($epiChildren->UnstructuredRemittanceIdentifier);
+            return;
+        }
+
+        $epiDetails = $paymentConfirmationDetails->PaymentInitiatorDetails->children(Constants::XMLNS_epi)[0];
+        $paymentDetails = $epiDetails->PaymentInstructionDetails;
+        $identificationDetails = $epiDetails->IdentificationDetails;
+
+        $this->setRemittanceIdentifier(
+            $paymentDetails->RemittanceIdentifier ?? $paymentDetails->UnstructuredRemittanceIdentifier
+        );
+
+        $this->setReferenceIdentifier($identificationDetails->ReferenceIdentifier);
+
+        if (isset($identificationDetails->OrderingCustomerNameAddressText)) {
+            $this->setOrderingCustomerNameAddressText($identificationDetails->OrderingCustomerNameAddressText);
+        }
+
+        if (isset($identificationDetails->OrderingCustomerIdentifier)) {
+            $this->setOrderingCustomerIdentifier($identificationDetails->OrderingCustomerIdentifier);
+        }
+
+        if (isset($identificationDetails->OrderingCustomerOfiIdentifier)) {
+            $this->setOrderingCustomerBIC($identificationDetails->OrderingCustomerOfiIdentifier);
+        }
+
+        if ($this->remittanceIdentifier === null) {
             throw new \LogicException('Could not find RemittanceIdentifier in XML');
+        }
     }
 
     public function setRemittanceIdentifier($a)

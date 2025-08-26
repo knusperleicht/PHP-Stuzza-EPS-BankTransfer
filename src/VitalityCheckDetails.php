@@ -22,9 +22,9 @@ class VitalityCheckDetails
 
     /**
      *
-     * @param \SimpleXMLElement $simpleXml
+     * @param SimpleXMLElement $simpleXml
      */
-    private function init(\SimpleXMLElement $simpleXml)
+    private function init(SimpleXMLElement $simpleXml)
     {
         $epspChildren = $simpleXml->children(Constants::XMLNS_epsp);
         $VitalityCheckDetails = $epspChildren[0];
@@ -33,11 +33,11 @@ class VitalityCheckDetails
 
         if (isset($t2->RemittanceIdentifier))
         {
-            $this->SetRemittanceIdentifier($t2->RemittanceIdentifier);
+            $this->setRemittanceIdentifier($t2->RemittanceIdentifier);
         }
         elseif (isset($t2->UnstructuredRemittanceIdentifier))
         {
-            $this->SetRemittanceIdentifier($t2->UnstructuredRemittanceIdentifier);
+            $this->setRemittanceIdentifier($t2->UnstructuredRemittanceIdentifier);
         }
         if ($this->remittanceIdentifier == null)
         {
@@ -45,7 +45,7 @@ class VitalityCheckDetails
         }
     }
 
-    public function SetRemittanceIdentifier($a)
+    public function setRemittanceIdentifier($a)
     {
         $this->remittanceIdentifier = (string) $a;
     }
@@ -53,7 +53,7 @@ class VitalityCheckDetails
     /**
      * Gets epi:RemittanceIdentifier or epi:UnstructuredRemittanceIdentifier - depending on which one is present in the XML file
      */
-    public function GetRemittanceIdentifier()
+    public function getRemittanceIdentifier()
     {
         return $this->remittanceIdentifier;
     }

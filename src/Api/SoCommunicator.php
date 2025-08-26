@@ -5,6 +5,7 @@ namespace Externet\EpsBankTransfer\Api;
 use Exception;
 use Externet\EpsBankTransfer\BankConfirmationDetails;
 use Externet\EpsBankTransfer\EpsRefundRequest;
+use Externet\EpsBankTransfer\EpsRefundResponse;
 use Externet\EpsBankTransfer\Exceptions\CallbackResponseException;
 use Externet\EpsBankTransfer\Exceptions\InvalidCallbackException;
 use Externet\EpsBankTransfer\Exceptions\ShopResponseException;
@@ -60,7 +61,10 @@ class SoCommunicator implements SoCommunicatorInterface
         $this->baseUrl        = $baseUrl;
     }
 
-    /** {@inheritdoc} */
+    /** {@inheritdoc}
+     * @throws XmlValidationException
+     * @throws Exception
+     */
     public function getBanksArray(): array
     {
         $xmlBanks = new SimpleXMLElement($this->getBanks());
@@ -137,7 +141,9 @@ class SoCommunicator implements SoCommunicatorInterface
         return $response;
     }
 
-    /** {@inheritdoc} */
+    /** {@inheritdoc}
+     * @throws Exception
+     */
     public function handleConfirmationUrl(
         $confirmationCallback = null,
         $vitalityCheckCallback = null,
@@ -196,7 +202,7 @@ class SoCommunicator implements SoCommunicatorInterface
                 );
 
                 $this->writeLog('III-8 Confirming payment receipt');
-                file_put_contents($outputStream, $shopResponseDetails->GetSimpleXml()->asXml());
+                file_put_contents($outputStream, $shopResponseDetails->getSimpleXml()->asXml());
             }
         } catch (Exception $e) {
             $this->writeLog($e->getMessage());
@@ -208,19 +214,22 @@ class SoCommunicator implements SoCommunicatorInterface
                     'An exception of type "' . get_class($e) . '" occurred during handling of the confirmation url';
             }
 
-            file_put_contents($outputStream, $shopResponseDetails->GetSimpleXml()->asXml());
+            file_put_contents($outputStream, $shopResponseDetails->getSimpleXml()->asXml());
             throw $e;
         }
     }
 
-    /** {@inheritdoc} */
+    /** {@inheritdoc}
+     * @throws Exception
+     */
     public function sendRefundRequest(
         EpsRefundRequest $refundRequest,
-        ?string $targetUrl = null,
-        ?string $logMessage = null
-    ): string {
+        ?string          $targetUrl = null,
+        ?string          $logMessage = null
+    ): EpsRefundResponse
+    {
         $targetUrl = $targetUrl ?? $this->baseUrl . '/refund/eps/v2_6';
-        $xmlData   = $refundRequest->getSimpleXml()->asXML();
+        $xmlData = $refundRequest->getSimpleXml()->asXML();
 
         $response = $this->postUrl(
             $targetUrl,
@@ -229,9 +238,17 @@ class SoCommunicator implements SoCommunicatorInterface
         );
 
         XmlValidator::ValidateEpsRefund($response);
-        return $response;
-    }
 
+        $xml = new SimpleXMLElement($response);
+        $soAnswer = $xml->children(Constants::XMLNS_epsr);
+        $refundResponse = new EpsRefundResponse();
+        $refundResponse->statusCode = (string)$soAnswer->StatusCode;
+        $errorMsg = (string)$soAnswer->ErrorMsg;
+        $refundResponse->errorMsg = $errorMsg ?: null;
+
+        return $refundResponse;
+    }
+    
     /** {@inheritdoc} */
     public function setLogCallback(callable $callback): void
     {
