@@ -35,16 +35,23 @@ phpunit
 
 ## Migration from v1.x
 
-In v2.0 the SoCommunicator uses a common base URL for ApiCalls. This is set per default to
-SoCommunicator::LIVE_MODE_URL in the constructor.
+The SoCommunicator uses a common base URL for API calls. These endpoints are defined in
+`SoCommunicator::TEST_MODE_URL` and `SoCommunicator::LIVE_MODE_URL`.
 
 ```php
 use at\externet\eps_bank_transfer\SoCommunicator;
-$soCommunicator = new SoCommunicator();
-// $soCommunicator->BaseUrl == SoCommunicator::LIVE_MODE_URL;
-$soCommunicator = new SoCommunicator(true);
-// $soCommunicator->BaseUrl == SoCommunicator::TEST_MODE_URL;
-// You can also set BaseUrl to a custom endpoint.
+$isTestMode = true;
+$url = $isTestMode ? SoCommunicator::TEST_MODE_URL :  SoCommunicator::LIVE_MODE_URL;
+
+$requestFactory = Psr17FactoryDiscovery::findRequestFactory();
+$streamFactory = Psr17FactoryDiscovery::findStreamFactory();
+$soCommunicator = new SoCommunicator(
+    new Client(['verify' => true]),
+    $requestFactory,
+    $streamFactory,
+    $url
+);
+
 ```
 
 Because of this change the URL parameter has been removed for the functions:
