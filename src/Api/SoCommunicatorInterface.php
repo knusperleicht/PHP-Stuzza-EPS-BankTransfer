@@ -2,6 +2,7 @@
 
 namespace Externet\EpsBankTransfer\Api;
 
+use Externet\EpsBankTransfer\EpsProtocolDetails;
 use Externet\EpsBankTransfer\EpsRefundRequest;
 use Externet\EpsBankTransfer\EpsRefundResponse;
 use Externet\EpsBankTransfer\TransferInitiatorDetails;
@@ -37,12 +38,12 @@ interface SoCommunicatorInterface
      * @param TransferInitiatorDetails $transferInitiatorDetails Payment request details.
      * @param string|null $targetUrl Optional target URL.
      *
-     * @return string Raw XML response.
+     * @return EpsProtocolDetails The protocol response details from EPS.
      */
     public function sendTransferInitiatorDetails(
         TransferInitiatorDetails $transferInitiatorDetails,
-        ?string $targetUrl = null
-    ): string;
+        ?string                  $targetUrl = null
+    ): EpsProtocolDetails;
 
     /**
      * Handles confirmation callbacks from EPS.
@@ -66,12 +67,12 @@ interface SoCommunicatorInterface
      * @param string|null $targetUrl Optional target URL.
      * @param string|null $logMessage Optional log message.
      *
-     * @return string Raw XML response.
+     * @return EpsRefundResponse Response containing status code and optional error message.
      */
     public function sendRefundRequest(
         EpsRefundRequest $refundRequest,
-        ?string $targetUrl = null,
-        ?string $logMessage = null
+        ?string          $targetUrl = null,
+        ?string          $logMessage = null
     ): EpsRefundResponse;
 
     /**

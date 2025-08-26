@@ -74,20 +74,13 @@ $soCommunicator = new SoCommunicator(
 
 // Send transfer initiator details to default URL
 try {
-    $plain = $soCommunicator->SendTransferInitiatorDetails($transferInitiatorDetails);
+    $protocolDetails = $soCommunicator->SendTransferInitiatorDetails($transferInitiatorDetails);
 
-    $xml = new \SimpleXMLElement($plain);
-    XmlValidator::ValidateEpsProtocol($plain);
-
-    $soAnswer = $xml->children(Constants::XMLNS_epsp);
-    $errorDetails = $soAnswer->BankResponseDetails->ErrorDetails;
-
-    if ((string)$errorDetails->ErrorCode !== '000') {
-        $errorCode = (string)$errorDetails->ErrorCode;
-        $errorMsg = (string)$errorDetails->ErrorMsg;
+    if ($protocolDetails->errorCode !== '000') {
+        $errorCode = $protocolDetails->errorCode;
+        $errorMsg = $protocolDetails->errorMsg;
     } else {
-        $redirectUrl = (string)$soAnswer->BankResponseDetails->ClientRedirectUrl;
-        header('Location: ' . $redirectUrl);
+        header('Location: ' . $protocolDetails->clientRedirectUrl);
     }
 } catch (\Exception $e) {
     $errorCode = 'Exception';

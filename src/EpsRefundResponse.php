@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace Externet\EpsBankTransfer;
 
-use Exception;
-
 class EpsRefundResponse
 {
     /** @var string Response status code (max length 3) */
@@ -12,5 +10,10 @@ class EpsRefundResponse
 
     /** @var string|null Error message (optional, max length 255) */
     public $errorMsg;
-    
+
+    public function __construct(string $statusCode, ?string $errorMsg = null)
+    {
+        $this->statusCode = $statusCode;
+        $this->errorMsg = $errorMsg;
+    }
 }

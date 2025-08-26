@@ -4,6 +4,7 @@ namespace Externet\EpsBankTransfer\Api;
 
 use Exception;
 use Externet\EpsBankTransfer\BankConfirmationDetails;
+use Externet\EpsBankTransfer\EpsProtocolDetails;
 use Externet\EpsBankTransfer\EpsRefundRequest;
 use Externet\EpsBankTransfer\EpsRefundResponse;
 use Externet\EpsBankTransfer\Exceptions\CallbackResponseException;
@@ -120,8 +121,9 @@ class SoCommunicator implements SoCommunicatorInterface
      */
     public function sendTransferInitiatorDetails(
         TransferInitiatorDetails $transferInitiatorDetails,
-        ?string $targetUrl = null
-    ): string {
+        ?string                  $targetUrl = null
+    ): EpsProtocolDetails
+    {
         if ($transferInitiatorDetails->remittanceIdentifier !== null) {
             $transferInitiatorDetails->remittanceIdentifier =
                 $this->appendHash($transferInitiatorDetails->remittanceIdentifier);
@@ -133,12 +135,21 @@ class SoCommunicator implements SoCommunicatorInterface
         }
 
         $targetUrl = $targetUrl ?? $this->baseUrl . '/transinit/eps/v2_6';
-        $xmlData   = $transferInitiatorDetails->getSimpleXml()->asXML();
+        $xmlData = $transferInitiatorDetails->getSimpleXml()->asXML();
 
         $response = $this->postUrl($targetUrl, $xmlData, 'Send payment order');
 
         XmlValidator::ValidateEpsProtocol($response);
-        return $response;
+
+        $xml = new SimpleXMLElement($response);
+        $soAnswer = $xml->children(Constants::XMLNS_epsp);
+        return new EpsProtocolDetails(
+            (string)$soAnswer->BankResponseDetails->ClientRedirectUrl ?? '',
+            (string)$soAnswer->BankResponseDetails->ErrorDetails->ErrorCode ?? '',
+            (string)$soAnswer->BankResponseDetails->ErrorDetails->ErrorMsg ?? '',
+            (string)$soAnswer->BankResponseDetails->TransactionId ?? '',
+            (string)$soAnswer->BankResponseDetails->QrCodeUrl ?? ''
+        );
     }
 
     /** {@inheritdoc}
@@ -241,12 +252,10 @@ class SoCommunicator implements SoCommunicatorInterface
 
         $xml = new SimpleXMLElement($response);
         $soAnswer = $xml->children(Constants::XMLNS_epsr);
-        $refundResponse = new EpsRefundResponse();
-        $refundResponse->statusCode = (string)$soAnswer->StatusCode;
-        $errorMsg = (string)$soAnswer->ErrorMsg;
-        $refundResponse->errorMsg = $errorMsg ?: null;
-
-        return $refundResponse;
+        return new EpsRefundResponse(
+            (string)$soAnswer->StatusCode,
+            (string)$soAnswer->ErrorMsg ?: null
+        );
     }
     
     /** {@inheritdoc} */
