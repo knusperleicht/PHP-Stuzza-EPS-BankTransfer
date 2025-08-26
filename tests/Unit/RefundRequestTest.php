@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Externet\EpsBankTransfer\Tests;
 
+use Exception;
 use Externet\EpsBankTransfer\EpsRefundRequest;
 
 class RefundRequestTest extends BaseTest
@@ -10,7 +11,7 @@ class RefundRequestTest extends BaseTest
 
     /**
      * @dataProvider refundRequestDataProvider
-     * @throws \Exception
+     * @throws Exception
      */
     public function testGenerateRefundRequestWithReason(
         string  $CreDtTm,

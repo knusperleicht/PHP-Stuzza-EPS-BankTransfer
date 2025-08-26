@@ -3,6 +3,7 @@
 namespace Externet\EpsBankTransfer\Tests;
 
 use DOMDocument;
+use Exception;
 use Externet\EpsBankTransfer\Exceptions\XmlValidationException;
 use Externet\EpsBankTransfer\TransferInitiatorDetails;
 use Externet\EpsBankTransfer\TransferMsgDetails;
@@ -51,6 +52,9 @@ class TransferInitiatorDetailsTest extends BaseTest
         $this->assertXmlEquals('TransferInitiatorDetailsWithoutSignatureAndOrderingCustomerOfiIdentifier.xml', $data->getSimpleXml()->asXML());
     }
 
+    /**
+     * @throws Exception
+     */
     public function testTransferInitiatorDetailsInvalidExpirationMinutes()
     {
         $data = $this->createTransferInitiatorDetails();
@@ -62,7 +66,7 @@ class TransferInitiatorDetailsTest extends BaseTest
 
     /**
      * @throws XmlValidationException
-     * @throws \Exception
+     * @throws Exception
      */
     public function testTransferInitiatorDetailsWithExpirationTime()
     {
@@ -76,7 +80,7 @@ class TransferInitiatorDetailsTest extends BaseTest
 
     /**
      * @throws XmlValidationException
-     * @throws \Exception
+     * @throws Exception
      */
     public function testTransferInitiatorDetailsWithUnstructuredRemittanceIdentifier()
     {
@@ -120,7 +124,7 @@ class TransferInitiatorDetailsTest extends BaseTest
             "http://10.18.70.8:7001/transactionok?danke.asp",
             "http://10.18.70.8:7001/transactionnok?fehler.asp"
         );
-        $transferMsgDetails->TargetWindowNok = $transferMsgDetails->TargetWindowOk = 'Mustershop';
+        $transferMsgDetails->targetWindowNok = $transferMsgDetails->targetWindowOk = 'Mustershop';
         return $transferMsgDetails;
     }
 

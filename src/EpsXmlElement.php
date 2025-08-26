@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Externet\EpsBankTransfer;
 
 use DOMDocument;
+use Exception;
 use SimpleXMLElement;
 
 class EpsXmlElement
@@ -11,7 +12,7 @@ class EpsXmlElement
     private $simpleXml;
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function __construct($data, $options = 0, $data_is_url = false, $ns = "", $is_prefix = false)
     {
@@ -26,7 +27,7 @@ class EpsXmlElement
      *
      * @param string $rootNode
      * @return EpsXmlElement element
-     * @throws \Exception
+     * @throws Exception
      */
     public static function createEmptySimpleXml(string $rootNode): EpsXmlElement
     {

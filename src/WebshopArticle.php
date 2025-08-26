@@ -23,7 +23,7 @@ class WebshopArticle
      * @param int $count number of items
      * @param int $price price in cents
      */
-    public function __construct($name, $count, $price)
+    public function __construct(string $name, int $count, int $price)
     {
         $this->Name = $name;
         $this->Count = $count;

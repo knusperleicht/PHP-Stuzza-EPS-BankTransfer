@@ -9,15 +9,6 @@ use Externet\EpsBankTransfer\Utilities\XmlValidator;
 
 class XmlValidatorTest extends BaseTest
 {
-    /** @var XmlValidator */
-    private $validator;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->validator = new XmlValidator();
-    }
-
     public function testBanksThrowsExceptionOnEmptyData(): void
     {
         $this->expectException(XmlValidationException::class);
@@ -36,18 +27,27 @@ class XmlValidatorTest extends BaseTest
         XmlValidator::ValidateBankList($this->getEpsData('BankListInvalid.xml'));
     }
 
+    /**
+     * @throws XmlValidationException
+     */
     public function testBanksReturnsXmlString(): void
     {
         $result = XmlValidator::ValidateBankList($this->getEpsData('BankListSample.xml'));
         $this->assertTrue($result);
     }
 
+    /**
+     * @throws XmlValidationException
+     */
     public function testWithSignatureReturnsTrue(): void
     {
         $result = XmlValidator::ValidateEpsProtocol($this->getEpsData('BankConfirmationDetailsWithSignature.xml'));
         $this->assertTrue($result);
     }
 
+    /**
+     * @throws XmlValidationException
+     */
     public function testRefundResponseValid(): void
     {
         $result = XmlValidator::ValidateEpsRefund($this->getEpsData('RefundResponseAccepted000.xml'));

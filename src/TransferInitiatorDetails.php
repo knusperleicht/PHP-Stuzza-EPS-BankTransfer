@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Externet\EpsBankTransfer;
 
 use DateTime;
+use Exception;
 use Externet\EpsBankTransfer\Utilities\MoneyFormatter;
 use InvalidArgumentException;
 
@@ -50,7 +51,7 @@ class TransferInitiatorDetails
     public $beneficiaryAccountIdentifier;
 
     /**
-     * Payment order message reference, e.g. for merchant research purposes
+     * Payment order message reference, e.g., for merchant research purposes
      * @var string
      */
     public $referenceIdentifier;
@@ -130,10 +131,10 @@ class TransferInitiatorDetails
     }
 
     /**
-     * Sets ExpirationTime by adding given number of minutes to the current
+     * Sets ExpirationTime by adding a given number of minutes to the current
      * timestamp.
      * @param int $minutes Must be between 5 and 60
-     * @throws InvalidArgumentException|\Exception if minutes not between 5 and 60
+     * @throws InvalidArgumentException|Exception if minutes not between 5 and 60
      */
     public function setExpirationMinutes(int $minutes)
     {
@@ -166,7 +167,7 @@ class TransferInitiatorDetails
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function getSimpleXml(): EpsXmlElement
     {
@@ -180,11 +181,11 @@ class TransferInitiatorDetails
         $TransactionOkUrl = $TransferMsgDetails->addChildExt('TransactionOkUrl', $this->transferMsgDetails->transactionOkUrl, 'epsp');
         $TransactionNokUrl = $TransferMsgDetails->addChildExt('TransactionNokUrl', $this->transferMsgDetails->transactionNokUrl, 'epsp');
 
-        if (!empty($this->transferMsgDetails->TargetWindowOk))
-            $TransactionOkUrl->addAttribute('TargetWindow', $this->transferMsgDetails->TargetWindowOk);
+        if (!empty($this->transferMsgDetails->targetWindowOk))
+            $TransactionOkUrl->addAttribute('TargetWindow', $this->transferMsgDetails->targetWindowOk);
 
-        if (!empty($this->transferMsgDetails->TargetWindowNok))
-            $TransactionNokUrl->addAttribute('TargetWindow', $this->transferMsgDetails->TargetWindowNok);
+        if (!empty($this->transferMsgDetails->targetWindowNok))
+            $TransactionNokUrl->addAttribute('TargetWindow', $this->transferMsgDetails->targetWindowNok);
 
         if (!empty($this->webshopArticles)) {
             $WebshopDetails = $TransferInitiatorDetails->addChildExt('WebshopDetails', '', 'epsp');
