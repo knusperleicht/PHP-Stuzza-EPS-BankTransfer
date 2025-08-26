@@ -4,6 +4,7 @@ namespace Externet\EpsBankTransfer\Api;
 
 use Exception;
 use Externet\EpsBankTransfer\BankConfirmationDetails;
+use Externet\EpsBankTransfer\BankResponseDetails;
 use Externet\EpsBankTransfer\EpsProtocolDetails;
 use Externet\EpsBankTransfer\EpsRefundRequest;
 use Externet\EpsBankTransfer\EpsRefundResponse;
@@ -143,13 +144,14 @@ class SoCommunicator implements SoCommunicatorInterface
 
         $xml = new SimpleXMLElement($response);
         $soAnswer = $xml->children(Constants::XMLNS_epsp);
-        return new EpsProtocolDetails(
+        $bankResponseDetails = new BankResponseDetails(
             (string)$soAnswer->BankResponseDetails->ClientRedirectUrl ?? '',
             (string)$soAnswer->BankResponseDetails->ErrorDetails->ErrorCode ?? '',
             (string)$soAnswer->BankResponseDetails->ErrorDetails->ErrorMsg ?? '',
             (string)$soAnswer->BankResponseDetails->TransactionId ?? '',
             (string)$soAnswer->BankResponseDetails->QrCodeUrl ?? ''
         );
+        return new EpsProtocolDetails($bankResponseDetails);
     }
 
     /** {@inheritdoc}

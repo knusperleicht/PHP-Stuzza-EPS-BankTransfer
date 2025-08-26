@@ -5,27 +5,12 @@ namespace Externet\EpsBankTransfer;
 
 class EpsProtocolDetails
 {
-    /** @var string The URL that the buyer will be redirected to */
-    public $clientRedirectUrl;
+    /** @var BankResponseDetails Contains the bank response details */
+    public $bankResponseDetails;
 
-    /** @var string Error code, '000' means no error */
-    public $errorCode;
-
-    /** @var string Error message if any */
-    public $errorMsg;
-
-    /** @var string Transaction identifier */
-    public $transactionId;
-
-    /** @var string URL for QR code */
-    public $qrCodeUrl;
-
-    public function __construct(string $clientRedirectUrl, string $errorCode, string $errorMsg, string $transactionId, string $qrCodeUrl)
+    public function __construct(BankResponseDetails $bankResponseDetails)
     {
-        $this->clientRedirectUrl = $clientRedirectUrl;
-        $this->errorCode = $errorCode;
-        $this->errorMsg = $errorMsg;
-        $this->transactionId = $transactionId;
-        $this->qrCodeUrl = $qrCodeUrl;
+        $this->bankResponseDetails = $bankResponseDetails;
     }
+
 }
