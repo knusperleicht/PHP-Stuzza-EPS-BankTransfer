@@ -27,7 +27,7 @@ use RuntimeException;
 class SoCommunicator
 {
     /** @var string EPS test mode endpoint */
-    private const TEST_MODE_URL = 'https://routing.eps.or.at/appl/epsSO-test';
+    private const TEST_MODE_URL = 'https://routing-test.eps.or.at/appl/epsSO';
 
     /** @var string EPS live mode endpoint */
     private const LIVE_MODE_URL = 'https://routing.eps.or.at/appl/epsSO';

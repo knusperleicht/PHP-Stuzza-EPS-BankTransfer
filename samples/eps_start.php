@@ -1,8 +1,17 @@
 <?php
+/**
+ * Required packages:
+ * composer require nyholm/psr7 symfony/http-client
+ *
+ * Note: Code is working with any PSR-17 compatible HTTP client and factory
+ * like Guzzle, Symfony HTTP Client, etc.
+ * Sample uses nyholm/psr7 + symfony/http-client
+ */
 require_once('../vendor/autoload.php');
+
 use at\externet\eps_bank_transfer;
-use GuzzleHttp\Psr7\HttpFactory;
-use unit\at\externet\eps_bank_transfer\Psr18TestHttp;
+use Nyholm\Psr7\Factory\Psr17Factory;
+use Symfony\Component\HttpClient\Psr18Client;
 
 // Connection credentials. Override them for test mode.
 $userID = 'AKLJS231534';            // Eps "Händler-ID"/UserID = epsp:UserId
@@ -10,22 +19,22 @@ $pin    = 'topSecret';              // Secret for authentication / PIN = part of
 $bic    = 'GAWIATW1XXX';            // BIC code of receiving bank account = epi:BfiBicIdentifier
 $iban   = 'AT611904300234573201';   // IBAN code of receiving bank account = epi:BeneficiaryAccountIdentifier
 
-// Return urls
+// Return urls 
 $transferMsgDetails = new eps_bank_transfer\TransferMsgDetails(
-  'http(s)://yourdomain.example.com/eps_confirm.php?id=12345', // The URL that the EPS Scheme Operator (=SO) will call before (= VitaliyCheck) and after payment = epsp:ConfirmationUrl. Use samples/eps_confirm.php as a starting point. You must include a unique query string (and parse it in samples/eps_confirm.php), since the matching of a confirmation to a payment is solely based on this URL!
-  'http(s)://yourdomain.example.com/ThankYou.html',   // The URL that the buyer will be redirected to on succesful payment = epsp:TransactionOkUrl
-  'http(s)://yourdomain.example.com/Failure.html'     // The URL that the buyer will be redirected to on cancel or failure = epsp:TransactionNokUrl
+    'http(s)://yourdomain.example.com/eps_confirm.php?id=12345', // The URL that the EPS Scheme Operator (=SO) will call before (= VitaliyCheck) and after payment = epsp:ConfirmationUrl. Use samples/eps_confirm.php as a starting point. You must include a unique query string (and parse it in samples/eps_confirm.php), since the matching of a confirmation to a payment is solely based on this URL!
+    'http(s)://yourdomain.example.com/ThankYou.html',   // The URL that the buyer will be redirected to on succesful payment = epsp:TransactionOkUrl
+    'http(s)://yourdomain.example.com/Failure.html'     // The URL that the buyer will be redirected to on cancel or failure = epsp:TransactionNokUrl
 );
 
 $transferInitiatorDetails = new eps_bank_transfer\TransferInitiatorDetails(
-  $userID,
-  $pin,
-  $bic,
-  'John Q. Public',         // Name (and optional address) of the receiving account owner = epi:BeneficiaryNameAddressText. In theory, this can be 140 characters; but in practice, Austrian banks only guarantee 70 characters. Line breaks are not allowed (EPS-Pflichtenheft is ambiguous about this).
-  $iban,
-  '12345',                  // epi:ReferenceIdentifier. Mandatory but useless, since you will never (!) get to see this number again - not upon payment confirmation and not at the bank statement (Kontoauszug). It's also not displayed to the customer. Best guess: Use your order number, i.e. same as epi:RemittanceIdentifier.
-  '9999',                   // Total amount in EUR cent ≈ epi:InstructedAmount
-  $transferMsgDetails
+    $userID,
+    $pin,
+    $bic,
+    'John Q. Public',         // Name (and optional address) of the receiving account owner = epi:BeneficiaryNameAddressText. In theory, this can be 140 characters; but in practice, Austrian banks only guarantee 70 characters. Line breaks are not allowed (EPS-Pflichtenheft is ambiguous about this).
+    $iban,
+    '12345',                  // epi:ReferenceIdentifier. Mandatory but useless, since you will never (!) get to see this number again - not upon payment confirmation and not at the bank statement (Kontoauszug). It's also not displayed to the customer. Best guess: Use your order number, i.e. same as epi:RemittanceIdentifier.
+    '9999',                   // Total amount in EUR cent ≈ epi:InstructedAmount
+    $transferMsgDetails
 );
 
 // Optional: Include ONE (i.e. not both!) of the following two lines:
@@ -37,18 +46,19 @@ $transferInitiatorDetails->SetExpirationMinutes(60);     // Sets ExpirationTimeo
 
 // Optional: Include information about one or more articles = epsp:WebshopDetails
 $article = new eps_bank_transfer\WebshopArticle(  // = epsp:WebshopArticle
-  'ArticleName',  // Article name
-  1,              // Quantity
-  9999            // Price in EUR cents
+    'ArticleName',  // Article name
+    1,              // Quantity
+    9999            // Price in EUR cents
 );
 $transferInitiatorDetails->WebshopArticles[] = $article;
 
 // Send TransferInitiatorDetails to Scheme Operator
 $testMode = true; // To use live mode call the SoCommunicator constructor with $testMode = false
+$psr17Factory = new Psr17Factory();
 $soCommunicator = new eps_bank_transfer\SoCommunicator(
-    new Psr18TestHttp(),
-    new HttpFactory(),
-    new HttpFactory(),
+    new Psr18Client(),
+    $psr17Factory,
+    $psr17Factory,
     $testMode
 );
 // Optional: You can provide a bank selection on your payment site
@@ -66,14 +76,11 @@ $xml = new \SimpleXMLElement($plain);
 $soAnswer = $xml->children(eps_bank_transfer\XMLNS_epsp);
 $errorDetails = $soAnswer->BankResponseDetails->ErrorDetails;
 
-if (('' . $errorDetails->ErrorCode) != '000')
-{
-  $errorCode = '' . $errorDetails->ErrorCode;
-  $errorMsg = '' . $errorDetails->ErrorMsg;
-}
-else
-{
-  // This is the url you have to redirect the client to.
-  $redirectUrl = $soAnswer->BankResponseDetails->ClientRedirectUrl->__toString();
-  header('Location: ' . $redirectUrl);
+if (('' . $errorDetails->ErrorCode) != '000') {
+    $errorCode = '' . $errorDetails->ErrorCode;
+    $errorMsg = '' . $errorDetails->ErrorMsg;
+} else {
+    // This is the url you have to redirect the client to.
+    $redirectUrl = $soAnswer->BankResponseDetails->ClientRedirectUrl->__toString();
+    header('Location: ' . $redirectUrl);
 }
