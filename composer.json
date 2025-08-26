@@ -23,17 +23,18 @@
     },
     "require-dev": {
       "phpunit/phpunit": "9.*",
-      "php-coveralls/php-coveralls": "^2.7"
+      "php-coveralls/php-coveralls": "^2.7",
+      "nyholm/psr7": "^1.8",
+      "symfony/http-client": "^5.4"
     },
     "autoload": {
-        "files": [ "src/functions.php"],
-        "psr-4": {
-            "at\\externet\\eps_bank_transfer\\": "src/"
-        }
+      "psr-4": {
+        "Externet\\EpsBankTransfer\\": "src/"
+      }
     },
     "autoload-dev": {
-      "classmap": [
-        "tests/unit/at/externet/eps_bank_transfer/BaseTest.php"
-      ]
+      "psr-4": {
+        "Externet\\EpsBankTransfer\\Tests\\": "tests/Unit/"
+      }
     }
 }

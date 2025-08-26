@@ -1,12 +1,14 @@
 <?php
+declare(strict_types=1);
 
-namespace at\externet\eps_bank_transfer;
-require_once "functions.php";
+namespace Externet\EpsBankTransfer;
+
+use Externet\EpsBankTransfer\Utilities\MoneyFormatter;
 
 class WebshopArticle
 {
 
-    /** @var item name */
+    /** @var string name */
     public $Name;
     
     /** @var number of items */
@@ -32,10 +34,9 @@ class WebshopArticle
      * 
      * @param int $value in cents
      */
-    public function SetPrice($value)
+    public function SetPrice(int $value)
     {
-        $this->Price = FormatMonetaryXsdDecimal($value);
+        $this->Price = MoneyFormatter::formatXsdDecimal($value);
     }
-
 }
-?>
+

@@ -6,39 +6,43 @@ This file handles the confirmation call from the Scheme Operator (after a paymen
 */
 
 require_once('../vendor/autoload.php');
-use at\externet\eps_bank_transfer;
-use GuzzleHttp\Client;
-use GuzzleHttp\Psr7\HttpFactory;
+
+use Externet\EpsBankTransfer\Api\SoCommunicator;
+use Nyholm\Psr7\Factory\Psr17Factory;
+use Symfony\Component\HttpClient\Psr18Client;
 
 /**
- * @param string $plainXml Raw XML message, according to "Abbildung 6-6: PaymentConfirmationDetails" (eps Pflichtenheft 2.5)
- * @param at\externet\eps_bank_transfer\BankConfirmationDetails $bankConfirmationDetails
+ * @param string $plainXml Raw XML message
+ * @param Externet\EpsBankTransfer\BankConfirmationDetails $bankConfirmationDetails
  * @return true
  */
-$paymentConfirmationCallback = function($plainXml, $bankConfirmationDetails)
-{
-  // Handle "eps:StatusCode": "OK" or "NOK" or "VOK" or "UNKNOWN"
-  if ($bankConfirmationDetails->GetStatusCode() == 'OK')
-  {
-    // TODO: Do your payment completion handling here
-    // You should use $bankConfirmationDetails->GetRemittanceIdentifier();
-  }
+$paymentConfirmationCallback = function ($plainXml, $bankConfirmationDetails) {
+    // Handle "eps:StatusCode": "OK" or "NOK" or "VOK" or "UNKNOWN"
+    if ($bankConfirmationDetails->GetStatusCode() == 'OK') {
+        // TODO: Do your payment completion handling here
+        // You should use $bankConfirmationDetails->GetRemittanceIdentifier();
+    }
 
-  // True is expected to be returned, otherwise the Scheme Operator will be informed that the server could not accept the payment confirmation
-  return true; 
+    // True is expected to be returned, otherwise the Scheme Operator will be informed that the server could not accept the payment confirmation
+    return true;
 };
-
-$testMode = "yes";
-$soCommunicator = new eps_bank_transfer\SoCommunicator(
-    new Client(), // PSR-18 HTTP client
-    new HttpFactory(), // PSR-17 request factory
-    new HttpFactory(),  // PSR-17 stream factory
-    $testMode == "yes", // boolean - if true uses test URL, if false uses live URL
-);
-$soCommunicator->HandleConfirmationUrl(
-  $paymentConfirmationCallback,
-  null,                 // Optional: a callback function which is called in case of Vitality-Check
-  'php://input',        // This needs to be the raw post data received by the server. Change this only if you want to test this function with simulation data.
-  'php://output'        // This needs to be the raw output stream which is sent to the Scheme Operator. Change this only if you want to test this function with simulation data.
-);
-?>
+try {
+    $psr17Factory = new Psr17Factory();
+    $soCommunicator = new SoCommunicator(
+        new Psr18Client(),
+        $psr17Factory,
+        $psr17Factory,
+        SoCommunicator::TEST_MODE_URL
+    );
+    $soCommunicator->HandleConfirmationUrl(
+        $paymentConfirmationCallback,
+        null,                 // Optional: a callback function which is called in case of Vitality-Check
+        'php://input',        // This needs to be the raw post data received by the server. Change this only if you want to test this function with simulation data.
+        'php://output'        // This needs to be the raw output stream which is sent to the Scheme Operator. Change this only if you want to test this function with simulation data.
+    );
+} catch (\Exception $e) {
+    // Log error
+    error_log($e->getMessage());
+    // Return error response
+    http_response_code(500);
+}

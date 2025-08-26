@@ -1,7 +1,9 @@
 <?php
+declare(strict_types=1);
 
-namespace at\externet\eps_bank_transfer;
+namespace Externet\EpsBankTransfer;
 
+use Externet\EpsBankTransfer\Utilities\Constants;
 use SimpleXMLElement;
 
 class VitalityCheckDetails
@@ -24,9 +26,9 @@ class VitalityCheckDetails
      */
     private function init(\SimpleXMLElement $simpleXml)
     {
-        $epspChildren = $simpleXml->children(XMLNS_epsp);
+        $epspChildren = $simpleXml->children(Constants::XMLNS_epsp);
         $VitalityCheckDetails = $epspChildren[0];
-        $t2 = $VitalityCheckDetails->children(XMLNS_epi);
+        $t2 = $VitalityCheckDetails->children(Constants::XMLNS_epi);
         $this->remittanceIdentifier = null;
 
         if (isset($t2->RemittanceIdentifier))

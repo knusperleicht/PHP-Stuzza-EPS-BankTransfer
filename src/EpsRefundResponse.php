@@ -1,9 +1,9 @@
 <?php
+declare(strict_types=1);
 
-namespace at\externet\eps_bank_transfer;
+namespace Externet\EpsBankTransfer;
 
 use Exception;
-use SimpleXMLElement;
 
 class EpsRefundResponse
 {
@@ -21,7 +21,7 @@ class EpsRefundResponse
      */
     public function GetSimpleXml(): EpsXmlElement
     {
-        $xml = EpsXmlElement::CreateEmptySimpleXml('epsr:EpsRefundResponse xmlns:epsr="http://www.stuzza.at/namespaces/eps/refund/2018/09"');
+        $xml = EpsXmlElement::createEmptySimpleXml('epsr:EpsRefundResponse xmlns:epsr="http://www.stuzza.at/namespaces/eps/refund/2018/09"');
 
         $xml->addChildExt('StatusCode', $this->StatusCode, 'epsr');
 

@@ -9,7 +9,12 @@
  */
 require_once('../vendor/autoload.php');
 
-use at\externet\eps_bank_transfer;
+use Externet\EpsBankTransfer;
+use Externet\EpsBankTransfer\Api\SoCommunicator;
+use Externet\EpsBankTransfer\TransferInitiatorDetails;
+use Externet\EpsBankTransfer\TransferMsgDetails;
+use Externet\EpsBankTransfer\Utilities\Constants;
+use Externet\EpsBankTransfer\Utilities\XmlValidator;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Symfony\Component\HttpClient\Psr18Client;
 
@@ -20,13 +25,13 @@ $bic    = 'GAWIATW1XXX';            // BIC code of receiving bank account = epi:
 $iban   = 'AT611904300234573201';   // IBAN code of receiving bank account = epi:BeneficiaryAccountIdentifier
 
 // Return urls 
-$transferMsgDetails = new eps_bank_transfer\TransferMsgDetails(
-    'http(s)://yourdomain.example.com/eps_confirm.php?id=12345', // The URL that the EPS Scheme Operator (=SO) will call before (= VitaliyCheck) and after payment = epsp:ConfirmationUrl. Use samples/eps_confirm.php as a starting point. You must include a unique query string (and parse it in samples/eps_confirm.php), since the matching of a confirmation to a payment is solely based on this URL!
-    'http(s)://yourdomain.example.com/ThankYou.html',   // The URL that the buyer will be redirected to on succesful payment = epsp:TransactionOkUrl
-    'http(s)://yourdomain.example.com/Failure.html'     // The URL that the buyer will be redirected to on cancel or failure = epsp:TransactionNokUrl
+$transferMsgDetails = new TransferMsgDetails(
+    'https://yourdomain.example.com/eps_confirm.php?id=12345', // The URL that the EPS Scheme Operator (=SO) will call before (= VitaliyCheck) and after payment = epsp:ConfirmationUrl. Use samples/eps_confirm.php as a starting point. You must include a unique query string (and parse it in samples/eps_confirm.php), since the matching of a confirmation to a payment is solely based on this URL!
+    'https://yourdomain.example.com/ThankYou.html',   // The URL that the buyer will be redirected to on succesful payment = epsp:TransactionOkUrl
+    'https://yourdomain.example.com/Failure.html'     // The URL that the buyer will be redirected to on cancel or failure = epsp:TransactionNokUrl
 );
 
-$transferInitiatorDetails = new eps_bank_transfer\TransferInitiatorDetails(
+$transferInitiatorDetails = new TransferInitiatorDetails(
     $userID,
     $pin,
     $bic,
@@ -38,28 +43,28 @@ $transferInitiatorDetails = new eps_bank_transfer\TransferInitiatorDetails(
 );
 
 // Optional: Include ONE (i.e. not both!) of the following two lines:
-$transferInitiatorDetails->RemittanceIdentifier = 'Order123';             // "Zahlungsreferenz". Will be returned on payment confirmation = epi:RemittanceIdentifier
-$transferInitiatorDetails->UnstructuredRemittanceIdentifier = 'Order123'; // "Verwendungszweck". Will be returned on payment confirmation = epi:UnstructuredRemittanceIdentifier
+$transferInitiatorDetails->remittanceIdentifier = 'Order123';             // "Zahlungsreferenz". Will be returned on payment confirmation = epi:RemittanceIdentifier
+$transferInitiatorDetails->unstructuredRemittanceIdentifier = 'Order123'; // "Verwendungszweck". Will be returned on payment confirmation = epi:UnstructuredRemittanceIdentifier
 
 // Optional:
-$transferInitiatorDetails->SetExpirationMinutes(60);     // Sets ExpirationTimeout. Value must be between 5 and 60
+$transferInitiatorDetails->setExpirationMinutes(60);     // Sets ExpirationTimeout. Value must be between 5 and 60
 
 // Optional: Include information about one or more articles = epsp:WebshopDetails
-$article = new eps_bank_transfer\WebshopArticle(  // = epsp:WebshopArticle
+$article = new EpsBankTransfer\WebshopArticle(  // = epsp:WebshopArticle
     'ArticleName',  // Article name
     1,              // Quantity
     9999            // Price in EUR cents
 );
-$transferInitiatorDetails->WebshopArticles[] = $article;
+$transferInitiatorDetails->webshopArticles[] = $article;
 
-// Send TransferInitiatorDetails to Scheme Operator
+// Send TransferInitiatorDetails to Scheme Operator 
 $testMode = true; // To use live mode call the SoCommunicator constructor with $testMode = false
 $psr17Factory = new Psr17Factory();
-$soCommunicator = new eps_bank_transfer\SoCommunicator(
+$soCommunicator = new SoCommunicator(
     new Psr18Client(),
     $psr17Factory,
     $psr17Factory,
-    $testMode
+    SoCommunicator::TEST_MODE_URL
 );
 // Optional: You can provide a bank selection on your payment site
 // $bankList = $soCommunicator->GetBanksArray(); // Alternative: TryGetBanksArray
@@ -68,19 +73,23 @@ $soCommunicator = new eps_bank_transfer\SoCommunicator(
 // $soCommunicator->BaseUrl = 'http://examplel.com/My/Eps/Test/Environment';
 
 // Send transfer initiator details to default URL
-$plain = $soCommunicator->SendTransferInitiatorDetails($transferInitiatorDetails);
-// Optional: When using a preselected bank you can provide this URL as second parameter
-// $plain = $soCommunicator->SendTransferInitiatorDetails($transferInitiatorDetails, $epsUrlFromGetBanksArray);
+try {
+    $plain = $soCommunicator->SendTransferInitiatorDetails($transferInitiatorDetails);
 
-$xml = new \SimpleXMLElement($plain);
-$soAnswer = $xml->children(eps_bank_transfer\XMLNS_epsp);
-$errorDetails = $soAnswer->BankResponseDetails->ErrorDetails;
+    $xml = new \SimpleXMLElement($plain);
+    XmlValidator::ValidateEpsProtocol($plain);
 
-if (('' . $errorDetails->ErrorCode) != '000') {
-    $errorCode = '' . $errorDetails->ErrorCode;
-    $errorMsg = '' . $errorDetails->ErrorMsg;
-} else {
-    // This is the url you have to redirect the client to.
-    $redirectUrl = $soAnswer->BankResponseDetails->ClientRedirectUrl->__toString();
-    header('Location: ' . $redirectUrl);
+    $soAnswer = $xml->children(Constants::XMLNS_epsp);
+    $errorDetails = $soAnswer->BankResponseDetails->ErrorDetails;
+
+    if ((string)$errorDetails->ErrorCode !== '000') {
+        $errorCode = (string)$errorDetails->ErrorCode;
+        $errorMsg = (string)$errorDetails->ErrorMsg;
+    } else {
+        $redirectUrl = (string)$soAnswer->BankResponseDetails->ClientRedirectUrl;
+        header('Location: ' . $redirectUrl);
+    }
+} catch (\Exception $e) {
+    $errorCode = 'Exception';
+    $errorMsg = $e->getMessage();
 }

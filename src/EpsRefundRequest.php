@@ -1,116 +1,111 @@
 <?php
+declare(strict_types=1);
 
-namespace at\externet\eps_bank_transfer;
-
-use SimpleXMLElement;
+namespace Externet\EpsBankTransfer;
 
 class EpsRefundRequest
 {
+    /**
+     * @var string Creation timestamp in ISO 8601 format
+     */
+    public $creDtTm;
 
     /**
-     * @var string ISO 8601 datetime string for the creation time (e.g., "2025-02-10T15:30:00")
+     * @var string Transaction identifier (1-36 chars: [a-zA-Z0-9-._~])
      */
-    public $CreDtTm;
+    public $transactionId;
 
     /**
-     * @var string Transaction identifier (1 to 36 characters: [a-zA-Z0-9-._~])
+     * @var string Merchant IBAN (up to 34 chars)
      */
-    public $TransactionId;
+    public $merchantIban;
 
     /**
-     * @var string Merchant IBAN (must follow the IBAN pattern, up to 34 characters)
+     * @var float|string Refund amount
      */
-    public $MerchantIBAN;
+    public $amount;
 
     /**
-     * @var float|string Monetary amount for the refund
+     * @var string Three-letter currency code
      */
-    public $Amount;
+    public $amountCurrencyIdentifier;
 
     /**
-     * @var string Currency code (3 uppercase letters) for the amount.
-     *             This value is set as an attribute on the Amount element.
+     * @var string|null Reference ID for refund (max 35 chars)
      */
-    public $AmountCurrencyIdentifier;
+    public $refundReference;
 
     /**
-     * @var string|null Optional refund reference (max 35 characters).
+     * @var string User ID (max 25 chars)
      */
-    public $RefundReference;
+    public $userId;
 
     /**
-     * @var string User ID (max 25 characters).
+     * @var string Authentication PIN
      */
-    public $UserId;
-
-    /**
-     * @var string PIN value for authentication.
-     */
-    public $Pin;
-
+    public $pin;
 
     public function __construct(
-        string  $CreDtTm,
-        string  $TransactionId,
-        string  $MerchantIBAN,
-                $Amount,
-        string  $AmountCurrencyIdentifier,
-        string  $UserId,
-        string  $Pin,
-        ?string $RefundReference = null
+        string  $creDtTm,
+        string  $transactionId,
+        string  $merchantIban,
+                $amount,
+        string  $amountCurrencyIdentifier,
+        string  $userId,
+        string  $pin,
+        ?string $refundReference = null
     )
     {
-        $this->CreDtTm = $CreDtTm;
-        $this->TransactionId = $TransactionId;
-        $this->MerchantIBAN = $MerchantIBAN;
-        $this->Amount = $Amount;
-        $this->AmountCurrencyIdentifier = $AmountCurrencyIdentifier;
-        $this->RefundReference = $RefundReference;
-        $this->UserId = $UserId;
-        $this->Pin = $Pin;
+        $this->creDtTm = $creDtTm;
+        $this->transactionId = $transactionId;
+        $this->merchantIban = $merchantIban;
+        $this->amount = $amount;
+        $this->amountCurrencyIdentifier = $amountCurrencyIdentifier;
+        $this->refundReference = $refundReference;
+        $this->userId = $userId;
+        $this->pin = $pin;
     }
 
     /**
      * @throws \Exception
      */
-    public function GetSimpleXml(): EpsXmlElement
+    public function getSimpleXml(): EpsXmlElement
     {
-        // Create an empty XML document with the root element and proper namespaces.
-        // The root element is "epsr:EpsRefundRequest" in the refund namespace.
-        $xml = EpsXmlElement::CreateEmptySimpleXml(
+        // Create XML document with root element and namespaces
+        $xml = EpsXmlElement::createEmptySimpleXml(
             'epsr:EpsRefundRequest xmlns:epsr="http://www.stuzza.at/namespaces/eps/refund/2018/09" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#"'
         );
 
-        // Add the mandatory elements:
-        $xml->addChildExt('CreDtTm', $this->CreDtTm, 'epsr');
-        $xml->addChildExt('TransactionId', $this->TransactionId, 'epsr');
-        $xml->addChildExt('MerchantIBAN', $this->MerchantIBAN, 'epsr');
+        // Add mandatory elements
+        $xml->addChildExt('CreDtTm', $this->creDtTm, 'epsr');
+        $xml->addChildExt('TransactionId', $this->transactionId, 'epsr');
+        $xml->addChildExt('MerchantIBAN', $this->merchantIban, 'epsr');
 
-        // Create the Amount element with its simple content and add the required attribute.
-        $amountElement = $xml->addChildExt('Amount', $this->Amount, 'epsr');
-        $amountElement->addAttribute('AmountCurrencyIdentifier', $this->AmountCurrencyIdentifier);
+        // Add amount with currency
+        $amountElement = $xml->addChildExt('Amount', (string)$this->amount, 'epsr');
+        $amountElement->addAttribute('AmountCurrencyIdentifier', $this->amountCurrencyIdentifier);
 
-        // Add the optional RefundReference element if it is set.
-        if (!empty($this->RefundReference)) {
-            $xml->addChildExt('RefundReference', $this->RefundReference, 'epsr');
+        // Add optional reference
+        if (!empty($this->refundReference)) {
+            $xml->addChildExt('RefundReference', $this->refundReference, 'epsr');
         }
 
-        // Build the AuthenticationDetails element.
+        // Add authentication details
         $authElement = $xml->addChildExt('AuthenticationDetails', '', 'epsr');
-        $authElement->addChildExt('UserId', $this->UserId, 'epsr');
+        $authElement->addChildExt('UserId', $this->userId, 'epsr');
 
-        // Add hardcoded authentication details.
+        // Add fingerprint
         $authElement->addChildExt(
             'SHA256Fingerprint',
             $this->generateSHA256Fingerprint(
-                $this->Pin,
-                $this->CreDtTm,
-                $this->TransactionId,
-                $this->MerchantIBAN,
-                $this->Amount,
-                $this->AmountCurrencyIdentifier,
-                $this->UserId,
-                $this->RefundReference
+                $this->pin,
+                $this->creDtTm,
+                $this->transactionId,
+                $this->merchantIban,
+                $this->amount,
+                $this->amountCurrencyIdentifier,
+                $this->userId,
+                $this->refundReference
             ),
             'epsr'
         );

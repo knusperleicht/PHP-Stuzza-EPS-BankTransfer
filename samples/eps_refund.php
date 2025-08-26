@@ -1,42 +1,60 @@
 <?php
-/*
-This file handles the refund process of a previous EPS payment
-*/
-
+/**
+ * Required packages:
+ * composer require nyholm/psr7 symfony/http-client
+ *
+ * Note: Code is working with any PSR-17 compatible HTTP client and factory
+ * like Guzzle, Symfony HTTP Client, etc.
+ * Sample uses nyholm/psr7 + symfony/http-client
+ */
 require_once('../vendor/autoload.php');
 
-use at\externet\eps_bank_transfer;
-use GuzzleHttp\Client;
-use GuzzleHttp\Psr7\HttpFactory;
+use Externet\EpsBankTransfer\Api\SoCommunicator;
+use Externet\EpsBankTransfer\EpsRefundRequest;
+use Externet\EpsBankTransfer\Utilities\Constants;
+use Externet\EpsBankTransfer\Utilities\XmlValidator;
+use Nyholm\Psr7\Factory\Psr17Factory;
+use Symfony\Component\HttpClient\Psr18Client;
 
 $userID = 'AKLJS231534';            // Eps "Händler-ID"/UserID = epsr:UserId
 $pin = 'topSecret';                 // Secret for authentication / PIN = part of epsr:SHA256Fingerprint
 $merchantIban = 'AT611904300234573201';
 
-$refundRequest = new eps_bank_transfer\EpsRefundRequest(
-    date('Y-m-d\TH:i:s'),   // Current date-time. Must not diverge more than 3hrs from SO time
-    'epsM7DPP3R12',         // EPS Transaction ID from epsp:BankResponse
+$refundRequest = new EpsRefundRequest(
+    date('Y-m-d\TH:i:s'),           // Current date-time (must not diverge more than 3hrs from SO time)
+    'epsM7DPP3R12',            // EPS Transaction ID from epsp:BankResponse
     $merchantIban,
-    "12.00",                // Amount to refund. Must be lower or equal the original transaction amount
-    'EUR',                  // Currency for the amount. EPS Refund 1.0.1 only accepts EUR
+    "1.00",                       // Amount to refund (must be lower or equal original transaction amount)
+    'EUR',            // Currency for amount (EPS Refund 1.0.1 only accepts EUR)
     $userID,
     $pin,
     'Refund Reason'         // RefundReference (optional) = Auftraggeberreferenz
 );
 
-$testMode = "yes";
-$soCommunicator = new eps_bank_transfer\SoCommunicator(
-    new Client(), // PSR-18 HTTP client
-    new HttpFactory(), // PSR-17 request factory
-    new HttpFactory(),  // PSR-17 stream factory
-    $testMode == "yes", // boolean - if true uses test URL, if false uses live URL
+// Send a refund request to Scheme Operator
+$testMode = true;
+$psr17Factory = new Psr17Factory();
+$soCommunicator = new SoCommunicator(
+    new Psr18Client(),
+    $psr17Factory,
+    $psr17Factory,
+    SoCommunicator::TEST_MODE_URL
 );
-$refundResponse = $soCommunicator->SendRefundRequest($refundRequest);
 
-$xml = new \SimpleXMLElement($refundResponse);
-$soAnswer = $xml->children(eps_bank_transfer\XMLNS_epsr);
+try {
+    $plain = $soCommunicator->SendRefundRequest($refundRequest);
 
-echo $soAnswer->StatusCode . ', ' . $soAnswer->ErrorMsg;
-// Return code 000 (No Errors) only means the refund request was accepted by the bank.
-// A manual approval might be required.
-?>
+    $xml = new \SimpleXMLElement($plain);
+    XmlValidator::ValidateEpsRefund($plain);
+
+    $soAnswer = $xml->children(Constants::XMLNS_epsr);
+    $statusCode = (string)$soAnswer->StatusCode;
+    $errorMsg = (string)$soAnswer->ErrorMsg;
+
+    echo $statusCode . ', ' . $errorMsg;
+    // Return code 000 (No Errors) only means the refund request was accepted by the bank.
+    // A manual approval might be required.
+
+} catch (\Exception $e) {
+    echo 'Exception: ' . $e->getMessage();
+}

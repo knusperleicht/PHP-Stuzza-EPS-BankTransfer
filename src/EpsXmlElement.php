@@ -1,14 +1,13 @@
 <?php
+declare(strict_types=1);
 
-namespace at\externet\eps_bank_transfer;
+namespace Externet\EpsBankTransfer;
 
 use DOMDocument;
 use SimpleXMLElement;
 
 class EpsXmlElement
 {
-
-    // replace with http://php.net/manual/en/class.arrayaccess.php
     private $simpleXml;
 
     /**
@@ -16,10 +15,11 @@ class EpsXmlElement
      */
     public function __construct($data, $options = 0, $data_is_url = false, $ns = "", $is_prefix = false)
     {
-        if (is_a($data, "SimpleXMLElement"))
+        if (is_a($data, "SimpleXMLElement")) {
             $this->simpleXml = $data;
-        else
+        } else {
             $this->simpleXml = new SimpleXMLElement($data, $options, $data_is_url, $ns, $is_prefix);
+        }
     }
 
     /**
@@ -28,7 +28,7 @@ class EpsXmlElement
      * @return EpsXmlElement element
      * @throws \Exception
      */
-    public static function CreateEmptySimpleXml(string $rootNode): EpsXmlElement
+    public static function createEmptySimpleXml(string $rootNode): EpsXmlElement
     {
         $xml = '<?xml version="1.0" encoding="UTF-8"?><' . $rootNode . '/>';
         return new EpsXmlElement($xml);
@@ -38,9 +38,9 @@ class EpsXmlElement
     {
         $ret = $this->simpleXml->$name;
         $ename = $ret->getName();
-        if ($ename == "")
+        if ($ename == "") {
             $ret = $this->simpleXml->xpath('eps:' . $name);
-
+        }
         return new self($ret);
     }
 
@@ -49,18 +49,17 @@ class EpsXmlElement
         return call_user_func_array(array($this->simpleXml, $name), $arguments);
     }
 
-    public function addChild($name, $value = '', $namespace = '')
+    public function addChild($name, $value = null, $namespace = null)
     {
         $child = $this->simpleXml->addChild($name, $value, $namespace);
         return new self($child);
     }
 
-    public function AddChildExt($name, $value = '', $namespaceAlias = '')
+    public function addChildExt($name, $value = null, $namespaceAlias = null): EpsXmlElement
     {
         $ns = $this->getDocNamespaces();
         $namespace = $namespaceAlias;
-        if (array_key_exists($namespaceAlias, $ns))
-        {
+        if (array_key_exists($namespaceAlias, $ns)) {
             $name = $namespaceAlias . ':' . $name;
             $namespace = $ns[$namespace];
         }
@@ -72,9 +71,9 @@ class EpsXmlElement
         $dom = new DOMDocument();
         $dom->loadXML($this->simpleXml->asXML());
         $dom->formatOutput = true;
-        if ($filename == null)
+        if ($filename == null) {
             return $dom->saveXML();
+        }
         return $dom->save($filename);
     }
-
 }

@@ -1,7 +1,9 @@
 <?php
+declare(strict_types=1);
 
-namespace at\externet\eps_bank_transfer;
+namespace Externet\EpsBankTransfer;
 
+use Externet\EpsBankTransfer\Utilities\Constants;
 use SimpleXMLElement;
 
 class BankConfirmationDetails
@@ -26,60 +28,52 @@ class BankConfirmationDetails
     }
 
     /**
-     *
+     * Initialize object from SimpleXMLElement
      * @param SimpleXMLElement $simpleXml
      */
     private function init(SimpleXMLElement $simpleXml)
     {
-        $epspChildren = $simpleXml->children(XMLNS_epsp);
-        $BankConfirmationDetails = $epspChildren[0];
-        $t1 = $BankConfirmationDetails->children(XMLNS_eps); // Necessary because of missing language feature in PHP 5.3
-        $PaymentConfirmationDetails = $t1[0];
-        $t2 = $PaymentConfirmationDetails->children(XMLNS_epi);
+        $epspChildren = $simpleXml->children(Constants::XMLNS_epsp);
+        $bankConfirmationDetails = $epspChildren[0];
+        $t1 = $bankConfirmationDetails->children(Constants::XMLNS_eps); // Necessary because of missing language feature in PHP 5.3
+        $paymentConfirmationDetails = $t1[0];
+        $t2 = $paymentConfirmationDetails->children(Constants::XMLNS_epi);
         $this->remittanceIdentifier = null;
 
-        $this->SetPaymentReferenceIdentifier($PaymentConfirmationDetails->PaymentReferenceIdentifier);
-        $this->SetSessionId($BankConfirmationDetails->SessionId);
-        $this->SetStatusCode($PaymentConfirmationDetails->StatusCode);
+        $this->setPaymentReferenceIdentifier($paymentConfirmationDetails->PaymentReferenceIdentifier);
+        $this->setSessionId($bankConfirmationDetails->SessionId);
+        $this->setStatusCode($paymentConfirmationDetails->StatusCode);
 
-        if (isset($t2->RemittanceIdentifier))
-        {
-            $this->SetRemittanceIdentifier($t2->RemittanceIdentifier);
-        }
-        elseif (isset($t2->UnstructuredRemittanceIdentifier))
-        {
-            $this->SetRemittanceIdentifier($t2->UnstructuredRemittanceIdentifier);
-        }
-        else
-        {
-            $t3 = $PaymentConfirmationDetails->PaymentInitiatorDetails->children(XMLNS_epi);
-            $EpiDetails = $t3[0];
-            $t4 = $EpiDetails->PaymentInstructionDetails;
-            if (isset($t4->RemittanceIdentifier))
-            {
-                $this->SetRemittanceIdentifier($t4->RemittanceIdentifier);
-            }
-            else
-            {
-                $this->SetRemittanceIdentifier($t4->UnstructuredRemittanceIdentifier);
+        if (isset($t2->RemittanceIdentifier)) {
+            $this->setRemittanceIdentifier($t2->RemittanceIdentifier);
+        } elseif (isset($t2->UnstructuredRemittanceIdentifier)) {
+            $this->setRemittanceIdentifier($t2->UnstructuredRemittanceIdentifier);
+        } else {
+            $t3 = $paymentConfirmationDetails->PaymentInitiatorDetails->children(Constants::XMLNS_epi);
+            $epiDetails = $t3[0];
+            $t4 = $epiDetails->PaymentInstructionDetails;
+            if (isset($t4->RemittanceIdentifier)) {
+                $this->setRemittanceIdentifier($t4->RemittanceIdentifier);
+            } else {
+                $this->setRemittanceIdentifier($t4->UnstructuredRemittanceIdentifier);
             }
 
-            // ReferenceIdentifier used in TransferInitiatorDetails as $internalReferenceId
-            $t5 = $EpiDetails->IdentificationDetails;
-            $this->SetReferenceIdentifier($t5->ReferenceIdentifier);
+            // ReferenceIdentifier used in TransferInitiatorDetails as internal reference ID
+            $t5 = $epiDetails->IdentificationDetails;
+            $this->setReferenceIdentifier($t5->ReferenceIdentifier);
 
-            //The following 3 data elements could be used e.g. for routing information within additional business scenarios (e.g. EBPP).
-            //These are optional data elements
-            if(isset($t5->OrderingCustomerNameAddressText)){
-                $this->SetOrderingCustomerNameAddressText($t5->OrderingCustomerNameAddressText);
+            // The following 3 data elements could be used e.g. for routing information within additional business scenarios (e.g. EBPP)
+            // These are optional data elements
+            if (isset($t5->OrderingCustomerNameAddressText)) {
+                $this->setOrderingCustomerNameAddressText($t5->OrderingCustomerNameAddressText);
             }
 
-            if(isset($t5->OrderingCustomerIdentifier)){
-                $this->SetOrderingCustomerIdentifier($t5->OrderingCustomerIdentifier);
+            if (isset($t5->OrderingCustomerIdentifier)) {
+                $this->setOrderingCustomerIdentifier($t5->OrderingCustomerIdentifier);
             }
 
-            if(isset($t5->OrderingCustomerOfiIdentifier)){
-                $this->SetOrderingCustomerBIC($t5->OrderingCustomerOfiIdentifier);
+            if (isset($t5->OrderingCustomerOfiIdentifier)) {
+                $this->setOrderingCustomerBIC($t5->OrderingCustomerOfiIdentifier);
             }
         }
 
@@ -87,40 +81,40 @@ class BankConfirmationDetails
             throw new \LogicException('Could not find RemittanceIdentifier in XML');
     }
 
-    public function SetRemittanceIdentifier($a)
+    public function setRemittanceIdentifier($a)
     {
-        $this->remittanceIdentifier = (string) $a;
+        $this->remittanceIdentifier = (string)$a;
     }
 
     /**
      * Gets epi:RemittanceIdentifier or epi:UnstructuredRemittanceIdentifier - depending on which one is present in the XML file
      */
-    public function GetRemittanceIdentifier()
+    public function getRemittanceIdentifier()
     {
         return $this->remittanceIdentifier;
     }
 
-    public function SetPaymentReferenceIdentifier($a)
+    public function setPaymentReferenceIdentifier($a)
     {
-        $this->paymentReferenceIdentifier = (string) $a;
+        $this->paymentReferenceIdentifier = (string)$a;
     }
 
     /**
-     * Die von der Bank generierte Ersterfasserreferenz
+     * Get payment reference identifier generated by the bank
      * @return string
      */
-    public function GetPaymentReferenceIdentifier(): string
+    public function getPaymentReferenceIdentifier(): string
     {
         return $this->paymentReferenceIdentifier;
     }
 
 
-    public function SetReferenceIdentifier($a)
+    public function setReferenceIdentifier($a)
     {
-        $this->referenceIdentifier = (string) $a;
+        $this->referenceIdentifier = (string)$a;
     }
 
-    public function GetReferenceIdentifier()
+    public function getReferenceIdentifier()
     {
         return $this->referenceIdentifier;
     }
@@ -129,78 +123,82 @@ class BankConfirmationDetails
      * Set the identification of ordering customer (name and/or address of the buyer) in non-coded form
      * @param $customerName
      */
-    public function SetOrderingCustomerNameAddressText($customerName)
+    public function setOrderingCustomerNameAddressText($customerName)
     {
-        $this->orderingCustomerNameAddress = (string) $customerName;
+        $this->orderingCustomerNameAddress = (string)$customerName;
     }
 
     /**
      * Get the identification of ordering customer (name and/or address of the buyer) in non-coded form
      * @return mixed
      */
-    public function GetOrderingCustomerNameAddress()
+    public function getOrderingCustomerNameAddress()
     {
         return $this->orderingCustomerNameAddress;
     }
 
 
     /**
-     * Set the identification of the customer’s (buyer’s) account identification by e.g. IBAN, BBAN, etc.
+     * Set the identification of the customer's (buyer's) account identification by e.g. IBAN, BBAN, etc.
      * @param $iban
      */
-    public function SetOrderingCustomerIdentifier($iban){
-        $this->orderingCustomerIdentifier = (string) $iban;
+    public function setOrderingCustomerIdentifier($iban)
+    {
+        $this->orderingCustomerIdentifier = (string)$iban;
     }
 
     /**
-     * Get the identification of the customer’s (buyer’s) account identification by e.g. IBAN, BBAN, etc.
+     * Get the identification of the customer's (buyer's) account identification by e.g. IBAN, BBAN, etc.
      * @return mixed
      */
-    public function GetOrderingCustomerIdentifier(){
+    public function getOrderingCustomerIdentifier()
+    {
         return $this->orderingCustomerIdentifier;
     }
 
 
     /**
-     * Set the identification of the customer’s (buyer’s) financial institution by a BIC
+     * Set the identification of the customer's (buyer's) financial institution by a BIC
      * @param $bic
      */
-    public function SetOrderingCustomerBIC($bic){
-        $this->orderingCustomerBIC = (string) $bic;
+    public function setOrderingCustomerBIC($bic)
+    {
+        $this->orderingCustomerBIC = (string)$bic;
     }
 
     /**
-     * Get the identification of the customer’s (buyer’s) financial institution by a BIC
+     * Get the identification of the customer's (buyer's) financial institution by a BIC
      * @return mixed
      */
-    public function GetOrderingCustomerBIC(){
+    public function getOrderingCustomerBIC()
+    {
         return $this->orderingCustomerBIC;
     }
 
-    public function SetSessionId($a)
+    public function setSessionId($a)
     {
-        $this->sessionId = (string) $a;
+        $this->sessionId = (string)$a;
     }
 
     /**
-     * Die von der Bank generierte Session Kennung
+     * Get session ID generated by the bank
      * @return string
      */
-    public function GetSessionId(): string
+    public function getSessionId(): string
     {
         return $this->sessionId;
     }
 
-    public function SetStatusCode($a)
+    public function setStatusCode($a)
     {
-        $this->statusCode = (string) $a;
+        $this->statusCode = (string)$a;
     }
 
     /**
-     * Status Code
+     * Get status code
      * @return string
      */
-    public function GetStatusCode(): string
+    public function getStatusCode(): string
     {
         return $this->statusCode;
     }

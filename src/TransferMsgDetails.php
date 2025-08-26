@@ -1,36 +1,37 @@
 <?php
+declare(strict_types=1);
 
-namespace at\externet\eps_bank_transfer;
+namespace Externet\EpsBankTransfer;
 
 class TransferMsgDetails
 {
 
-    /** @var string Jene URL, an die der eps SO den vitality-check und die eps Zahlungs-bestätigungsnachricht (= confirma-tion) sendet. */
-    public $ConfirmationUrl;
+    /** @var string The URL where the eps SO sends the vitality check and eps payment confirmation message */
+    public $confirmationUrl;
 
-    /** @var string Jene URL, um für den Käufer einen durchgängigen Ablauf zu garantieren und einen Rücksprungpunkt in den Webshop des Händlers anzubieten. */
-    public $TransactionOkUrl;
+    /** @var string The URL to guarantee a continuous flow for the buyer and offer a return point to the merchant's webshop */
+    public $transactionOkUrl;
 
-    /** @var string Wurde die Transaktion nicht erfolg-reich durchgeführt, so erhält der Käufer, nach Rückmeldung des Sys-tems, einen Redirect auf diese URL */
-    public $TransactionNokUrl;
+    /** @var string If the transaction was not completed successfully, the buyer will be redirected to this URL after system feedback */
+    public $transactionNokUrl;
 
-    /** @var string Jenes Fenster, in welches der Redirect auf die Ok URL erfolgen soll. */
-    public $TargetWindowOk;
+    /** @var string The window into which the redirect to the ok URL should occur */
+    public $targetWindowOk;
 
-    /** @var string Jenes Fenster, in welches der Redirect auf die Nok URL erfolgen soll. */
-    public $TargetWindowNok;
+    /** @var string The window into which the redirect to the nok URL should occur */
+    public $targetWindowNok;
 
     /**
      *
-     * @param string $ConfirmationUrl
-     * @param string $TransactionOkUrl
-     * @param string $TransactionNokUrl
+     * @param string $confirmationUrl
+     * @param string $transactionOkUrl
+     * @param string $transactionNokUrl
      */
-    public function __construct(string $ConfirmationUrl, string $TransactionOkUrl, string $TransactionNokUrl)
+    public function __construct(string $confirmationUrl, string $transactionOkUrl, string $transactionNokUrl)
     {
-        $this->ConfirmationUrl = $ConfirmationUrl;
-        $this->TransactionOkUrl = $TransactionOkUrl;
-        $this->TransactionNokUrl = $TransactionNokUrl;
+        $this->confirmationUrl = $confirmationUrl;
+        $this->transactionOkUrl = $transactionOkUrl;
+        $this->transactionNokUrl = $transactionNokUrl;
     }
 
 }
