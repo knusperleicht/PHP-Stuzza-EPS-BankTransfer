@@ -8,6 +8,7 @@ This file handles the confirmation call from the Scheme Operator (after a paymen
 require_once('../vendor/autoload.php');
 
 use Externet\EpsBankTransfer\Api\SoCommunicator;
+use Externet\EpsBankTransfer\BankConfirmationDetails;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Symfony\Component\HttpClient\Psr18Client;
 
@@ -16,7 +17,7 @@ use Symfony\Component\HttpClient\Psr18Client;
  * @param Externet\EpsBankTransfer\BankConfirmationDetails $bankConfirmationDetails
  * @return true
  */
-$paymentConfirmationCallback = function ($plainXml, $bankConfirmationDetails) {
+$paymentConfirmationCallback = function (string $plainXml, BankConfirmationDetails $bankConfirmationDetails) {
     // Handle "eps:StatusCode": "OK" or "NOK" or "VOK" or "UNKNOWN"
     if ($bankConfirmationDetails->GetStatusCode() == 'OK') {
         // TODO: Do your payment completion handling here
