@@ -4,18 +4,17 @@ namespace Externet\EpsBankTransfer\Api;
 
 use Exception;
 use Externet\EpsBankTransfer\BankConfirmationDetails;
-use Externet\EpsBankTransfer\EpsRefundRequestWrapped;
 use Externet\EpsBankTransfer\Exceptions\CallbackResponseException;
 use Externet\EpsBankTransfer\Exceptions\InvalidCallbackException;
 use Externet\EpsBankTransfer\Exceptions\ShopResponseException;
 use Externet\EpsBankTransfer\Exceptions\UnknownRemittanceIdentifierException;
 use Externet\EpsBankTransfer\Exceptions\XmlValidationException;
 use Externet\EpsBankTransfer\Generated\Protocol\V26\EpsProtocolDetails;
-use Externet\EpsBankTransfer\Generated\Refund\EpsRefundRequest;
 use Externet\EpsBankTransfer\Generated\Refund\EpsRefundResponse;
-use Externet\EpsBankTransfer\SerializerFactory;
+use Externet\EpsBankTransfer\Requests\RefundRequest;
+use Externet\EpsBankTransfer\Requests\TransferInitiatorDetailsRequest;
+use Externet\EpsBankTransfer\Serializer\SerializerFactory;
 use Externet\EpsBankTransfer\ShopResponseDetails;
-use Externet\EpsBankTransfer\TransferInitiatorDetailsWrapped;
 use Externet\EpsBankTransfer\Utilities\Constants;
 use Externet\EpsBankTransfer\Utilities\XmlValidator;
 use Externet\EpsBankTransfer\VitalityCheckDetails;
@@ -68,7 +67,6 @@ class SoV26Communicator implements SoV26CommunicatorInterface
         $this->streamFactory = $streamFactory;
         $this->baseUrl = $baseUrl;
         $this->serializer = SerializerFactory::create();
-
     }
 
     /** {@inheritdoc}
@@ -128,8 +126,8 @@ class SoV26Communicator implements SoV26CommunicatorInterface
      * @throws Exception
      */
     public function sendTransferInitiatorDetails(
-        TransferInitiatorDetailsWrapped $transferInitiatorDetails,
-        ?string                  $targetUrl = null
+        TransferInitiatorDetailsRequest $transferInitiatorDetails,
+        ?string                         $targetUrl = null
     ): EpsProtocolDetails
     {
         if ($transferInitiatorDetails->remittanceIdentifier !== null) {
@@ -246,9 +244,9 @@ class SoV26Communicator implements SoV26CommunicatorInterface
      * @throws Exception
      */
     public function sendRefundRequest(
-        EpsRefundRequestWrapped $refundRequest,
-        ?string          $targetUrl = null,
-        ?string          $logMessage = null
+        RefundRequest $refundRequest,
+        ?string       $targetUrl = null,
+        ?string       $logMessage = null
     ): EpsRefundResponse {
         $targetUrl = $targetUrl ?? $this->baseUrl . '/refund/eps/v2_6';
 

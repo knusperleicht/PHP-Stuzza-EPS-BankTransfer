@@ -3,16 +3,15 @@ declare(strict_types=1);
 
 namespace Externet\EpsBankTransfer\Tests\Api;
 
-use DateTime;
 use Exception;
 use Externet\EpsBankTransfer\Api\SoV26Communicator;
-use Externet\EpsBankTransfer\EpsRefundRequestWrapped;
 use Externet\EpsBankTransfer\Exceptions\CallbackResponseException;
 use Externet\EpsBankTransfer\Exceptions\InvalidCallbackException;
 use Externet\EpsBankTransfer\Exceptions\XmlValidationException;
+use Externet\EpsBankTransfer\Requests\RefundRequest;
+use Externet\EpsBankTransfer\Requests\TransferInitiatorDetailsRequest;
 use Externet\EpsBankTransfer\Tests\BaseTest;
 use Externet\EpsBankTransfer\Tests\Psr18TestHttp;
-use Externet\EpsBankTransfer\TransferInitiatorDetailsWrapped;
 use Externet\EpsBankTransfer\TransferMsgDetails;
 use Externet\EpsBankTransfer\Utilities\XmlValidator;
 use GuzzleHttp\Psr7\HttpFactory;
@@ -185,7 +184,7 @@ class SoCommunicatorTest extends BaseTest
         $this->mockResponse(200, $this->getEpsData('BankResponseDetails000.xml'));
 
         $t = new TransferMsgDetails('a', 'b', 'c');
-        $transferInitiatorDetails = new TransferInitiatorDetailsWrapped('a', 'b', 'c', 'd', 'e', 'f', 0, $t);
+        $transferInitiatorDetails = new TransferInitiatorDetailsRequest('a', 'b', 'c', 'd', 'e', 'f', 0, $t);
         $transferInitiatorDetails->remittanceIdentifier = 'Order1';
 
         $url = 'https://routing.eps.or.at/appl/epsSO/transinit/eps/v2_6/someid';
@@ -387,7 +386,7 @@ class SoCommunicatorTest extends BaseTest
 
 
 
-    private function getMockedTransferInitiatorDetails(): TransferInitiatorDetailsWrapped
+    private function getMockedTransferInitiatorDetails(): TransferInitiatorDetailsRequest
     {
         $t = new TransferMsgDetails(
             'https://example.com/confirmation',
@@ -395,7 +394,7 @@ class SoCommunicatorTest extends BaseTest
             'https://example.com/failure'
         );
 
-        $ti = new TransferInitiatorDetailsWrapped(
+        $ti = new TransferInitiatorDetailsRequest(
             'TestShop', 'secret123', 'TESTBANKXXX',
             'Test Company GmbH', 'AT611904300234573201', 'REF123456789',
             12050, $t
@@ -456,9 +455,9 @@ class SoCommunicatorTest extends BaseTest
         $this->assertEquals('https://routing-test.eps.or.at/appl/epsSO/refund/eps/v2_6', $info['url']);
     }
 
-    private function getMockedRefundRequest(): EpsRefundRequestWrapped
+    private function getMockedRefundRequest(): RefundRequest
     {
-        return new EpsRefundRequestWrapped(
+        return new RefundRequest(
             '2025-02-10T15:30:00',
             '1234567890',
             'AT611904300234573201',

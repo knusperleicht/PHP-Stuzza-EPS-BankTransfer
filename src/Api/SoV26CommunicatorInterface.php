@@ -2,10 +2,10 @@
 
 namespace Externet\EpsBankTransfer\Api;
 
-use Externet\EpsBankTransfer\EpsRefundRequestWrapped;
 use Externet\EpsBankTransfer\Generated\Protocol\V26\EpsProtocolDetails;
 use Externet\EpsBankTransfer\Generated\Refund\EpsRefundResponse;
-use Externet\EpsBankTransfer\TransferInitiatorDetailsWrapped;
+use Externet\EpsBankTransfer\Requests\RefundRequest;
+use Externet\EpsBankTransfer\Requests\TransferInitiatorDetailsRequest;
 
 interface SoV26CommunicatorInterface
 {
@@ -35,13 +35,13 @@ interface SoV26CommunicatorInterface
     /**
      * Sends a payment initiation request to EPS.
      *
-     * @param TransferInitiatorDetailsWrapped $transferInitiatorDetails Payment request details.
+     * @param TransferInitiatorDetailsRequest $transferInitiatorDetails Payment request details.
      * @param string|null $targetUrl Optional target URL.
      *
      * @return EpsProtocolDetails The protocol response details from EPS.
      */
     public function sendTransferInitiatorDetails(
-        TransferInitiatorDetailsWrapped $transferInitiatorDetails,
+        TransferInitiatorDetailsRequest $transferInitiatorDetails,
         ?string                         $targetUrl = null
     ): EpsProtocolDetails;
 
@@ -63,16 +63,16 @@ interface SoV26CommunicatorInterface
     /**
      * Sends a refund request to EPS.
      *
-     * @param EpsRefundRequestWrapped $refundRequest Refund request object.
+     * @param RefundRequest $refundRequest Refund request object.
      * @param string|null $targetUrl Optional target URL.
      * @param string|null $logMessage Optional log message.
      *
      * @return EpsRefundResponse Response containing status code and optional error message.
      */
     public function sendRefundRequest(
-        EpsRefundRequestWrapped $refundRequest,
-        ?string          $targetUrl = null,
-        ?string          $logMessage = null
+        RefundRequest $refundRequest,
+        ?string       $targetUrl = null,
+        ?string       $logMessage = null
     ): EpsRefundResponse;
 
     /**

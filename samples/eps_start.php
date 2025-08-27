@@ -11,7 +11,7 @@ require_once('../vendor/autoload.php');
 
 use Externet\EpsBankTransfer;
 use Externet\EpsBankTransfer\Api\SoV26Communicator;
-use Externet\EpsBankTransfer\TransferInitiatorDetailsWrapped;
+use Externet\EpsBankTransfer\Requests\TransferInitiatorDetailsRequest;
 use Externet\EpsBankTransfer\TransferMsgDetails;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Symfony\Component\HttpClient\Psr18Client;
@@ -29,7 +29,7 @@ $transferMsgDetails = new TransferMsgDetails(
     'https://yourdomain.example.com/Failure.html'     // The URL that the buyer will be redirected to on cancel or failure = epsp:TransactionNokUrl
 );
 
-$transferInitiatorDetails = new TransferInitiatorDetailsWrapped(
+$transferInitiatorDetails = new TransferInitiatorDetailsRequest(
     $userID,
     $pin,
     $bic,
@@ -48,12 +48,12 @@ $transferInitiatorDetails->unstructuredRemittanceIdentifier = 'Order123'; // "Ve
 $transferInitiatorDetails->setExpirationMinutes(60);     // Sets ExpirationTimeout. Value must be between 5 and 60
 
 // Optional: Include information about one or more articles = epsp:WebshopDetails
-$article = new EpsBankTransfer\WebshopArticle(  // = epsp:WebshopArticle
+$article = new EpsBankTransfer\Requests\Parts\WebshopArticle(  // = epsp:WebshopArticle
     'ArticleName',  // Article name
     1,              // Quantity
     9999            // Price in EUR cents
 );
-$transferInitiatorDetails->webshopArticles[] = $article;
+$transferInitiatorDetails->addArticle($article);
 
 // Send TransferInitiatorDetails to Scheme Operator 
 $testMode = true; // To use live mode call the SoCommunicator constructor with $testMode = false

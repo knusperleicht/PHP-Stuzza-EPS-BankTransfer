@@ -6,12 +6,11 @@ use DOMDocument;
 use Exception;
 use Externet\EpsBankTransfer\Exceptions\XmlValidationException;
 use Externet\EpsBankTransfer\Generated\Protocol\V26\EpsProtocolDetails;
-use Externet\EpsBankTransfer\SerializerFactory;
-use Externet\EpsBankTransfer\TransferInitiatorDetailsWrapped;
+use Externet\EpsBankTransfer\Requests\Parts\WebshopArticle;
+use Externet\EpsBankTransfer\Requests\TransferInitiatorDetailsRequest;
 use Externet\EpsBankTransfer\TransferMsgDetails;
 use Externet\EpsBankTransfer\Utilities\Fingerprint;
 use Externet\EpsBankTransfer\Utilities\XmlValidator;
-use Externet\EpsBankTransfer\WebshopArticle;
 use JMS\Serializer\SerializerBuilder;
 
 class TransferInitiatorDetailsTest extends BaseTest
@@ -159,9 +158,9 @@ class TransferInitiatorDetailsTest extends BaseTest
         return $transferMsgDetails;
     }
 
-    private function createTransferInitiatorDetails(): TransferInitiatorDetailsWrapped
+    private function createTransferInitiatorDetails(): TransferInitiatorDetailsRequest
     {
-        return new TransferInitiatorDetailsWrapped(
+        return new TransferInitiatorDetailsRequest(
             self::TEST_USER_ID,
             self::TEST_SECRET,
             self::TEST_BIC,

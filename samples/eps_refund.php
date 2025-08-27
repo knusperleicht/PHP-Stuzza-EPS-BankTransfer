@@ -10,7 +10,7 @@
 require_once('../vendor/autoload.php');
 
 use Externet\EpsBankTransfer\Api\SoV26Communicator;
-use Externet\EpsBankTransfer\EpsRefundRequestWrapped;
+use Externet\EpsBankTransfer\Requests\RefundRequest;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Symfony\Component\HttpClient\Psr18Client;
 
@@ -18,7 +18,7 @@ $userID = 'AKLJS231534';            // Eps "Händler-ID"/UserID = epsr:UserId
 $pin = 'topSecret';                 // Secret for authentication / PIN = part of epsr:SHA256Fingerprint
 $merchantIban = 'AT611904300234573201';
 
-$refundRequest = new EpsRefundRequestWrapped(
+$refundRequest = new RefundRequest(
     date('Y-m-d\TH:i:s'),           // Current date-time (must not diverge more than 3hrs from SO time)
     'epsM7DPP3R12',            // EPS Transaction ID from epsp:BankResponse
     $merchantIban,

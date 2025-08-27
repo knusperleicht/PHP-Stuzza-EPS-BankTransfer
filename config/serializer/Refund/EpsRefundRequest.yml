@@ -1,3 +1,6 @@
 Externet\EpsBankTransfer\Generated\Refund\EpsRefundRequest:
     xml_root_name: EpsRefundRequest
     xml_root_namespace: 'http://www.stuzza.at/namespaces/eps/refund/2018/09'
+    xml_root_prefix: epsr
+    xml_namespaces:
+      epsr: 'http://www.stuzza.at/namespaces/eps/refund/2018/09'

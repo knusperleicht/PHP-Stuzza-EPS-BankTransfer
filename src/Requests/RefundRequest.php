@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Externet\EpsBankTransfer;
-use Externet\EpsBankTransfer\Generated\Refund\EpsRefundRequest;
+namespace Externet\EpsBankTransfer\Requests;
 use Externet\EpsBankTransfer\Generated\Refund\Amount;
 use Externet\EpsBankTransfer\Generated\Refund\AuthenticationDetails;
+use Externet\EpsBankTransfer\Generated\Refund\EpsRefundRequest;
 use Externet\EpsBankTransfer\Utilities\Fingerprint;
 
-class EpsRefundRequestWrapped
+class RefundRequest
 {
     /**
      * @var string Creation timestamp in ISO 8601 format

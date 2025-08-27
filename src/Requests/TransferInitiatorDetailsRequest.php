@@ -1,18 +1,21 @@
 <?php
 declare(strict_types=1);
 
-namespace Externet\EpsBankTransfer;
+namespace Externet\EpsBankTransfer\Requests;
 
 use DateTime;
 use Exception;
+use Externet\EpsBankTransfer\Generated;
 use Externet\EpsBankTransfer\Generated\Protocol\V26\EpsProtocolDetails;
+use Externet\EpsBankTransfer\Requests\Parts\WebshopArticle;
+use Externet\EpsBankTransfer\TransferMsgDetails;
 use Externet\EpsBankTransfer\Utilities\MoneyFormatter;
 use InvalidArgumentException;
 
 /**
  * EPS payment order message
  */
-class TransferInitiatorDetailsWrapped
+class TransferInitiatorDetailsRequest
 {
 
     /**
@@ -270,5 +273,20 @@ class TransferInitiatorDetailsWrapped
         $paymentInitiatorDetails->setAustrianRulesDetails($austrianRulesDetails);
 
         return $xml;
+    }
+
+    public function getWebshopArticles(): array
+    {
+        return $this->webshopArticles;
+    }
+
+    public function setWebshopArticles(array $webshopArticles): void
+    {
+        $this->webshopArticles = $webshopArticles;
+    }
+
+    public function addArticle(WebshopArticle $article): void
+    {
+        $this->webshopArticles[] = $article;
     }
 }

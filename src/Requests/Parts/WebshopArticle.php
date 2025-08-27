@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Externet\EpsBankTransfer;
+namespace Externet\EpsBankTransfer\Requests\Parts;
 
 use Externet\EpsBankTransfer\Utilities\MoneyFormatter;
 
