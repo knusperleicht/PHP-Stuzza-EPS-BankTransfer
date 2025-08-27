@@ -9,4 +9,18 @@ class Fingerprint
     {
         return md5($secret . $date . $reference . $account . $remittance . MoneyFormatter::formatXsdDecimal($amount) . $currency . $userId);
     }
+
+    public static function generateSHA256Fingerprint(string $pin, string $creationDateTime, string $transactionId, string $merchantIban, string $amountValue, string $amountCurrency, string $userId, ?string $refundReference = null): string
+    {
+        $inputData = $pin .
+            $creationDateTime .
+            $transactionId .
+            $merchantIban .
+            $amountValue .
+            $amountCurrency .
+            $refundReference .
+            $userId;
+
+        return strtoupper(hash('sha256', $inputData));
+    }
 }

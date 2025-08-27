@@ -5,11 +5,14 @@ namespace Externet\EpsBankTransfer\Tests;
 use DOMDocument;
 use Exception;
 use Externet\EpsBankTransfer\Exceptions\XmlValidationException;
-use Externet\EpsBankTransfer\TransferInitiatorDetails;
+use Externet\EpsBankTransfer\Generated\Protocol\V26\EpsProtocolDetails;
+use Externet\EpsBankTransfer\SerializerFactory;
+use Externet\EpsBankTransfer\TransferInitiatorDetailsWrapped;
 use Externet\EpsBankTransfer\TransferMsgDetails;
 use Externet\EpsBankTransfer\Utilities\Fingerprint;
 use Externet\EpsBankTransfer\Utilities\XmlValidator;
 use Externet\EpsBankTransfer\WebshopArticle;
+use JMS\Serializer\SerializerBuilder;
 
 class TransferInitiatorDetailsTest extends BaseTest
 {
@@ -32,24 +35,47 @@ class TransferInitiatorDetailsTest extends BaseTest
     /** @var TransferMsgDetails */
     private $transferMsgDetails;
 
+    private $serializer;
+
     protected function setUp(): void
     {
         parent::setUp();
         $this->transferMsgDetails = $this->createTransferMsgDetails();
+        $this->serializer = SerializerBuilder::create()
+            ->addMetadataDir(__DIR__ . '/../../config/serializer/Protocol/V26', 'Externet\EpsBankTransfer\Generated\Protocol\V26')
+            ->addMetadataDir(__DIR__ . '/../../config/serializer/Protocol/V27', 'Externet\EpsBankTransfer\Generated\Protocol\V27')
+            ->addMetadataDir(__DIR__ . '/../../config/serializer/Payment/V26', 'Externet\EpsBankTransfer\Generated\Payment\V26')
+            ->addMetadataDir(__DIR__ . '/../../config/serializer/Payment/V27', 'Externet\EpsBankTransfer\Generated\Payment\V27')
+            ->addMetadataDir(__DIR__ . '/../../config/serializer/AustrianRules', 'Externet\EpsBankTransfer\Generated\AustrianRules')
+            ->addMetadataDir(__DIR__ . '/../../config/serializer/Epi', 'Externet\EpsBankTransfer\Generated\Epi')
+            ->addMetadataDir(__DIR__ . '/../../config/serializer/Refund', 'Externet\EpsBankTransfer\Generated\Refund')
+            ->addMetadataDir(__DIR__ . '/../../config/serializer/BankList', 'Externet\EpsBankTransfer\Generated\BankList')
+            ->addMetadataDir(__DIR__ . '/../../config/serializer/XmlDsig', 'Externet\EpsBankTransfer\Generated\XmlDsig')
+            ->build();
     }
 
+    /**
+     * @throws Exception
+     */
     public function testGenerateTransferInitiatorDetails()
     {
         $data = $this->createTransferInitiatorDetailsWithArticle();
-        $this->assertXmlEquals('TransferInitiatorDetailsWithoutSignature.xml', $data->getSimpleXml()->asXML());
+        $xmlData = $this->serializer->serialize($data, 'xml');
+        XmlValidator::ValidateEpsProtocol($xmlData);
+        $this->assertXmlEquals('TransferInitiatorDetailsWithoutSignature.xml', $xmlData);
     }
 
+    /**
+     * @throws Exception
+     */
     public function testGenerateTransferInitiatorDetailsWithOfiIdentifier()
     {
         $data = $this->createTransferInitiatorDetailsWithArticle();
         $data->orderingCustomerOfiIdentifier = self::TEST_OFI_IDENTIFIER;
 
-        $this->assertXmlEquals('TransferInitiatorDetailsWithoutSignatureAndOrderingCustomerOfiIdentifier.xml', $data->getSimpleXml()->asXML());
+        $xmlData = $this->serializer->serialize($data, 'xml');
+        XmlValidator::ValidateEpsProtocol($xmlData);
+        $this->assertXmlEquals('TransferInitiatorDetailsWithoutSignatureAndOrderingCustomerOfiIdentifier.xml', $xmlData);
     }
 
     /**
@@ -65,17 +91,19 @@ class TransferInitiatorDetailsTest extends BaseTest
     }
 
     /**
-     * @throws XmlValidationException
      * @throws Exception
      */
     public function testTransferInitiatorDetailsWithExpirationTime()
     {
         $data = $this->createTransferInitiatorDetails();
         $data->setExpirationMinutes(self::TEST_EXPIRATION_MINUTES);
-        $actual = $data->getSimpleXml()->asXML();
+        $data->remittanceIdentifier = 'Order1';
 
-        XmlValidator::ValidateEpsProtocol($actual);
-        $this->assertStringContainsString('ExpirationTime', $actual);
+        $epsProtocolDetails = $data->getSimpleXml();
+        $xmlData = $this->serializer->serialize($epsProtocolDetails, 'xml');
+
+        XmlValidator::ValidateEpsProtocol($xmlData);
+        $this->assertStringContainsString('ExpirationTime', $xmlData);
     }
 
     /**
@@ -87,10 +115,12 @@ class TransferInitiatorDetailsTest extends BaseTest
         $data = $this->createTransferInitiatorDetails();
         $data->unstructuredRemittanceIdentifier = self::TEST_UNSTRUCTURED_REMITTANCE;
         $data->setExpirationMinutes(self::TEST_EXPIRATION_MINUTES);
-        $actual = $data->getSimpleXml()->asXML();
+        $epsProtocolDetails = $data->getSimpleXml();
 
-        XmlValidator::ValidateEpsProtocol($actual);
-        $this->assertStringContainsString('UnstructuredRemittanceIdentifier>' . self::TEST_UNSTRUCTURED_REMITTANCE, $actual);
+        $xmlData = $this->serializer->serialize($epsProtocolDetails, 'xml');
+
+        XmlValidator::ValidateEpsProtocol($xmlData);
+        $this->assertStringContainsString('<epi:UnstructuredRemittanceIdentifier><![CDATA[' . self::TEST_UNSTRUCTURED_REMITTANCE . ']]></epi:UnstructuredRemittanceIdentifier>', $xmlData);
     }
 
     public function testMD5FingerprintIsCalculatedCorrectly()
@@ -124,13 +154,14 @@ class TransferInitiatorDetailsTest extends BaseTest
             "http://10.18.70.8:7001/transactionok?danke.asp",
             "http://10.18.70.8:7001/transactionnok?fehler.asp"
         );
-        $transferMsgDetails->targetWindowNok = $transferMsgDetails->targetWindowOk = 'Mustershop';
+        $transferMsgDetails->setTargetWindowNok('Mustershop');
+        $transferMsgDetails->setTargetWindowOk('Mustershop');
         return $transferMsgDetails;
     }
 
-    private function createTransferInitiatorDetails(): TransferInitiatorDetails
+    private function createTransferInitiatorDetails(): TransferInitiatorDetailsWrapped
     {
-        return new TransferInitiatorDetails(
+        return new TransferInitiatorDetailsWrapped(
             self::TEST_USER_ID,
             self::TEST_SECRET,
             self::TEST_BIC,
@@ -143,12 +174,15 @@ class TransferInitiatorDetailsTest extends BaseTest
         );
     }
 
-    private function createTransferInitiatorDetailsWithArticle(): TransferInitiatorDetails
+    /**
+     * @throws Exception
+     */
+    private function createTransferInitiatorDetailsWithArticle(): EpsProtocolDetails
     {
         $data = $this->createTransferInitiatorDetails();
         $data->remittanceIdentifier = self::TEST_REMITTANCE_ID;
         $data->webshopArticles[] = new WebshopArticle(self::TEST_ARTICLE_NAME, self::TEST_ARTICLE_COUNT, self::TEST_AMOUNT);
-        return $data;
+        return $data->getSimpleXml();
     }
 
     private function calculateFingerprint(string $remittanceIdentifier): string

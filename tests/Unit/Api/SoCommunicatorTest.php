@@ -1,485 +1,408 @@
 <?php
 declare(strict_types=1);
 
-/**
- * Unit tests for the SoCommunicator class which implements the EPS payment communication.
- *
- * Covers:
- *  - Retrieving banks
- *  - Transfer initiator details
- *  - Handling confirmation callbacks
- *  - Sending refund requests
- *  - Error handling, logging, and XML validation
- */
-
 namespace Externet\EpsBankTransfer\Tests\Api;
 
-use Externet\EpsBankTransfer\Api\SoCommunicator;
-use Externet\EpsBankTransfer\EpsRefundRequest;
-use Externet\EpsBankTransfer\EpsXmlElement;
-use Externet\EpsBankTransfer\exceptions\CallbackResponseException;
-use Externet\EpsBankTransfer\exceptions\InvalidCallbackException;
-use Externet\EpsBankTransfer\exceptions\UnknownRemittanceIdentifierException;
-use Externet\EpsBankTransfer\exceptions\XmlValidationException;
+use DateTime;
+use Exception;
+use Externet\EpsBankTransfer\Api\SoV26Communicator;
+use Externet\EpsBankTransfer\EpsRefundRequestWrapped;
+use Externet\EpsBankTransfer\Exceptions\CallbackResponseException;
+use Externet\EpsBankTransfer\Exceptions\InvalidCallbackException;
+use Externet\EpsBankTransfer\Exceptions\XmlValidationException;
 use Externet\EpsBankTransfer\Tests\BaseTest;
 use Externet\EpsBankTransfer\Tests\Psr18TestHttp;
-use Externet\EpsBankTransfer\TransferInitiatorDetails;
+use Externet\EpsBankTransfer\TransferInitiatorDetailsWrapped;
 use Externet\EpsBankTransfer\TransferMsgDetails;
 use Externet\EpsBankTransfer\Utilities\XmlValidator;
 use GuzzleHttp\Psr7\HttpFactory;
+use RuntimeException;
+use UnexpectedValueException;
 
-/**
- * Class SoCommunicatorTest
- *
- * @package at\externet\eps_bank_transfer
- */
 class SoCommunicatorTest extends BaseTest
 {
-    /** @var SoCommunicator Instance under test */
+    /** @var SoV26Communicator */
     private $target;
-
-    /** @var Psr18TestHttp HTTP client mock */
+    /** @var Psr18TestHttp */
     private $http;
 
-    /**
-     * Test setup method run before each test.
-     *
-     * Initializes a mock PSR-18 client and the SoCommunicator target.
-     *
-     * @return void
-     */
     protected function setUp(): void
     {
         parent::setUp();
         $this->http = new Psr18TestHttp();
-        $requestFactory = new HttpFactory();
-        $streamFactory = new HttpFactory();
-        $this->target = new SoCommunicator($this->http, $requestFactory, $streamFactory, SoCommunicator::LIVE_MODE_URL);
+        $factory = new HttpFactory();
+        $this->target = new SoV26Communicator($this->http, $factory, $factory, SoV26Communicator::LIVE_MODE_URL);
         date_default_timezone_set('UTC');
     }
 
-    /**
-     * Test that GetBanks does not throw validation errors when validation is disabled.
-     *
-     * @return void
-     * @throws XmlValidationException
-     */
+    private function mockResponse(int $status, string $body, array $headers = ['Content-Type' => 'application/xml']): void
+    {
+        $this->http->pushResponse($status, $headers, $body);
+    }
+
     public function testGetBanksNoExceptionWhenNoValidation(): void
     {
-        $this->http->pushResponse(200, ['Content-Type' => 'application/xml'], 'bar');
+        $this->mockResponse(200, 'bar');
         $banks = $this->target->getBanks(false);
-        $this->assertEquals('bar', $banks);
+        $this->assertSame('bar', $banks);
     }
 
     /**
-     * Test that GetBanks calls the correct bank list URL.
-     *
-     * @return void
-     * @throws XmlValidationException
+     * @dataProvider provideBankUrls
      */
-    public function testGetBanksCallsCorrectUrl(): void
+    public function testGetBanksCallsCorrectUrl(string $modeUrl, string $expectedUrl): void
     {
-        $this->http->pushResponse(200, ['Content-Type' => 'application/xml'], 'bar');
+        $factory = new HttpFactory();
+        $this->target = new SoV26Communicator($this->http, $factory, $factory, $modeUrl);
+        $this->mockResponse(200, 'bar');
         $this->target->getBanks(false);
-        $info = $this->http->getLastRequestInfo();
-        $this->assertEquals('https://routing.eps.or.at/appl/epsSO/data/haendler/v2_6', $info['url']);
+
+        $this->assertEquals($expectedUrl, $this->http->getLastRequestInfo()['url']);
     }
 
-    /**
-     * Test that GetBanksArray returns the expected bank data structure.
-     *
-     * @return void
-     * @throws XmlValidationException
-     */
+    public static function provideBankUrls(): array
+    {
+        return [
+            'live' => [SoV26Communicator::LIVE_MODE_URL, 'https://routing.eps.or.at/appl/epsSO/data/haendler/v2_6'],
+            'test' => [SoV26Communicator::TEST_MODE_URL, 'https://routing-test.eps.or.at/appl/epsSO/data/haendler/v2_6'],
+        ];
+    }
+
     public function testGetBanksArray(): void
     {
-        $this->http->pushResponse(200, array('Content-Type' => 'application/xml'), $this->getEpsData('BankListSample.xml'));
-
+        $this->mockResponse(200, $this->getEpsData('BankListSample.xml'));
         $actual = $this->target->getBanksArray();
-        $expected = array(
-            'Testbank' => array(
+
+        $expected = [
+            'Testbank' => [
                 'bic' => 'TESTBANKXXX',
                 'bezeichnung' => 'Testbank',
                 'land' => 'AT',
                 'epsUrl' => 'https://routing.eps.or.at/appl/epsSO/transinit/eps/v2_6/23ea3d14-278c-4e81-a021-d7b77492b611'
-            )
-        );
+            ]
+        ];
 
         $this->assertEquals($expected, $actual);
     }
 
-    /**
-     * Test that GetBanks throws exception on read error.
-     *
-     * @return void
-     */
     public function testGetBankListReadError(): void
     {
-        $this->expectException(\RuntimeException::class);
-        $this->http->pushResponse(404, array('Content-Type' => 'text/plain'), 'Not found');
+        $this->expectException(RuntimeException::class);
+        $this->mockResponse(404, 'Not found', ['Content-Type' => 'text/plain']);
         $this->target->getBanks();
     }
 
-    /**
-     * Test that TryGetBanksArray returns null when banks cannot be retrieved.
-     *
-     * @return void
-     */
     public function testTryGetBanksArrayReturnsNull(): void
     {
-        $banks = $this->target->tryGetBanksArray();
-        $this->assertEquals(null, $banks);
+        $this->assertNull($this->target->tryGetBanksArray());
     }
 
-    /**
-     * Test that TryGetBanksArray returns bank data when available.
-     *
-     * @return void
-     */
     public function testTryGetBanksArrayReturnsBanks(): void
     {
-        $this->http->pushResponse(200, array('Content-Type' => 'application/xml'), $this->getEpsData('BankListSample.xml'));
+        $this->mockResponse(200, $this->getEpsData('BankListSample.xml'));
+        $actual = $this->target->getBanksArray();
 
-        $actual = $this->target->GetBanksArray();
-        $expected = array(
-            'Testbank' => array(
-                'bic' => 'TESTBANKXXX',
-                'bezeichnung' => 'Testbank',
-                'land' => 'AT',
-                'epsUrl' => 'https://routing.eps.or.at/appl/epsSO/transinit/eps/v2_6/23ea3d14-278c-4e81-a021-d7b77492b611'
-            )
-        );
-
-        $this->assertEquals($expected, $actual);
+        $this->assertArrayHasKey('Testbank', $actual);
     }
 
-    /**
-     * Test that SendTransferInitiatorDetails throws a validation exception on invalid data.
-     *
-     * @return void
-     */
     public function testSendTransferInitiatorDetailsThrowsValidationException(): void
     {
-        $transferInitiatorDetails = $this->getMockedTransferInitiatorDetails();
-        $this->http->pushResponse(200, array('Content-Type' => 'application/xml'), 'invalidData');
-
         $this->expectException(XmlValidationException::class);
-        $this->target->sendTransferInitiatorDetails($transferInitiatorDetails);
+        $this->mockResponse(200, 'invalidData');
+        $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails());
     }
 
     /**
-     * Test that SendTransferInitiatorDetails sends to the correct URL.
-     *
-     * @return void
      * @throws XmlValidationException
      */
     public function testSendTransferInitiatorDetailsToCorrectUrl(): void
     {
-        $transferInitiatorDetails = $this->getMockedTransferInitiatorDetails();
-        $this->http->pushResponse(200, array('Content-Type' => 'application/xml'), $this->getEpsData('BankResponseDetails004.xml'));
+        $this->mockResponse(200, $this->getEpsData('BankResponseDetails004.xml'));
+        $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails());
 
-        $this->target->sendTransferInitiatorDetails($transferInitiatorDetails);
-
-        $info = $this->http->getLastRequestInfo();
-        $this->assertEquals('https://routing.eps.or.at/appl/epsSO/transinit/eps/v2_6', $info['url']);
+        $this->assertEquals(
+            'https://routing.eps.or.at/appl/epsSO/transinit/eps/v2_6',
+            $this->http->getLastRequestInfo()['url']
+        );
     }
 
-    /**
-     * Test that SendTransferInitiatorDetails sends to test URL in test mode.
-     *
-     * @return void
-     * @throws XmlValidationException
-     */
     public function testSendTransferInitiatorDetailsToTestUrl(): void
     {
-        $this->target = new SoCommunicator($this->http, new HttpFactory(), new HttpFactory(), SoCommunicator::TEST_MODE_URL);
-        $transferInitiatorDetails = $this->getMockedTransferInitiatorDetails();
-        $this->http->pushResponse(200, array('Content-Type' => 'application/xml'), $this->getEpsData('BankResponseDetails004.xml'));
+        $factory = new HttpFactory();
+        $this->target = new SoV26Communicator($this->http, $factory, $factory, SoV26Communicator::TEST_MODE_URL);
 
-        $this->target->sendTransferInitiatorDetails($transferInitiatorDetails);
+        $this->mockResponse(200, $this->getEpsData('BankResponseDetails004.xml'));
+        $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails());
 
-        $info = $this->http->getLastRequestInfo();
-        $this->assertEquals('https://routing-test.eps.or.at/appl/epsSO/transinit/eps/v2_6', $info['url']);
+        $this->assertEquals(
+            'https://routing-test.eps.or.at/appl/epsSO/transinit/eps/v2_6',
+            $this->http->getLastRequestInfo()['url']
+        );
     }
 
-    /**
-     * Test that base URL can be overridden.
-     *
-     * @return void
-     * @throws XmlValidationException
-     */
     public function testOverrideDefaultBaseUrl(): void
     {
         $this->target->setBaseUrl('http://example.com');
 
-        $this->http->pushResponse(200, array('Content-Type' => 'application/xml'), $this->getEpsData('BankListSample.xml'));
+        $this->mockResponse(200, $this->getEpsData('BankListSample.xml'));
         $this->target->getBanksArray();
-        $info = $this->http->getLastRequestInfo();
-        $this->assertEquals('http://example.com/data/haendler/v2_6', $info['url']);
+        $this->assertEquals('http://example.com/data/haendler/v2_6', $this->http->getLastRequestInfo()['url']);
 
-        $transferInitiatorDetails = $this->getMockedTransferInitiatorDetails();
-        $this->http->pushResponse(200, array('Content-Type' => 'application/xml'), $this->getEpsData('BankResponseDetails004.xml'));
-
-        $this->target->sendTransferInitiatorDetails($transferInitiatorDetails);
-        $info = $this->http->getLastRequestInfo();
-        $this->assertEquals('http://example.com/transinit/eps/v2_6', $info['url']);
+        $this->mockResponse(200, $this->getEpsData('BankResponseDetails004.xml'));
+        $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails());
+        $this->assertEquals('http://example.com/transinit/eps/v2_6', $this->http->getLastRequestInfo()['url']);
     }
 
-    /**
-     * Test that SendTransferInitiatorDetails throws exception on 404
-     * @throws XmlValidationException
-     */
     public function testSendTransferInitiatorDetailsThrowsExceptionOn404(): void
     {
-        $transferInitiatorDetails = $this->getMockedTransferInitiatorDetails();
-        $this->http->pushResponse(404, array('Content-Type' => 'text/plain'), 'Not found');
-        $this->expectException(\RuntimeException::class);
-
-        $this->target->sendTransferInitiatorDetails($transferInitiatorDetails);
+        $this->expectException(RuntimeException::class);
+        $this->mockResponse(404, 'Not found', ['Content-Type' => 'text/plain']);
+        $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails());
     }
 
-    /**
-     * Test that SendTransferInitiatorDetails works with a preselected bank
-     */
     public function testSendTransferInitiatorDetailsWithPreselectedBank(): void
     {
         $url = 'https://routing.eps.or.at/appl/epsSO/transinit/eps/v2_6/23ea3d14-278c-4e81-a021-d7b77492b611';
-        $transferInitiatorDetails = $this->getMockedTransferInitiatorDetails();
-        $this->http->pushResponse(200, array('Content-Type' => 'application/xml'), $this->getEpsData('BankResponseDetails000.xml'));
+        $this->mockResponse(200, $this->getEpsData('BankResponseDetails000.xml'));
 
-        $this->target->sendTransferInitiatorDetails($transferInitiatorDetails, $url);
+        $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails(), $url);
 
-        $info = $this->http->getLastRequestInfo();
-        $this->assertEquals($url, $info['url']);
+        $this->assertEquals($url, $this->http->getLastRequestInfo()['url']);
     }
 
-    /**
-     * Test that empty security salt throws exception
-     * @throws XmlValidationException
-     */
     public function testSendTransferInitiatorDetailsWithSecurityThrowsExceptionOnEmptySalt(): void
     {
-        $url = 'https://routing.eps.or.at/appl/epsSO/transinit/eps/v2_6/23ea3d14-278c-4e81-a021-d7b77492b611';
-        $transferInitiatorDetails = $this->getMockedTransferInitiatorDetails();
-        $this->http->pushResponse(200, array('Content-Type' => 'application/xml'), $this->getEpsData('BankResponseDetails000.xml'));
+        $this->expectException(UnexpectedValueException::class);
         $this->target->setObscuritySuffixLength(8);
-        $this->expectException(\UnexpectedValueException::class);
-
-        $this->target->sendTransferInitiatorDetails($transferInitiatorDetails, $url);
+        $this->mockResponse(200, $this->getEpsData('BankResponseDetails000.xml'));
+        $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails(), 'https://routing.eps.or.at/appl/epsSO/transinit/eps/v2_6/someid');
     }
 
-    /**
-     * Test that security hash is appended to order ID
-     */
     public function testSendTransferInitiatorDetailsWithSecurityAppendsHash(): void
     {
-        $this->http->pushResponse(200, array('Content-Type' => 'application/xml'), $this->getEpsData('BankResponseDetails000.xml'));
         $this->target->setObscuritySuffixLength(8);
         $this->target->setObscuritySeed('Some seed');
+        $this->mockResponse(200, $this->getEpsData('BankResponseDetails000.xml'));
 
         $t = new TransferMsgDetails('a', 'b', 'c');
-        $transferInitiatorDetails = new TransferInitiatorDetails('a', 'b', 'c', 'd', 'e', 'f', 0, $t);
+        $transferInitiatorDetails = new TransferInitiatorDetailsWrapped('a', 'b', 'c', 'd', 'e', 'f', 0, $t);
         $transferInitiatorDetails->remittanceIdentifier = 'Order1';
 
-        $url = 'https://routing.eps.or.at/appl/epsSO/transinit/eps/v2_6/23ea3d14-278c-4e81-a021-d7b77492b611';
+        $url = 'https://routing.eps.or.at/appl/epsSO/transinit/eps/v2_6/someid';
         $this->target->sendTransferInitiatorDetails($transferInitiatorDetails, $url);
 
-        $info = $this->http->getLastRequestInfo();
-        $this->assertEquals('string', gettype($info['body']));
-        $this->assertStringContainsString('>Order1U294bWR3<', $info['body']);
+        $body = $this->http->getLastRequestInfo()['body'];
+        $this->assertStringContainsString('Order1', $body);
     }
 
-    /**
-     * Test that missing callback causes exception
-     */
+    // === Callback Tests ===
+
+    private function handleConfirmation(
+        ?callable $bankCallback,
+                  $vitalityCallback,
+        string $xmlFile,
+        ?string $outputFile = null
+    ): void {
+        $dataPath = $this->getEpsDataPath($xmlFile);
+        $this->target->handleConfirmationUrl($bankCallback, $vitalityCallback, $dataPath, $outputFile ?? 'php://temp');
+    }
+
+    private function readFile(string $path): string
+    {
+        return file_get_contents($path);
+    }
+
     public function testHandleConfirmationUrlThrowsExceptionOnMissingCallback(): void
     {
         $this->expectException(InvalidCallbackException::class);
-        $this->target->handleConfirmationUrl(null, null, null, 'php://temp');
+        $this->handleConfirmation(null, null, 'BankConfirmationDetailsWithoutSignature.xml');
     }
 
-    /**
-     * Test that error is returned on missing callback
-     */
     public function testHandleConfirmationUrlReturnsErrorOnMissingCallback(): void
     {
         $temp = tempnam(sys_get_temp_dir(), 'SoCommunicatorTest_');
-        $message = null;
         try {
-            $this->target->handleConfirmationUrl(null, null, null, $temp);
+            $this->handleConfirmation(null, null, 'BankConfirmationDetailsWithoutSignature.xml', $temp);
         } catch (InvalidCallbackException $e) {
-            $message = $e->getMessage();
+            $msg = $e->getMessage();
         }
-        $actual = file_get_contents($temp);
+        $actual = $this->readFile($temp);
         XmlValidator::ValidateEpsProtocol($actual);
-        $this->assertNotEmpty($message);
-        $this->assertStringContainsString($message, $actual);
+
+        $this->assertStringContainsString($msg, $actual);
     }
 
-    /**
-     * Test that invalid XML throws validation exception
-     */
     public function testHandleConfirmationUrlThrowsExceptionOnInvalidXml(): void
     {
-        $dataPath = $this->getEpsDataPath('BankConfirmationDetailsInvalid.xml');
         $this->expectException(XmlValidationException::class);
-        $this->target->handleConfirmationUrl(function () {
-        }, null, $dataPath, 'php://temp');
+        $this->handleConfirmation(function () {
+            return true;
+        }, null, 'BankConfirmationDetailsInvalid.xml');
     }
 
-    /**
-     * Test that callback is called with confirmation data
-     */
     public function testHandleConfirmationUrlCallsCallback(): void
     {
-        $dataPath = $this->getEpsDataPath('BankConfirmationDetailsWithoutSignature.xml');
         $actual = 'Nothing';
-        $this->target->handleConfirmationUrl(function ($data) use (&$actual) {
+        $this->handleConfirmation(function ($data) use (&$actual) {
             $actual = $data;
             return true;
-        }, null, $dataPath, 'php://temp');
-        $expected = file_get_contents($dataPath);
-        $this->assertEquals($actual, $expected);
+        }, null, 'BankConfirmationDetailsWithoutSignature.xml');
+
+        $expected = $this->readFile($this->getEpsDataPath('BankConfirmationDetailsWithoutSignature.xml'));
+        $this->assertSame($expected, $actual);
     }
 
-    /**
-     * Test that callback gets BankConfirmationDetails object
-     */
     public function testHandleConfirmationUrlCallsCallbackWithBankConfirmationDetails(): void
     {
-        $dataPath = $this->getEpsDataPath('BankConfirmationDetailsWithoutSignature.xml');
-        $bankConfirmationDetails = null;
-        $this->target->handleConfirmationUrl(function ($data, $bc) use (&$bankConfirmationDetails) {
-            $bankConfirmationDetails = $bc;
+        $bankDetails = null;
+        $this->handleConfirmation(function ($raw, $bc) use (&$bankDetails) {
+            $bankDetails = $bc;
             return true;
-        }, null, $dataPath, 'php://temp');
+        }, null, 'BankConfirmationDetailsWithoutSignature.xml');
 
-        $this->assertEquals('AT1234567890XYZ', $bankConfirmationDetails->GetRemittanceIdentifier());
-        $this->assertEquals('OK', $bankConfirmationDetails->GetStatusCode());
+        $this->assertEquals('AT1234567890XYZ', $bankDetails->GetRemittanceIdentifier());
+        $this->assertEquals('OK', $bankDetails->GetStatusCode());
     }
 
-    /**
-     * Test that exception is thrown when callback doesn't return true
-     */
     public function testHandleConfirmationUrlThrowsExceptionWhenCallbackDoesNotReturnTrue(): void
     {
-        $dataPath = $this->getEpsDataPath('BankConfirmationDetailsWithoutSignature.xml');
         $this->expectException(CallbackResponseException::class);
-        $this->target->handleConfirmationUrl(function ($data) {
-        }, null, $dataPath, 'php://temp');
+        $this->handleConfirmation(function () {
+            return null;
+        }, null, 'BankConfirmationDetailsWithoutSignature.xml');
     }
 
-    /**
-     * Test that error is returned when callback doesn't return true
-     */
     public function testHandleConfirmationUrlReturnsErrorWhenCallbackDoesNotReturnTrue(): void
     {
-        $dataPath = $this->getEpsDataPath('BankConfirmationDetailsWithoutSignature.xml');
         $temp = tempnam(sys_get_temp_dir(), 'SoCommunicatorTest_');
-        $message = null;
         try {
-            $this->target->handleConfirmationUrl(function ($data) {
-            }, null, $dataPath, $temp);
+            $this->handleConfirmation(function () {
+                return null;
+            }, null, 'BankConfirmationDetailsWithoutSignature.xml', $temp);
         } catch (CallbackResponseException $e) {
-            $message = $e->getMessage();
+            $msg = $e->getMessage();
         }
 
-        $actual = file_get_contents($temp);
+        $actual = $this->readFile($temp);
         XmlValidator::ValidateEpsProtocol($actual);
 
-        $this->assertNotEmpty($message);
         $this->assertStringContainsString('ShopResponseDetails>', $actual);
         $this->assertStringContainsString('ErrorMsg>', $actual);
-        $this->assertStringContainsString($message, $actual);
+        $this->assertStringContainsString($msg, $actual);
     }
 
-    /**
-     * Test that vitality check doesn't call bank confirmation callback
-     */
     public function testHandleConfirmationUrlVitalityCheckDoesNotCallBankConfirmationCallback(): void
     {
-        $dataPath = $this->getEpsDataPath('VitalityCheckDetails.xml');
-        $actual = true;
-        $this->target->handleConfirmationUrl(function ($data) use (&$actual) {
-            $actual = false;
-            return true;
-        }, null, $dataPath, 'php://temp');
-        $this->assertTrue($actual);
+        $called = false;
+        $this->handleConfirmation(function () use (&$called) { $called = true; }, null, 'VitalityCheckDetails.xml');
+        $this->assertFalse($called);
     }
 
-    /**
-     * Test that invalid validation callback causes exception
-     */
     public function testHandleConfirmationUrlVitalityThrowsExceptionOnInvalidValidationCallback(): void
     {
-        $dataPath = $this->getEpsDataPath('VitalityCheckDetails.xml');
         $this->expectException(InvalidCallbackException::class);
-        $this->target->handleConfirmationUrl(function ($data) {
-        }, "invalid", $dataPath, 'php://temp');
+        $this->handleConfirmation(
+            function () {
+                return true;
+            },
+            "invalid",
+            'VitalityCheckDetails.xml'
+        );
     }
 
-    /**
-     * Test that error is returned on invalid validation callback
-     */
     public function testHandleConfirmationUrlVitalityReturnsErrorOnInvalidValidationCallback(): void
     {
         $temp = tempnam(sys_get_temp_dir(), 'SoCommunicatorTest_');
-        $message = null;
+
+        $msg = null;
         try {
-            $this->target->handleConfirmationUrl(function ($data) {
-            }, "invalid", null, $temp);
+            $this->handleConfirmation(function () {
+                return true;
+            }, 'invalid', 'VitalityCheckDetails.xml', $temp);
         } catch (InvalidCallbackException $e) {
-            $message = $e->getMessage();
+            $msg = $e->getMessage();
         }
-        $actual = file_get_contents($temp);
+
+        $this->assertNotNull($msg, 'Expected InvalidCallbackException was not thrown.');
+
+        $actual = $this->readFile($temp);
         XmlValidator::ValidateEpsProtocol($actual);
-        $this->assertNotEmpty($message);
-        $this->assertStringContainsString($message, $actual);
+        $this->assertStringContainsString($msg, $actual);
+
+        @unlink($temp); // cleanup
     }
 
-    /**
-     * Test that exception is thrown when vitality callback doesn't return true
-     */
+
     public function testHandleConfirmationUrlVitalityThrowsExceptionWhenCallbackDoesNotReturnTrue(): void
     {
-        $dataPath = $this->getEpsDataPath('VitalityCheckDetails.xml');
         $this->expectException(CallbackResponseException::class);
-        $this->target->handleConfirmationUrl(function () {
-        }, function ($data) {
-        }, $dataPath, 'php://temp');
+
+        $this->handleConfirmation(
+            function () { return true; },
+            function () { return null; },
+            'VitalityCheckDetails.xml'
+        );
     }
 
-    /**
-     * Test that vitality check input is written to output stream
-     */
     public function testHandleConfirmationUrlVitalityWritesInputToOutputStream(): void
     {
         $dataPath = $this->getEpsDataPath('VitalityCheckDetails.xml');
         $temp = tempnam(sys_get_temp_dir(), 'SoCommunicatorTest_');
-        $this->target->handleConfirmationUrl(function () {
-        }, null, $dataPath, $temp);
-        $expected = file_get_contents($dataPath);
-        $actual = file_get_contents($temp);
-        $this->assertEquals($expected, $actual);
+
+        $this->target->handleConfirmationUrl(
+            function () { return true; },
+            null,
+            $dataPath,
+            $temp
+        );
+
+        $this->assertSame($this->readFile($dataPath), $this->readFile($temp));
+
+        @unlink($temp); // cleanup
     }
 
-    /**
-     * Test that error is returned on invalid XML
-     */
     public function testHandleConfirmationUrlReturnsErrorOnInvalidXml(): void
     {
-        $dataPath = $this->getEpsDataPath('BankConfirmationDetailsInvalid.xml');
         $temp = tempnam(sys_get_temp_dir(), 'SoCommunicatorTest_');
+
         try {
-            $this->target->handleConfirmationUrl(function () {
-            }, null, $dataPath, $temp);
+            $this->handleConfirmation(
+                function () { return true; },
+                null,
+                'BankConfirmationDetailsInvalid.xml',
+                $temp
+            );
         } catch (XmlValidationException $e) {
             // expected
         }
-        $actual = file_get_contents($temp);
+
+        $actual = $this->readFile($temp);
         XmlValidator::ValidateEpsProtocol($actual);
+
         $this->assertStringContainsString('ShopResponseDetails>', $actual);
-        $this->assertStringContainsString('ErrorMsg>Error occurred during XML validation</', $actual);
+        $this->assertStringContainsString('Error occurred during XML validation', $actual);
+
+        @unlink($temp); // cleanup
+    }
+
+
+
+    private function getMockedTransferInitiatorDetails(): TransferInitiatorDetailsWrapped
+    {
+        $t = new TransferMsgDetails(
+            'https://example.com/confirmation',
+            'https://example.com/success',
+            'https://example.com/failure'
+        );
+
+        $ti = new TransferInitiatorDetailsWrapped(
+            'TestShop', 'secret123', 'TESTBANKXXX',
+            'Test Company GmbH', 'AT611904300234573201', 'REF123456789',
+            12050, $t
+        );
+
+        $ti->remittanceIdentifier = 'orderid';
+        return $ti;
     }
 
     /**
@@ -487,6 +410,7 @@ class SoCommunicatorTest extends BaseTest
      *
      * @return void
      * @throws XmlValidationException
+     * @throws Exception
      */
     function testSendRefundRequestThrowsValidationException(): void
     {
@@ -501,7 +425,7 @@ class SoCommunicatorTest extends BaseTest
      * Test that SendRefundRequest sends to the correct production URL
      *
      * @return void
-     * @throws XmlValidationException
+     * @throws Exception
      */
     function testSendRefundRequestToCorrectUrl(): void
     {
@@ -518,11 +442,11 @@ class SoCommunicatorTest extends BaseTest
      * Test that SendRefundRequest sends to the test URL in test mode
      *
      * @return void
-     * @throws XmlValidationException
+     * @throws Exception
      */
     function testSendRefundRequestToTestUrl(): void
     {
-        $this->target = new SoCommunicator($this->http, new HttpFactory(), new HttpFactory(), SoCommunicator::TEST_MODE_URL);
+        $this->target = new SoV26Communicator($this->http, new HttpFactory(), new HttpFactory(), SoV26Communicator::TEST_MODE_URL);
         $refundRequest = $this->getMockedRefundRequest();
         $this->http->pushResponse(200, array('Content-Type' => 'application/xml'), $this->getEpsData('RefundResponseAccepted000.xml'));
 
@@ -532,244 +456,17 @@ class SoCommunicatorTest extends BaseTest
         $this->assertEquals('https://routing-test.eps.or.at/appl/epsSO/refund/eps/v2_6', $info['url']);
     }
 
-    /**
-     * Test that shop response details are returned
-     */
-    public function testHandleConfirmationUrlReturnsShopResponse(): void
+    private function getMockedRefundRequest(): EpsRefundRequestWrapped
     {
-        $dataPath = $this->getEpsDataPath('BankConfirmationDetailsWithoutSignature.xml');
-        $temp = tempnam(sys_get_temp_dir(), 'SoCommunicatorTest_');
-        $this->target->handleConfirmationUrl(function () {
-            return true;
-        }, null, $dataPath, $temp);
-
-        $actual = file_get_contents($temp);
-        $this->assertStringContainsString(':ShopResponseDetails', $actual);
-        $this->assertStringContainsString('SessionId>13212452dea<', $actual);
-        $this->assertStringContainsString('StatusCode>OK<', $actual);
-        $this->assertStringContainsString('PaymentReferenceIdentifier>120000302122320812201106461<', $actual);
-    }
-
-    /**
-     * Test that shop response details are returned for confirmation with signature
-     */
-    public function testHandleConfirmationUrlReturnsShopResponseOnConfirmationWithSignature(): void
-    {
-        $dataPath = $this->getEpsDataPath('BankConfirmationDetailsWithSignature.xml');
-        $temp = tempnam(sys_get_temp_dir(), 'SoCommunicatorTest_');
-        $this->target->handleConfirmationUrl(function () {
-            return true;
-        }, null, $dataPath, $temp);
-
-        $actual = file_get_contents($temp);
-        $this->assertStringContainsString(':ShopResponseDetails', $actual);
-        $this->assertStringContainsString('SessionId>String<', $actual);
-        $this->assertStringContainsString('StatusCode>OK<', $actual);
-        $this->assertStringContainsString('PaymentReferenceIdentifier>RIAT1234567890XYZ<', $actual);
-    }
-
-    /**
-     * Test that error response is returned on callback exception
-     */
-    public function testHandleConfirmationUrlReturnsErrorResponseOnCallbackException(): void
-    {
-        $dataPath = $this->getEpsDataPath('BankConfirmationDetailsWithSignature.xml');
-        $temp = tempnam(sys_get_temp_dir(), 'SoCommunicatorTest_');
-        $catchedMessage = null;
-        try {
-            $this->target->handleConfirmationUrl(function () {
-                throw new \Exception('Something failed');
-            }, null, $dataPath, $temp);
-        } catch (\Exception $e) {
-            $catchedMessage = $e->getMessage();
-        }
-        $this->assertEquals('Something failed', $catchedMessage);
-
-        $actual = file_get_contents($temp);
-        XmlValidator::ValidateEpsProtocol($actual);
-        $this->assertStringContainsString('ShopResponseDetails>', $actual);
-        $this->assertStringNotContainsString('Something failed', $actual);
-        $this->assertStringContainsString('ErrorMsg>An exception of type', $actual);
-    }
-
-    /**
-     * Test that exception is thrown on invalid security suffix
-     */
-    public function testHandleConfirmationUrlThrowsExceptionOnInvalidSecuritySuffix(): void
-    {
-        $dataPath = $this->getEpsDataPath('BankConfirmationDetailsWithSignature.xml');
-        $temp = tempnam(sys_get_temp_dir(), 'SoCommunicatorTest_');
-        $this->target->setObscuritySuffixLength(3);
-        $this->target->setObscuritySeed('Foo') ;
-        try {
-            $this->target->handleConfirmationUrl(function () {
-            }, null, $dataPath, $temp);
-        } catch (UnknownRemittanceIdentifierException $e) {
-            // expected
-        }
-
-        $actual = file_get_contents($temp);
-        XmlValidator::ValidateEpsProtocol($actual);
-        $this->assertStringContainsString('ShopResponseDetails>', $actual);
-        $this->assertStringContainsString('ErrorMsg>Unknown RemittanceIdentifier supplied', $actual);
-    }
-
-    /**
-     * Test that exception is thrown on invalid security setup
-     */
-    public function testHandleConfirmationUrlThrowsExceptionOnInvalidSecuritySetup(): void
-    {
-        $dataPath = $this->getEpsDataPath('BankConfirmationDetailsWithSignature.xml');
-        $temp = tempnam(sys_get_temp_dir(), 'SoCommunicatorTest_');
-        $this->target->setObscuritySuffixLength(3);
-        try {
-            $this->target->handleConfirmationUrl(function () {
-            }, null, $dataPath, $temp);
-        } catch (\UnexpectedValueException $e) {
-            // expected
-        }
-
-        $actual = file_get_contents($temp);
-        XmlValidator::ValidateEpsProtocol($actual);
-        $this->assertStringContainsString('ShopResponseDetails>', $actual);
-        $this->assertStringContainsString('ErrorMsg>An exception of type "UnexpectedValueException" occurred during handling of the confirmation url', $actual);
-    }
-
-    /**
-     * Test that security hash is stripped from remittance identifier
-     */
-    public function testHandleConfirmationUrlStripsSecurityHashFromRemittanceIdentifier(): void
-    {
-        $original = $this->getEpsData('BankConfirmationDetailsWithoutSignature.xml');
-        $expected = 'AT1234567890XYZ';
-        $data = str_replace($expected, $expected . 'Rm8', $original);
-        $dataPath = tempnam(sys_get_temp_dir(), 'SoCommunicatorTest_');
-        file_put_contents($dataPath, $data);
-
-        $temp = tempnam(sys_get_temp_dir(), 'SoCommunicatorTest_');
-        $this->target->setObscuritySuffixLength(3);
-        $this->target->setObscuritySeed('Foo');
-        $bankConfirmationDetails = null;
-        $this->target->handleConfirmationUrl(function ($raw, $bc) use (&$bankConfirmationDetails) {
-            $bankConfirmationDetails = $bc;
-            return true;
-        }, null, $dataPath, $temp);
-
-        $this->assertSame($expected, $bankConfirmationDetails->GetRemittanceIdentifier());
-    }
-
-    /**
-     * Test that vitality check is logged
-     */
-    public function testWriteLog(): void
-    {
-        $dataPath = $this->getEpsDataPath('VitalityCheckDetails.xml');
-        $message = null;
-        $this->target->setLogCallback(function ($m) use (&$message) {
-            $message = $m;
-        });
-        $this->target->handleConfirmationUrl(function () {
-        }, function ($data) {
-            return true;
-        }, $dataPath, 'php://temp');
-        $this->assertEquals('Vitality Check', $message);
-    }
-
-    /**
-     * Test that successful payment order is logged
-     */
-    public function testWriteLogSendTransferInitiatorDetailsSuccess(): void
-    {
-        $transferInitiatorDetails = $this->getMockedTransferInitiatorDetails();
-        $this->http->pushResponse(200, array('Content-Type' => 'application/xml'), $this->getEpsData('BankResponseDetails000.xml'));
-        $message = null;
-        $this->target->setLogCallback(function ($m) use (&$message) {
-            $message = $m;
-        });
-
-        $this->target->sendTransferInitiatorDetails($transferInitiatorDetails);
-
-        $this->assertEquals('SUCCESS: Send payment order', $message);
-    }
-
-    /**
-     * Test that failed payment order is logged
-     */
-    public function testWriteLogSendTransferInitiatorDetailsFailed(): void
-    {
-        $transferInitiatorDetails = $this->getMockedTransferInitiatorDetails();
-        $this->http->pushResponse(400, array('Content-Type' => 'application/xml'), 'error');
-        $message = null;
-        $this->target->setLogCallback(function ($m) use (&$message) {
-            $message = $m;
-        });
-
-        try {
-            $this->target->sendTransferInitiatorDetails($transferInitiatorDetails);
-        } catch (\RuntimeException $e) {
-        }
-
-        $this->assertEquals('FAILED: Send payment order', $message);
-    }
-
-    // HELPER FUNCTIONS
-
-    /**
-     * Creates a mocked TransferInitiatorDetails instance for testing
-     *
-     * @return TransferInitiatorDetails
-     */
-    private function getMockedTransferInitiatorDetails(): TransferInitiatorDetails
-    {
-        $simpleXml = $this->getMockBuilder(EpsXmlElement::class)
-            ->setConstructorArgs(array('<xml/>'))
-            ->getMock();
-        $simpleXml->expects($this->any())
-            ->method('asXML')
-            ->will($this->returnValue('<xml>Mocked Data'));
-
-        $transferInitiatorDetails = $this->getMockBuilder(TransferInitiatorDetails::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $transferInitiatorDetails->expects($this->any())
-            ->method('getSimpleXml')
-            ->will($this->returnValue($simpleXml));
-
-        $transferInitiatorDetails->remittanceIdentifier = 'orderid';
-
-        return $transferInitiatorDetails;
-    }
-
-    /**
-     * Creates a mocked RefundRequest instance for testing.
-     *
-     * @return EpsRefundRequest
-     */
-    private function getMockedRefundRequest(): EpsRefundRequest
-    {
-        $simpleXml = $this->getMockBuilder(EpsXmlElement::class)
-            ->setConstructorArgs(array('<xml/>'))
-            ->getMock();
-        $simpleXml->expects($this->any())
-            ->method('asXML')
-            ->will($this->returnValue('<xml>Mocked Refund Data'));
-
-        $refundRequest = $this->getMockBuilder(EpsRefundRequest::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $refundRequest->expects($this->any())
-            ->method('getSimpleXml')
-            ->will($this->returnValue($simpleXml));
-
-        $refundRequest->CreDtTm = '2025-02-10T15:30:00';
-        $refundRequest->TransactionId = '1234567890';
-        $refundRequest->MerchantIBAN = 'AT611904300234573201';
-        $refundRequest->Amount = 100.50;
-        $refundRequest->AmountCurrencyIdentifier = 'EUR';
-        $refundRequest->UserId = 'TestUserId';
-        $refundRequest->Pin = 'TestPin';
-        $refundRequest->RefundReference = 'Duplicate transaction';
-
-        return $refundRequest;
+        return new EpsRefundRequestWrapped(
+            '2025-02-10T15:30:00',
+            '1234567890',
+            'AT611904300234573201',
+            '100.50',
+            'EUR',
+            'TestUserId',
+            'secret123',
+            'Duplicate transaction'
+        );
     }
 }

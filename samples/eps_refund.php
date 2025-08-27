@@ -9,8 +9,8 @@
  */
 require_once('../vendor/autoload.php');
 
-use Externet\EpsBankTransfer\Api\SoCommunicator;
-use Externet\EpsBankTransfer\EpsRefundRequest;
+use Externet\EpsBankTransfer\Api\SoV26Communicator;
+use Externet\EpsBankTransfer\EpsRefundRequestWrapped;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Symfony\Component\HttpClient\Psr18Client;
 
@@ -18,7 +18,7 @@ $userID = 'AKLJS231534';            // Eps "Händler-ID"/UserID = epsr:UserId
 $pin = 'topSecret';                 // Secret for authentication / PIN = part of epsr:SHA256Fingerprint
 $merchantIban = 'AT611904300234573201';
 
-$refundRequest = new EpsRefundRequest(
+$refundRequest = new EpsRefundRequestWrapped(
     date('Y-m-d\TH:i:s'),           // Current date-time (must not diverge more than 3hrs from SO time)
     'epsM7DPP3R12',            // EPS Transaction ID from epsp:BankResponse
     $merchantIban,
@@ -32,18 +32,18 @@ $refundRequest = new EpsRefundRequest(
 // Send a refund request to Scheme Operator
 $testMode = true;
 $psr17Factory = new Psr17Factory();
-$soCommunicator = new SoCommunicator(
+$soCommunicator = new SoV26Communicator(
     new Psr18Client(),
     $psr17Factory,
     $psr17Factory,
-    SoCommunicator::TEST_MODE_URL
+    SoV26Communicator::TEST_MODE_URL
 );
 
 try {
     $refundResponse = $soCommunicator->sendRefundRequest($refundRequest);
 
-    echo $refundResponse->statusCode . ', ' . $refundResponse->errorMsg;
-    // Return code 000 (No Errors) only means the refund request was accepted by the bank.
+    echo $refundResponse->getStatusCode() . ', ' . $refundResponse->getErrorMsg();
+    // Return code 000 (No Errors) only means the bank accepted the refund request.
     // A manual approval might be required.
 
 } catch (\Exception $e) {

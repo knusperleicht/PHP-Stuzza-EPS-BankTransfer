@@ -65,3 +65,11 @@ Because of this change the URL parameter has been removed for the functions:
 The current implementation does not support XML certificates and signing. Make sure that the
 confirmation url is not easily guessable. Think about adding unique security parameters to the
 confirmation url for every transaction.
+
+## Generating Classes from XSD
+
+To regenerate PHP classes from the XSD schemas, run:
+
+```
+vendor/bin/xsd2php convert xsd2php.yaml resources/schemas/*.xsd
+```

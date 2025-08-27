@@ -46,20 +46,23 @@ class XmlValidator
      */
     private static function ValidateXml($xml, $xsd): bool
     {
-        if (empty($xml))
-        {
+        if (empty($xml)) {
             throw new XmlValidationException('XML is empty');
         }
         $doc = new \DOMDocument();
-        $doc->loadXml($xml);
+        try {
+            $doc->loadXML($xml);
+        } catch (\Exception $e) {
+            throw new XmlValidationException('Failed to load XML: ' . $e->getMessage());
+        }
         $prevState = libxml_use_internal_errors(true);
-        if (!$doc->schemaValidate($xsd))
-        {
+        if (!$doc->schemaValidate($xsd)) {
             $xmlError = libxml_get_last_error();
             libxml_use_internal_errors($prevState);
-            
+
             throw new XmlValidationException('XML does not validate against XSD. ' . $xmlError->message);
         }
+        libxml_use_internal_errors($prevState);
         return true;
     }
 }

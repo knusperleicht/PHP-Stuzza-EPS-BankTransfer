@@ -10,11 +10,9 @@
 require_once('../vendor/autoload.php');
 
 use Externet\EpsBankTransfer;
-use Externet\EpsBankTransfer\Api\SoCommunicator;
-use Externet\EpsBankTransfer\TransferInitiatorDetails;
+use Externet\EpsBankTransfer\Api\SoV26Communicator;
+use Externet\EpsBankTransfer\TransferInitiatorDetailsWrapped;
 use Externet\EpsBankTransfer\TransferMsgDetails;
-use Externet\EpsBankTransfer\Utilities\Constants;
-use Externet\EpsBankTransfer\Utilities\XmlValidator;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Symfony\Component\HttpClient\Psr18Client;
 
@@ -31,7 +29,7 @@ $transferMsgDetails = new TransferMsgDetails(
     'https://yourdomain.example.com/Failure.html'     // The URL that the buyer will be redirected to on cancel or failure = epsp:TransactionNokUrl
 );
 
-$transferInitiatorDetails = new TransferInitiatorDetails(
+$transferInitiatorDetails = new TransferInitiatorDetailsWrapped(
     $userID,
     $pin,
     $bic,
@@ -60,11 +58,11 @@ $transferInitiatorDetails->webshopArticles[] = $article;
 // Send TransferInitiatorDetails to Scheme Operator 
 $testMode = true; // To use live mode call the SoCommunicator constructor with $testMode = false
 $psr17Factory = new Psr17Factory();
-$soCommunicator = new SoCommunicator(
+$soCommunicator = new SoV26Communicator(
     new Psr18Client(),
     $psr17Factory,
     $psr17Factory,
-    SoCommunicator::TEST_MODE_URL
+    SoV26Communicator::TEST_MODE_URL
 );
 // Optional: You can provide a bank selection on your payment site
 // $bankList = $soCommunicator->GetBanksArray(); // Alternative: TryGetBanksArray
@@ -74,13 +72,13 @@ $soCommunicator = new SoCommunicator(
 
 // Send transfer initiator details to default URL
 try {
-    $protocolDetails = $soCommunicator->SendTransferInitiatorDetails($transferInitiatorDetails);
+    $protocolDetails = $soCommunicator->sendTransferInitiatorDetails($transferInitiatorDetails);
 
-    if ($protocolDetails->errorCode !== '000') {
-        $errorCode = $protocolDetails->errorCode;
-        $errorMsg = $protocolDetails->errorMsg;
+    if ($protocolDetails->getBankResponseDetails()->getErrorDetails()->getErrorCode() !== '000') {
+        $errorCode = $protocolDetails->getBankResponseDetails()->getErrorDetails()->getErrorCode();
+        $errorMsg = $protocolDetails->getBankResponseDetails()->getErrorDetails()->getErrorMsg();
     } else {
-        header('Location: ' . $protocolDetails->clientRedirectUrl);
+        header('Location: ' . $protocolDetails->getBankResponseDetails()->getClientRedirectUrl());
     }
 } catch (\Exception $e) {
     $errorCode = 'Exception';

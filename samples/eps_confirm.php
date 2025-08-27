@@ -7,7 +7,7 @@ This file handles the confirmation call from the Scheme Operator (after a paymen
 
 require_once('../vendor/autoload.php');
 
-use Externet\EpsBankTransfer\Api\SoCommunicator;
+use Externet\EpsBankTransfer\Api\SoV26Communicator;
 use Externet\EpsBankTransfer\BankConfirmationDetails;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Symfony\Component\HttpClient\Psr18Client;
@@ -29,11 +29,11 @@ $paymentConfirmationCallback = function (string $plainXml, BankConfirmationDetai
 };
 try {
     $psr17Factory = new Psr17Factory();
-    $soCommunicator = new SoCommunicator(
+    $soCommunicator = new SoV26Communicator(
         new Psr18Client(),
         $psr17Factory,
         $psr17Factory,
-        SoCommunicator::TEST_MODE_URL
+        SoV26Communicator::TEST_MODE_URL
     );
     $soCommunicator->HandleConfirmationUrl(
         $paymentConfirmationCallback,

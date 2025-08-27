@@ -1,0 +1,61 @@
+xsd2php:
+  namespaces:
+    # V26 (Default, legacy schemas)
+    'http://www.stuzza.at/namespaces/eps/protocol/2014/10': 'Externet\EpsBankTransfer\Generated\Protocol\V26'
+    'http://www.stuzza.at/namespaces/eps/payment/2014/10': 'Externet\EpsBankTransfer\Generated\Payment\V26'
+    'http://www.stuzza.at/namespaces/eps/austrianrules/2014/10': 'Externet\EpsBankTransfer\Generated\AustrianRules'
+    'http://www.stuzza.at/namespaces/eps/epi/2013/02': 'Externet\EpsBankTransfer\Generated\Epi'
+    'http://www.stuzza.at/namespaces/eps/refund/2018/09': 'Externet\EpsBankTransfer\Generated\Refund'
+    'http://www.eps.or.at/epsSO/epsSOBankListProtocol/201008': 'Externet\EpsBankTransfer\Generated\BankList'
+    'http://www.w3.org/2000/09/xmldsig#': 'Externet\EpsBankTransfer\Generated\XmlDsig'
+
+    # V27 (new schemas)
+    'http://www.stuzza.at/namespaces/eps/protocol/2025/01': 'Externet\EpsBankTransfer\Generated\Protocol\V27'
+    'http://www.stuzza.at/namespaces/eps/payment/2025/01': 'Externet\EpsBankTransfer\Generated\Payment\V27'
+
+  destinations_php:
+    # Protocol
+    'Externet\EpsBankTransfer\Generated\Protocol\V26': 'src/Generated/Protocol/V26'
+    'Externet\EpsBankTransfer\Generated\Protocol\V27': 'src/Generated/Protocol/V27'
+
+    # Payment
+    'Externet\EpsBankTransfer\Generated\Payment\V26': 'src/Generated/Payment/V26'
+    'Externet\EpsBankTransfer\Generated\Payment\V27': 'src/Generated/Payment/V27'
+
+    # Others (not versioned)
+    'Externet\EpsBankTransfer\Generated\AustrianRules': 'src/Generated/AustrianRules'
+    'Externet\EpsBankTransfer\Generated\Epi': 'src/Generated/Epi'
+    'Externet\EpsBankTransfer\Generated\Refund': 'src/Generated/Refund'
+    'Externet\EpsBankTransfer\Generated\BankList': 'src/Generated/BankList'
+    'Externet\EpsBankTransfer\Generated\XmlDsig': 'src/Generated/XmlDsig'
+
+  destinations_jms:
+    # Protocol
+    'Externet\EpsBankTransfer\Generated\Protocol\V26': 'config/serializer/Protocol/V26'
+    'Externet\EpsBankTransfer\Generated\Protocol\V27': 'config/serializer/Protocol/V27'
+
+    # Payment
+    'Externet\EpsBankTransfer\Generated\Payment\V26': 'config/serializer/Payment/V26'
+    'Externet\EpsBankTransfer\Generated\Payment\V27': 'config/serializer/Payment/V27'
+
+    # Others (not versioned)
+    'Externet\EpsBankTransfer\Generated\AustrianRules': 'config/serializer/AustrianRules'
+    'Externet\EpsBankTransfer\Generated\Epi': 'config/serializer/Epi'
+    'Externet\EpsBankTransfer\Generated\Refund': 'config/serializer/Refund'
+    'Externet\EpsBankTransfer\Generated\BankList': 'config/serializer/BankList'
+    'Externet\EpsBankTransfer\Generated\XmlDsig': 'config/serializer/XmlDsig'
+
+  aliases:
+    'http://www.w3.org/2001/XMLSchema':
+      dateTime: 'DateTime'
+      date: 'string'
+      time: 'string'
+      anyURI: 'string'
+      base64Binary: 'string'
+      token: 'string'
+      string: 'string'
+      integer: 'int'
+      int: 'int'
+      long: 'int'
+      boolean: 'bool'
+      decimal: 'float'
