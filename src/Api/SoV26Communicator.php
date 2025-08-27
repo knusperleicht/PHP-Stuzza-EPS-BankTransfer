@@ -12,7 +12,7 @@ use Externet\EpsBankTransfer\Exceptions\XmlValidationException;
 use Externet\EpsBankTransfer\Generated\Protocol\V26\EpsProtocolDetails;
 use Externet\EpsBankTransfer\Generated\Refund\EpsRefundResponse;
 use Externet\EpsBankTransfer\Requests\RefundRequest;
-use Externet\EpsBankTransfer\Requests\TransferInitiatorDetailsRequest;
+use Externet\EpsBankTransfer\Requests\InitiateTransferRequest;
 use Externet\EpsBankTransfer\Serializer\SerializerFactory;
 use Externet\EpsBankTransfer\ShopResponseDetails;
 use Externet\EpsBankTransfer\Utilities\Constants;
@@ -126,8 +126,8 @@ class SoV26Communicator implements SoV26CommunicatorInterface
      * @throws Exception
      */
     public function sendTransferInitiatorDetails(
-        TransferInitiatorDetailsRequest $transferInitiatorDetails,
-        ?string                         $targetUrl = null
+        InitiateTransferRequest $transferInitiatorDetails,
+        ?string                 $targetUrl = null
     ): EpsProtocolDetails
     {
         if ($transferInitiatorDetails->remittanceIdentifier !== null) {
@@ -250,7 +250,7 @@ class SoV26Communicator implements SoV26CommunicatorInterface
     ): EpsRefundResponse {
         $targetUrl = $targetUrl ?? $this->baseUrl . '/refund/eps/v2_6';
 
-        $xmlData = $this->serializer->serialize($refundRequest->buildRefundRequest(), 'xml');
+        $xmlData = $this->serializer->serialize($refundRequest->buildEpsRefundRequest(), 'xml');
 
         $responseXml = $this->postUrl(
             $targetUrl,

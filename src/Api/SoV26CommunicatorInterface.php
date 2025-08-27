@@ -5,7 +5,7 @@ namespace Externet\EpsBankTransfer\Api;
 use Externet\EpsBankTransfer\Generated\Protocol\V26\EpsProtocolDetails;
 use Externet\EpsBankTransfer\Generated\Refund\EpsRefundResponse;
 use Externet\EpsBankTransfer\Requests\RefundRequest;
-use Externet\EpsBankTransfer\Requests\TransferInitiatorDetailsRequest;
+use Externet\EpsBankTransfer\Requests\InitiateTransferRequest;
 
 interface SoV26CommunicatorInterface
 {
@@ -35,14 +35,14 @@ interface SoV26CommunicatorInterface
     /**
      * Sends a payment initiation request to EPS.
      *
-     * @param TransferInitiatorDetailsRequest $transferInitiatorDetails Payment request details.
+     * @param InitiateTransferRequest $transferInitiatorDetails Payment request details.
      * @param string|null $targetUrl Optional target URL.
      *
      * @return EpsProtocolDetails The protocol response details from EPS.
      */
     public function sendTransferInitiatorDetails(
-        TransferInitiatorDetailsRequest $transferInitiatorDetails,
-        ?string                         $targetUrl = null
+        InitiateTransferRequest $transferInitiatorDetails,
+        ?string                 $targetUrl = null
     ): EpsProtocolDetails;
 
     /**

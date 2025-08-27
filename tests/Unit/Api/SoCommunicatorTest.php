@@ -8,11 +8,11 @@ use Externet\EpsBankTransfer\Api\SoV26Communicator;
 use Externet\EpsBankTransfer\Exceptions\CallbackResponseException;
 use Externet\EpsBankTransfer\Exceptions\InvalidCallbackException;
 use Externet\EpsBankTransfer\Exceptions\XmlValidationException;
+use Externet\EpsBankTransfer\Requests\Parts\PaymentFlowUrls;
 use Externet\EpsBankTransfer\Requests\RefundRequest;
-use Externet\EpsBankTransfer\Requests\TransferInitiatorDetailsRequest;
+use Externet\EpsBankTransfer\Requests\InitiateTransferRequest;
 use Externet\EpsBankTransfer\Tests\BaseTest;
 use Externet\EpsBankTransfer\Tests\Psr18TestHttp;
-use Externet\EpsBankTransfer\TransferMsgDetails;
 use Externet\EpsBankTransfer\Utilities\XmlValidator;
 use GuzzleHttp\Psr7\HttpFactory;
 use RuntimeException;
@@ -183,8 +183,8 @@ class SoCommunicatorTest extends BaseTest
         $this->target->setObscuritySeed('Some seed');
         $this->mockResponse(200, $this->getEpsData('BankResponseDetails000.xml'));
 
-        $t = new TransferMsgDetails('a', 'b', 'c');
-        $transferInitiatorDetails = new TransferInitiatorDetailsRequest('a', 'b', 'c', 'd', 'e', 'f', 0, $t);
+        $t = new PaymentFlowUrls('a', 'b', 'c');
+        $transferInitiatorDetails = new InitiateTransferRequest('a', 'b', 'c', 'd', 'e', 'f', 0, $t);
         $transferInitiatorDetails->remittanceIdentifier = 'Order1';
 
         $url = 'https://routing.eps.or.at/appl/epsSO/transinit/eps/v2_6/someid';
@@ -386,15 +386,15 @@ class SoCommunicatorTest extends BaseTest
 
 
 
-    private function getMockedTransferInitiatorDetails(): TransferInitiatorDetailsRequest
+    private function getMockedTransferInitiatorDetails(): InitiateTransferRequest
     {
-        $t = new TransferMsgDetails(
+        $t = new PaymentFlowUrls(
             'https://example.com/confirmation',
             'https://example.com/success',
             'https://example.com/failure'
         );
 
-        $ti = new TransferInitiatorDetailsRequest(
+        $ti = new InitiateTransferRequest(
             'TestShop', 'secret123', 'TESTBANKXXX',
             'Test Company GmbH', 'AT611904300234573201', 'REF123456789',
             12050, $t

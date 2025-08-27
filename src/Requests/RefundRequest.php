@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 namespace Externet\EpsBankTransfer\Requests;
+use Exception;
 use Externet\EpsBankTransfer\Generated\Refund\Amount;
 use Externet\EpsBankTransfer\Generated\Refund\AuthenticationDetails;
 use Externet\EpsBankTransfer\Generated\Refund\EpsRefundRequest;
@@ -71,9 +72,9 @@ class RefundRequest
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
-    public function buildRefundRequest(): EpsRefundRequest
+    public function buildEpsRefundRequest(): EpsRefundRequest
     {
         $refundRequest = new EpsRefundRequest();
 

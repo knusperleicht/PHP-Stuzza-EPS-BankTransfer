@@ -11,8 +11,8 @@ require_once('../vendor/autoload.php');
 
 use Externet\EpsBankTransfer;
 use Externet\EpsBankTransfer\Api\SoV26Communicator;
-use Externet\EpsBankTransfer\Requests\TransferInitiatorDetailsRequest;
-use Externet\EpsBankTransfer\TransferMsgDetails;
+use Externet\EpsBankTransfer\Requests\Parts\PaymentFlowUrls;
+use Externet\EpsBankTransfer\Requests\InitiateTransferRequest;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Symfony\Component\HttpClient\Psr18Client;
 
@@ -23,13 +23,13 @@ $bic    = 'GAWIATW1XXX';            // BIC code of receiving bank account = epi:
 $iban   = 'AT611904300234573201';   // IBAN code of receiving bank account = epi:BeneficiaryAccountIdentifier
 
 // Return urls 
-$transferMsgDetails = new TransferMsgDetails(
+$paymentFlowUrls = new PaymentFlowUrls(
     'https://yourdomain.example.com/eps_confirm.php?id=12345', // The URL that the EPS Scheme Operator (=SO) will call before (= VitaliyCheck) and after payment = epsp:ConfirmationUrl. Use samples/eps_confirm.php as a starting point. You must include a unique query string (and parse it in samples/eps_confirm.php), since the matching of a confirmation to a payment is solely based on this URL!
     'https://yourdomain.example.com/ThankYou.html',   // The URL that the buyer will be redirected to on succesful payment = epsp:TransactionOkUrl
     'https://yourdomain.example.com/Failure.html'     // The URL that the buyer will be redirected to on cancel or failure = epsp:TransactionNokUrl
 );
 
-$transferInitiatorDetails = new TransferInitiatorDetailsRequest(
+$initiateTransferRequest = new InitiateTransferRequest(
     $userID,
     $pin,
     $bic,
@@ -37,15 +37,15 @@ $transferInitiatorDetails = new TransferInitiatorDetailsRequest(
     $iban,
     '12345',                  // epi:ReferenceIdentifier. Mandatory but useless, since you will never (!) get to see this number again - not upon payment confirmation and not at the bank statement (Kontoauszug). It's also not displayed to the customer. Best guess: Use your order number, i.e. same as epi:RemittanceIdentifier.
     '9999',                   // Total amount in EUR cent ≈ epi:InstructedAmount
-    $transferMsgDetails
+    $paymentFlowUrls
 );
 
 // Optional: Include ONE (i.e. not both!) of the following two lines:
-$transferInitiatorDetails->remittanceIdentifier = 'Order123';             // "Zahlungsreferenz". Will be returned on payment confirmation = epi:RemittanceIdentifier
-$transferInitiatorDetails->unstructuredRemittanceIdentifier = 'Order123'; // "Verwendungszweck". Will be returned on payment confirmation = epi:UnstructuredRemittanceIdentifier
+$initiateTransferRequest->remittanceIdentifier = 'Order123';             // "Zahlungsreferenz". Will be returned on payment confirmation = epi:RemittanceIdentifier
+$initiateTransferRequest->unstructuredRemittanceIdentifier = 'Order123'; // "Verwendungszweck". Will be returned on payment confirmation = epi:UnstructuredRemittanceIdentifier
 
 // Optional:
-$transferInitiatorDetails->setExpirationMinutes(60);     // Sets ExpirationTimeout. Value must be between 5 and 60
+$initiateTransferRequest->setExpirationMinutes(60);     // Sets ExpirationTimeout. Value must be between 5 and 60
 
 // Optional: Include information about one or more articles = epsp:WebshopDetails
 $article = new EpsBankTransfer\Requests\Parts\WebshopArticle(  // = epsp:WebshopArticle
@@ -53,7 +53,7 @@ $article = new EpsBankTransfer\Requests\Parts\WebshopArticle(  // = epsp:Webshop
     1,              // Quantity
     9999            // Price in EUR cents
 );
-$transferInitiatorDetails->addArticle($article);
+$initiateTransferRequest->addArticle($article);
 
 // Send TransferInitiatorDetails to Scheme Operator 
 $testMode = true; // To use live mode call the SoCommunicator constructor with $testMode = false
@@ -72,7 +72,7 @@ $soCommunicator = new SoV26Communicator(
 
 // Send transfer initiator details to default URL
 try {
-    $protocolDetails = $soCommunicator->sendTransferInitiatorDetails($transferInitiatorDetails);
+    $protocolDetails = $soCommunicator->sendTransferInitiatorDetails($initiateTransferRequest);
 
     if ($protocolDetails->getBankResponseDetails()->getErrorDetails()->getErrorCode() !== '000') {
         $errorCode = $protocolDetails->getBankResponseDetails()->getErrorDetails()->getErrorCode();

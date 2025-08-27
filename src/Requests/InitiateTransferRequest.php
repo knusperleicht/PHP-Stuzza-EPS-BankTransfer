@@ -3,19 +3,32 @@ declare(strict_types=1);
 
 namespace Externet\EpsBankTransfer\Requests;
 
+use DateInterval;
 use DateTime;
 use Exception;
 use Externet\EpsBankTransfer\Generated;
+use Externet\EpsBankTransfer\Generated\Epi\BeneficiaryPartyDetails;
+use Externet\EpsBankTransfer\Generated\Epi\BfiPartyDetails;
+use Externet\EpsBankTransfer\Generated\Epi\EpiDetails;
+use Externet\EpsBankTransfer\Generated\Epi\IdentificationDetails;
+use Externet\EpsBankTransfer\Generated\Epi\InstructedAmount;
+use Externet\EpsBankTransfer\Generated\Epi\PartyDetails;
+use Externet\EpsBankTransfer\Generated\Epi\PaymentInstructionDetails;
+use Externet\EpsBankTransfer\Generated\Protocol\V26\AuthenticationDetails;
 use Externet\EpsBankTransfer\Generated\Protocol\V26\EpsProtocolDetails;
+use Externet\EpsBankTransfer\Generated\Protocol\V26\TransactionNokUrl;
+use Externet\EpsBankTransfer\Generated\Protocol\V26\TransactionOkUrl;
+use Externet\EpsBankTransfer\Generated\Protocol\V26\TransferInitiatorDetails;
+use Externet\EpsBankTransfer\Generated\Protocol\V26\TransferMsgDetails;
+use Externet\EpsBankTransfer\Requests\Parts\PaymentFlowUrls;
 use Externet\EpsBankTransfer\Requests\Parts\WebshopArticle;
-use Externet\EpsBankTransfer\TransferMsgDetails;
 use Externet\EpsBankTransfer\Utilities\MoneyFormatter;
 use InvalidArgumentException;
 
 /**
  * EPS payment order message
  */
-class TransferInitiatorDetailsRequest
+class InitiateTransferRequest
 {
 
     /**
@@ -98,7 +111,7 @@ class TransferInitiatorDetailsRequest
 
     /**
      * Merchant specification of relevant URL addresses
-     * @var TransferMsgDetails
+     * @var PaymentFlowUrls
      */
     public $transferMsgDetails;
 
@@ -116,10 +129,10 @@ class TransferInitiatorDetailsRequest
      * @param string $beneficiaryAccountIdentifier
      * @param string $referenceIdentifier
      * @param int $instructedAmount in cents
-     * @param TransferMsgDetails $transferMsgDetails
+     * @param PaymentFlowUrls $transferMsgDetails
      * @param string|null $date
      */
-    public function __construct(string $userId, string $secret, string $bfiBicIdentifier, string $beneficiaryNameAddressText, string $beneficiaryAccountIdentifier, string $referenceIdentifier, int $instructedAmount, TransferMsgDetails $transferMsgDetails, string $date = null)
+    public function __construct(string $userId, string $secret, string $bfiBicIdentifier, string $beneficiaryNameAddressText, string $beneficiaryAccountIdentifier, string $referenceIdentifier, int $instructedAmount, PaymentFlowUrls $transferMsgDetails, string $date = null)
     {
         $this->userId = $userId;
         $this->secret = $secret;
@@ -146,7 +159,7 @@ class TransferInitiatorDetailsRequest
             throw new InvalidArgumentException('Expiration minutes value of "' . $minutes . '" is not between 5 and 60.');
 
         $expires = new DateTime();
-        $expires->add(new \DateInterval('PT' . $minutes . 'M'));
+        $expires->add(new DateInterval('PT' . $minutes . 'M'));
         $this->expirationTime = $expires->format(DATE_RFC3339);
     }
 
@@ -173,38 +186,26 @@ class TransferInitiatorDetailsRequest
     /**
      * @throws Exception
      */
-    public function getSimpleXml(): EpsProtocolDetails
+    public function buildEpsProtocolDetails(): EpsProtocolDetails
     {
-        $xml = new Generated\Protocol\V26\EpsProtocolDetails();
+        $xml = new EpsProtocolDetails();
         $xml->setSessionLanguage("DE");
 
-        $transferInitiatorDetails = new Generated\Protocol\V26\TransferInitiatorDetails();
+        $transferInitiatorDetails = new TransferInitiatorDetails();
         $xml->setTransferInitiatorDetails($transferInitiatorDetails);
 
         $paymentInitiatorDetails = new Generated\Payment\V26\PaymentInitiatorDetails();
         $transferInitiatorDetails->setPaymentInitiatorDetails($paymentInitiatorDetails);
 
-        $transferMsgDetails = new Generated\Protocol\V26\TransferMsgDetails();
+        $transferMsgDetails = new TransferMsgDetails();
         $transferMsgDetails->setConfirmationUrl($this->transferMsgDetails->getConfirmationUrl());
 
-        $x = new Generated\Protocol\V26\TransactionOkUrl($this->transferMsgDetails->getTransactionOkUrl());
-
-//        if (!empty($this->transferMsgDetails->getTargetWindowOk())) {
-//            $x->setTargetWindow($this->transferMsgDetails->getTargetWindowOk());
-//        }
-
-        $transferMsgDetails->setTransactionOkUrl($x);
-
-
-        $y = new Generated\Protocol\V26\TransactionNokUrl($this->transferMsgDetails->getTransactionNokUrl());
-
-//        if (!empty($this->transferMsgDetails->getTargetWindowNok())) {
-//            $y->setTargetWindow($this->transferMsgDetails->getTargetWindowNok());
-//        }
-
-        $transferMsgDetails->setTransactionNokUrl($y);
-
-
+        $transactionOkUrl = new TransactionOkUrl($this->transferMsgDetails->getTransactionOkUrl());
+        $transferMsgDetails->setTransactionOkUrl($transactionOkUrl);
+        
+        $transactionNokUrl = new TransactionNokUrl($this->transferMsgDetails->getTransactionNokUrl());
+        $transferMsgDetails->setTransactionNokUrl($transactionNokUrl);
+        
         $transferInitiatorDetails->setTransferMsgDetails($transferMsgDetails);
 
         if (!empty($this->webshopArticles)) {
@@ -220,15 +221,15 @@ class TransferInitiatorDetailsRequest
             $transferInitiatorDetails->setWebshopDetails($articles);
         }
 
-        $authenticationDetails = new Generated\Protocol\V26\AuthenticationDetails();
+        $authenticationDetails = new AuthenticationDetails();
         $authenticationDetails->setUserId($this->userId);
         $authenticationDetails->setMD5Fingerprint($this->getMD5Fingerprint());
         $transferInitiatorDetails->setAuthenticationDetails($authenticationDetails);
 
-        $epiDetails = new Generated\Epi\EpiDetails();
-        $identificationDetails = new Generated\Epi\IdentificationDetails();
-        $partyDetails = new Generated\Epi\PartyDetails();
-        $paymentInstructionDetails = new Generated\Epi\PaymentInstructionDetails();
+        $epiDetails = new EpiDetails();
+        $identificationDetails = new IdentificationDetails();
+        $partyDetails = new PartyDetails();
+        $paymentInstructionDetails = new PaymentInstructionDetails();
 
         if ($this->unstructuredRemittanceIdentifier == null) {
             $paymentInstructionDetails->setRemittanceIdentifier($this->remittanceIdentifier);
@@ -236,16 +237,16 @@ class TransferInitiatorDetailsRequest
             $paymentInstructionDetails->setUnstructuredRemittanceIdentifier($this->unstructuredRemittanceIdentifier);
         }
 
-        $instructedAmount = new Generated\Epi\InstructedAmount($this->instructedAmount);
+        $instructedAmount = new InstructedAmount($this->instructedAmount);
         $instructedAmount->setAmountCurrencyIdentifier($this->amountCurrencyIdentifier);
         $paymentInstructionDetails->setInstructedAmount($instructedAmount);
         $paymentInstructionDetails->setChargeCode('SHA');
 
-        $bfiPartyDetails = new Generated\Epi\BfiPartyDetails();
+        $bfiPartyDetails = new BfiPartyDetails();
         $bfiPartyDetails->setBfiBicIdentifier($this->bfiBicIdentifier);
         $partyDetails->setBfiPartyDetails($bfiPartyDetails);
 
-        $beneficiaryPartyDetails = new Generated\Epi\BeneficiaryPartyDetails();
+        $beneficiaryPartyDetails = new BeneficiaryPartyDetails();
         $beneficiaryPartyDetails->setBeneficiaryNameAddressText($this->beneficiaryNameAddressText);
         $beneficiaryPartyDetails->setBeneficiaryAccountIdentifier($this->beneficiaryAccountIdentifier);
         $partyDetails->setBeneficiaryPartyDetails($beneficiaryPartyDetails);

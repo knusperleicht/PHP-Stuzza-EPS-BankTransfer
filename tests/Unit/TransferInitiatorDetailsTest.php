@@ -6,9 +6,9 @@ use DOMDocument;
 use Exception;
 use Externet\EpsBankTransfer\Exceptions\XmlValidationException;
 use Externet\EpsBankTransfer\Generated\Protocol\V26\EpsProtocolDetails;
+use Externet\EpsBankTransfer\Requests\Parts\PaymentFlowUrls;
 use Externet\EpsBankTransfer\Requests\Parts\WebshopArticle;
-use Externet\EpsBankTransfer\Requests\TransferInitiatorDetailsRequest;
-use Externet\EpsBankTransfer\TransferMsgDetails;
+use Externet\EpsBankTransfer\Requests\InitiateTransferRequest;
 use Externet\EpsBankTransfer\Utilities\Fingerprint;
 use Externet\EpsBankTransfer\Utilities\XmlValidator;
 use JMS\Serializer\SerializerBuilder;
@@ -31,7 +31,7 @@ class TransferInitiatorDetailsTest extends BaseTest
     private const TEST_EXPIRATION_MINUTES = 5;
     private const TEST_UNSTRUCTURED_REMITTANCE = 'Foo is not Bar';
 
-    /** @var TransferMsgDetails */
+    /** @var PaymentFlowUrls */
     private $transferMsgDetails;
 
     private $serializer;
@@ -98,7 +98,7 @@ class TransferInitiatorDetailsTest extends BaseTest
         $data->setExpirationMinutes(self::TEST_EXPIRATION_MINUTES);
         $data->remittanceIdentifier = 'Order1';
 
-        $epsProtocolDetails = $data->getSimpleXml();
+        $epsProtocolDetails = $data->buildEpsProtocolDetails();
         $xmlData = $this->serializer->serialize($epsProtocolDetails, 'xml');
 
         XmlValidator::ValidateEpsProtocol($xmlData);
@@ -114,7 +114,7 @@ class TransferInitiatorDetailsTest extends BaseTest
         $data = $this->createTransferInitiatorDetails();
         $data->unstructuredRemittanceIdentifier = self::TEST_UNSTRUCTURED_REMITTANCE;
         $data->setExpirationMinutes(self::TEST_EXPIRATION_MINUTES);
-        $epsProtocolDetails = $data->getSimpleXml();
+        $epsProtocolDetails = $data->buildEpsProtocolDetails();
 
         $xmlData = $this->serializer->serialize($epsProtocolDetails, 'xml');
 
@@ -146,21 +146,18 @@ class TransferInitiatorDetailsTest extends BaseTest
         $this->assertEquals($expected, $actual, 'Expected MD5 Fingerprint to be equal');
     }
 
-    private function createTransferMsgDetails(): TransferMsgDetails
+    private function createTransferMsgDetails(): PaymentFlowUrls
     {
-        $transferMsgDetails = new TransferMsgDetails(
+        return new PaymentFlowUrls(
             "http://10.18.70.8:7001/vendorconfirmation",
             "http://10.18.70.8:7001/transactionok?danke.asp",
             "http://10.18.70.8:7001/transactionnok?fehler.asp"
         );
-        $transferMsgDetails->setTargetWindowNok('Mustershop');
-        $transferMsgDetails->setTargetWindowOk('Mustershop');
-        return $transferMsgDetails;
     }
 
-    private function createTransferInitiatorDetails(): TransferInitiatorDetailsRequest
+    private function createTransferInitiatorDetails(): InitiateTransferRequest
     {
-        return new TransferInitiatorDetailsRequest(
+        return new InitiateTransferRequest(
             self::TEST_USER_ID,
             self::TEST_SECRET,
             self::TEST_BIC,
@@ -181,7 +178,7 @@ class TransferInitiatorDetailsTest extends BaseTest
         $data = $this->createTransferInitiatorDetails();
         $data->remittanceIdentifier = self::TEST_REMITTANCE_ID;
         $data->webshopArticles[] = new WebshopArticle(self::TEST_ARTICLE_NAME, self::TEST_ARTICLE_COUNT, self::TEST_AMOUNT);
-        return $data->getSimpleXml();
+        return $data->buildEpsProtocolDetails();
     }
 
     private function calculateFingerprint(string $remittanceIdentifier): string
