@@ -6,7 +6,7 @@ use Exception;
 
 class ShopResponseException extends Exception
 {
-    public function GetShopResponseErrorMessage(): string
+    public function getShopResponseErrorMessage(): string
     {
         return $this->getMessage();
     }

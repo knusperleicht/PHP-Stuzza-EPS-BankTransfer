@@ -9,6 +9,15 @@ use SimpleXMLElement;
 
 class BankConfirmationDetailsTest extends BaseTest
 {
+    private const EXPECTED_REMITTANCE_ID = 'AT1234567890XYZ';
+    private const EXPECTED_PAYMENT_REFERENCE_ID = 'RIAT1234567890XYZ';
+    private const EXPECTED_SESSION_ID = 'String';
+    private const EXPECTED_STATUS_CODE = 'OK';
+    private const EXPECTED_REFERENCE_ID = '1234567890ABCDEFG';
+    private const EXPECTED_CUSTOMER_NAME = 'Customer Name';
+    private const EXPECTED_CUSTOMER_ID = 'DE0815';
+    private const EXPECTED_CUSTOMER_BIC = 'GERMAN2A';
+
     /**
      * @var array<string,SimpleXMLElement>
      */
@@ -31,69 +40,46 @@ class BankConfirmationDetailsTest extends BaseTest
     }
 
     /**
-     * @dataProvider remittanceIdentifierProvider
+     * @dataProvider bankConfirmationDetailsDataProvider
      */
-    public function testGetRemittanceIdentifier(string $key): void
+    public function testBankConfirmationDetails(string $key, array $expectedValues): void
     {
         $details = $this->makeDetails($key);
 
-        $this->assertSame('AT1234567890XYZ', $details->GetRemittanceIdentifier());
-
-        if ($key !== 'WithSignature') {
-            $this->assertSame('OK', $details->getStatusCode());
+        foreach ($expectedValues as $method => $expected) {
+            $this->assertSame($expected, $details->$method());
         }
     }
 
-    public function remittanceIdentifierProvider(): array
+    public function bankConfirmationDetailsDataProvider(): array
     {
         return [
-            'basic' => ['WithSignature'],
-            'unstructured without signature' => ['UnstructuredWithoutSignature'],
-            'with remittance without signature' => ['WithoutSignature'],
-            'unstructured with signature' => ['UnstructuredWithSignature'],
+            'test with signature' => [
+                'WithSignature',
+                [
+                    'getRemittanceIdentifier' => self::EXPECTED_REMITTANCE_ID,
+                    'getPaymentReferenceIdentifier' => self::EXPECTED_PAYMENT_REFERENCE_ID,
+                    'getSessionId' => self::EXPECTED_SESSION_ID,
+                    'getStatusCode' => self::EXPECTED_STATUS_CODE,
+                    'getReferenceIdentifier' => self::EXPECTED_REFERENCE_ID
+                ]
+            ],
+            'test without signature' => [
+                'UnstructuredWithoutSignature',
+                [
+                    'getRemittanceIdentifier' => self::EXPECTED_REMITTANCE_ID,
+                    'getStatusCode' => self::EXPECTED_STATUS_CODE
+                ]
+            ],
+            'test with payment initiator details' => [
+                'WithPaymentInititatorDetails',
+                [
+                    'getOrderingCustomerNameAddress' => self::EXPECTED_CUSTOMER_NAME,
+                    'getOrderingCustomerIdentifier' => self::EXPECTED_CUSTOMER_ID,
+                    'getOrderingCustomerBIC' => self::EXPECTED_CUSTOMER_BIC
+                ]
+            ]
         ];
-    }
-
-    public function testGetPaymentReferenceIdentifier(): void
-    {
-        $details = $this->makeDetails('WithSignature');
-        $this->assertSame('RIAT1234567890XYZ', $details->getPaymentReferenceIdentifier());
-    }
-
-    public function testGetSessionId(): void
-    {
-        $details = $this->makeDetails('WithSignature');
-        $this->assertSame('String', $details->getSessionId());
-    }
-
-    public function testGetStatusCode(): void
-    {
-        $details = $this->makeDetails('WithSignature');
-        $this->assertSame('OK', $details->getStatusCode());
-    }
-
-    public function testGetReferenceIdentifier(): void
-    {
-        $details = $this->makeDetails('WithSignature');
-        $this->assertSame('1234567890ABCDEFG', $details->getReferenceIdentifier());
-    }
-
-    public function testGetOrderingCustomerNameAddress(): void
-    {
-        $details = $this->makeDetails('WithPaymentInititatorDetails');
-        $this->assertSame('Customer Name', $details->getOrderingCustomerNameAddress());
-    }
-
-    public function testGetOrderingCustomerIdentifier(): void
-    {
-        $details = $this->makeDetails('WithPaymentInititatorDetails');
-        $this->assertSame('DE0815', $details->getOrderingCustomerIdentifier());
-    }
-
-    public function testGetOrderingCustomerBIC(): void
-    {
-        $details = $this->makeDetails('WithPaymentInititatorDetails');
-        $this->assertSame('GERMAN2A', $details->getOrderingCustomerBIC());
     }
 
     /**

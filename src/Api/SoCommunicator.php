@@ -85,7 +85,6 @@ class SoCommunicator implements SoCommunicatorInterface
         return $banks;
     }
 
-
     /**
      * Test that TryGetBanksArray returns null when banks cannot be retrieved.
      *
@@ -193,8 +192,8 @@ class SoCommunicator implements SoCommunicatorInterface
                 $this->writeLog('Bank Confirmation');
                 $BankConfirmationDetails = new BankConfirmationDetails($xml);
 
-                $BankConfirmationDetails->SetRemittanceIdentifier(
-                    $this->stripHash($BankConfirmationDetails->GetRemittanceIdentifier())
+                $BankConfirmationDetails->setRemittanceIdentifier(
+                    $this->stripHash($BankConfirmationDetails->getRemittanceIdentifier())
                 );
 
                 $shopResponseDetails->SessionId                = $BankConfirmationDetails->getSessionId();
@@ -204,7 +203,7 @@ class SoCommunicator implements SoCommunicatorInterface
 
                 $this->writeLog(sprintf(
                     'Calling confirmationUrlCallback for remittance identifier "%s" with status code %s',
-                    $BankConfirmationDetails->GetRemittanceIdentifier(),
+                    $BankConfirmationDetails->getRemittanceIdentifier(),
                     $BankConfirmationDetails->getStatusCode()
                 ));
 
@@ -221,7 +220,7 @@ class SoCommunicator implements SoCommunicatorInterface
             $this->writeLog($e->getMessage());
 
             if ($e instanceof ShopResponseException) {
-                $shopResponseDetails->ErrorMsg = $e->GetShopResponseErrorMessage();
+                $shopResponseDetails->ErrorMsg = $e->getShopResponseErrorMessage();
             } else {
                 $shopResponseDetails->ErrorMsg =
                     'An exception of type "' . get_class($e) . '" occurred during handling of the confirmation url';
@@ -288,6 +287,9 @@ class SoCommunicator implements SoCommunicatorInterface
     // PRIVATE INTERNAL HELPERS
     // ==========================
 
+    /**
+     * @throws CallbackResponseException
+     */
     private function confirmationUrlCallback(callable $callback, string $name, array $args): void
     {
         if (call_user_func_array($callback, $args) !== true) {
@@ -297,6 +299,9 @@ class SoCommunicator implements SoCommunicatorInterface
         }
     }
 
+    /**
+     * @throws InvalidCallbackException
+     */
     private function testCallability($callback, string $name): void
     {
         if (!is_callable($callback)) {

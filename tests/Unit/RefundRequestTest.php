@@ -51,7 +51,7 @@ class RefundRequestTest extends BaseTest
     public function refundRequestDataProvider(): array
     {
         return [
-            [
+            'with_refund_reference' => [
                 "2024-09-25T08:09:53.454+02:00",
                 "epsJMG15K752",
                 "AT175700054011014943",
@@ -62,7 +62,7 @@ class RefundRequestTest extends BaseTest
                 "REFUND-123456789",
                 "RefundRequest.xml"
             ],
-            [
+            'without_refund_reference' => [
                 "2025-09-25T08:09:53.454+02:00",
                 "epsJMG15K753",
                 "AT175700054011014943",
