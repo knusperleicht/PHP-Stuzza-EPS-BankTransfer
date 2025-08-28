@@ -81,6 +81,7 @@ class SoV26CommunicatorTest extends TestCase
     public function testGetBankListReadError(): void
     {
         $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('GET https://routing.eps.or.at/appl/epsSO/data/haendler/v2_6 failed with HTTP 404');
         $this->mockResponse(404, 'Not found', ['Content-Type' => 'text/plain']);
         $this->target->getBanks();
     }
@@ -88,6 +89,7 @@ class SoV26CommunicatorTest extends TestCase
     public function testSendTransferInitiatorDetailsThrowsValidationException(): void
     {
         $this->expectException(XmlValidationException::class);
+        $this->expectExceptionMessage('Failed to load XML: DOMDocument::loadXML(): Start tag expected, \'<\' not found in Entity, line: 1');
         $this->mockResponse(200, 'invalidData');
         $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails());
     }
@@ -145,6 +147,7 @@ class SoV26CommunicatorTest extends TestCase
     public function testSendTransferInitiatorDetailsThrowsExceptionOn404(): void
     {
         $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('POST https://routing.eps.or.at/appl/epsSO/transinit/eps/v2_6 failed with HTTP 404');
         $this->mockResponse(404, 'Not found', ['Content-Type' => 'text/plain']);
         $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails());
     }
@@ -152,7 +155,7 @@ class SoV26CommunicatorTest extends TestCase
     /**
      * @throws XmlValidationException
      */
-    public function testSendTransferInitiatorDetailsWithPreselectedBank(): void //TODO check
+    public function testSendTransferInitiatorDetailsWithPreselectedBank(): void
     {
         $url = 'https://routing.eps.or.at/appl/epsSO/transinit/eps/v2_6/23ea3d14-278c-4e81-a021-d7b77492b611';
         $this->mockResponse(200, $this->loadFixture('BankResponseDetails000.xml'));
@@ -162,14 +165,21 @@ class SoV26CommunicatorTest extends TestCase
         $this->assertEquals($url, $this->http->getLastRequestInfo()['url']);
     }
 
+    /**
+     * @throws XmlValidationException
+     */
     public function testSendTransferInitiatorDetailsWithSecurityThrowsExceptionOnEmptySalt(): void
     {
         $this->expectException(UnexpectedValueException::class);
+        $this->expectExceptionMessage('No security seed set when using security suffix.');
         $this->target->setObscuritySuffixLength(8);
         $this->mockResponse(200, $this->loadFixture('BankResponseDetails000.xml'));
-        $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails(), 'https://routing.eps.or.at/appl/epsSO/transinit/eps/v2_6/someid');
+        $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails());
     }
 
+    /**
+     * @throws XmlValidationException
+     */
     public function testSendTransferInitiatorDetailsWithSecurityAppendsHash(): void
     {
         $this->target->setObscuritySuffixLength(8);
@@ -199,14 +209,10 @@ class SoV26CommunicatorTest extends TestCase
         $this->target->handleConfirmationUrl($bankCallback, $vitalityCallback, $dataPath, $outputFile ?? 'php://temp');
     }
 
-    private function readFile(string $path): string
-    {
-        return file_get_contents($path);
-    }
-
     public function testHandleConfirmationUrlThrowsExceptionOnMissingCallback(): void
     {
         $this->expectException(InvalidCallbackException::class);
+        $this->expectExceptionMessage('confirmationCallback not callable or missing');
         $this->handleConfirmation(null, null, 'BankConfirmationDetailsWithoutSignature.xml');
     }
 
@@ -218,7 +224,7 @@ class SoV26CommunicatorTest extends TestCase
         } catch (InvalidCallbackException $e) {
             $msg = $e->getMessage();
         }
-        $actual = $this->readFile($temp);
+        $actual = file_get_contents($temp);
         XmlValidator::ValidateEpsProtocol($actual);
 
         $this->assertStringContainsString($msg, $actual);
@@ -227,6 +233,7 @@ class SoV26CommunicatorTest extends TestCase
     public function testHandleConfirmationUrlThrowsExceptionOnInvalidXml(): void
     {
         $this->expectException(XmlValidationException::class);
+        $this->expectExceptionMessage('XML does not validate against XSD.');
         $this->handleConfirmation(function () {
             return true;
         }, null, 'BankConfirmationDetailsInvalid.xml');
@@ -240,7 +247,7 @@ class SoV26CommunicatorTest extends TestCase
             return true;
         }, null, 'BankConfirmationDetailsWithoutSignature.xml');
 
-        $expected = $this->readFile($this->fixturePath('BankConfirmationDetailsWithoutSignature.xml'));
+        $expected = file_get_contents($this->fixturePath('BankConfirmationDetailsWithoutSignature.xml'));
         $this->assertSame($expected, $actual);
     }
 
@@ -259,11 +266,15 @@ class SoV26CommunicatorTest extends TestCase
     public function testHandleConfirmationUrlThrowsExceptionWhenCallbackDoesNotReturnTrue(): void
     {
         $this->expectException(CallbackResponseException::class);
+        $this->expectExceptionMessage('Confirmation callback must return true');
         $this->handleConfirmation(function () {
             return null;
         }, null, 'BankConfirmationDetailsWithoutSignature.xml');
     }
 
+    /**
+     * @throws XmlValidationException
+     */
     public function testHandleConfirmationUrlReturnsErrorWhenCallbackDoesNotReturnTrue(): void
     {
         $temp = tempnam(sys_get_temp_dir(), 'SoCommunicatorTest_');
@@ -275,7 +286,7 @@ class SoV26CommunicatorTest extends TestCase
             $msg = $e->getMessage();
         }
 
-        $actual = $this->readFile($temp);
+        $actual = file_get_contents($temp);
         XmlValidator::ValidateEpsProtocol($actual);
 
         $this->assertStringContainsString('ShopResponseDetails>', $actual);
@@ -293,6 +304,7 @@ class SoV26CommunicatorTest extends TestCase
     public function testHandleConfirmationUrlVitalityThrowsExceptionOnInvalidValidationCallback(): void
     {
         $this->expectException(InvalidCallbackException::class);
+        $this->expectExceptionMessage('vitalityCheckCallback not callable');
         $this->handleConfirmation(
             function () {
                 return true;
@@ -320,21 +332,25 @@ class SoV26CommunicatorTest extends TestCase
 
         $this->assertNotNull($msg, 'Expected InvalidCallbackException was not thrown.');
 
-        $actual = $this->readFile($temp);
+        $actual = file_get_contents($temp);
         XmlValidator::ValidateEpsProtocol($actual);
         $this->assertStringContainsString($msg, $actual);
 
         @unlink($temp); // cleanup
     }
 
-
     public function testHandleConfirmationUrlVitalityThrowsExceptionWhenCallbackDoesNotReturnTrue(): void
     {
         $this->expectException(CallbackResponseException::class);
+        $this->expectExceptionMessage('Vitality check callback must return true');
 
         $this->handleConfirmation(
-            function () { return true; },
-            function () { return null; },
+            function () {
+                return true;
+            },
+            function () {
+                return null;
+            },
             'VitalityCheckDetails.xml'
         );
     }
@@ -355,11 +371,14 @@ class SoV26CommunicatorTest extends TestCase
             $temp
         );
 
-        $this->assertXmlEqualsFixture('VitalityCheckDetails.xml', $this->readFile($temp));
+        $this->assertXmlEqualsFixture('VitalityCheckDetails.xml', file_get_contents($temp));
 
         @unlink($temp); // cleanup
     }
 
+    /**
+     * @throws XmlValidationException
+     */
     public function testHandleConfirmationUrlReturnsErrorOnInvalidXml(): void
     {
         $temp = tempnam(sys_get_temp_dir(), 'SoCommunicatorTest_');
@@ -375,7 +394,7 @@ class SoV26CommunicatorTest extends TestCase
             // expected
         }
 
-        $actual = $this->readFile($temp);
+        $actual = file_get_contents($temp);
         XmlValidator::ValidateEpsProtocol($actual);
 
         $this->assertStringContainsString('ShopResponseDetails>', $actual);
@@ -383,9 +402,7 @@ class SoV26CommunicatorTest extends TestCase
 
         @unlink($temp); // cleanup
     }
-
-
-
+    
     private function getMockedTransferInitiatorDetails(): InitiateTransferRequest
     {
         $t = new PaymentFlowUrls(
@@ -417,6 +434,7 @@ class SoV26CommunicatorTest extends TestCase
         $this->http->pushResponse(200, array('Content-Type' => 'application/xml'), 'invalidData');
 
         $this->expectException(XmlValidationException::class);
+        $this->expectExceptionMessage('Failed to load XML: DOMDocument::loadXML(): Start tag expected, \'<\' not found in Entity, line: 1');
         $this->target->sendRefundRequest($refundRequest);
     }
 

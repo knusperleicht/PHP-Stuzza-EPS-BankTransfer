@@ -164,6 +164,9 @@ class SoV26Communicator implements SoV26CommunicatorInterface
         }
     }
 
+    /**
+     * @throws XmlValidationException
+     */
     public function sendRefundRequest(
         RefundRequest $refundRequest,
         ?string $targetUrl = null
