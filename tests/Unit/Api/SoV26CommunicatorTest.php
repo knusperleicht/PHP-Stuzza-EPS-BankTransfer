@@ -8,18 +8,18 @@ use Externet\EpsBankTransfer\Api\SoV26Communicator;
 use Externet\EpsBankTransfer\Exceptions\CallbackResponseException;
 use Externet\EpsBankTransfer\Exceptions\InvalidCallbackException;
 use Externet\EpsBankTransfer\Exceptions\XmlValidationException;
+use Externet\EpsBankTransfer\Requests\InitiateTransferRequest;
 use Externet\EpsBankTransfer\Requests\Parts\PaymentFlowUrls;
 use Externet\EpsBankTransfer\Requests\RefundRequest;
-use Externet\EpsBankTransfer\Requests\InitiateTransferRequest;
+use Externet\EpsBankTransfer\Tests\Helper\Psr18TestHttp;
 use Externet\EpsBankTransfer\Tests\Helper\XmlFixtureTestHelper;
-use Externet\EpsBankTransfer\Tests\Psr18TestHttp;
 use Externet\EpsBankTransfer\Utilities\XmlValidator;
 use GuzzleHttp\Psr7\HttpFactory;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use UnexpectedValueException;
 
-class SoCommunicatorTest extends TestCase
+class SoV26CommunicatorTest extends TestCase
 {
     use XmlFixtureTestHelper;
 

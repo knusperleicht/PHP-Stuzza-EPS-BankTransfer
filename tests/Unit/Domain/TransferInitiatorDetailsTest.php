@@ -1,14 +1,12 @@
 <?php
 
-namespace Externet\EpsBankTransfer\Tests;
+namespace Externet\EpsBankTransfer\Tests\Domain;
 
-use DOMDocument;
 use Exception;
 use Externet\EpsBankTransfer\Exceptions\XmlValidationException;
-use Externet\EpsBankTransfer\Generated\Protocol\V26\EpsProtocolDetails;
+use Externet\EpsBankTransfer\Requests\InitiateTransferRequest;
 use Externet\EpsBankTransfer\Requests\Parts\PaymentFlowUrls;
 use Externet\EpsBankTransfer\Requests\Parts\WebshopArticle;
-use Externet\EpsBankTransfer\Requests\InitiateTransferRequest;
 use Externet\EpsBankTransfer\Serializer\SerializerFactory;
 use Externet\EpsBankTransfer\Tests\Helper\XmlFixtureTestHelper;
 use Externet\EpsBankTransfer\Utilities\Fingerprint;

@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Externet\EpsBankTransfer\Tests;
+namespace Externet\EpsBankTransfer\Tests\Domain;
 
 use Exception;
+use Externet\EpsBankTransfer\Domain\VitalityCheckDetails;
 use Externet\EpsBankTransfer\Tests\Helper\XmlFixtureTestHelper;
-use Externet\EpsBankTransfer\VitalityCheckDetails;
 use PHPUnit\Framework\TestCase;
 use SimpleXMLElement;
 

@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Externet\EpsBankTransfer;
+namespace Externet\EpsBankTransfer\Domain;
 
 use Exception;
+use Externet\EpsBankTransfer\EpsXmlElement;
 use Externet\EpsBankTransfer\Utilities\Constants;
-use SimpleXMLElement;
 
 class ShopResponseDetails
 {

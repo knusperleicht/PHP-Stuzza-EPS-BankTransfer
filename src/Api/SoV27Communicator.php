@@ -10,8 +10,7 @@ use Externet\EpsBankTransfer\Domain\VitalityCheckDetails;
 use Externet\EpsBankTransfer\Exceptions\CallbackResponseException;
 use Externet\EpsBankTransfer\Exceptions\InvalidCallbackException;
 use Externet\EpsBankTransfer\Exceptions\ShopResponseException;
-use Externet\EpsBankTransfer\Exceptions\XmlValidationException;
-use Externet\EpsBankTransfer\Generated\Protocol\V26\EpsProtocolDetails;
+use Externet\EpsBankTransfer\Generated\Protocol\V27\EpsProtocolDetails;
 use Externet\EpsBankTransfer\Generated\Refund\EpsRefundResponse;
 use Externet\EpsBankTransfer\Internal\SoCommunicatorCore;
 use Externet\EpsBankTransfer\Requests\InitiateTransferRequest;
@@ -25,7 +24,7 @@ use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Log\LoggerInterface;
 use SimpleXMLElement;
 
-class SoV26Communicator implements SoV26CommunicatorInterface
+class SoV27Communicator implements SoV27CommunicatorInterface
 {
     public const TEST_MODE_URL = 'https://routing-test.eps.or.at/appl/epsSO';
     public const LIVE_MODE_URL = 'https://routing.eps.or.at/appl/epsSO';
@@ -54,9 +53,6 @@ class SoV26Communicator implements SoV26CommunicatorInterface
         $this->serializer = $this->core->getSerializer();
     }
 
-    /**
-     * @throws Exception
-     */
     public function getBanksArray(): array
     {
         $xmlBanks = new SimpleXMLElement($this->getBanks());
@@ -84,12 +80,9 @@ class SoV26Communicator implements SoV26CommunicatorInterface
         }
     }
 
-    /**
-     * @throws XmlValidationException
-     */
     public function getBanks(bool $validateXml = true): string
     {
-        $url  = $this->core->getBaseUrl() . '/data/haendler/v2_6';
+        $url  = $this->core->getBaseUrl() . '/data/haendler/v2_7';
         $body = $this->core->getUrl($url, 'Requesting bank list');
 
         if ($validateXml) {
@@ -113,7 +106,7 @@ class SoV26Communicator implements SoV26CommunicatorInterface
                 $this->core->appendHash($transferInitiatorDetails->unstructuredRemittanceIdentifier);
         }
 
-        $targetUrl = $targetUrl ?? $this->core->getBaseUrl() . '/transinit/eps/v2_6';
+        $targetUrl = $targetUrl ?? $this->core->getBaseUrl() . '/transinit/eps/v2_7';
 
         $xmlData = $this->serializer->serialize($transferInitiatorDetails, 'xml');
         $response = $this->core->postUrl($targetUrl, $xmlData, 'Send payment order');
@@ -189,12 +182,13 @@ class SoV26Communicator implements SoV26CommunicatorInterface
         }
     }
 
+
     public function sendRefundRequest(
         RefundRequest $refundRequest,
         ?string $targetUrl = null,
         ?string $logMessage = null
     ): EpsRefundResponse {
-        $targetUrl = $targetUrl ?? $this->core->getBaseUrl() . '/refund/eps/v2_6';
+        $targetUrl = $targetUrl ?? $this->core->getBaseUrl() . '/refund/eps/v2_7';
 
         $xmlData = $this->serializer->serialize($refundRequest->buildEpsRefundRequest(), 'xml');
         $responseXml = $this->core->postUrl(

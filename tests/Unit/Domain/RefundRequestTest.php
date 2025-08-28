@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Externet\EpsBankTransfer\Tests;
+namespace Externet\EpsBankTransfer\Tests\Domain;
 
 use DateTime;
 use Exception;

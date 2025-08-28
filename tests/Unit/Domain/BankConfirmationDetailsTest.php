@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Externet\EpsBankTransfer\Tests;
+namespace Externet\EpsBankTransfer\Tests\Domain;
 
 use Exception;
-use Externet\EpsBankTransfer\BankConfirmationDetails;
+use Externet\EpsBankTransfer\Domain\BankConfirmationDetails;
 use Externet\EpsBankTransfer\Tests\Helper\XmlFixtureTestHelper;
 use PHPUnit\Framework\TestCase;
 use SimpleXMLElement;

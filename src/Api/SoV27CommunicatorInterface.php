@@ -3,15 +3,15 @@ declare(strict_types=1);
 
 namespace Externet\EpsBankTransfer\Api;
 
-use Externet\EpsBankTransfer\Generated\Protocol\V26\EpsProtocolDetails;
+use Externet\EpsBankTransfer\Generated\Protocol\V27\EpsProtocolDetails;
 use Externet\EpsBankTransfer\Generated\Refund\EpsRefundResponse;
 use Externet\EpsBankTransfer\Requests\InitiateTransferRequest;
 use Externet\EpsBankTransfer\Requests\RefundRequest;
 
-interface SoV26CommunicatorInterface extends SoCommunicatorInterface
+interface SoV27CommunicatorInterface extends SoCommunicatorInterface
 {
     /**
-     * Sends a payment initiation request to EPS (Protocol v2.6).
+     * Sends a payment initiation request to EPS (Protocol v2.7).
      *
      * @param InitiateTransferRequest $transferInitiatorDetails
      * @param string|null $targetUrl
@@ -19,11 +19,11 @@ interface SoV26CommunicatorInterface extends SoCommunicatorInterface
      */
     public function sendTransferInitiatorDetails(
         InitiateTransferRequest $transferInitiatorDetails,
-        ?string                 $targetUrl = null
+        ?string $targetUrl = null
     ): EpsProtocolDetails;
 
     /**
-     * Sends a refund request to EPS (Protocol v2.6).
+     * Sends a refund request to EPS (Protocol v2.7).
      *
      * @param RefundRequest $refundRequest
      * @param string|null $targetUrl
@@ -32,7 +32,7 @@ interface SoV26CommunicatorInterface extends SoCommunicatorInterface
      */
     public function sendRefundRequest(
         RefundRequest $refundRequest,
-        ?string       $targetUrl = null,
-        ?string       $logMessage = null
+        ?string $targetUrl = null,
+        ?string $logMessage = null
     ): EpsRefundResponse;
 }

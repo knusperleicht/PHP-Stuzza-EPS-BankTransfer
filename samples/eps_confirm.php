@@ -8,13 +8,13 @@ This file handles the confirmation call from the Scheme Operator (after a paymen
 require_once('../vendor/autoload.php');
 
 use Externet\EpsBankTransfer\Api\SoV26Communicator;
-use Externet\EpsBankTransfer\BankConfirmationDetails;
+use Externet\EpsBankTransfer\Domain\BankConfirmationDetails;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Symfony\Component\HttpClient\Psr18Client;
 
 /**
  * @param string $plainXml Raw XML message
- * @param Externet\EpsBankTransfer\BankConfirmationDetails $bankConfirmationDetails
+ * @param \Externet\EpsBankTransfer\Domain\BankConfirmationDetails $bankConfirmationDetails
  * @return true
  */
 $paymentConfirmationCallback = function (string $plainXml, BankConfirmationDetails $bankConfirmationDetails) {
