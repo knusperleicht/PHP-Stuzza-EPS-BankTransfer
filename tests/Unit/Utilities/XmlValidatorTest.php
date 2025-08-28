@@ -4,13 +4,13 @@ declare(strict_types=1);
 namespace Externet\EpsBankTransfer\Tests\Utilities;
 
 use Externet\EpsBankTransfer\Exceptions\XmlValidationException;
-use Externet\EpsBankTransfer\Tests\Helper\XmlFixtureTestHelper;
+use Externet\EpsBankTransfer\Tests\Helper\XmlFixtureTestTrait;
 use Externet\EpsBankTransfer\Utilities\XmlValidator;
 use PHPUnit\Framework\TestCase;
 
 class XmlValidatorTest extends TestCase
 {
-    use XmlFixtureTestHelper;
+    use XmlFixtureTestTrait;
 
     public function testBanksThrowsExceptionOnEmptyData(): void
     {

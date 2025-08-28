@@ -5,13 +5,13 @@ namespace Externet\EpsBankTransfer\Tests\Domain;
 
 use Exception;
 use Externet\EpsBankTransfer\Domain\BankConfirmationDetails;
-use Externet\EpsBankTransfer\Tests\Helper\XmlFixtureTestHelper;
+use Externet\EpsBankTransfer\Tests\Helper\XmlFixtureTestTrait;
 use PHPUnit\Framework\TestCase;
 use SimpleXMLElement;
 
 class BankConfirmationDetailsTest extends TestCase
 {
-    use XmlFixtureTestHelper;
+    use XmlFixtureTestTrait;
 
     private const EXPECTED_REMITTANCE_ID = 'AT1234567890XYZ';
     private const EXPECTED_PAYMENT_REFERENCE_ID = 'RIAT1234567890XYZ';

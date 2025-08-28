@@ -56,12 +56,14 @@ class SoV26Communicator implements SoV26CommunicatorInterface
     }
 
     /**
+     * @param string|null $targetUrl
+     * @return EpsSOBankListProtocol
      * @throws XmlValidationException
      */
-    public function getBanks(): EpsSOBankListProtocol
+    public function getBanks(?string $targetUrl = null): EpsSOBankListProtocol
     {
-        $url  = $this->core->getBaseUrl() . '/data/haendler/v2_6';
-        $body = $this->core->getUrl($url, 'Requesting bank list');
+        $targetUrl = $targetUrl ?? $this->core->getBaseUrl() . '/data/haendler/v2_6';
+        $body = $this->core->getUrl($targetUrl, 'Requesting bank list');
 
         XmlValidator::ValidateBankList($body);
 
@@ -164,8 +166,7 @@ class SoV26Communicator implements SoV26CommunicatorInterface
 
     public function sendRefundRequest(
         RefundRequest $refundRequest,
-        ?string $targetUrl = null,
-        ?string $logMessage = null
+        ?string $targetUrl = null
     ): EpsRefundResponse {
         $targetUrl = $targetUrl ?? $this->core->getBaseUrl() . '/refund/eps/v2_6';
 
@@ -173,7 +174,7 @@ class SoV26Communicator implements SoV26CommunicatorInterface
         $responseXml = $this->core->postUrl(
             $targetUrl,
             $xmlData,
-            $logMessage ?? 'Sending refund request to ' . $targetUrl
+            'Sending refund request to ' . $targetUrl
         );
 
         XmlValidator::ValidateEpsRefund($responseXml);

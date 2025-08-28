@@ -5,13 +5,13 @@ namespace Externet\EpsBankTransfer\Tests\Domain;
 
 use Exception;
 use Externet\EpsBankTransfer\Domain\VitalityCheckDetails;
-use Externet\EpsBankTransfer\Tests\Helper\XmlFixtureTestHelper;
+use Externet\EpsBankTransfer\Tests\Helper\XmlFixtureTestTrait;
 use PHPUnit\Framework\TestCase;
 use SimpleXMLElement;
 
 class VitalityCheckDetailsTest extends TestCase
 {
-    use XmlFixtureTestHelper;
+    use XmlFixtureTestTrait;
 
     /** @var SimpleXMLElement */
     private $simpleXml;

@@ -7,14 +7,14 @@ use Externet\EpsBankTransfer\Api\SoCommunicatorInterface;
 use Externet\EpsBankTransfer\Api\SoV26Communicator;
 use Externet\EpsBankTransfer\Api\SoV27Communicator;
 use Externet\EpsBankTransfer\Tests\Helper\Psr18TestHttp;
-use Externet\EpsBankTransfer\Tests\Helper\XmlFixtureTestHelper;
+use Externet\EpsBankTransfer\Tests\Helper\XmlFixtureTestTrait;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 
 class SoCommunicatorInterfaceTest extends TestCase
 {
-    use XmlFixtureTestHelper;
+    use XmlFixtureTestTrait;
 
     /**
      * @return array<string,array{0:SoCommunicatorInterface,1:Psr18TestHttp}>

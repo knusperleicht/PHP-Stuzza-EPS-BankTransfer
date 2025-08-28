@@ -27,12 +27,10 @@ interface SoV26CommunicatorInterface extends SoCommunicatorInterface
      *
      * @param RefundRequest $refundRequest
      * @param string|null $targetUrl
-     * @param string|null $logMessage
      * @return EpsRefundResponse
      */
     public function sendRefundRequest(
         RefundRequest $refundRequest,
-        ?string       $targetUrl = null,
-        ?string       $logMessage = null
+        ?string       $targetUrl = null
     ): EpsRefundResponse;
 }

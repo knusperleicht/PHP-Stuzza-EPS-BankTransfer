@@ -13,7 +13,7 @@ use Externet\EpsBankTransfer\Requests\InitiateTransferRequest;
 use Externet\EpsBankTransfer\Requests\Parts\PaymentFlowUrls;
 use Externet\EpsBankTransfer\Requests\RefundRequest;
 use Externet\EpsBankTransfer\Tests\Helper\Psr18TestHttp;
-use Externet\EpsBankTransfer\Tests\Helper\XmlFixtureTestHelper;
+use Externet\EpsBankTransfer\Tests\Helper\XmlFixtureTestTrait;
 use Externet\EpsBankTransfer\Utilities\XmlValidator;
 use GuzzleHttp\Psr7\HttpFactory;
 use PHPUnit\Framework\TestCase;
@@ -22,7 +22,7 @@ use UnexpectedValueException;
 
 class SoV26CommunicatorTest extends TestCase
 {
-    use XmlFixtureTestHelper;
+    use XmlFixtureTestTrait;
 
     /** @var SoV26Communicator */
     private $target;
@@ -43,22 +43,26 @@ class SoV26CommunicatorTest extends TestCase
         $this->http->pushResponse($status, $headers, $body);
     }
 
-    public function testGetBanksNoExceptionWhenNoValidation(): void
+    /**
+     * @throws XmlValidationException
+     */
+    public function testGetBanksSuccess(): void
     {
         $this->mockResponse(200, $this->loadFixture('BankListSample.xml'));;
-        $banks = $this->target->getBanks(false);
+        $banks = $this->target->getBanks();
         $this->assertInstanceOf(EpsSOBankListProtocol::class, $banks);
     }
 
     /**
      * @dataProvider provideBankUrls
+     * @throws XmlValidationException
      */
     public function testGetBanksCallsCorrectUrl(string $modeUrl, string $expectedUrl): void
     {
         $factory = new HttpFactory();
         $this->target = new SoV26Communicator($this->http, $factory, $factory, $modeUrl);
         $this->mockResponse(200, $this->loadFixture('BankListSample.xml'));
-        $this->target->getBanks(false);
+        $this->target->getBanks();
 
         $this->assertEquals($expectedUrl, $this->http->getLastRequestInfo()['url']);
     }
@@ -71,6 +75,9 @@ class SoV26CommunicatorTest extends TestCase
         ];
     }
 
+    /**
+     * @throws XmlValidationException
+     */
     public function testGetBankListReadError(): void
     {
         $this->expectException(RuntimeException::class);
@@ -99,6 +106,9 @@ class SoV26CommunicatorTest extends TestCase
         );
     }
 
+    /**
+     * @throws XmlValidationException
+     */
     public function testSendTransferInitiatorDetailsToTestUrl(): void
     {
         $factory = new HttpFactory();
@@ -113,12 +123,15 @@ class SoV26CommunicatorTest extends TestCase
         );
     }
 
+    /**
+     * @throws XmlValidationException
+     */
     public function testOverrideDefaultBaseUrl(): void
     {
         $this->target->setBaseUrl('http://example.com');
 
         $this->mockResponse(200, $this->loadFixture('BankListSample.xml'));
-        $this->target->getBanks(false);
+        $this->target->getBanks();
         $this->assertEquals('http://example.com/data/haendler/v2_6', $this->http->getLastRequestInfo()['url']);
 
         $this->mockResponse(200, $this->loadFixture('BankResponseDetails004.xml'));
@@ -126,6 +139,9 @@ class SoV26CommunicatorTest extends TestCase
         $this->assertEquals('http://example.com/transinit/eps/v2_6', $this->http->getLastRequestInfo()['url']);
     }
 
+    /**
+     * @throws XmlValidationException
+     */
     public function testSendTransferInitiatorDetailsThrowsExceptionOn404(): void
     {
         $this->expectException(RuntimeException::class);
@@ -133,7 +149,10 @@ class SoV26CommunicatorTest extends TestCase
         $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails());
     }
 
-    public function testSendTransferInitiatorDetailsWithPreselectedBank(): void
+    /**
+     * @throws XmlValidationException
+     */
+    public function testSendTransferInitiatorDetailsWithPreselectedBank(): void //TODO check
     {
         $url = 'https://routing.eps.or.at/appl/epsSO/transinit/eps/v2_6/23ea3d14-278c-4e81-a021-d7b77492b611';
         $this->mockResponse(200, $this->loadFixture('BankResponseDetails000.xml'));

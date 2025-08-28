@@ -62,7 +62,7 @@ class SoCommunicatorLoggingTest extends TestCase
         $communicator->setBaseUrl('https://example.com');
 
         try {
-            $communicator->getBanks(false);
+            $communicator->getBanks();
         } catch (\Throwable $e) {
         }
 
@@ -76,7 +76,7 @@ class SoCommunicatorLoggingTest extends TestCase
         $communicator->setBaseUrl('https://example.com');
 
         try {
-            $communicator->getBanks(false);
+            $communicator->getBanks();
         } catch (\Throwable $e) {
         }
 

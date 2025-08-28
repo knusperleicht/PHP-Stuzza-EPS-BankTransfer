@@ -10,16 +10,19 @@ use Externet\EpsBankTransfer\Requests\RefundRequest;
 interface SoCommunicatorInterface
 {
     /**
+     * @param string|null $targetUrl
      * @return EpsSOBankListProtocol
      */
-    public function getBanks(): EpsSOBankListProtocol;
+    public function getBanks(?string $targetUrl = null): EpsSOBankListProtocol;
 
     /**
      * @param InitiateTransferRequest $transferInitiatorDetails
+     * @param string|null $targetUrl
      * @return object Protocol details object (version-specific)
      */
     public function sendTransferInitiatorDetails(
-        InitiateTransferRequest $transferInitiatorDetails
+        InitiateTransferRequest $transferInitiatorDetails,
+        ?string                 $targetUrl = null
     );
 
     /**
@@ -38,12 +41,12 @@ interface SoCommunicatorInterface
 
     /**
      * @param RefundRequest $refundRequest
-     * @param string|null $logMessage
+     * @param string|null $targetUrl
      * @return object Refund response (version-specific)
      */
     public function sendRefundRequest(
         RefundRequest $refundRequest,
-        ?string $logMessage = null
+        ?string       $targetUrl = null
     );
 
     public function setObscuritySuffixLength(int $obscuritySuffixLength);

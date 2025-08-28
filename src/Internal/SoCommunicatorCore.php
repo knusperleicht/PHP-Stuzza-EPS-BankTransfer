@@ -78,7 +78,7 @@ class SoCommunicatorCore
     // CORE HELPERS
     // ==============
 
-    public function getUrl(string $url, string $logMessage = ''): string
+    public function getUrl(string $url, string $logMessage = null): string
     {
         $this->logInfo($logMessage ?: 'GET ' . $url);
 
@@ -101,7 +101,7 @@ class SoCommunicatorCore
         return (string)$response->getBody();
     }
 
-    public function postUrl(string $url, string $xmlBody, string $logMessage = ''): string
+    public function postUrl(string $url, string $xmlBody, string $logMessage = null): string
     {
         $this->logInfo($logMessage ?: 'POST ' . $url);
 

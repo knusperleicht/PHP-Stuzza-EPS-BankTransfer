@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Externet\EpsBankTransfer\Tests\Helper;
 
-trait XmlFixtureTestHelper
+trait XmlFixtureTestTrait
 {
     protected function assertXmlEqualsFixture(string $expectedFile, string $actualXml): void
     {

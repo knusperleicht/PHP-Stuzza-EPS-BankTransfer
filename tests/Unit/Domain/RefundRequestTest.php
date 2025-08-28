@@ -9,7 +9,7 @@ use Externet\EpsBankTransfer\Generated\Refund\Amount;
 use Externet\EpsBankTransfer\Generated\Refund\AuthenticationDetails;
 use Externet\EpsBankTransfer\Generated\Refund\EpsRefundRequest;
 use Externet\EpsBankTransfer\Serializer\SerializerFactory;
-use Externet\EpsBankTransfer\Tests\Helper\XmlFixtureTestHelper;
+use Externet\EpsBankTransfer\Tests\Helper\XmlFixtureTestTrait;
 use Externet\EpsBankTransfer\Utilities\Fingerprint;
 use JMS\Serializer\SerializerInterface;
 use PHPUnit\Framework\TestCase;
@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 class RefundRequestTest extends TestCase
 {
     
-    use XmlFixtureTestHelper;
+    use XmlFixtureTestTrait;
 
     /** @var SerializerInterface */
     private $serializer;

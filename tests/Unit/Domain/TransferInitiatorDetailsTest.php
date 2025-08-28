@@ -8,7 +8,7 @@ use Externet\EpsBankTransfer\Requests\InitiateTransferRequest;
 use Externet\EpsBankTransfer\Requests\Parts\PaymentFlowUrls;
 use Externet\EpsBankTransfer\Requests\Parts\WebshopArticle;
 use Externet\EpsBankTransfer\Serializer\SerializerFactory;
-use Externet\EpsBankTransfer\Tests\Helper\XmlFixtureTestHelper;
+use Externet\EpsBankTransfer\Tests\Helper\XmlFixtureTestTrait;
 use Externet\EpsBankTransfer\Utilities\Fingerprint;
 use Externet\EpsBankTransfer\Utilities\XmlValidator;
 use JMS\Serializer\SerializerInterface;
@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 class TransferInitiatorDetailsTest extends TestCase
 {
 
-    use XmlFixtureTestHelper;
+    use XmlFixtureTestTrait;
 
     private const TEST_USER_ID = 'AKLJS231534';
     private const TEST_SECRET = 'topSecret';

@@ -54,7 +54,7 @@ class SoV27Communicator implements SoV27CommunicatorInterface
         $this->serializer = $this->core->getSerializer();
     }
 
-    public function getBanks(): EpsSOBankListProtocol
+    public function getBanks(?string $targetUrl = null): EpsSOBankListProtocol
     {
         throw new \LogicException('Not implemented yet - waiting for XSD 2.7');
     }
@@ -152,8 +152,7 @@ class SoV27Communicator implements SoV27CommunicatorInterface
 
     public function sendRefundRequest(
         RefundRequest $refundRequest,
-        ?string $targetUrl = null,
-        ?string $logMessage = null
+        ?string $targetUrl = null
     ): EpsRefundResponse {
         throw new \LogicException('Not implemented yet - waiting for XSD 2.7');
     }
