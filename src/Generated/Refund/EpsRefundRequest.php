@@ -12,4 +12,3 @@ class EpsRefundRequest extends EpsRefundRequestAType
 
 
 }
-

@@ -5,10 +5,14 @@ namespace Externet\EpsBankTransfer\Tests;
 
 use Exception;
 use Externet\EpsBankTransfer\BankConfirmationDetails;
+use Externet\EpsBankTransfer\Tests\Helper\XmlFixtureTestHelper;
+use PHPUnit\Framework\TestCase;
 use SimpleXMLElement;
 
-class BankConfirmationDetailsTest extends BaseTest
+class BankConfirmationDetailsTest extends TestCase
 {
+    use XmlFixtureTestHelper;
+
     private const EXPECTED_REMITTANCE_ID = 'AT1234567890XYZ';
     private const EXPECTED_PAYMENT_REFERENCE_ID = 'RIAT1234567890XYZ';
     private const EXPECTED_SESSION_ID = 'String';
@@ -31,11 +35,11 @@ class BankConfirmationDetailsTest extends BaseTest
         parent::setUp();
 
         $this->simpleXmls = [
-            'WithSignature' => new SimpleXMLElement($this->getEpsData('BankConfirmationDetailsWithSignature.xml')),
-            'UnstructuredWithoutSignature' => new SimpleXMLElement($this->getEpsData('BankConfirmationDetailsWithoutSignatureUnstructuredRemittanceIdentifier.xml')),
-            'WithoutSignature' => new SimpleXMLElement($this->getEpsData('BankConfirmationDetailsWithoutSignature.xml')),
-            'UnstructuredWithSignature' => new SimpleXMLElement($this->getEpsData('BankConfirmationDetailsWithSignatureUnstructuredRemittanceIdentifier.xml')),
-            'WithPaymentInititatorDetails' => new SimpleXMLElement($this->getEpsData('BankConfirmationDetailsWithPaymentInitiatorDetailsWithoutSignature.xml')),
+            'WithSignature' => new SimpleXMLElement($this->loadFixture('BankConfirmationDetailsWithSignature.xml')),
+            'UnstructuredWithoutSignature' => new SimpleXMLElement($this->loadFixture('BankConfirmationDetailsWithoutSignatureUnstructuredRemittanceIdentifier.xml')),
+            'WithoutSignature' => new SimpleXMLElement($this->loadFixture('BankConfirmationDetailsWithoutSignature.xml')),
+            'UnstructuredWithSignature' => new SimpleXMLElement($this->loadFixture('BankConfirmationDetailsWithSignatureUnstructuredRemittanceIdentifier.xml')),
+            'WithPaymentInititatorDetails' => new SimpleXMLElement($this->loadFixture('BankConfirmationDetailsWithPaymentInitiatorDetailsWithoutSignature.xml')),
         ];
     }
 

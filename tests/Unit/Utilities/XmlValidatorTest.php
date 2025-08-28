@@ -4,11 +4,14 @@ declare(strict_types=1);
 namespace Externet\EpsBankTransfer\Tests\Utilities;
 
 use Externet\EpsBankTransfer\Exceptions\XmlValidationException;
-use Externet\EpsBankTransfer\Tests\BaseTest;
+use Externet\EpsBankTransfer\Tests\Helper\XmlFixtureTestHelper;
 use Externet\EpsBankTransfer\Utilities\XmlValidator;
+use PHPUnit\Framework\TestCase;
 
-class XmlValidatorTest extends BaseTest
+class XmlValidatorTest extends TestCase
 {
+    use XmlFixtureTestHelper;
+
     public function testBanksThrowsExceptionOnEmptyData(): void
     {
         $this->expectException(XmlValidationException::class);
@@ -24,7 +27,7 @@ class XmlValidatorTest extends BaseTest
     public function testBanksThrowsExceptionOnInvalidXml(): void
     {
         $this->expectException(XmlValidationException::class);
-        XmlValidator::ValidateBankList($this->getEpsData('BankListInvalid.xml'));
+        XmlValidator::ValidateBankList($this->loadFixture('BankListInvalid.xml'));
     }
 
     /**
@@ -32,7 +35,7 @@ class XmlValidatorTest extends BaseTest
      */
     public function testBanksReturnsXmlString(): void
     {
-        $result = XmlValidator::ValidateBankList($this->getEpsData('BankListSample.xml'));
+        $result = XmlValidator::ValidateBankList($this->loadFixture('BankListSample.xml'));
         $this->assertTrue($result);
     }
 
@@ -41,7 +44,7 @@ class XmlValidatorTest extends BaseTest
      */
     public function testWithSignatureReturnsTrue(): void
     {
-        $result = XmlValidator::ValidateEpsProtocol($this->getEpsData('BankConfirmationDetailsWithSignature.xml'));
+        $result = XmlValidator::ValidateEpsProtocol($this->loadFixture('BankConfirmationDetailsWithSignature.xml'));
         $this->assertTrue($result);
     }
 
@@ -50,7 +53,7 @@ class XmlValidatorTest extends BaseTest
      */
     public function testRefundResponseValid(): void
     {
-        $result = XmlValidator::ValidateEpsRefund($this->getEpsData('RefundResponseAccepted000.xml'));
+        $result = XmlValidator::ValidateEpsRefund($this->loadFixture('RefundResponseAccepted000.xml'));
         $this->assertTrue($result);
     }
 }

@@ -11,15 +11,18 @@ use Externet\EpsBankTransfer\Exceptions\XmlValidationException;
 use Externet\EpsBankTransfer\Requests\Parts\PaymentFlowUrls;
 use Externet\EpsBankTransfer\Requests\RefundRequest;
 use Externet\EpsBankTransfer\Requests\InitiateTransferRequest;
-use Externet\EpsBankTransfer\Tests\BaseTest;
+use Externet\EpsBankTransfer\Tests\Helper\XmlFixtureTestHelper;
 use Externet\EpsBankTransfer\Tests\Psr18TestHttp;
 use Externet\EpsBankTransfer\Utilities\XmlValidator;
 use GuzzleHttp\Psr7\HttpFactory;
+use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use UnexpectedValueException;
 
-class SoCommunicatorTest extends BaseTest
+class SoCommunicatorTest extends TestCase
 {
+    use XmlFixtureTestHelper;
+
     /** @var SoV26Communicator */
     private $target;
     /** @var Psr18TestHttp */
@@ -69,7 +72,7 @@ class SoCommunicatorTest extends BaseTest
 
     public function testGetBanksArray(): void
     {
-        $this->mockResponse(200, $this->getEpsData('BankListSample.xml'));
+        $this->mockResponse(200, $this->loadFixture('BankListSample.xml'));
         $actual = $this->target->getBanksArray();
 
         $expected = [
@@ -98,7 +101,7 @@ class SoCommunicatorTest extends BaseTest
 
     public function testTryGetBanksArrayReturnsBanks(): void
     {
-        $this->mockResponse(200, $this->getEpsData('BankListSample.xml'));
+        $this->mockResponse(200, $this->loadFixture('BankListSample.xml'));
         $actual = $this->target->getBanksArray();
 
         $this->assertArrayHasKey('Testbank', $actual);
@@ -116,7 +119,7 @@ class SoCommunicatorTest extends BaseTest
      */
     public function testSendTransferInitiatorDetailsToCorrectUrl(): void
     {
-        $this->mockResponse(200, $this->getEpsData('BankResponseDetails004.xml'));
+        $this->mockResponse(200, $this->loadFixture('BankResponseDetails004.xml'));
         $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails());
 
         $this->assertEquals(
@@ -130,7 +133,7 @@ class SoCommunicatorTest extends BaseTest
         $factory = new HttpFactory();
         $this->target = new SoV26Communicator($this->http, $factory, $factory, SoV26Communicator::TEST_MODE_URL);
 
-        $this->mockResponse(200, $this->getEpsData('BankResponseDetails004.xml'));
+        $this->mockResponse(200, $this->loadFixture('BankResponseDetails004.xml'));
         $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails());
 
         $this->assertEquals(
@@ -143,11 +146,11 @@ class SoCommunicatorTest extends BaseTest
     {
         $this->target->setBaseUrl('http://example.com');
 
-        $this->mockResponse(200, $this->getEpsData('BankListSample.xml'));
+        $this->mockResponse(200, $this->loadFixture('BankListSample.xml'));
         $this->target->getBanksArray();
         $this->assertEquals('http://example.com/data/haendler/v2_6', $this->http->getLastRequestInfo()['url']);
 
-        $this->mockResponse(200, $this->getEpsData('BankResponseDetails004.xml'));
+        $this->mockResponse(200, $this->loadFixture('BankResponseDetails004.xml'));
         $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails());
         $this->assertEquals('http://example.com/transinit/eps/v2_6', $this->http->getLastRequestInfo()['url']);
     }
@@ -162,7 +165,7 @@ class SoCommunicatorTest extends BaseTest
     public function testSendTransferInitiatorDetailsWithPreselectedBank(): void
     {
         $url = 'https://routing.eps.or.at/appl/epsSO/transinit/eps/v2_6/23ea3d14-278c-4e81-a021-d7b77492b611';
-        $this->mockResponse(200, $this->getEpsData('BankResponseDetails000.xml'));
+        $this->mockResponse(200, $this->loadFixture('BankResponseDetails000.xml'));
 
         $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails(), $url);
 
@@ -173,7 +176,7 @@ class SoCommunicatorTest extends BaseTest
     {
         $this->expectException(UnexpectedValueException::class);
         $this->target->setObscuritySuffixLength(8);
-        $this->mockResponse(200, $this->getEpsData('BankResponseDetails000.xml'));
+        $this->mockResponse(200, $this->loadFixture('BankResponseDetails000.xml'));
         $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails(), 'https://routing.eps.or.at/appl/epsSO/transinit/eps/v2_6/someid');
     }
 
@@ -181,7 +184,7 @@ class SoCommunicatorTest extends BaseTest
     {
         $this->target->setObscuritySuffixLength(8);
         $this->target->setObscuritySeed('Some seed');
-        $this->mockResponse(200, $this->getEpsData('BankResponseDetails000.xml'));
+        $this->mockResponse(200, $this->loadFixture('BankResponseDetails000.xml'));
 
         $t = new PaymentFlowUrls('a', 'b', 'c');
         $transferInitiatorDetails = new InitiateTransferRequest('a', 'b', 'c', 'd', 'e', 'f', 0, $t);
@@ -202,7 +205,7 @@ class SoCommunicatorTest extends BaseTest
         string $xmlFile,
         ?string $outputFile = null
     ): void {
-        $dataPath = $this->getEpsDataPath($xmlFile);
+        $dataPath = $this->fixturePath($xmlFile);
         $this->target->handleConfirmationUrl($bankCallback, $vitalityCallback, $dataPath, $outputFile ?? 'php://temp');
     }
 
@@ -247,7 +250,7 @@ class SoCommunicatorTest extends BaseTest
             return true;
         }, null, 'BankConfirmationDetailsWithoutSignature.xml');
 
-        $expected = $this->readFile($this->getEpsDataPath('BankConfirmationDetailsWithoutSignature.xml'));
+        $expected = $this->readFile($this->fixturePath('BankConfirmationDetailsWithoutSignature.xml'));
         $this->assertSame($expected, $actual);
     }
 
@@ -309,6 +312,9 @@ class SoCommunicatorTest extends BaseTest
         );
     }
 
+    /**
+     * @throws XmlValidationException
+     */
     public function testHandleConfirmationUrlVitalityReturnsErrorOnInvalidValidationCallback(): void
     {
         $temp = tempnam(sys_get_temp_dir(), 'SoCommunicatorTest_');
@@ -343,19 +349,23 @@ class SoCommunicatorTest extends BaseTest
         );
     }
 
+    /**
+     * @throws Exception
+     */
     public function testHandleConfirmationUrlVitalityWritesInputToOutputStream(): void
     {
-        $dataPath = $this->getEpsDataPath('VitalityCheckDetails.xml');
         $temp = tempnam(sys_get_temp_dir(), 'SoCommunicatorTest_');
 
         $this->target->handleConfirmationUrl(
-            function () { return true; },
+            function () {
+                return true;
+            },
             null,
-            $dataPath,
+            $this->fixturePath('VitalityCheckDetails.xml'),
             $temp
         );
 
-        $this->assertSame($this->readFile($dataPath), $this->readFile($temp));
+        $this->assertXmlEqualsFixture('VitalityCheckDetails.xml', $this->readFile($temp));
 
         @unlink($temp); // cleanup
     }
@@ -429,7 +439,7 @@ class SoCommunicatorTest extends BaseTest
     function testSendRefundRequestToCorrectUrl(): void
     {
         $refundRequest = $this->getMockedRefundRequest();
-        $this->http->pushResponse(200, array('Content-Type' => 'application/xml'), $this->getEpsData('RefundResponseAccepted000.xml'));
+        $this->http->pushResponse(200, array('Content-Type' => 'application/xml'), $this->loadFixture('RefundResponseAccepted000.xml'));
 
         $this->target->sendRefundRequest($refundRequest);
 
@@ -447,7 +457,7 @@ class SoCommunicatorTest extends BaseTest
     {
         $this->target = new SoV26Communicator($this->http, new HttpFactory(), new HttpFactory(), SoV26Communicator::TEST_MODE_URL);
         $refundRequest = $this->getMockedRefundRequest();
-        $this->http->pushResponse(200, array('Content-Type' => 'application/xml'), $this->getEpsData('RefundResponseAccepted000.xml'));
+        $this->http->pushResponse(200, array('Content-Type' => 'application/xml'), $this->loadFixture('RefundResponseAccepted000.xml'));
 
         $this->target->sendRefundRequest($refundRequest);
 

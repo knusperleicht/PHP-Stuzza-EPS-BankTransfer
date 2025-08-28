@@ -8,28 +8,24 @@ use Exception;
 use Externet\EpsBankTransfer\Generated\Refund\Amount;
 use Externet\EpsBankTransfer\Generated\Refund\AuthenticationDetails;
 use Externet\EpsBankTransfer\Generated\Refund\EpsRefundRequest;
+use Externet\EpsBankTransfer\Serializer\SerializerFactory;
+use Externet\EpsBankTransfer\Tests\Helper\XmlFixtureTestHelper;
 use Externet\EpsBankTransfer\Utilities\Fingerprint;
-use JMS\Serializer\SerializationContext;
-use JMS\Serializer\SerializerBuilder;
+use JMS\Serializer\SerializerInterface;
+use PHPUnit\Framework\TestCase;
 
-class RefundRequestTest extends BaseTest
+class RefundRequestTest extends TestCase
 {
+    
+    use XmlFixtureTestHelper;
+
+    /** @var SerializerInterface */
     private $serializer;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->serializer = SerializerBuilder::create()
-            ->addMetadataDir(__DIR__ . '/../../config/serializer/Protocol/V26', 'Externet\EpsBankTransfer\Generated\Protocol\V26')
-            ->addMetadataDir(__DIR__ . '/../../config/serializer/Protocol/V27', 'Externet\EpsBankTransfer\Generated\Protocol\V27')
-            ->addMetadataDir(__DIR__ . '/../../config/serializer/Payment/V26', 'Externet\EpsBankTransfer\Generated\Payment\V26')
-            ->addMetadataDir(__DIR__ . '/../../config/serializer/Payment/V27', 'Externet\EpsBankTransfer\Generated\Payment\V27')
-            ->addMetadataDir(__DIR__ . '/../../config/serializer/AustrianRules', 'Externet\EpsBankTransfer\Generated\AustrianRules')
-            ->addMetadataDir(__DIR__ . '/../../config/serializer/Epi', 'Externet\EpsBankTransfer\Generated\Epi')
-            ->addMetadataDir(__DIR__ . '/../../config/serializer/Refund', 'Externet\EpsBankTransfer\Generated\Refund')
-            ->addMetadataDir(__DIR__ . '/../../config/serializer/BankList', 'Externet\EpsBankTransfer\Generated\BankList')
-            ->addMetadataDir(__DIR__ . '/../../config/serializer/XmlDsig', 'Externet\EpsBankTransfer\Generated\XmlDsig')
-            ->build();
+        $this->serializer = SerializerFactory::create();
     }
 
     /**
@@ -78,13 +74,7 @@ class RefundRequestTest extends BaseTest
 
         $xml = $this->serializer->serialize($refundRequest, 'xml');
 
-        $eDom = new \DOMDocument();
-        $eDom->loadXML($this->getEpsData($expectedXmlFile));
-        $eDom->formatOutput = true;
-        $eDom->preserveWhiteSpace = false;
-        $eDom->normalizeDocument();
-
-        $this->assertEquals($eDom->saveXML(), $xml);
+        $this->assertXmlEqualsFixture($expectedXmlFile, $xml);
     }
 
     public function refundRequestDataProvider(): array

@@ -20,6 +20,8 @@ class SerializerFactory
         $projectRoot = dirname(__DIR__, 2);
 
         self::$instance = SerializerBuilder::create()
+            ->setSerializationVisitor('xml', new NoCdataXmlSerializationVisitorFactory())
+
             ->addMetadataDir($projectRoot . '/config/serializer/Protocol/V26', 'Externet\\EpsBankTransfer\\Generated\\Protocol\\V26')
             ->addMetadataDir($projectRoot . '/config/serializer/Protocol/V27', 'Externet\\EpsBankTransfer\\Generated\\Protocol\\V27')
             ->addMetadataDir($projectRoot . '/config/serializer/Payment/V26', 'Externet\\EpsBankTransfer\\Generated\\Payment\\V26')

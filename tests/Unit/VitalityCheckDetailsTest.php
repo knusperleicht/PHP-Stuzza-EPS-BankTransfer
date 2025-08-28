@@ -4,11 +4,15 @@ declare(strict_types=1);
 namespace Externet\EpsBankTransfer\Tests;
 
 use Exception;
+use Externet\EpsBankTransfer\Tests\Helper\XmlFixtureTestHelper;
 use Externet\EpsBankTransfer\VitalityCheckDetails;
+use PHPUnit\Framework\TestCase;
 use SimpleXMLElement;
 
-class VitalityCheckDetailsTest extends BaseTest
+class VitalityCheckDetailsTest extends TestCase
 {
+    use XmlFixtureTestHelper;
+
     /** @var SimpleXMLElement */
     private $simpleXml;
 
@@ -18,7 +22,7 @@ class VitalityCheckDetailsTest extends BaseTest
     protected function setUp(): void
     {
         parent::setUp();
-        $this->simpleXml = new SimpleXMLElement($this->getEpsData('VitalityCheckDetails.xml'));
+        $this->simpleXml = new SimpleXMLElement($this->loadFixture('VitalityCheckDetails.xml'));
     }
 
     public function testGetRemittanceIdentifier()
