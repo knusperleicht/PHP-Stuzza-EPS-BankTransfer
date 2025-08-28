@@ -33,8 +33,8 @@ $initiateTransferRequest = new InitiateTransferRequest(
 );
 
 // Optional: Include ONE (i.e. not both!) of the following two lines:
-$initiateTransferRequest->remittanceIdentifier = 'Order123';             // "Zahlungsreferenz". Will be returned on payment confirmation = epi:RemittanceIdentifier
-$initiateTransferRequest->unstructuredRemittanceIdentifier = 'Order123'; // "Verwendungszweck". Will be returned on payment confirmation = epi:UnstructuredRemittanceIdentifier
+$initiateTransferRequest->setRemittanceIdentifier('Order123');                       // "Zahlungsreferenz". Will be returned on payment confirmation = epi:RemittanceIdentifier
+$initiateTransferRequest->setUnstructuredRemittanceIdentifier('Order123'); // "Verwendungszweck". Will be returned on payment confirmation = epi:UnstructuredRemittanceIdentifier
 
 // Optional:
 $initiateTransferRequest->setExpirationMinutes(60);     // Sets ExpirationTimeout. Value must be between 5 and 60
@@ -54,7 +54,7 @@ $soCommunicator = new SoV26Communicator(
     new Psr18Client(),
     $psr17Factory,
     $psr17Factory,
-    SoV26Communicator::TEST_MODE_URL,
+    EpsBankTransfer\Api\AbstractSoCommunicator::TEST_MODE_URL,
     new Monolog\Logger('eps')
 );
 // Optional: You can provide a bank selection on your payment site

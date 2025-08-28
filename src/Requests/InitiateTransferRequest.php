@@ -132,7 +132,15 @@ class InitiateTransferRequest
      * @param PaymentFlowUrls $transferMsgDetails
      * @param string|null $date
      */
-    public function __construct(string $userId, string $secret, string $bfiBicIdentifier, string $beneficiaryNameAddressText, string $beneficiaryAccountIdentifier, string $referenceIdentifier, $instructedAmount, PaymentFlowUrls $transferMsgDetails, string $date = null)
+    public function __construct(string          $userId,
+                                string          $secret,
+                                string          $bfiBicIdentifier,
+                                string          $beneficiaryNameAddressText,
+                                string          $beneficiaryAccountIdentifier,
+                                string          $referenceIdentifier,
+                                                $instructedAmount,
+                                PaymentFlowUrls $transferMsgDetails,
+                                string          $date = null)
     {
         $this->userId = $userId;
         $this->secret = $secret;
@@ -289,5 +297,137 @@ class InitiateTransferRequest
     public function addArticle(WebshopArticle $article): void
     {
         $this->webshopArticles[] = $article;
+    }
+
+    /**
+     * @param string $remittanceIdentifier
+     */
+    public function setRemittanceIdentifier(string $remittanceIdentifier): void
+    {
+        $this->remittanceIdentifier = $remittanceIdentifier;
+    }
+
+    /**
+     * @param string $unstructuredRemittanceIdentifier
+     */
+    public function setUnstructuredRemittanceIdentifier(string $unstructuredRemittanceIdentifier): void
+    {
+        $this->unstructuredRemittanceIdentifier = $unstructuredRemittanceIdentifier;
+    }
+
+    public function getUserId(): string
+    {
+        return $this->userId;
+    }
+
+    public function setUserId(string $userId): void
+    {
+        $this->userId = $userId;
+    }
+
+    public function getSecret(): string
+    {
+        return $this->secret;
+    }
+
+    public function setSecret(string $secret): void
+    {
+        $this->secret = $secret;
+    }
+
+    /**
+     * @return false|string
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
+     * @param false|string $date
+     */
+    public function setDate($date): void
+    {
+        $this->date = $date;
+    }
+
+    public function getBfiBicIdentifier(): string
+    {
+        return $this->bfiBicIdentifier;
+    }
+
+    public function setBfiBicIdentifier(string $bfiBicIdentifier): void
+    {
+        $this->bfiBicIdentifier = $bfiBicIdentifier;
+    }
+
+    public function getBeneficiaryNameAddressText(): string
+    {
+        return $this->beneficiaryNameAddressText;
+    }
+
+    public function setBeneficiaryNameAddressText(string $beneficiaryNameAddressText): void
+    {
+        $this->beneficiaryNameAddressText = $beneficiaryNameAddressText;
+    }
+
+    public function getBeneficiaryAccountIdentifier(): string
+    {
+        return $this->beneficiaryAccountIdentifier;
+    }
+
+    public function setBeneficiaryAccountIdentifier(string $beneficiaryAccountIdentifier): void
+    {
+        $this->beneficiaryAccountIdentifier = $beneficiaryAccountIdentifier;
+    }
+
+    public function getReferenceIdentifier(): string
+    {
+        return $this->referenceIdentifier;
+    }
+
+    public function setReferenceIdentifier(string $referenceIdentifier): void
+    {
+        $this->referenceIdentifier = $referenceIdentifier;
+    }
+
+    public function getExpirationTime(): string
+    {
+        return $this->expirationTime;
+    }
+
+    public function setExpirationTime(string $expirationTime): void
+    {
+        $this->expirationTime = $expirationTime;
+    }
+
+    public function getAmountCurrencyIdentifier(): string
+    {
+        return $this->amountCurrencyIdentifier;
+    }
+
+    public function setAmountCurrencyIdentifier(string $amountCurrencyIdentifier): void
+    {
+        $this->amountCurrencyIdentifier = $amountCurrencyIdentifier;
+    }
+
+    public function getTransferMsgDetails(): PaymentFlowUrls
+    {
+        return $this->transferMsgDetails;
+    }
+
+    public function setTransferMsgDetails(PaymentFlowUrls $transferMsgDetails): void
+    {
+        $this->transferMsgDetails = $transferMsgDetails;
+    }
+
+    public function getOrderingCustomerOfiIdentifier(): string
+    {
+        return $this->orderingCustomerOfiIdentifier;
+    }
+
+    public function setOrderingCustomerOfiIdentifier(string $orderingCustomerOfiIdentifier): void
+    {
+        $this->orderingCustomerOfiIdentifier = $orderingCustomerOfiIdentifier;
     }
 }

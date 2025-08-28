@@ -1,6 +1,7 @@
 <?php
 require_once('../vendor/autoload.php');
 
+use Externet\EpsBankTransfer\Api\AbstractSoCommunicator;
 use Externet\EpsBankTransfer\Api\V26\SoV26Communicator;
 use Externet\EpsBankTransfer\Generated\Protocol\V26\BankConfirmationDetails;
 use Nyholm\Psr7\Factory\Psr17Factory;
@@ -23,10 +24,10 @@ try {
         new Psr18Client(),
         $psr17Factory,
         $psr17Factory,
-        SoV26Communicator::TEST_MODE_URL,
+        AbstractSoCommunicator::TEST_MODE_URL,
         new Monolog\Logger('eps')
     );
-    $soCommunicator->HandleConfirmationUrl(
+    $soCommunicator->handleConfirmationUrl(
         $paymentConfirmationCallback,
         null,                 // Optional: a callback function which is called in case of Vitality-Check
         'php://input',        // This needs to be the raw post data received by the server. Change this only if you want to test this function with simulation data.

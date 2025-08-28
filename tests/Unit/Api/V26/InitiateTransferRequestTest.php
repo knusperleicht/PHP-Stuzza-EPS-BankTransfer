@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Externet\EpsBankTransfer\Tests\Api\V26;
 
+use Externet\EpsBankTransfer\Api\AbstractSoCommunicator;
 use Externet\EpsBankTransfer\Exceptions\XmlValidationException;
 use Externet\EpsBankTransfer\Requests\InitiateTransferRequest;
 use Externet\EpsBankTransfer\Requests\Parts\PaymentFlowUrls;
@@ -58,7 +59,7 @@ class InitiateTransferRequestTest extends TestCase
 
     public function testSendTransferInitiatorDetailsToTestUrl(): void
     {
-        $this->setUpCommunicator(\Externet\EpsBankTransfer\Api\V26\SoV26Communicator::TEST_MODE_URL);
+        $this->setUpCommunicator(AbstractSoCommunicator::TEST_MODE_URL);
         $this->mockResponse(200, $this->loadFixture('V26/BankResponseDetails004.xml'));
         $this->target->initiateTransferRequest($this->getMockedTransferInitiatorDetails());
         $this->assertEquals(

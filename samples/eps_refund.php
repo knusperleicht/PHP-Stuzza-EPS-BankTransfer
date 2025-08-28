@@ -1,6 +1,7 @@
 <?php
 require_once('../vendor/autoload.php');
 
+use Externet\EpsBankTransfer\Api\AbstractSoCommunicator;
 use Externet\EpsBankTransfer\Api\V26\SoV26Communicator;
 use Externet\EpsBankTransfer\Requests\RefundRequest;
 use Nyholm\Psr7\Factory\Psr17Factory;
@@ -28,7 +29,7 @@ $soCommunicator = new SoV26Communicator(
     new Psr18Client(),
     $psr17Factory,
     $psr17Factory,
-    SoV26Communicator::TEST_MODE_URL,
+    AbstractSoCommunicator::TEST_MODE_URL,
     new Monolog\Logger('eps')
 );
 

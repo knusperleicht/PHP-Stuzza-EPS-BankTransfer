@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Externet\EpsBankTransfer\Tests\Api;
 
+use Externet\EpsBankTransfer\Api\AbstractSoCommunicator;
 use Externet\EpsBankTransfer\Api\SoCommunicatorInterface;
 use Externet\EpsBankTransfer\Api\V26\SoV26Communicator;
 use Externet\EpsBankTransfer\Api\V27\SoV27Communicator;
@@ -31,7 +32,7 @@ class SoCommunicatorInterfaceTest extends TestCase
                     $httpClient,
                     $psr17Factory,
                     $psr17Factory,
-                    SoV26Communicator::TEST_MODE_URL,
+                    AbstractSoCommunicator::TEST_MODE_URL,
                     $logger
                 ),
                 $httpClient
@@ -41,7 +42,7 @@ class SoCommunicatorInterfaceTest extends TestCase
                     $httpClient,
                     $psr17Factory,
                     $psr17Factory,
-                    SoV27Communicator::TEST_MODE_URL,
+                    AbstractSoCommunicator::TEST_MODE_URL,
                     $logger
                 ),
                 $httpClient
