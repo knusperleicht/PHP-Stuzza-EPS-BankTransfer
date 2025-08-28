@@ -132,7 +132,7 @@ class InitiateTransferRequest
      * @param PaymentFlowUrls $transferMsgDetails
      * @param string|null $date
      */
-    public function __construct(string $userId, string $secret, string $bfiBicIdentifier, string $beneficiaryNameAddressText, string $beneficiaryAccountIdentifier, string $referenceIdentifier, int $instructedAmount, PaymentFlowUrls $transferMsgDetails, string $date = null)
+    public function __construct(string $userId, string $secret, string $bfiBicIdentifier, string $beneficiaryNameAddressText, string $beneficiaryAccountIdentifier, string $referenceIdentifier, $instructedAmount, PaymentFlowUrls $transferMsgDetails, string $date = null)
     {
         $this->userId = $userId;
         $this->secret = $secret;
@@ -167,7 +167,7 @@ class InitiateTransferRequest
      *
      * @param int $amount in cents
      */
-    public function setInstructedAmount(int $amount)
+    public function setInstructedAmount($amount)
     {
         $this->instructedAmount = MoneyFormatter::formatXsdDecimal($amount);
     }

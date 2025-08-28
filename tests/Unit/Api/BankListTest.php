@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Externet\EpsBankTransfer\Tests\Api;
 
 use Externet\EpsBankTransfer\Api\SoV26Communicator;
+use Externet\EpsBankTransfer\Exceptions\XmlValidationException;
 use Externet\EpsBankTransfer\Generated\BankList\EpsSOBankListProtocol;
 use Externet\EpsBankTransfer\Tests\Helper\SoV26CommunicatorTestTrait;
 use PHPUnit\Framework\TestCase;
@@ -59,5 +60,31 @@ class BankListTest extends TestCase
         $this->mockResponse(200, $this->loadFixture('BankListSample.xml'));
         $this->target->getBanks();
         $this->assertEquals('http://example.com/data/haendler/v2_6', $this->http->getLastRequestInfo()['url']);
+    }
+
+    public function testGetBanksThrowsValidationExceptionOnInvalidXml(): void
+    {
+        $this->mockResponse(200, 'invalidData');
+        $this->expectException(XmlValidationException::class);
+        $this->target->getBanks();
+    }
+
+    public function testGetBanksHandlesEmptyList(): void
+    {
+        $this->mockResponse(200, $this->loadFixture('BankListEmpty.xml'));
+        $banks = $this->target->getBanks();
+        $this->assertInstanceOf(EpsSOBankListProtocol::class, $banks);
+        $this->assertCount(0, $banks->getBank());
+    }
+
+    public function testGetBanksParsesBankFields(): void
+    {
+        $this->mockResponse(200, $this->loadFixture('BankListSample.xml'));
+        $banks = $this->target->getBanks();
+        $first = $banks->getBank()[0];
+        $this->assertEquals('TESTBANKXXX', $first->getBic());
+        $this->assertEquals('Testbank', $first->getBezeichnung());
+        $this->assertEquals('AT', $first->getLand());
+        $this->assertEquals('https://routing.eps.or.at/appl/epsSO/transinit/eps/v2_6/23ea3d14-278c-4e81-a021-d7b77492b611', $first->getEpsUrl());
     }
 }

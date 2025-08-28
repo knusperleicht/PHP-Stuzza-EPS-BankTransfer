@@ -106,4 +106,131 @@ class TransferInitiatorTest extends TestCase
         $body = $this->http->getLastRequestInfo()['body'];
         $this->assertStringContainsString('Order1', $body);
     }
+
+    public function testSendTransferInitiatorDetailsWithOverriddenBaseUrl(): void
+    {
+        $this->target->setBaseUrl('http://example.com');
+        $this->mockResponse(200, $this->loadFixture('BankResponseDetails004.xml'));
+        $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails());
+        $this->assertEquals(
+            'http://example.com/transinit/eps/v2_6',
+            $this->http->getLastRequestInfo()['url']
+        );
+    }
+
+    public function testSendTransferInitiatorDetailsRequestContainsMandatoryFields(): void
+    {
+        $this->mockResponse(200, $this->loadFixture('BankResponseDetails004.xml'));
+        $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails());
+
+        $body = $this->http->getLastRequestInfo()['body'];
+        $this->assertStringContainsString('orderid', $body); // remittanceIdentifier
+        $this->assertStringContainsString('AT611904300234573201', $body); // IBAN
+        $this->assertStringContainsString('120.5', $body); // amount
+        $this->assertStringContainsString('TestShop', $body); // userId 
+        $this->assertStringContainsString('Test Company GmbH', $body); // beneficiaryName
+        $this->assertStringContainsString('TESTBANKXXX', $body); // bankId
+        $this->assertStringContainsString('REF123456789', $body); // referenceId
+        $this->assertStringContainsString('https://example.com/confirmation', $body); // confirmationUrl
+        $this->assertStringContainsString('https://example.com/success', $body); // successUrl
+        $this->assertStringContainsString('https://example.com/failure', $body); // errorUrl
+    }
+
+    public function testSendTransferInitiatorDetailsParsesResponse(): void
+    {
+        $this->mockResponse(200, $this->loadFixture('BankResponseDetails004.xml'));
+        $response = $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails());
+
+        $this->assertNotNull($response);
+        $this->assertEquals('004', $response->getBankResponseDetails()->getErrorDetails()->getErrorCode());
+        $this->assertEquals('merchant not found!', $response->getBankResponseDetails()->getErrorDetails()->getErrorMsg());
+    }
+
+    public function testSendTransferInitiatorDetailsThrowsExceptionOnWrongContentType(): void
+    {
+        $this->mockResponse(200, '<xml>valid but wrong header</xml>', ['Content-Type' => 'text/plain']);
+        $this->expectException(XmlValidationException::class);
+        $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails());
+    }
+
+
+    /**
+     * @dataProvider provideValidAmounts
+     */
+    public function testSendTransferInitiatorDetailsFormatsAmountCorrectly($inputAmount, string $expectedInXml): void
+    {
+        $this->mockResponse(200, $this->loadFixture('BankResponseDetails004.xml'));
+
+        $t = new PaymentFlowUrls(
+            'https://example.com/confirmation',
+            'https://example.com/success',
+            'https://example.com/failure'
+        );
+
+        $ti = new InitiateTransferRequest(
+            'TestShop',
+            'secret123',
+            'TESTBANKXXX',
+            'Test Company GmbH',
+            'AT611904300234573201',
+            'REF123456789',
+            $inputAmount,
+            $t
+        );
+        $ti->remittanceIdentifier = 'orderid';
+
+        $this->target->sendTransferInitiatorDetails($ti);
+
+        $body = $this->http->getLastRequestInfo()['body'];
+
+        $this->assertStringContainsString($expectedInXml, $body, "Expected amount $expectedInXml in XML body");
+    }
+
+    public static function provideValidAmounts(): array
+    {
+        return [
+            'zero' => [0, '0.00'],
+            'one cent' => [1, '0.01'],
+            'twelve cents' => [12, '0.12'],
+            'one euro' => [100, '1.00'],
+            'ten euros' => [1000, '10.00'],
+            '123 euro 45 cent' => [12345, '123.45'],
+            'string as int' => ['12345', '123.45'],
+            'max cents' => [99, '0.99'],
+            'max amount' => [999999999, '9999999.99'],
+        ];
+    }
+
+    /**
+     * @dataProvider provideInvalidAmounts
+     */
+    public function testSendTransferInitiatorDetailsThrowsOnInvalidAmount($invalidAmount): void
+    {
+        $t = new PaymentFlowUrls('a', 'b', 'c');
+
+        $this->expectException(\InvalidArgumentException::class);
+
+        new InitiateTransferRequest(
+            'TestShop',
+            'secret123',
+            'TESTBANKXXX',
+            'Test Company GmbH',
+            'AT611904300234573201',
+            'REF123456789',
+            $invalidAmount,
+            $t
+        );
+    }
+
+    public static function provideInvalidAmounts(): array
+    {
+        return [
+            'float'         => [123.45],
+            'string float'  => ['123.45'],
+            'null'          => [null],
+            'array'         => [[100]],
+            'object'        => [(object)['val' => 100]],
+        ];
+    }
+
 }
