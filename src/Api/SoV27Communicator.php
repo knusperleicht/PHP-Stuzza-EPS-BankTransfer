@@ -54,9 +54,7 @@ class SoV27Communicator implements SoV27CommunicatorInterface
         $this->serializer = $this->core->getSerializer();
     }
 
-    /**
-     */
-    public function getBanks(bool $validateXml = true): EpsSOBankListProtocol
+    public function getBanks(): EpsSOBankListProtocol
     {
         throw new \LogicException('Not implemented yet - waiting for XSD 2.7');
     }

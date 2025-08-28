@@ -58,14 +58,12 @@ class SoV26Communicator implements SoV26CommunicatorInterface
     /**
      * @throws XmlValidationException
      */
-    public function getBanks(bool $validateXml = true): EpsSOBankListProtocol
+    public function getBanks(): EpsSOBankListProtocol
     {
         $url  = $this->core->getBaseUrl() . '/data/haendler/v2_6';
         $body = $this->core->getUrl($url, 'Requesting bank list');
 
-        if ($validateXml) {
-            XmlValidator::ValidateBankList($body);
-        }
+        XmlValidator::ValidateBankList($body);
 
         /** @var EpsSOBankListProtocol $bankList */
         return $this->serializer->deserialize($body, EpsSOBankListProtocol::class, 'xml');
