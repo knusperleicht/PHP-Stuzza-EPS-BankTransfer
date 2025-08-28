@@ -1,12 +1,4 @@
 <?php
-/**
- * Required packages:
- * composer require nyholm/psr7 symfony/http-client
- *
- * Note: Code is working with any PSR-17 compatible HTTP client and factory
- * like Guzzle, Symfony HTTP Client, etc.
- * Sample uses nyholm/psr7 + symfony/http-client
- */
 require_once('../vendor/autoload.php');
 
 use Externet\EpsBankTransfer\Api\SoV26Communicator;

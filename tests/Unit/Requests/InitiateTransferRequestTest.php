@@ -1,6 +1,6 @@
 <?php
 
-namespace Externet\EpsBankTransfer\Tests\Domain;
+namespace Externet\EpsBankTransfer\Tests\Requests;
 
 use Exception;
 use Externet\EpsBankTransfer\Exceptions\XmlValidationException;
@@ -14,7 +14,7 @@ use Externet\EpsBankTransfer\Utilities\XmlValidator;
 use JMS\Serializer\SerializerInterface;
 use PHPUnit\Framework\TestCase;
 
-class TransferInitiatorDetailsTest extends TestCase
+class InitiateTransferRequestTest extends TestCase
 {
 
     use XmlFixtureTestTrait;

@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use UnexpectedValueException;
 
-class TransferInitiatorTest extends TestCase
+class InitiateTransferRequestTest extends TestCase
 {
     use SoV26CommunicatorTestTrait;
 
@@ -43,13 +43,13 @@ class TransferInitiatorTest extends TestCase
     {
         $this->expectException(XmlValidationException::class);
         $this->mockResponse(200, 'invalidData');
-        $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails());
+        $this->target->initiateTransferRequest($this->getMockedTransferInitiatorDetails());
     }
 
     public function testSendTransferInitiatorDetailsToCorrectUrl(): void
     {
         $this->mockResponse(200, $this->loadFixture('BankResponseDetails004.xml'));
-        $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails());
+        $this->target->initiateTransferRequest($this->getMockedTransferInitiatorDetails());
         $this->assertEquals(
             'https://routing.eps.or.at/appl/epsSO/transinit/eps/v2_6',
             $this->http->getLastRequestInfo()['url']
@@ -60,7 +60,7 @@ class TransferInitiatorTest extends TestCase
     {
         $this->setUpCommunicator(\Externet\EpsBankTransfer\Api\SoV26Communicator::TEST_MODE_URL);
         $this->mockResponse(200, $this->loadFixture('BankResponseDetails004.xml'));
-        $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails());
+        $this->target->initiateTransferRequest($this->getMockedTransferInitiatorDetails());
         $this->assertEquals(
             'https://routing-test.eps.or.at/appl/epsSO/transinit/eps/v2_6',
             $this->http->getLastRequestInfo()['url']
@@ -71,14 +71,14 @@ class TransferInitiatorTest extends TestCase
     {
         $this->expectException(RuntimeException::class);
         $this->mockResponse(404, 'Not found');
-        $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails());
+        $this->target->initiateTransferRequest($this->getMockedTransferInitiatorDetails());
     }
 
     public function testSendTransferInitiatorDetailsWithPreselectedBank(): void
     {
         $url = 'https://routing.eps.or.at/appl/epsSO/transinit/eps/v2_6/23ea3d14-278c-4e81-a021-d7b77492b611';
         $this->mockResponse(200, $this->loadFixture('BankResponseDetails000.xml'));
-        $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails(), $url);
+        $this->target->initiateTransferRequest($this->getMockedTransferInitiatorDetails(), $url);
         $this->assertEquals($url, $this->http->getLastRequestInfo()['url']);
     }
 
@@ -87,7 +87,7 @@ class TransferInitiatorTest extends TestCase
         $this->expectException(UnexpectedValueException::class);
         $this->target->setObscuritySuffixLength(8);
         $this->mockResponse(200, $this->loadFixture('BankResponseDetails000.xml'));
-        $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails());
+        $this->target->initiateTransferRequest($this->getMockedTransferInitiatorDetails());
     }
 
     public function testSendTransferInitiatorDetailsWithSecurityAppendsHash(): void
@@ -101,7 +101,7 @@ class TransferInitiatorTest extends TestCase
         $transferInitiatorDetails->remittanceIdentifier = 'Order1';
 
         $url = 'https://routing.eps.or.at/appl/epsSO/transinit/eps/v2_6/someid';
-        $this->target->sendTransferInitiatorDetails($transferInitiatorDetails, $url);
+        $this->target->initiateTransferRequest($transferInitiatorDetails, $url);
 
         $body = $this->http->getLastRequestInfo()['body'];
         $this->assertStringContainsString('Order1', $body);
@@ -111,7 +111,7 @@ class TransferInitiatorTest extends TestCase
     {
         $this->target->setBaseUrl('http://example.com');
         $this->mockResponse(200, $this->loadFixture('BankResponseDetails004.xml'));
-        $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails());
+        $this->target->initiateTransferRequest($this->getMockedTransferInitiatorDetails());
         $this->assertEquals(
             'http://example.com/transinit/eps/v2_6',
             $this->http->getLastRequestInfo()['url']
@@ -121,7 +121,7 @@ class TransferInitiatorTest extends TestCase
     public function testSendTransferInitiatorDetailsRequestContainsMandatoryFields(): void
     {
         $this->mockResponse(200, $this->loadFixture('BankResponseDetails004.xml'));
-        $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails());
+        $this->target->initiateTransferRequest($this->getMockedTransferInitiatorDetails());
 
         $body = $this->http->getLastRequestInfo()['body'];
         $this->assertStringContainsString('orderid', $body); // remittanceIdentifier
@@ -139,7 +139,7 @@ class TransferInitiatorTest extends TestCase
     public function testSendTransferInitiatorDetailsParsesResponse(): void
     {
         $this->mockResponse(200, $this->loadFixture('BankResponseDetails004.xml'));
-        $response = $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails());
+        $response = $this->target->initiateTransferRequest($this->getMockedTransferInitiatorDetails());
 
         $this->assertNotNull($response);
         $this->assertEquals('004', $response->getBankResponseDetails()->getErrorDetails()->getErrorCode());
@@ -150,7 +150,7 @@ class TransferInitiatorTest extends TestCase
     {
         $this->mockResponse(200, '<xml>valid but wrong header</xml>', ['Content-Type' => 'text/plain']);
         $this->expectException(XmlValidationException::class);
-        $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails());
+        $this->target->initiateTransferRequest($this->getMockedTransferInitiatorDetails());
     }
 
 
@@ -179,7 +179,7 @@ class TransferInitiatorTest extends TestCase
         );
         $ti->remittanceIdentifier = 'orderid';
 
-        $this->target->sendTransferInitiatorDetails($ti);
+        $this->target->initiateTransferRequest($ti);
 
         $body = $this->http->getLastRequestInfo()['body'];
 

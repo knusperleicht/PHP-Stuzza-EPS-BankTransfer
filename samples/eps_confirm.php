@@ -1,25 +1,15 @@
 <?php
-/*
-This file handles the confirmation call from the Scheme Operator (after a payment was received). It is called twice:
-1. for Vitality-Check, according to "Abbildung 6-11: epsp:VitalityCheckDetails" (eps Pflichtenheft 2.5)
-2. for the actual payment confirmation (Zahlungsbestätigung)
-*/
-
 require_once('../vendor/autoload.php');
 
 use Externet\EpsBankTransfer\Api\SoV26Communicator;
-use Externet\EpsBankTransfer\Domain\BankConfirmationDetails;
+use Externet\EpsBankTransfer\Generated\Protocol\V26\BankConfirmationDetails;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Symfony\Component\HttpClient\Psr18Client;
 
-/**
- * @param string $plainXml Raw XML message
- * @param \Externet\EpsBankTransfer\Domain\BankConfirmationDetails $bankConfirmationDetails
- * @return true
- */
+
 $paymentConfirmationCallback = function (string $plainXml, BankConfirmationDetails $bankConfirmationDetails) {
     // Handle "eps:StatusCode": "OK" or "NOK" or "VOK" or "UNKNOWN"
-    if ($bankConfirmationDetails->GetStatusCode() == 'OK') {
+    if ($bankConfirmationDetails->getPaymentConfirmationDetails()->getStatusCode() == 'OK') {
         // TODO: Do your payment completion handling here
         // You should use $bankConfirmationDetails->GetRemittanceIdentifier();
     }

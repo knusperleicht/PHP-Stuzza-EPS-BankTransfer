@@ -3,27 +3,17 @@ declare(strict_types=1);
 
 namespace Externet\EpsBankTransfer\Api;
 
-use Exception;
-use Externet\EpsBankTransfer\Domain\BankConfirmationDetails;
-use Externet\EpsBankTransfer\Domain\ShopResponseDetails;
-use Externet\EpsBankTransfer\Domain\VitalityCheckDetails;
-use Externet\EpsBankTransfer\Exceptions\CallbackResponseException;
-use Externet\EpsBankTransfer\Exceptions\InvalidCallbackException;
-use Externet\EpsBankTransfer\Exceptions\ShopResponseException;
 use Externet\EpsBankTransfer\Generated\BankList\EpsSOBankListProtocol;
 use Externet\EpsBankTransfer\Generated\Protocol\V27\EpsProtocolDetails;
 use Externet\EpsBankTransfer\Generated\Refund\EpsRefundResponse;
 use Externet\EpsBankTransfer\Internal\SoCommunicatorCore;
 use Externet\EpsBankTransfer\Requests\InitiateTransferRequest;
 use Externet\EpsBankTransfer\Requests\RefundRequest;
-use Externet\EpsBankTransfer\Utilities\Constants;
-use Externet\EpsBankTransfer\Utilities\XmlValidator;
 use JMS\Serializer\SerializerInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Log\LoggerInterface;
-use SimpleXMLElement;
 
 class SoV27Communicator implements SoV27CommunicatorInterface
 {
@@ -59,29 +49,11 @@ class SoV27Communicator implements SoV27CommunicatorInterface
         throw new \LogicException('Not implemented yet - waiting for XSD 2.7');
     }
 
-    public function sendTransferInitiatorDetails(
+    public function initiateTransferRequest(
         InitiateTransferRequest $transferInitiatorDetails,
         ?string $targetUrl = null
     ): EpsProtocolDetails {
-        if ($transferInitiatorDetails->remittanceIdentifier !== null) {
-            $transferInitiatorDetails->remittanceIdentifier =
-                $this->core->appendHash($transferInitiatorDetails->remittanceIdentifier);
-        }
-
-        if ($transferInitiatorDetails->unstructuredRemittanceIdentifier !== null) {
-            $transferInitiatorDetails->unstructuredRemittanceIdentifier =
-                $this->core->appendHash($transferInitiatorDetails->unstructuredRemittanceIdentifier);
-        }
-
-        $targetUrl = $targetUrl ?? $this->core->getBaseUrl() . '/transinit/eps/v2_7';
-
-        $xmlData = $this->serializer->serialize($transferInitiatorDetails, 'xml');
-        $response = $this->core->postUrl($targetUrl, $xmlData, 'Send payment order');
-
-        XmlValidator::ValidateEpsProtocol($response);
-
-        /** @var EpsProtocolDetails $protocolDetails */
-        return $this->serializer->deserialize($response, EpsProtocolDetails::class, 'xml');
+        throw new \LogicException('Not implemented yet - waiting for XSD 2.7');
     }
 
     public function handleConfirmationUrl(
@@ -90,65 +62,8 @@ class SoV27Communicator implements SoV27CommunicatorInterface
         string $rawPostStream = 'php://input',
         string $outputStream = 'php://output'
     ): void {
-        $shopResponseDetails = new ShopResponseDetails();
-
-        try {
-            // confirmationCallback ist Pflicht
-            if ($confirmationCallback === null || !is_callable($confirmationCallback)) {
-                throw new InvalidCallbackException('confirmationCallback not callable or missing');
-            }
-            if ($vitalityCheckCallback !== null && !is_callable($vitalityCheckCallback)) {
-                throw new InvalidCallbackException('vitalityCheckCallback not callable');
-            }
-
-            $HTTP_RAW_POST_DATA = file_get_contents($rawPostStream);
-            XmlValidator::ValidateEpsProtocol($HTTP_RAW_POST_DATA);
-
-            $xml          = new SimpleXMLElement($HTTP_RAW_POST_DATA);
-            $epspChildren = $xml->children(Constants::XMLNS_epsp);
-            $firstChild   = $epspChildren[0]->getName();
-
-            if ($firstChild === 'VitalityCheckDetails') {
-                if ($vitalityCheckCallback !== null) {
-                    $VitalityCheckDetails = new VitalityCheckDetails($xml);
-                    if (call_user_func($vitalityCheckCallback, $HTTP_RAW_POST_DATA, $VitalityCheckDetails) !== true) {
-                        throw new CallbackResponseException('Vitality check callback must return true');
-                    }
-                }
-                file_put_contents($outputStream, $HTTP_RAW_POST_DATA);
-
-            } elseif ($firstChild === 'BankConfirmationDetails') {
-                $BankConfirmationDetails = new BankConfirmationDetails($xml);
-
-                $BankConfirmationDetails->setRemittanceIdentifier(
-                    $this->core->stripHash($BankConfirmationDetails->getRemittanceIdentifier())
-                );
-
-                $shopResponseDetails->SessionId   = $BankConfirmationDetails->getSessionId();
-                $shopResponseDetails->StatusCode  = $BankConfirmationDetails->getStatusCode();
-                $shopResponseDetails->PaymentReferenceIdentifier =
-                    $BankConfirmationDetails->getPaymentReferenceIdentifier();
-
-                if (call_user_func($confirmationCallback, $HTTP_RAW_POST_DATA, $BankConfirmationDetails) !== true) {
-                    throw new CallbackResponseException('Confirmation callback must return true');
-                }
-
-                file_put_contents($outputStream, $shopResponseDetails->getSimpleXml()->asXML());
-            }
-
-        } catch (Exception $e) {
-            if ($e instanceof ShopResponseException) {
-                $shopResponseDetails->ErrorMsg = $e->getShopResponseErrorMessage();
-            } else {
-                $shopResponseDetails->ErrorMsg =
-                    'Exception "' . get_class($e) . '" occurred during confirmation handling';
-            }
-
-            file_put_contents($outputStream, $shopResponseDetails->getSimpleXml()->asXML());
-            throw $e;
-        }
+        throw new \LogicException('Not implemented yet - waiting for XSD 2.7');
     }
-
 
     public function sendRefundRequest(
         RefundRequest $refundRequest,

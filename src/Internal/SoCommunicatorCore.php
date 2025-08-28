@@ -142,6 +142,9 @@ class SoCommunicatorCore
         return $string . substr($hash, 0, $this->obscuritySuffixLength);
     }
 
+    /**
+     * @throws UnknownRemittanceIdentifierException
+     */
     public function stripHash(string $suffixed): string
     {
         if ($this->obscuritySuffixLength === 0) {

@@ -17,7 +17,7 @@ interface SoV26CommunicatorInterface extends SoCommunicatorInterface
      * @param string|null $targetUrl
      * @return EpsProtocolDetails
      */
-    public function sendTransferInitiatorDetails(
+    public function initiateTransferRequest(
         InitiateTransferRequest $transferInitiatorDetails,
         ?string                 $targetUrl = null
     ): EpsProtocolDetails;

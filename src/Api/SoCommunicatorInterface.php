@@ -20,7 +20,7 @@ interface SoCommunicatorInterface
      * @param string|null $targetUrl
      * @return object Protocol details object (version-specific)
      */
-    public function sendTransferInitiatorDetails(
+    public function initiateTransferRequest(
         InitiateTransferRequest $transferInitiatorDetails,
         ?string                 $targetUrl = null
     );

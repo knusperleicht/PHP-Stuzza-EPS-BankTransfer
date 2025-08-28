@@ -4,9 +4,6 @@ declare(strict_types=1);
 namespace Externet\EpsBankTransfer\Api;
 
 use Exception;
-use Externet\EpsBankTransfer\Domain\BankConfirmationDetails;
-use Externet\EpsBankTransfer\Domain\ShopResponseDetails;
-use Externet\EpsBankTransfer\Domain\VitalityCheckDetails;
 use Externet\EpsBankTransfer\Exceptions\CallbackResponseException;
 use Externet\EpsBankTransfer\Exceptions\InvalidCallbackException;
 use Externet\EpsBankTransfer\Exceptions\ShopResponseException;
@@ -17,14 +14,13 @@ use Externet\EpsBankTransfer\Generated\Refund\EpsRefundResponse;
 use Externet\EpsBankTransfer\Internal\SoCommunicatorCore;
 use Externet\EpsBankTransfer\Requests\InitiateTransferRequest;
 use Externet\EpsBankTransfer\Requests\RefundRequest;
-use Externet\EpsBankTransfer\Utilities\Constants;
+use Externet\EpsBankTransfer\Responses\ShopResponseDetails;
 use Externet\EpsBankTransfer\Utilities\XmlValidator;
 use JMS\Serializer\SerializerInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Log\LoggerInterface;
-use SimpleXMLElement;
 
 class SoV26Communicator implements SoV26CommunicatorInterface
 {
@@ -74,7 +70,7 @@ class SoV26Communicator implements SoV26CommunicatorInterface
     /**
      * @throws XmlValidationException
      */
-    public function sendTransferInitiatorDetails(
+    public function initiateTransferRequest(
         InitiateTransferRequest $transferInitiatorDetails,
         ?string $targetUrl = null
     ): EpsProtocolDetails {
@@ -99,16 +95,21 @@ class SoV26Communicator implements SoV26CommunicatorInterface
         return $this->serializer->deserialize($response, EpsProtocolDetails::class, 'xml');
     }
 
+    /**
+     * @throws InvalidCallbackException
+     * @throws XmlValidationException
+     * @throws ShopResponseException
+     * @throws CallbackResponseException
+     */
     public function handleConfirmationUrl(
         $confirmationCallback = null,
         $vitalityCheckCallback = null,
         string $rawPostStream = 'php://input',
         string $outputStream = 'php://output'
-    ): void {
-        $shopResponseDetails = new ShopResponseDetails();
+    ): void
+    {
 
         try {
-            // confirmationCallback ist Pflicht
             if ($confirmationCallback === null || !is_callable($confirmationCallback)) {
                 throw new InvalidCallbackException('confirmationCallback not callable or missing');
             }
@@ -116,52 +117,74 @@ class SoV26Communicator implements SoV26CommunicatorInterface
                 throw new InvalidCallbackException('vitalityCheckCallback not callable');
             }
 
-            $HTTP_RAW_POST_DATA = file_get_contents($rawPostStream);
-            XmlValidator::ValidateEpsProtocol($HTTP_RAW_POST_DATA);
+            $rawXml = file_get_contents($rawPostStream);
+            XmlValidator::ValidateEpsProtocol($rawXml);
 
-            $xml          = new SimpleXMLElement($HTTP_RAW_POST_DATA);
-            $epspChildren = $xml->children(Constants::XMLNS_epsp);
-            $firstChild   = $epspChildren[0]->getName();
+            /** @var EpsProtocolDetails $protocol */
+            $protocol = $this->serializer->deserialize($rawXml, EpsProtocolDetails::class, 'xml');
+            $shopConfirmationDetails = new ShopResponseDetails();
 
-            if ($firstChild === 'VitalityCheckDetails') {
-                if ($vitalityCheckCallback !== null) {
-                    $VitalityCheckDetails = new VitalityCheckDetails($xml);
-                    if (call_user_func($vitalityCheckCallback, $HTTP_RAW_POST_DATA, $VitalityCheckDetails) !== true) {
-                        throw new CallbackResponseException('Vitality check callback must return true');
-                    }
-                }
-                file_put_contents($outputStream, $HTTP_RAW_POST_DATA);
-
-            } elseif ($firstChild === 'BankConfirmationDetails') {
-                $BankConfirmationDetails = new BankConfirmationDetails($xml);
-
-                $BankConfirmationDetails->setRemittanceIdentifier(
-                    $this->core->stripHash($BankConfirmationDetails->getRemittanceIdentifier())
-                );
-
-                $shopResponseDetails->SessionId   = $BankConfirmationDetails->getSessionId();
-                $shopResponseDetails->StatusCode  = $BankConfirmationDetails->getStatusCode();
-                $shopResponseDetails->PaymentReferenceIdentifier =
-                    $BankConfirmationDetails->getPaymentReferenceIdentifier();
-
-                if (call_user_func($confirmationCallback, $HTTP_RAW_POST_DATA, $BankConfirmationDetails) !== true) {
-                    throw new CallbackResponseException('Confirmation callback must return true');
-                }
-
-                file_put_contents($outputStream, $shopResponseDetails->getSimpleXml()->asXML());
+            if ($protocol->getVitalityCheckDetails() !== null) {
+                $this->handleVitalityCheck($vitalityCheckCallback, $rawXml, $protocol->getVitalityCheckDetails(), $outputStream);
+                return;
             }
+
+            if ($protocol->getBankConfirmationDetails() !== null) {
+                $this->handleBankConfirmation($confirmationCallback, $rawXml, $protocol->getBankConfirmationDetails(), $shopConfirmationDetails, $outputStream);
+                return;
+            }
+
+            throw new XmlValidationException('Unknown confirmation details structure');
 
         } catch (Exception $e) {
-            if ($e instanceof ShopResponseException) {
-                $shopResponseDetails->ErrorMsg = $e->getShopResponseErrorMessage();
-            } else {
-                $shopResponseDetails->ErrorMsg =
-                    'Exception "' . get_class($e) . '" occurred during confirmation handling';
-            }
-
-            file_put_contents($outputStream, $shopResponseDetails->getSimpleXml()->asXML());
+            $this->handleException($e, $outputStream);
             throw $e;
         }
+    }
+
+    /**
+     * @throws CallbackResponseException
+     */
+    private function handleVitalityCheck(?callable $callback, string $rawXml, $vitality, string $outputStream): void
+    {
+        if ($callback !== null) {
+            if (call_user_func($callback, $rawXml, $vitality) !== true) {
+                throw new CallbackResponseException('Vitality check callback must return true');
+            }
+        }
+        file_put_contents($outputStream, $rawXml);
+    }
+
+    /**
+     * @throws CallbackResponseException
+     */
+    private function handleBankConfirmation(callable $callback, string $rawXml, $confirmation, ShopResponseDetails $response, string $outputStream): void
+    {
+        $response->setSessionId($confirmation->getSessionId());
+        $response->setStatusCode($confirmation->getPaymentConfirmationDetails()->getStatusCode());
+        $response->setPaymentReferenceIdentifier(
+            $confirmation->getPaymentConfirmationDetails()->getPaymentReferenceIdentifier()
+        );
+
+        if (call_user_func($callback, $rawXml, $confirmation) !== true) {
+            throw new CallbackResponseException('Confirmation callback must return true');
+        }
+
+        $xml = $this->serializer->serialize($response->buildShopResponseDetails(), 'xml');
+        file_put_contents($outputStream, $xml);
+    }
+
+    private function handleException(Exception $e, string $outputStream): void
+    {
+        $shopConfirmationDetails = new ShopResponseDetails();
+
+        if ($e instanceof ShopResponseException) {
+            $shopConfirmationDetails->setErrorMsg($e->getShopResponseErrorMessage());
+        } else {
+            $shopConfirmationDetails->setErrorMsg('Exception "' . get_class($e) . '" occurred during confirmation handling');
+        }
+
+        file_put_contents($outputStream, $this->serializer->serialize($shopConfirmationDetails->buildShopResponseDetails(), 'xml'));
     }
 
     /**
