@@ -18,17 +18,19 @@ class XmlValidator
     /**
      * @throws XmlValidationException
      */
-    public static function ValidateEpsProtocol($xml): bool
+    public static function ValidateEpsProtocol($xml, string $version = null): bool
     {
-        return self::ValidateXml($xml, self::GetXSD('EPSProtocol-V26.xsd'));
+        $filename = $version ? "EPSProtocol-V{$version}.xsd" : 'EPSProtocol-V26.xsd';
+        return self::ValidateXml($xml, self::GetXSD($filename));
     }
 
     /**
      * @throws XmlValidationException
      */
-    public static function ValidateEpsRefund($xml): bool
+    public static function ValidateEpsRefund($xml, string $version = null): bool
     {
-        return self::ValidateXml($xml, self::GetXSD('EPSRefund-V26.xsd'));
+        $filename = $version ? "EPSRefund-V{$version}.xsd" : 'EPSRefund-V26.xsd';
+        return self::ValidateXml($xml, self::GetXSD($filename));
     }
 
     // HELPER FUNCTIONS

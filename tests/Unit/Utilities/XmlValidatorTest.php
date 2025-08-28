@@ -44,7 +44,7 @@ class XmlValidatorTest extends TestCase
      */
     public function testWithSignatureReturnsTrue(): void
     {
-        $result = XmlValidator::ValidateEpsProtocol($this->loadFixture('BankConfirmationDetailsWithSignature.xml'));
+        $result = XmlValidator::ValidateEpsProtocol($this->loadFixture('V26/BankConfirmationDetailsWithSignature.xml'));
         $this->assertTrue($result);
     }
 
@@ -53,7 +53,7 @@ class XmlValidatorTest extends TestCase
      */
     public function testRefundResponseValid(): void
     {
-        $result = XmlValidator::ValidateEpsRefund($this->loadFixture('RefundResponseAccepted000.xml'));
+        $result = XmlValidator::ValidateEpsRefund($this->loadFixture('V26/RefundResponseAccepted000.xml'));
         $this->assertTrue($result);
     }
 }

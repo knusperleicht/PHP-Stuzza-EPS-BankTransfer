@@ -1,8 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Externet\EpsBankTransfer\Api;
+namespace Externet\EpsBankTransfer\Api\V26;
 
+use Externet\EpsBankTransfer\Api\SoCommunicatorInterface;
 use Externet\EpsBankTransfer\Generated\Protocol\V26\EpsProtocolDetails;
 use Externet\EpsBankTransfer\Generated\Refund\EpsRefundResponse;
 use Externet\EpsBankTransfer\Requests\InitiateTransferRequest;

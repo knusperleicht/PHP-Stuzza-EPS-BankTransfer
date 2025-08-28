@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Externet\EpsBankTransfer\Tests\Api;
+namespace Externet\EpsBankTransfer\Tests\Api\V26;
 
 use Externet\EpsBankTransfer\Exceptions\CallbackResponseException;
 use Externet\EpsBankTransfer\Exceptions\InvalidCallbackException;
@@ -63,7 +63,7 @@ class ConfirmationCallbackTest extends TestCase
         $this->handleConfirmation(
             function () { return true; },
             null,
-            'BankConfirmationDetailsInvalid.xml'
+            'V26/BankConfirmationDetailsInvalid.xml'
         );
     }
 
@@ -76,10 +76,10 @@ class ConfirmationCallbackTest extends TestCase
                 return true;
             },
             null,
-            'BankConfirmationDetailsWithoutSignature.xml'
+            'V26/BankConfirmationDetailsWithoutSignature.xml'
         );
 
-        $expected = file_get_contents($this->fixturePath('BankConfirmationDetailsWithoutSignature.xml'));
+        $expected = file_get_contents($this->fixturePath('V26/BankConfirmationDetailsWithoutSignature.xml'));
         $this->assertSame($expected, $actual);
     }
 
@@ -96,7 +96,7 @@ class ConfirmationCallbackTest extends TestCase
                 return true;
             },
             null,
-            'BankConfirmationDetailsWithoutSignature.xml',
+            'V26/BankConfirmationDetailsWithoutSignature.xml',
             $temp
         );
 
@@ -126,7 +126,7 @@ class ConfirmationCallbackTest extends TestCase
         $this->handleConfirmation(
             function () { return null; },
             null,
-            'BankConfirmationDetailsWithoutSignature.xml'
+            'V26/BankConfirmationDetailsWithoutSignature.xml'
         );
     }
 
@@ -142,7 +142,7 @@ class ConfirmationCallbackTest extends TestCase
                     return null;
                 },
                 null,
-                'BankConfirmationDetailsWithoutSignature.xml',
+                'V26/BankConfirmationDetailsWithoutSignature.xml',
                 $temp
             );
         } catch (CallbackResponseException $e) {
@@ -160,7 +160,7 @@ class ConfirmationCallbackTest extends TestCase
         $this->handleConfirmation(
             function () use (&$called) { $called = true; return true; },
             null,
-            'VitalityCheckDetails.xml'
+            'V26/VitalityCheckDetails.xml'
         );
         $this->assertFalse($called);
     }
@@ -172,7 +172,7 @@ class ConfirmationCallbackTest extends TestCase
         $this->handleConfirmation(
             function () { return true; },
             "invalid",
-            'VitalityCheckDetails.xml'
+            'V26/VitalityCheckDetails.xml'
         );
     }
 
@@ -188,7 +188,7 @@ class ConfirmationCallbackTest extends TestCase
                     return true;
                 },
                 'invalid',
-                'VitalityCheckDetails.xml',
+                'V26/VitalityCheckDetails.xml',
                 $temp
             );
         } catch (InvalidCallbackException $e) {
@@ -211,7 +211,7 @@ class ConfirmationCallbackTest extends TestCase
             function () {
                 return false;
             },
-            'VitalityCheckDetails.xml'
+            'V26/VitalityCheckDetails.xml'
         );
     }
 
@@ -224,7 +224,7 @@ class ConfirmationCallbackTest extends TestCase
     public function testHandleConfirmationUrlVitalityWritesInputToOutputStream(): void
     {
         $temp = tempnam(sys_get_temp_dir(), 'SoCommunicatorTest_');
-        $rawXml = file_get_contents($this->fixturePath('VitalityCheckDetails.xml'));
+        $rawXml = file_get_contents($this->fixturePath('V26/VitalityCheckDetails.xml'));
         $this->target->handleConfirmationUrl(
             function () {
                 return true;
@@ -233,10 +233,10 @@ class ConfirmationCallbackTest extends TestCase
                 $this->assertNotEmpty($rawXml);
                 return true;
             },
-            $this->fixturePath('VitalityCheckDetails.xml'),
+            $this->fixturePath('V26/VitalityCheckDetails.xml'),
             $temp
         );
-        $this->assertXmlEqualsFixture('VitalityCheckDetails.xml', file_get_contents($temp));
+        $this->assertXmlEqualsFixture('V26/VitalityCheckDetails.xml', file_get_contents($temp));
     }
 
     public function testHandleConfirmationUrlReturnsErrorOnInvalidXml(): void
@@ -248,7 +248,7 @@ class ConfirmationCallbackTest extends TestCase
                     return true;
                 },
                 null,
-                'BankConfirmationDetailsInvalid.xml',
+                'V26/BankConfirmationDetailsInvalid.xml',
                 $temp
             );
         } catch (XmlValidationException $e) {

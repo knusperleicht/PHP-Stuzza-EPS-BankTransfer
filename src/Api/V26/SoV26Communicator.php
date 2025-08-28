@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Externet\EpsBankTransfer\Api;
+namespace Externet\EpsBankTransfer\Api\V26;
 
 use Exception;
 use Externet\EpsBankTransfer\Exceptions\CallbackResponseException;

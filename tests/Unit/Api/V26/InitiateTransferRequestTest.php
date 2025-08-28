@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Externet\EpsBankTransfer\Tests\Api;
+namespace Externet\EpsBankTransfer\Tests\Api\V26;
 
+use Externet\EpsBankTransfer\Exceptions\XmlValidationException;
 use Externet\EpsBankTransfer\Requests\InitiateTransferRequest;
 use Externet\EpsBankTransfer\Requests\Parts\PaymentFlowUrls;
-use Externet\EpsBankTransfer\Exceptions\XmlValidationException;
 use Externet\EpsBankTransfer\Tests\Helper\SoV26CommunicatorTestTrait;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
@@ -48,7 +48,7 @@ class InitiateTransferRequestTest extends TestCase
 
     public function testSendTransferInitiatorDetailsToCorrectUrl(): void
     {
-        $this->mockResponse(200, $this->loadFixture('BankResponseDetails004.xml'));
+        $this->mockResponse(200, $this->loadFixture('V26/BankResponseDetails004.xml'));
         $this->target->initiateTransferRequest($this->getMockedTransferInitiatorDetails());
         $this->assertEquals(
             'https://routing.eps.or.at/appl/epsSO/transinit/eps/v2_6',
@@ -58,8 +58,8 @@ class InitiateTransferRequestTest extends TestCase
 
     public function testSendTransferInitiatorDetailsToTestUrl(): void
     {
-        $this->setUpCommunicator(\Externet\EpsBankTransfer\Api\SoV26Communicator::TEST_MODE_URL);
-        $this->mockResponse(200, $this->loadFixture('BankResponseDetails004.xml'));
+        $this->setUpCommunicator(\Externet\EpsBankTransfer\Api\V26\SoV26Communicator::TEST_MODE_URL);
+        $this->mockResponse(200, $this->loadFixture('V26/BankResponseDetails004.xml'));
         $this->target->initiateTransferRequest($this->getMockedTransferInitiatorDetails());
         $this->assertEquals(
             'https://routing-test.eps.or.at/appl/epsSO/transinit/eps/v2_6',
@@ -77,7 +77,7 @@ class InitiateTransferRequestTest extends TestCase
     public function testSendTransferInitiatorDetailsWithPreselectedBank(): void
     {
         $url = 'https://routing.eps.or.at/appl/epsSO/transinit/eps/v2_6/23ea3d14-278c-4e81-a021-d7b77492b611';
-        $this->mockResponse(200, $this->loadFixture('BankResponseDetails000.xml'));
+        $this->mockResponse(200, $this->loadFixture('V26/BankResponseDetails000.xml'));
         $this->target->initiateTransferRequest($this->getMockedTransferInitiatorDetails(), $url);
         $this->assertEquals($url, $this->http->getLastRequestInfo()['url']);
     }
@@ -86,7 +86,7 @@ class InitiateTransferRequestTest extends TestCase
     {
         $this->expectException(UnexpectedValueException::class);
         $this->target->setObscuritySuffixLength(8);
-        $this->mockResponse(200, $this->loadFixture('BankResponseDetails000.xml'));
+        $this->mockResponse(200, $this->loadFixture('V26/BankResponseDetails000.xml'));
         $this->target->initiateTransferRequest($this->getMockedTransferInitiatorDetails());
     }
 
@@ -94,7 +94,7 @@ class InitiateTransferRequestTest extends TestCase
     {
         $this->target->setObscuritySuffixLength(8);
         $this->target->setObscuritySeed('Some seed');
-        $this->mockResponse(200, $this->loadFixture('BankResponseDetails000.xml'));
+        $this->mockResponse(200, $this->loadFixture('V26/BankResponseDetails000.xml'));
 
         $t = new PaymentFlowUrls('a', 'b', 'c');
         $transferInitiatorDetails = new InitiateTransferRequest('a', 'b', 'c', 'd', 'e', 'f', 0, $t);
@@ -110,7 +110,7 @@ class InitiateTransferRequestTest extends TestCase
     public function testSendTransferInitiatorDetailsWithOverriddenBaseUrl(): void
     {
         $this->target->setBaseUrl('http://example.com');
-        $this->mockResponse(200, $this->loadFixture('BankResponseDetails004.xml'));
+        $this->mockResponse(200, $this->loadFixture('V26/BankResponseDetails004.xml'));
         $this->target->initiateTransferRequest($this->getMockedTransferInitiatorDetails());
         $this->assertEquals(
             'http://example.com/transinit/eps/v2_6',
@@ -120,7 +120,7 @@ class InitiateTransferRequestTest extends TestCase
 
     public function testSendTransferInitiatorDetailsRequestContainsMandatoryFields(): void
     {
-        $this->mockResponse(200, $this->loadFixture('BankResponseDetails004.xml'));
+        $this->mockResponse(200, $this->loadFixture('V26/BankResponseDetails004.xml'));
         $this->target->initiateTransferRequest($this->getMockedTransferInitiatorDetails());
 
         $body = $this->http->getLastRequestInfo()['body'];
@@ -138,7 +138,7 @@ class InitiateTransferRequestTest extends TestCase
 
     public function testSendTransferInitiatorDetailsParsesResponse(): void
     {
-        $this->mockResponse(200, $this->loadFixture('BankResponseDetails004.xml'));
+        $this->mockResponse(200, $this->loadFixture('V26/BankResponseDetails004.xml'));
         $response = $this->target->initiateTransferRequest($this->getMockedTransferInitiatorDetails());
 
         $this->assertNotNull($response);
@@ -159,7 +159,7 @@ class InitiateTransferRequestTest extends TestCase
      */
     public function testSendTransferInitiatorDetailsFormatsAmountCorrectly($inputAmount, string $expectedInXml): void
     {
-        $this->mockResponse(200, $this->loadFixture('BankResponseDetails004.xml'));
+        $this->mockResponse(200, $this->loadFixture('V26/BankResponseDetails004.xml'));
 
         $t = new PaymentFlowUrls(
             'https://example.com/confirmation',

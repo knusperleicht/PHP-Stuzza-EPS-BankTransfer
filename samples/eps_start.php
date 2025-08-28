@@ -2,9 +2,9 @@
 require_once('../vendor/autoload.php');
 
 use Externet\EpsBankTransfer;
-use Externet\EpsBankTransfer\Api\SoV26Communicator;
-use Externet\EpsBankTransfer\Requests\Parts\PaymentFlowUrls;
+use Externet\EpsBankTransfer\Api\V26\SoV26Communicator;
 use Externet\EpsBankTransfer\Requests\InitiateTransferRequest;
+use Externet\EpsBankTransfer\Requests\Parts\PaymentFlowUrls;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Symfony\Component\HttpClient\Psr18Client;
 

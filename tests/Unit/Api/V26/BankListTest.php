@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Externet\EpsBankTransfer\Tests\Api;
+namespace Externet\EpsBankTransfer\Tests\Api\V26;
 
-use Externet\EpsBankTransfer\Api\SoV26Communicator;
+use Externet\EpsBankTransfer\Api\V26\SoV26Communicator;
 use Externet\EpsBankTransfer\Exceptions\XmlValidationException;
 use Externet\EpsBankTransfer\Generated\BankList\EpsSOBankListProtocol;
 use Externet\EpsBankTransfer\Tests\Helper\SoV26CommunicatorTestTrait;

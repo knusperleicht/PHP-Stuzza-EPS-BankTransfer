@@ -4,24 +4,24 @@ declare(strict_types=1);
 
 namespace Externet\EpsBankTransfer\Tests\Helper;
 
-use Externet\EpsBankTransfer\Api\V26\SoV26Communicator;
+use Externet\EpsBankTransfer\Api\V27\SoV27Communicator;
 use GuzzleHttp\Psr7\HttpFactory;
 
-trait SoV26CommunicatorTestTrait
+trait SoV27CommunicatorTestTrait
 {
     use XmlFixtureTestTrait;
 
-    /** @var SoV26Communicator */
+    /** @var SoV27Communicator */
     protected $target;
 
     /** @var Psr18TestHttp */
     protected $http;
 
-    protected function setUpCommunicator(string $modeUrl = SoV26Communicator::LIVE_MODE_URL): void
+    protected function setUpCommunicator(string $modeUrl = SoV27Communicator::LIVE_MODE_URL): void
     {
         $this->http = new Psr18TestHttp();
         $factory = new HttpFactory();
-        $this->target = new SoV26Communicator($this->http, $factory, $factory, $modeUrl);
+        $this->target = new SoV27Communicator($this->http, $factory, $factory, $modeUrl);
         date_default_timezone_set('UTC');
     }
 

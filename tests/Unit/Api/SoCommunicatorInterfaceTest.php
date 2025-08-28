@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace Externet\EpsBankTransfer\Tests\Api;
 
 use Externet\EpsBankTransfer\Api\SoCommunicatorInterface;
-use Externet\EpsBankTransfer\Api\SoV26Communicator;
-use Externet\EpsBankTransfer\Api\SoV27Communicator;
+use Externet\EpsBankTransfer\Api\V26\SoV26Communicator;
+use Externet\EpsBankTransfer\Api\V27\SoV27Communicator;
 use Externet\EpsBankTransfer\Tests\Helper\Psr18TestHttp;
 use Externet\EpsBankTransfer\Tests\Helper\XmlFixtureTestTrait;
 use Nyholm\Psr7\Factory\Psr17Factory;

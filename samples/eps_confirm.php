@@ -1,7 +1,7 @@
 <?php
 require_once('../vendor/autoload.php');
 
-use Externet\EpsBankTransfer\Api\SoV26Communicator;
+use Externet\EpsBankTransfer\Api\V26\SoV26Communicator;
 use Externet\EpsBankTransfer\Generated\Protocol\V26\BankConfirmationDetails;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Symfony\Component\HttpClient\Psr18Client;

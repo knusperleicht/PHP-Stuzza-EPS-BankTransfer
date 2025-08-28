@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Externet\EpsBankTransfer\Tests\Api;
+namespace Externet\EpsBankTransfer\Tests\Api\V26;
 
-use Externet\EpsBankTransfer\Requests\RefundRequest;
+use Externet\EpsBankTransfer\Api\V26\SoV26Communicator;
 use Externet\EpsBankTransfer\Exceptions\XmlValidationException;
+use Externet\EpsBankTransfer\Requests\RefundRequest;
 use Externet\EpsBankTransfer\Tests\Helper\SoV26CommunicatorTestTrait;
 use PHPUnit\Framework\TestCase;
-use Externet\EpsBankTransfer\Api\SoV26Communicator;
 
 class RefundRequestTest extends TestCase
 {
@@ -48,7 +48,7 @@ class RefundRequestTest extends TestCase
     {
         $this->setUpCommunicator($modeUrl);
         $refundRequest = $this->getMockedRefundRequest();
-        $this->mockResponse(200, $this->loadFixture('RefundResponseAccepted000.xml'));
+        $this->mockResponse(200, $this->loadFixture('V26/RefundResponseAccepted000.xml'));
         $this->target->sendRefundRequest($refundRequest);
         $this->assertEquals($expectedUrl, $this->http->getLastRequestInfo()['url']);
     }
@@ -74,7 +74,7 @@ class RefundRequestTest extends TestCase
     public function testSendRefundRequestParsesAcceptedResponse(): void
     {
         $refundRequest = $this->getMockedRefundRequest();
-        $this->mockResponse(200, $this->loadFixture('RefundResponseAccepted000.xml'));
+        $this->mockResponse(200, $this->loadFixture('V26/RefundResponseAccepted000.xml'));
 
         $result = $this->target->sendRefundRequest($refundRequest);
 
@@ -86,7 +86,7 @@ class RefundRequestTest extends TestCase
     {
         $this->target->setBaseUrl('http://example.com');
         $refundRequest = $this->getMockedRefundRequest();
-        $this->mockResponse(200, $this->loadFixture('RefundResponseAccepted000.xml'));
+        $this->mockResponse(200, $this->loadFixture('V26/RefundResponseAccepted000.xml'));
 
         $this->target->sendRefundRequest($refundRequest);
         $this->assertEquals(

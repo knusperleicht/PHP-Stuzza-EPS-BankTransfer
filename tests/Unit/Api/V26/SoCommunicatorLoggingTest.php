@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Externet\EpsBankTransfer\Tests\Api;
+namespace Externet\EpsBankTransfer\Tests\Api\V26;
 
-use Externet\EpsBankTransfer\Api\SoV26Communicator;
+use Externet\EpsBankTransfer\Api\V26\SoV26Communicator;
 use Externet\EpsBankTransfer\Tests\Helper\Psr18TestHttp;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use PHPUnit\Framework\TestCase;
