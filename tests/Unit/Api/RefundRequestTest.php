@@ -1,0 +1,65 @@
+<?php
+declare(strict_types=1);
+
+namespace Externet\EpsBankTransfer\Tests\Api;
+
+use Externet\EpsBankTransfer\Requests\RefundRequest;
+use Externet\EpsBankTransfer\Exceptions\XmlValidationException;
+use Externet\EpsBankTransfer\Tests\Helper\SoV26CommunicatorTestTrait;
+use PHPUnit\Framework\TestCase;
+
+class RefundRequestTest extends TestCase
+{
+    use SoV26CommunicatorTestTrait;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->setUpCommunicator();
+    }
+
+    private function getMockedRefundRequest(): RefundRequest
+    {
+        return new RefundRequest(
+            '2025-02-10T15:30:00',
+            '1234567890',
+            'AT611904300234573201',
+            '100.50',
+            'EUR',
+            'TestUserId',
+            'secret123',
+            'Duplicate transaction'
+        );
+    }
+
+    public function testSendRefundRequestThrowsValidationException(): void
+    {
+        $refundRequest = $this->getMockedRefundRequest();
+        $this->mockResponse(200, 'invalidData');
+        $this->expectException(XmlValidationException::class);
+        $this->target->sendRefundRequest($refundRequest);
+    }
+
+    public function testSendRefundRequestToCorrectUrl(): void
+    {
+        $refundRequest = $this->getMockedRefundRequest();
+        $this->mockResponse(200, $this->loadFixture('RefundResponseAccepted000.xml'));
+        $this->target->sendRefundRequest($refundRequest);
+        $this->assertEquals(
+            'https://routing.eps.or.at/appl/epsSO/refund/eps/v2_6',
+            $this->http->getLastRequestInfo()['url']
+        );
+    }
+
+    public function testSendRefundRequestToTestUrl(): void
+    {
+        $this->setUpCommunicator(\Externet\EpsBankTransfer\Api\SoV26Communicator::TEST_MODE_URL);
+        $refundRequest = $this->getMockedRefundRequest();
+        $this->mockResponse(200, $this->loadFixture('RefundResponseAccepted000.xml'));
+        $this->target->sendRefundRequest($refundRequest);
+        $this->assertEquals(
+            'https://routing-test.eps.or.at/appl/epsSO/refund/eps/v2_6',
+            $this->http->getLastRequestInfo()['url']
+        );
+    }
+}
