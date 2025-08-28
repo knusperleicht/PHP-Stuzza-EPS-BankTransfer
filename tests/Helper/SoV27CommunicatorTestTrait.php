@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Externet\EpsBankTransfer\Tests\Helper;
 
+use Externet\EpsBankTransfer\Api\AbstractSoCommunicator;
 use Externet\EpsBankTransfer\Api\V27\SoV27Communicator;
 use GuzzleHttp\Psr7\HttpFactory;
 
@@ -17,7 +18,7 @@ trait SoV27CommunicatorTestTrait
     /** @var Psr18TestHttp */
     protected $http;
 
-    protected function setUpCommunicator(string $modeUrl = SoV27Communicator::LIVE_MODE_URL): void
+    protected function setUpCommunicator(string $modeUrl = AbstractSoCommunicator::LIVE_MODE_URL): void
     {
         $this->http = new Psr18TestHttp();
         $factory = new HttpFactory();

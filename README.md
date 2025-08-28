@@ -36,12 +36,12 @@ phpunit
 ## Migration from v1.x
 
 The SoCommunicator uses a common base URL for API calls. These endpoints are defined in
-`SoCommunicator::TEST_MODE_URL` and `SoCommunicator::LIVE_MODE_URL`.
+`AbstractSoCommunicator::TEST_MODE_URL` and `AbstractSoCommunicator::LIVE_MODE_URL`.
 
 ```php
 use at\externet\eps_bank_transfer\SoCommunicator;
 $isTestMode = true;
-$url = $isTestMode ? SoCommunicator::TEST_MODE_URL :  SoCommunicator::LIVE_MODE_URL;
+$url = $isTestMode ? AbstractSoCommunicator::TEST_MODE_URL :  AbstractSoCommunicator::LIVE_MODE_URL;
 
 $requestFactory = Psr17FactoryDiscovery::findRequestFactory();
 $streamFactory = Psr17FactoryDiscovery::findStreamFactory();

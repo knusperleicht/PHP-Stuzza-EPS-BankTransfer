@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Externet\EpsBankTransfer\Tests\Api\V26;
 
+use Externet\EpsBankTransfer\Api\AbstractSoCommunicator;
 use Externet\EpsBankTransfer\Api\V26\SoV26Communicator;
 use Externet\EpsBankTransfer\Exceptions\XmlValidationException;
 use Externet\EpsBankTransfer\Generated\BankList\EpsSOBankListProtocol;
@@ -41,8 +42,8 @@ class BankListTest extends TestCase
     public static function provideBankUrls(): array
     {
         return [
-            'live' => [SoV26Communicator::LIVE_MODE_URL, 'https://routing.eps.or.at/appl/epsSO/data/haendler/v2_6'],
-            'test' => [SoV26Communicator::TEST_MODE_URL, 'https://routing-test.eps.or.at/appl/epsSO/data/haendler/v2_6'],
+            'live' => [AbstractSoCommunicator::LIVE_MODE_URL, 'https://routing.eps.or.at/appl/epsSO/data/haendler/v2_6'],
+            'test' => [AbstractSoCommunicator::TEST_MODE_URL, 'https://routing-test.eps.or.at/appl/epsSO/data/haendler/v2_6'],
         ];
     }
 

@@ -3,18 +3,10 @@ declare(strict_types=1);
 
 namespace Externet\EpsBankTransfer\Api;
 
-use Externet\EpsBankTransfer\Generated\BankList\EpsSOBankListProtocol;
 use Externet\EpsBankTransfer\Requests\InitiateTransferRequest;
-use Externet\EpsBankTransfer\Requests\RefundRequest;
 
 interface SoCommunicatorInterface
 {
-    /**
-     * @param string|null $targetUrl
-     * @return EpsSOBankListProtocol
-     */
-    public function getBanks(?string $targetUrl = null): EpsSOBankListProtocol;
-
     /**
      * @param InitiateTransferRequest $transferInitiatorDetails
      * @param string|null $targetUrl
@@ -38,20 +30,4 @@ interface SoCommunicatorInterface
         string $rawPostStream = 'php://input',
         string $outputStream = 'php://output'
     );
-
-    /**
-     * @param RefundRequest $refundRequest
-     * @param string|null $targetUrl
-     * @return object Refund response (version-specific)
-     */
-    public function sendRefundRequest(
-        RefundRequest $refundRequest,
-        ?string       $targetUrl = null
-    );
-
-    public function setObscuritySuffixLength(int $obscuritySuffixLength);
-
-    public function setObscuritySeed(?string $obscuritySeed);
-
-    public function setBaseUrl(string $baseUrl);
 }

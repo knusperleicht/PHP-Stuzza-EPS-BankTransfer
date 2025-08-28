@@ -4,69 +4,18 @@ declare(strict_types=1);
 namespace Externet\EpsBankTransfer\Api\V26;
 
 use Exception;
+use Externet\EpsBankTransfer\Api\AbstractSoCommunicator;
 use Externet\EpsBankTransfer\Exceptions\CallbackResponseException;
 use Externet\EpsBankTransfer\Exceptions\InvalidCallbackException;
 use Externet\EpsBankTransfer\Exceptions\ShopResponseException;
 use Externet\EpsBankTransfer\Exceptions\XmlValidationException;
-use Externet\EpsBankTransfer\Generated\BankList\EpsSOBankListProtocol;
 use Externet\EpsBankTransfer\Generated\Protocol\V26\EpsProtocolDetails;
-use Externet\EpsBankTransfer\Generated\Refund\EpsRefundResponse;
-use Externet\EpsBankTransfer\Internal\SoCommunicatorCore;
 use Externet\EpsBankTransfer\Requests\InitiateTransferRequest;
-use Externet\EpsBankTransfer\Requests\RefundRequest;
 use Externet\EpsBankTransfer\Responses\ShopResponseDetails;
 use Externet\EpsBankTransfer\Utilities\XmlValidator;
-use JMS\Serializer\SerializerInterface;
-use Psr\Http\Client\ClientInterface;
-use Psr\Http\Message\RequestFactoryInterface;
-use Psr\Http\Message\StreamFactoryInterface;
-use Psr\Log\LoggerInterface;
 
-class SoV26Communicator implements SoV26CommunicatorInterface
+class SoV26Communicator extends AbstractSoCommunicator implements SoV26CommunicatorInterface
 {
-    public const TEST_MODE_URL = 'https://routing-test.eps.or.at/appl/epsSO';
-    public const LIVE_MODE_URL = 'https://routing.eps.or.at/appl/epsSO';
-
-    /** @var SoCommunicatorCore */
-    private $core;
-
-    /** @var SerializerInterface */
-    private $serializer;
-
-    public function __construct(
-        ClientInterface $httpClient,
-        RequestFactoryInterface $requestFactory,
-        StreamFactoryInterface $streamFactory,
-        string $baseUrl = self::LIVE_MODE_URL,
-        ?LoggerInterface $logger = null
-    ) {
-        $this->core = new SoCommunicatorCore(
-            $httpClient,
-            $requestFactory,
-            $streamFactory,
-            $baseUrl,
-            $logger
-        );
-
-        $this->serializer = $this->core->getSerializer();
-    }
-
-    /**
-     * @param string|null $targetUrl
-     * @return EpsSOBankListProtocol
-     * @throws XmlValidationException
-     */
-    public function getBanks(?string $targetUrl = null): EpsSOBankListProtocol
-    {
-        $targetUrl = $targetUrl ?? $this->core->getBaseUrl() . '/data/haendler/v2_6';
-        $body = $this->core->getUrl($targetUrl, 'Requesting bank list');
-
-        XmlValidator::ValidateBankList($body);
-
-        /** @var EpsSOBankListProtocol $bankList */
-        return $this->serializer->deserialize($body, EpsSOBankListProtocol::class, 'xml');
-    }
-
     /**
      * @throws XmlValidationException
      */
@@ -108,7 +57,6 @@ class SoV26Communicator implements SoV26CommunicatorInterface
         string $outputStream = 'php://output'
     ): void
     {
-
         try {
             if ($confirmationCallback === null || !is_callable($confirmationCallback)) {
                 throw new InvalidCallbackException('confirmationCallback not callable or missing');
@@ -185,42 +133,5 @@ class SoV26Communicator implements SoV26CommunicatorInterface
         }
 
         file_put_contents($outputStream, $this->serializer->serialize($shopConfirmationDetails->buildShopResponseDetails(), 'xml'));
-    }
-
-    /**
-     * @throws XmlValidationException
-     */
-    public function sendRefundRequest(
-        RefundRequest $refundRequest,
-        ?string $targetUrl = null
-    ): EpsRefundResponse {
-        $targetUrl = $targetUrl ?? $this->core->getBaseUrl() . '/refund/eps/v2_6';
-
-        $xmlData = $this->serializer->serialize($refundRequest->buildEpsRefundRequest(), 'xml');
-        $responseXml = $this->core->postUrl(
-            $targetUrl,
-            $xmlData,
-            'Sending refund request to ' . $targetUrl
-        );
-
-        XmlValidator::ValidateEpsRefund($responseXml);
-
-        /** @var EpsRefundResponse $refundResponse */
-        return $this->serializer->deserialize($responseXml, EpsRefundResponse::class, 'xml');
-    }
-
-    public function setObscuritySuffixLength(int $obscuritySuffixLength): void
-    {
-        $this->core->setObscuritySuffixLength($obscuritySuffixLength);
-    }
-
-    public function setObscuritySeed(?string $obscuritySeed): void
-    {
-        $this->core->setObscuritySeed($obscuritySeed);
-    }
-
-    public function setBaseUrl(string $baseUrl): void
-    {
-        $this->core->setBaseUrl($baseUrl);
     }
 }

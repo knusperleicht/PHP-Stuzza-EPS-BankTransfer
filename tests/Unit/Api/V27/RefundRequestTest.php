@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace Externet\EpsBankTransfer\Tests\Api\V26;
+namespace Externet\EpsBankTransfer\Tests\Api\V27;
 
 use Externet\EpsBankTransfer\Api\AbstractSoCommunicator;
 use Externet\EpsBankTransfer\Exceptions\XmlValidationException;
 use Externet\EpsBankTransfer\Requests\RefundRequest;
-use Externet\EpsBankTransfer\Tests\Helper\SoV26CommunicatorTestTrait;
+use Externet\EpsBankTransfer\Tests\Helper\SoV27CommunicatorTestTrait;
 use PHPUnit\Framework\TestCase;
 
 class RefundRequestTest extends TestCase
 {
-    use SoV26CommunicatorTestTrait;
+    use SoV27CommunicatorTestTrait;
 
     protected function setUp(): void
     {

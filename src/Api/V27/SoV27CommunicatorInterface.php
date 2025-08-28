@@ -22,16 +22,4 @@ interface SoV27CommunicatorInterface extends SoCommunicatorInterface
         InitiateTransferRequest $transferInitiatorDetails,
         ?string                 $targetUrl = null
     ): EpsProtocolDetails;
-
-    /**
-     * Sends a refund request to EPS (Protocol v2.7).
-     *
-     * @param RefundRequest $refundRequest
-     * @param string|null $targetUrl
-     * @return EpsRefundResponse
-     */
-    public function sendRefundRequest(
-        RefundRequest $refundRequest,
-        ?string       $targetUrl = null
-    ): EpsRefundResponse;
 }
