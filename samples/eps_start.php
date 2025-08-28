@@ -70,6 +70,11 @@ try {
     if ($protocolDetails->getBankResponseDetails()->getErrorDetails()->getErrorCode() !== '000') {
         $errorCode = $protocolDetails->getBankResponseDetails()->getErrorDetails()->getErrorCode();
         $errorMsg = $protocolDetails->getBankResponseDetails()->getErrorDetails()->getErrorMsg();
+
+        echo "Error occurred during EPS bank transfer initiation:\n";
+        echo "Error code: " . $errorCode . "\n";
+        echo "Error message: " . $errorMsg . "\n";
+
     } else {
         header('Location: ' . $protocolDetails->getBankResponseDetails()->getClientRedirectUrl());
     }
