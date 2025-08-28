@@ -3,26 +3,17 @@ declare(strict_types=1);
 
 namespace Externet\EpsBankTransfer\Api;
 
+use Externet\EpsBankTransfer\Generated\BankList\EpsSOBankListProtocol;
 use Externet\EpsBankTransfer\Requests\InitiateTransferRequest;
 use Externet\EpsBankTransfer\Requests\RefundRequest;
 
 interface SoCommunicatorInterface
 {
     /**
-     * @return array<string,array<string,string>>
-     */
-    public function getBanksArray();
-
-    /**
-     * @return array<string,array<string,string>>|null
-     */
-    public function tryGetBanksArray();
-
-    /**
      * @param bool $validateXml
-     * @return string
+     * @return EpsSOBankListProtocol
      */
-    public function getBanks(bool $validateXml = true);
+    public function getBanks(bool $validateXml = true): EpsSOBankListProtocol;
 
     /**
      * @param InitiateTransferRequest $transferInitiatorDetails

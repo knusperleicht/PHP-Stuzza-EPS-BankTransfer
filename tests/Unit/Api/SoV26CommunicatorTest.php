@@ -8,6 +8,7 @@ use Externet\EpsBankTransfer\Api\SoV26Communicator;
 use Externet\EpsBankTransfer\Exceptions\CallbackResponseException;
 use Externet\EpsBankTransfer\Exceptions\InvalidCallbackException;
 use Externet\EpsBankTransfer\Exceptions\XmlValidationException;
+use Externet\EpsBankTransfer\Generated\BankList\EpsSOBankListProtocol;
 use Externet\EpsBankTransfer\Requests\InitiateTransferRequest;
 use Externet\EpsBankTransfer\Requests\Parts\PaymentFlowUrls;
 use Externet\EpsBankTransfer\Requests\RefundRequest;
@@ -44,9 +45,9 @@ class SoV26CommunicatorTest extends TestCase
 
     public function testGetBanksNoExceptionWhenNoValidation(): void
     {
-        $this->mockResponse(200, 'bar');
+        $this->mockResponse(200, $this->loadFixture('BankListSample.xml'));;
         $banks = $this->target->getBanks(false);
-        $this->assertSame('bar', $banks);
+        $this->assertInstanceOf(EpsSOBankListProtocol::class, $banks);
     }
 
     /**
@@ -56,7 +57,7 @@ class SoV26CommunicatorTest extends TestCase
     {
         $factory = new HttpFactory();
         $this->target = new SoV26Communicator($this->http, $factory, $factory, $modeUrl);
-        $this->mockResponse(200, 'bar');
+        $this->mockResponse(200, $this->loadFixture('BankListSample.xml'));
         $this->target->getBanks(false);
 
         $this->assertEquals($expectedUrl, $this->http->getLastRequestInfo()['url']);
@@ -70,41 +71,11 @@ class SoV26CommunicatorTest extends TestCase
         ];
     }
 
-    public function testGetBanksArray(): void
-    {
-        $this->mockResponse(200, $this->loadFixture('BankListSample.xml'));
-        $actual = $this->target->getBanksArray();
-
-        $expected = [
-            'Testbank' => [
-                'bic' => 'TESTBANKXXX',
-                'bezeichnung' => 'Testbank',
-                'land' => 'AT',
-                'epsUrl' => 'https://routing.eps.or.at/appl/epsSO/transinit/eps/v2_6/23ea3d14-278c-4e81-a021-d7b77492b611'
-            ]
-        ];
-
-        $this->assertEquals($expected, $actual);
-    }
-
     public function testGetBankListReadError(): void
     {
         $this->expectException(RuntimeException::class);
         $this->mockResponse(404, 'Not found', ['Content-Type' => 'text/plain']);
         $this->target->getBanks();
-    }
-
-    public function testTryGetBanksArrayReturnsNull(): void
-    {
-        $this->assertNull($this->target->tryGetBanksArray());
-    }
-
-    public function testTryGetBanksArrayReturnsBanks(): void
-    {
-        $this->mockResponse(200, $this->loadFixture('BankListSample.xml'));
-        $actual = $this->target->getBanksArray();
-
-        $this->assertArrayHasKey('Testbank', $actual);
     }
 
     public function testSendTransferInitiatorDetailsThrowsValidationException(): void
@@ -147,7 +118,7 @@ class SoV26CommunicatorTest extends TestCase
         $this->target->setBaseUrl('http://example.com');
 
         $this->mockResponse(200, $this->loadFixture('BankListSample.xml'));
-        $this->target->getBanksArray();
+        $this->target->getBanks(false);
         $this->assertEquals('http://example.com/data/haendler/v2_6', $this->http->getLastRequestInfo()['url']);
 
         $this->mockResponse(200, $this->loadFixture('BankResponseDetails004.xml'));

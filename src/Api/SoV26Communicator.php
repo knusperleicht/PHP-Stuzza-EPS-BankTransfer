@@ -11,6 +11,7 @@ use Externet\EpsBankTransfer\Exceptions\CallbackResponseException;
 use Externet\EpsBankTransfer\Exceptions\InvalidCallbackException;
 use Externet\EpsBankTransfer\Exceptions\ShopResponseException;
 use Externet\EpsBankTransfer\Exceptions\XmlValidationException;
+use Externet\EpsBankTransfer\Generated\BankList\EpsSOBankListProtocol;
 use Externet\EpsBankTransfer\Generated\Protocol\V26\EpsProtocolDetails;
 use Externet\EpsBankTransfer\Generated\Refund\EpsRefundResponse;
 use Externet\EpsBankTransfer\Internal\SoCommunicatorCore;
@@ -55,39 +56,9 @@ class SoV26Communicator implements SoV26CommunicatorInterface
     }
 
     /**
-     * @throws Exception
-     */
-    public function getBanksArray(): array
-    {
-        $xmlBanks = new SimpleXMLElement($this->getBanks());
-        $banks = [];
-
-        foreach ($xmlBanks as $xmlBank) {
-            $bezeichnung = (string)$xmlBank->bezeichnung;
-            $banks[$bezeichnung] = [
-                'bic'         => (string)$xmlBank->bic,
-                'bezeichnung' => $bezeichnung,
-                'land'        => (string)$xmlBank->land,
-                'epsUrl'      => (string)$xmlBank->epsUrl,
-            ];
-        }
-
-        return $banks;
-    }
-
-    public function tryGetBanksArray(): ?array
-    {
-        try {
-            return $this->getBanksArray();
-        } catch (\Exception $e) {
-            return null;
-        }
-    }
-
-    /**
      * @throws XmlValidationException
      */
-    public function getBanks(bool $validateXml = true): string
+    public function getBanks(bool $validateXml = true): EpsSOBankListProtocol
     {
         $url  = $this->core->getBaseUrl() . '/data/haendler/v2_6';
         $body = $this->core->getUrl($url, 'Requesting bank list');
@@ -96,9 +67,13 @@ class SoV26Communicator implements SoV26CommunicatorInterface
             XmlValidator::ValidateBankList($body);
         }
 
-        return $body;
+        /** @var EpsSOBankListProtocol $bankList */
+        return $this->serializer->deserialize($body, EpsSOBankListProtocol::class, 'xml');
     }
 
+    /**
+     * @throws XmlValidationException
+     */
     public function sendTransferInitiatorDetails(
         InitiateTransferRequest $transferInitiatorDetails,
         ?string $targetUrl = null

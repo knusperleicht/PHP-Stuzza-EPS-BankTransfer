@@ -10,6 +10,7 @@ use Externet\EpsBankTransfer\Domain\VitalityCheckDetails;
 use Externet\EpsBankTransfer\Exceptions\CallbackResponseException;
 use Externet\EpsBankTransfer\Exceptions\InvalidCallbackException;
 use Externet\EpsBankTransfer\Exceptions\ShopResponseException;
+use Externet\EpsBankTransfer\Generated\BankList\EpsSOBankListProtocol;
 use Externet\EpsBankTransfer\Generated\Protocol\V27\EpsProtocolDetails;
 use Externet\EpsBankTransfer\Generated\Refund\EpsRefundResponse;
 use Externet\EpsBankTransfer\Internal\SoCommunicatorCore;
@@ -53,43 +54,11 @@ class SoV27Communicator implements SoV27CommunicatorInterface
         $this->serializer = $this->core->getSerializer();
     }
 
-    public function getBanksArray(): array
+    /**
+     */
+    public function getBanks(bool $validateXml = true): EpsSOBankListProtocol
     {
-        $xmlBanks = new SimpleXMLElement($this->getBanks());
-        $banks = [];
-
-        foreach ($xmlBanks as $xmlBank) {
-            $bezeichnung = (string)$xmlBank->bezeichnung;
-            $banks[$bezeichnung] = [
-                'bic'         => (string)$xmlBank->bic,
-                'bezeichnung' => $bezeichnung,
-                'land'        => (string)$xmlBank->land,
-                'epsUrl'      => (string)$xmlBank->epsUrl,
-            ];
-        }
-
-        return $banks;
-    }
-
-    public function tryGetBanksArray(): ?array
-    {
-        try {
-            return $this->getBanksArray();
-        } catch (\Exception $e) {
-            return null;
-        }
-    }
-
-    public function getBanks(bool $validateXml = true): string
-    {
-        $url  = $this->core->getBaseUrl() . '/data/haendler/v2_7';
-        $body = $this->core->getUrl($url, 'Requesting bank list');
-
-        if ($validateXml) {
-            XmlValidator::ValidateBankList($body);
-        }
-
-        return $body;
+        throw new \LogicException('Not implemented yet - waiting for XSD 2.7');
     }
 
     public function sendTransferInitiatorDetails(
@@ -188,19 +157,7 @@ class SoV27Communicator implements SoV27CommunicatorInterface
         ?string $targetUrl = null,
         ?string $logMessage = null
     ): EpsRefundResponse {
-        $targetUrl = $targetUrl ?? $this->core->getBaseUrl() . '/refund/eps/v2_7';
-
-        $xmlData = $this->serializer->serialize($refundRequest->buildEpsRefundRequest(), 'xml');
-        $responseXml = $this->core->postUrl(
-            $targetUrl,
-            $xmlData,
-            $logMessage ?? 'Sending refund request to ' . $targetUrl
-        );
-
-        XmlValidator::ValidateEpsRefund($responseXml);
-
-        /** @var EpsRefundResponse $refundResponse */
-        return $this->serializer->deserialize($responseXml, EpsRefundResponse::class, 'xml');
+        throw new \LogicException('Not implemented yet - waiting for XSD 2.7');
     }
 
     public function setObscuritySuffixLength(int $obscuritySuffixLength): void
