@@ -36,7 +36,8 @@ $soCommunicator = new SoV26Communicator(
     new Psr18Client(),
     $psr17Factory,
     $psr17Factory,
-    SoV26Communicator::TEST_MODE_URL
+    SoV26Communicator::TEST_MODE_URL,
+    new Monolog\Logger('eps')
 );
 
 try {

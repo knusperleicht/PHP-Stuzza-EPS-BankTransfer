@@ -33,7 +33,8 @@ try {
         new Psr18Client(),
         $psr17Factory,
         $psr17Factory,
-        SoV26Communicator::TEST_MODE_URL
+        SoV26Communicator::TEST_MODE_URL,
+        new Monolog\Logger('eps')
     );
     $soCommunicator->HandleConfirmationUrl(
         $paymentConfirmationCallback,
