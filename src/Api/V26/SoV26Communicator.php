@@ -18,6 +18,7 @@ class SoV26Communicator extends AbstractSoCommunicator implements SoV26Communica
 {
     /**
      * @throws XmlValidationException
+     * @throws Exception
      */
     public function initiateTransferRequest(
         InitiateTransferRequest $transferInitiatorDetails,
@@ -35,7 +36,7 @@ class SoV26Communicator extends AbstractSoCommunicator implements SoV26Communica
 
         $targetUrl = $targetUrl ?? $this->core->getBaseUrl() . '/transinit/eps/v2_6';
 
-        $xmlData = $this->serializer->serialize($transferInitiatorDetails, 'xml');
+        $xmlData = $this->serializer->serialize($transferInitiatorDetails->buildEpsProtocolDetails(), 'xml');
         $response = $this->core->postUrl($targetUrl, $xmlData, 'Send payment order');
 
         XmlValidator::ValidateEpsProtocol($response);

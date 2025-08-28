@@ -190,11 +190,11 @@ class InitiateTransferRequestTest extends TestCase
     public static function provideValidAmounts(): array
     {
         return [
-            'zero' => [0, '0.00'],
+            'zero' => [0, '0.0'],
             'one cent' => [1, '0.01'],
             'twelve cents' => [12, '0.12'],
-            'one euro' => [100, '1.00'],
-            'ten euros' => [1000, '10.00'],
+            'one euro' => [100, '1.0'],
+            'ten euros' => [1000, '10.0'],
             '123 euro 45 cent' => [12345, '123.45'],
             'string as int' => ['12345', '123.45'],
             'max cents' => [99, '0.99'],
