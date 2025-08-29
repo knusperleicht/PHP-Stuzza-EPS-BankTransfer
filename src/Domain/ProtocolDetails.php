@@ -13,14 +13,17 @@ use Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\EpsProtocolDetails as V2
  */
 class ProtocolDetails
 {
-    /** @var string */
+    /** @var string|null */
     private $errorCode;
 
-    /** @var string */
+    /** @var string|null */
     private $errorMessage;
 
     /** @var string|null */
     private $clientRedirectUrl;
+
+    /** @var string|null */
+    private $transactionId;
 
     /**
      * Create protocol details.
@@ -28,12 +31,14 @@ class ProtocolDetails
      * @param string|null $errorCode EPS error code (e.g., "000" for no error) or null.
      * @param string|null $errorMessage Error message or null.
      * @param string|null $clientRedirectUrl Redirect URL for the client if provided by the SO.
+     * @param string|null $transactionId Transaction ID if provided by the SO.
      */
-    public function __construct(string $errorCode, string $errorMessage, ?string $clientRedirectUrl = null)
+    public function __construct(?string $errorCode, ?string $errorMessage, ?string $clientRedirectUrl = null, ?string $transactionId = null)
     {
         $this->errorCode = $errorCode;
         $this->errorMessage = $errorMessage;
         $this->clientRedirectUrl = $clientRedirectUrl;
+        $this->transactionId = $transactionId;
     }
 
     /**
@@ -44,10 +49,13 @@ class ProtocolDetails
         $bankResponse = $details->getBankResponseDetails();
         $error = $bankResponse->getErrorDetails();
 
+        $transactionId = $bankResponse->getTransactionId();
+
         return new self(
             $error ? $error->getErrorCode() : null,
             $error ? $error->getErrorMsg() : null,
             $bankResponse->getClientRedirectUrl(),
+            $transactionId
         );
     }
 
@@ -63,13 +71,14 @@ class ProtocolDetails
             $error ? $error->getErrorCode() : null,
             $error ? $error->getErrorMsg() : null,
             $bankResponse->getClientRedirectUrl(),
+            $bankResponse->getTransactionId()
         );
     }
 
     /**
      * EPS error code ("000" means no error), if available.
      */
-    public function getErrorCode(): string
+    public function getErrorCode(): ?string
     {
         return $this->errorCode;
     }
@@ -77,7 +86,7 @@ class ProtocolDetails
     /**
      * Human-readable error message, if provided.
      */
-    public function getErrorMessage(): string
+    public function getErrorMessage(): ?string
     {
         return $this->errorMessage;
     }
@@ -88,5 +97,13 @@ class ProtocolDetails
     public function getClientRedirectUrl(): ?string
     {
         return $this->clientRedirectUrl;
+    }
+
+    /**
+     * Transaction ID if provided by the SO.
+     */
+    public function getTransactionId(): ?string
+    {
+        return $this->transactionId;
     }
 }

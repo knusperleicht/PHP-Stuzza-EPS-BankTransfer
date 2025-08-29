@@ -5,6 +5,7 @@ namespace Psa\EpsBankTransfer\Tests\Domain;
 
 use Psa\EpsBankTransfer\Domain\RefundResponse;
 use PHPUnit\Framework\TestCase;
+use Psa\EpsBankTransfer\Internal\Generated\Refund\EpsRefundResponse;
 
 class RefundResponseTest extends TestCase
 {
@@ -30,7 +31,7 @@ class RefundResponseTest extends TestCase
         // RefundResponse::fromV26 only calls the two methods; we can bypass type check by using Closure binding is not possible.
         // To keep strict typing, we wrap a dynamic object into an anonymous class that extends the expected FQN at runtime via class_alias below.
         $this->ensureRefundEpsClassExists();
-        $eps = new class extends \Psa\EpsBankTransfer\Internal\Generated\Refund\EpsRefundResponse {
+        $eps = new class extends EpsRefundResponse {
             public function __construct(){}
             public function getStatusCode(): string { return '000'; }
             public function getErrorMsg(): ?string { return 'Keine Fehler - dt accepted'; }
@@ -44,7 +45,7 @@ class RefundResponseTest extends TestCase
     public function testFromV26MapsNullErrorMessage(): void
     {
         $this->ensureRefundEpsClassExists();
-        $eps = new class extends \Psa\EpsBankTransfer\Internal\Generated\Refund\EpsRefundResponse {
+        $eps = new class extends EpsRefundResponse {
             public function __construct(){}
             public function getStatusCode(): string { return '105'; }
             public function getErrorMsg(): ?string { return null; }

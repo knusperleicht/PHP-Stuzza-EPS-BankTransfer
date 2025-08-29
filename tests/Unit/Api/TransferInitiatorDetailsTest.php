@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Psa\EpsBankTransfer\Tests\Api;
 
 use Psa\EpsBankTransfer\Api\SoCommunicator;
+use Psa\EpsBankTransfer\Domain\ProtocolDetails;
 use Psa\EpsBankTransfer\Exceptions\XmlValidationException;
 use Psa\EpsBankTransfer\Requests\Parts\PaymentFlowUrls;
 use Psa\EpsBankTransfer\Requests\TransferInitiatorDetails;
@@ -62,30 +63,25 @@ class TransferInitiatorDetailsTest extends TestCase
         $this->setUpCommunicator($baseUrl);
         $this->mockResponse(200, $this->loadFixture('V26/BankResponseDetails004.xml'));
 
-        $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails(), null, '2.6');
+        $response = $this->target->sendTransferInitiatorDetails(
+            $this->getMockedTransferInitiatorDetails(),
+            null,
+            '2.6'
+        );
 
+        $expected = new ProtocolDetails(
+            '004',
+            'merchant not found!'
+        );
+
+        $this->assertEquals($expected, $response);
         $this->assertEquals($expectedUrl, $this->http->getLastRequestInfo()['url']);
     }
-
 
     /* ============================================================
      * Version dependent tests
      * ============================================================
      */
-
-    public function testSendTransferInitiatorDetailsV26(): void
-    {
-        $this->mockResponse(200, $this->loadFixture('V26/BankResponseDetails004.xml'));
-
-        $response = $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails(), null, '2.6');
-
-        $this->assertNotNull($response);
-        $this->assertEquals('004', $response->getErrorCode());
-        $this->assertEquals('merchant not found!', $response->getErrorMessage());
-
-        $lastUrl = $this->http->getLastRequestInfo()['url'];
-        $this->assertStringContainsString('/v2_6', $lastUrl);
-    }
 
     public function testSendTransferInitiatorDetailsV27Throws(): void
     {
@@ -156,11 +152,19 @@ class TransferInitiatorDetailsTest extends TestCase
         $url = 'https://routing.eps.or.at/appl/epsSO/transinit/eps/v2_6/23ea3d14-278c-4e81-a021-d7b77492b611';
         $this->mockResponse(200, $this->loadFixture('V26/BankResponseDetails000.xml'));
 
-        $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails(), $url, '2.6');
+        $response = $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails(), $url, '2.6');
 
+        $expected = new ProtocolDetails(
+            '000',
+            'Keine Fehler',
+            'http://epsbank.at/asdk3935jdlf043',
+            null
+        );
+
+        $this->assertEquals($expected, $response);
         $this->assertEquals($url, $this->http->getLastRequestInfo()['url']);
     }
-
+    
     /* ============================================================
      * Security tests
      * ============================================================
@@ -186,9 +190,18 @@ class TransferInitiatorDetailsTest extends TestCase
             'd', 'e', 'f', 0, $t, null, 8, 'Some seed');
         $transferInitiatorDetails->setRemittanceIdentifier('Order1');
 
-        $url = 'https://routing.eps.or.at/appl/epsSO/transinit/eps/v2_6/someid';
-        $this->target->sendTransferInitiatorDetails($transferInitiatorDetails, $url, '2.6');
+        $url = 'https://routing.eps.or.at/appl/epsSO/transinit/eps/v2_6/23ea3d14-278c-4e81-a021-d7b77492b611';
+        $response = $this->target->sendTransferInitiatorDetails($transferInitiatorDetails, $url, '2.6');
 
+        $expected = new ProtocolDetails(
+            '000',
+            'Keine Fehler',
+            'http://epsbank.at/asdk3935jdlf043',
+            null
+        );
+
+        $this->assertEquals($expected, $response);
+        $this->assertEquals($url, $this->http->getLastRequestInfo()['url']);
         $body = $this->http->getLastRequestInfo()['body'];
         $this->assertStringContainsString('Order1', $body);
     }
@@ -202,7 +215,14 @@ class TransferInitiatorDetailsTest extends TestCase
     {
         $this->mockResponse(200, $this->loadFixture('V26/BankResponseDetails004.xml'));
 
-        $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails(), null, '2.6');
+        $response = $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails(), null, '2.6');
+
+        $expected = new ProtocolDetails(
+            '004',
+            'merchant not found!'
+        );
+
+        $this->assertEquals($expected, $response);
 
         $body = $this->http->getLastRequestInfo()['body'];
         $this->assertStringContainsString('orderid', $body); // remittanceIdentifier
