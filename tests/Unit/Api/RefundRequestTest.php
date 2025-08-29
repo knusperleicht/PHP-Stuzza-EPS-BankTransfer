@@ -6,7 +6,6 @@ namespace Psa\EpsBankTransfer\Tests\Api;
 use Psa\EpsBankTransfer\Api\SoCommunicator;
 use Psa\EpsBankTransfer\Domain\RefundResponse;
 use Psa\EpsBankTransfer\Exceptions\XmlValidationException;
-use Psa\EpsBankTransfer\Internal\AbstractSoCommunicator;
 use Psa\EpsBankTransfer\Requests\RefundRequest;
 use Psa\EpsBankTransfer\Tests\Helper\SoCommunicatorTestTrait;
 use PHPUnit\Framework\TestCase;

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Psa\EpsBankTransfer\Domain;
 
-use Psa\EpsBankTransfer\Generated\BankList\EpsSOBankListProtocol;
+use Psa\EpsBankTransfer\Internal\Generated\BankList\EpsSOBankListProtocol;
 
 /**
  * Collection of Bank value objects.

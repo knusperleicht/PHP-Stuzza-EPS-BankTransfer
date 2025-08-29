@@ -42,7 +42,7 @@ class VitalityCheckDetailsTest extends TestCase
     public function testFromV26Structured(): void
     {
         $this->ensureProtocolClassExists();
-        $proto = new class extends \Psa\EpsBankTransfer\Generated\Protocol\V26\VitalityCheckDetails {
+        $proto = new class extends \Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\VitalityCheckDetails {
             public function __construct(){}
             public function getRemittanceIdentifier(): ?string { return 'ABC123'; }
             public function getUnstructuredRemittanceIdentifier(): ?string { return null; }
@@ -58,7 +58,7 @@ class VitalityCheckDetailsTest extends TestCase
     public function testFromV26Unstructured(): void
     {
         $this->ensureProtocolClassExists();
-        $proto = new class extends \Psa\EpsBankTransfer\Generated\Protocol\V26\VitalityCheckDetails {
+        $proto = new class extends \Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\VitalityCheckDetails {
             public function __construct(){}
             public function getRemittanceIdentifier(): ?string { return null; }
             public function getUnstructuredRemittanceIdentifier(): ?string { return 'Purpose text'; }
@@ -73,8 +73,8 @@ class VitalityCheckDetailsTest extends TestCase
 
     private function ensureProtocolClassExists(): void
     {
-        if (!class_exists('Psa\\EpsBankTransfer\\Generated\\Protocol\\V26\\VitalityCheckDetails')) {
-            eval('namespace Psa\\EpsBankTransfer\\Generated\\Protocol\\V26; abstract class VitalityCheckDetails { abstract public function getRemittanceIdentifier(): ?string; abstract public function getUnstructuredRemittanceIdentifier(): ?string; }');
+        if (!class_exists('Psa\\EpsBankTransfer\\Internal\\Generated\\Protocol\\V26\\VitalityCheckDetails')) {
+            eval('namespace Psa\\EpsBankTransfer\\Internal\\Generated\\Protocol\\V26; abstract class VitalityCheckDetails { abstract public function getRemittanceIdentifier(): ?string; abstract public function getUnstructuredRemittanceIdentifier(): ?string; }');
         }
     }
 }

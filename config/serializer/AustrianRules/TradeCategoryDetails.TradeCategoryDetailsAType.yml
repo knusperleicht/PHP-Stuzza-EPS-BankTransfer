@@ -1,4 +1,4 @@
-Psa\EpsBankTransfer\Generated\AustrianRules\TradeCategoryDetails\TradeCategoryDetailsAType:
+Psa\EpsBankTransfer\Internal\Generated\AustrianRules\TradeCategoryDetails\TradeCategoryDetailsAType:
     properties:
         code:
             expose: true

@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace Psa\EpsBankTransfer\Internal\V27;
 
-use Psa\EpsBankTransfer\Generated\BankList\EpsSOBankListProtocol;
-use Psa\EpsBankTransfer\Generated\Protocol\V27\EpsProtocolDetails;
-use Psa\EpsBankTransfer\Generated\Refund\EpsRefundResponse;
+use Psa\EpsBankTransfer\Internal\Generated\BankList\EpsSOBankListProtocol;
+use Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\EpsProtocolDetails;
+use Psa\EpsBankTransfer\Internal\Generated\Refund\EpsRefundResponse;
 use Psa\EpsBankTransfer\Internal\SoCommunicatorCore;
 use Psa\EpsBankTransfer\Requests\RefundRequest;
 use Psa\EpsBankTransfer\Requests\TransferInitiatorDetails;

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Psa\EpsBankTransfer\Domain;
 
-use Psa\EpsBankTransfer\Generated\Refund\EpsRefundResponse;
+use Psa\EpsBankTransfer\Internal\Generated\Refund\EpsRefundResponse;
 
 /**
  * Result of an EPS refund request mapped into a domain object.

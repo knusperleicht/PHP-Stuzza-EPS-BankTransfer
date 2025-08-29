@@ -1,4 +1,4 @@
-Psa\EpsBankTransfer\Generated\XmlDsig\PGPDataType:
+Psa\EpsBankTransfer\Internal\Generated\XmlDsig\PGPDataType:
     properties:
         pGPKeyID:
             expose: true

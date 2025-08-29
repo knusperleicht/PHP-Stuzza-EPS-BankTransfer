@@ -39,7 +39,6 @@ The SoCommunicator uses a common base URL for API calls. These endpoints are def
 `SoCommunicator::TEST_MODE_URL` and `SoCommunicator::LIVE_MODE_URL`.
 
 ```php
-use at\externet\eps_bank_transfer\SoCommunicator;
 $isTestMode = true;
 $url = $isTestMode ? SoCommunicator::TEST_MODE_URL :  SoCommunicator::LIVE_MODE_URL;
 

@@ -1,4 +1,4 @@
-Psa\EpsBankTransfer\Generated\Epi\Url:
+Psa\EpsBankTransfer\Internal\Generated\Epi\Url:
     xml_root_name: Url
     xml_root_namespace: 'http://www.stuzza.at/namespaces/eps/epi/2013/02'
     properties:

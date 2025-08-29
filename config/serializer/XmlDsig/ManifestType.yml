@@ -1,4 +1,4 @@
-Psa\EpsBankTransfer\Generated\XmlDsig\ManifestType:
+Psa\EpsBankTransfer\Internal\Generated\XmlDsig\ManifestType:
     properties:
         id:
             expose: true
@@ -22,4 +22,4 @@ Psa\EpsBankTransfer\Generated\XmlDsig\ManifestType:
                 inline: true
                 entry_name: Reference
                 namespace: 'http://www.w3.org/2000/09/xmldsig#'
-            type: array<Psa\EpsBankTransfer\Generated\XmlDsig\Reference>
+            type: array<Psa\EpsBankTransfer\Internal\Generated\XmlDsig\Reference>

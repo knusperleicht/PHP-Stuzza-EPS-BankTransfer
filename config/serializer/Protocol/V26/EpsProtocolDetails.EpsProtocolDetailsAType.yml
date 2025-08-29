@@ -1,4 +1,4 @@
-Psa\EpsBankTransfer\Generated\Protocol\V26\EpsProtocolDetails\EpsProtocolDetailsAType:
+Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\EpsProtocolDetails\EpsProtocolDetailsAType:
     properties:
         sessionLanguage:
             expose: true
@@ -18,7 +18,7 @@ Psa\EpsBankTransfer\Generated\Protocol\V26\EpsProtocolDetails\EpsProtocolDetails
             accessor:
                 getter: getTransferInitiatorDetails
                 setter: setTransferInitiatorDetails
-            type: Psa\EpsBankTransfer\Generated\Protocol\V26\TransferInitiatorDetails
+            type: Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\TransferInitiatorDetails
         bankResponseDetails:
             expose: true
             access_type: public_method
@@ -28,7 +28,7 @@ Psa\EpsBankTransfer\Generated\Protocol\V26\EpsProtocolDetails\EpsProtocolDetails
             accessor:
                 getter: getBankResponseDetails
                 setter: setBankResponseDetails
-            type: Psa\EpsBankTransfer\Generated\Protocol\V26\BankResponseDetails
+            type: Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\BankResponseDetails
         vitalityCheckDetails:
             expose: true
             access_type: public_method
@@ -38,7 +38,7 @@ Psa\EpsBankTransfer\Generated\Protocol\V26\EpsProtocolDetails\EpsProtocolDetails
             accessor:
                 getter: getVitalityCheckDetails
                 setter: setVitalityCheckDetails
-            type: Psa\EpsBankTransfer\Generated\Protocol\V26\VitalityCheckDetails
+            type: Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\VitalityCheckDetails
         bankConfirmationDetails:
             expose: true
             access_type: public_method
@@ -48,7 +48,7 @@ Psa\EpsBankTransfer\Generated\Protocol\V26\EpsProtocolDetails\EpsProtocolDetails
             accessor:
                 getter: getBankConfirmationDetails
                 setter: setBankConfirmationDetails
-            type: Psa\EpsBankTransfer\Generated\Protocol\V26\BankConfirmationDetails
+            type: Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\BankConfirmationDetails
         shopResponseDetails:
             expose: true
             access_type: public_method
@@ -58,7 +58,7 @@ Psa\EpsBankTransfer\Generated\Protocol\V26\EpsProtocolDetails\EpsProtocolDetails
             accessor:
                 getter: getShopResponseDetails
                 setter: setShopResponseDetails
-            type: Psa\EpsBankTransfer\Generated\Protocol\V26\ShopResponseDetails
+            type: Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\ShopResponseDetails
         transactionDetailsRequest:
             expose: true
             access_type: public_method
@@ -68,7 +68,7 @@ Psa\EpsBankTransfer\Generated\Protocol\V26\EpsProtocolDetails\EpsProtocolDetails
             accessor:
                 getter: getTransactionDetailsRequest
                 setter: setTransactionDetailsRequest
-            type: Psa\EpsBankTransfer\Generated\Protocol\V26\TransactionDetailsRequest
+            type: Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\TransactionDetailsRequest
         transactionDetailsResponse:
             expose: true
             access_type: public_method
@@ -78,7 +78,7 @@ Psa\EpsBankTransfer\Generated\Protocol\V26\EpsProtocolDetails\EpsProtocolDetails
             accessor:
                 getter: getTransactionDetailsResponse
                 setter: setTransactionDetailsResponse
-            type: Psa\EpsBankTransfer\Generated\Protocol\V26\TransactionDetailsResponse
+            type: Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\TransactionDetailsResponse
         confirmationStatusRequest:
             expose: true
             access_type: public_method
@@ -88,7 +88,7 @@ Psa\EpsBankTransfer\Generated\Protocol\V26\EpsProtocolDetails\EpsProtocolDetails
             accessor:
                 getter: getConfirmationStatusRequest
                 setter: setConfirmationStatusRequest
-            type: Psa\EpsBankTransfer\Generated\Protocol\V26\ConfirmationStatusRequest
+            type: Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\ConfirmationStatusRequest
         confirmationStatusResponse:
             expose: true
             access_type: public_method
@@ -98,7 +98,7 @@ Psa\EpsBankTransfer\Generated\Protocol\V26\EpsProtocolDetails\EpsProtocolDetails
             accessor:
                 getter: getConfirmationStatusResponse
                 setter: setConfirmationStatusResponse
-            type: Psa\EpsBankTransfer\Generated\Protocol\V26\ConfirmationStatusResponse
+            type: Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\ConfirmationStatusResponse
         statusMsg:
             expose: true
             access_type: public_method
@@ -108,4 +108,4 @@ Psa\EpsBankTransfer\Generated\Protocol\V26\EpsProtocolDetails\EpsProtocolDetails
             accessor:
                 getter: getStatusMsg
                 setter: setStatusMsg
-            type: Psa\EpsBankTransfer\Generated\Protocol\V26\StatusMsg
+            type: Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\StatusMsg

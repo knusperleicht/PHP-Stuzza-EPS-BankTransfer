@@ -5,9 +5,9 @@ namespace Psa\EpsBankTransfer\Tests\Requests;
 
 use DateTime;
 use Exception;
-use Psa\EpsBankTransfer\Generated\Refund\Amount;
-use Psa\EpsBankTransfer\Generated\Refund\AuthenticationDetails;
-use Psa\EpsBankTransfer\Generated\Refund\EpsRefundRequest;
+use Psa\EpsBankTransfer\Internal\Generated\Refund\Amount;
+use Psa\EpsBankTransfer\Internal\Generated\Refund\AuthenticationDetails;
+use Psa\EpsBankTransfer\Internal\Generated\Refund\EpsRefundRequest;
 use Psa\EpsBankTransfer\Serializer\SerializerFactory;
 use Psa\EpsBankTransfer\Tests\Helper\XmlFixtureTestTrait;
 use Psa\EpsBankTransfer\Utilities\Fingerprint;

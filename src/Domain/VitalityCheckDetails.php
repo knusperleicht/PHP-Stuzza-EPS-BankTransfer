@@ -69,10 +69,10 @@ class VitalityCheckDetails
     }
 
     /**
-     * @param \Psa\EpsBankTransfer\Generated\Protocol\V26\VitalityCheckDetails $vitalityCheckDetails
+     * @param \Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\VitalityCheckDetails $vitalityCheckDetails
      * @return self
      */
-    public static function fromV26(\Psa\EpsBankTransfer\Generated\Protocol\V26\VitalityCheckDetails $vitalityCheckDetails): self
+    public static function fromV26(\Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\VitalityCheckDetails $vitalityCheckDetails): self
     {
         return new self(
             $vitalityCheckDetails->getRemittanceIdentifier(),

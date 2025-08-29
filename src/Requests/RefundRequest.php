@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace Psa\EpsBankTransfer\Requests;
 use Exception;
-use Psa\EpsBankTransfer\Generated\Refund\Amount;
-use Psa\EpsBankTransfer\Generated\Refund\AuthenticationDetails;
-use Psa\EpsBankTransfer\Generated\Refund\EpsRefundRequest;
+use Psa\EpsBankTransfer\Internal\Generated\Refund\Amount;
+use Psa\EpsBankTransfer\Internal\Generated\Refund\AuthenticationDetails;
+use Psa\EpsBankTransfer\Internal\Generated\Refund\EpsRefundRequest;
 use Psa\EpsBankTransfer\Utilities\Fingerprint;
 
 class RefundRequest

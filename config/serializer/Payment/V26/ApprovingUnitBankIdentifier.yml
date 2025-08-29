@@ -1,4 +1,4 @@
-Psa\EpsBankTransfer\Generated\Payment\V26\ApprovingUnitBankIdentifier:
+Psa\EpsBankTransfer\Internal\Generated\Payment\V26\ApprovingUnitBankIdentifier:
     xml_root_name: ApprovingUnitBankIdentifier
     xml_root_namespace: 'http://www.stuzza.at/namespaces/eps/payment/2014/10'
     properties:

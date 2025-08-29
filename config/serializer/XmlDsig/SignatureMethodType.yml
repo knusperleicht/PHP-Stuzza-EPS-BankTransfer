@@ -1,4 +1,4 @@
-Psa\EpsBankTransfer\Generated\XmlDsig\SignatureMethodType:
+Psa\EpsBankTransfer\Internal\Generated\XmlDsig\SignatureMethodType:
     properties:
         algorithm:
             expose: true

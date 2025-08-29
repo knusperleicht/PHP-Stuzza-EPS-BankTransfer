@@ -1,4 +1,4 @@
-Psa\EpsBankTransfer\Generated\XmlDsig\DigestMethodType:
+Psa\EpsBankTransfer\Internal\Generated\XmlDsig\DigestMethodType:
     properties:
         algorithm:
             expose: true

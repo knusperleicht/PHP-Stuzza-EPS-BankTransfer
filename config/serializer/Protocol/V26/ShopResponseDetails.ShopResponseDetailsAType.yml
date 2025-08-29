@@ -1,4 +1,4 @@
-Psa\EpsBankTransfer\Generated\Protocol\V26\ShopResponseDetails\ShopResponseDetailsAType:
+Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\ShopResponseDetails\ShopResponseDetailsAType:
     properties:
         sessionId:
             expose: true
@@ -19,7 +19,7 @@ Psa\EpsBankTransfer\Generated\Protocol\V26\ShopResponseDetails\ShopResponseDetai
             accessor:
                 getter: getShopConfirmationDetails
                 setter: setShopConfirmationDetails
-            type: Psa\EpsBankTransfer\Generated\Payment\V26\ShopConfirmationDetails
+            type: Psa\EpsBankTransfer\Internal\Generated\Payment\V26\ShopConfirmationDetails
         errorMsg:
             expose: true
             access_type: public_method

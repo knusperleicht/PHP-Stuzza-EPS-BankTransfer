@@ -1,4 +1,4 @@
-Psa\EpsBankTransfer\Generated\Protocol\V26\WebshopArticle\WebshopArticleAType:
+Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\WebshopArticle\WebshopArticleAType:
     properties:
         articleName:
             expose: true

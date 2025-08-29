@@ -2,8 +2,8 @@
 declare(strict_types=1);
 require_once('../vendor/autoload.php');
 
-use Externet\EpsBankTransfer;
 use Psa\EpsBankTransfer\Api\SoCommunicator;
+use Psa\EpsBankTransfer\Requests\Parts\WebshopArticle;
 use Psa\EpsBankTransfer\Requests\TransferInitiatorDetails;
 use Psa\EpsBankTransfer\Requests\Parts\PaymentFlowUrls;
 use Nyholm\Psr7\Factory\Psr17Factory;
@@ -54,7 +54,7 @@ $initiateTransferRequest->setRemittanceIdentifier('Order123');                  
 $initiateTransferRequest->setUnstructuredRemittanceIdentifier('Order123');     // "Verwendungszweck" = epi:UnstructuredRemittanceIdentifier
 
 // Optional: Provide article details shown by some banks/webshops = epsp:WebshopDetails
-$article = new EpsBankTransfer\Requests\Parts\WebshopArticle( // = epsp:WebshopArticle
+$article = new WebshopArticle( // = epsp:WebshopArticle
     'ArticleName',   // Article name
     1,               // Quantity
     9999             // Unit price in EURO cents

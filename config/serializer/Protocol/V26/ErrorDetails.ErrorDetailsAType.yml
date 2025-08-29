@@ -1,4 +1,4 @@
-Psa\EpsBankTransfer\Generated\Protocol\V26\ErrorDetails\ErrorDetailsAType:
+Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\ErrorDetails\ErrorDetailsAType:
     properties:
         errorCode:
             expose: true

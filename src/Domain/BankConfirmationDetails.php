@@ -5,7 +5,7 @@ namespace Psa\EpsBankTransfer\Domain;
 
 use DateTimeInterface;
 use Exception;
-use Psa\EpsBankTransfer\Generated\Protocol\V26\EpsProtocolDetails;
+use Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\EpsProtocolDetails;
 
 class BankConfirmationDetails
 {

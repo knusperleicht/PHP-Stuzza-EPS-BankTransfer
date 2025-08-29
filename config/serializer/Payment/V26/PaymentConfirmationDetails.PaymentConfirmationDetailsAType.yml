@@ -1,4 +1,4 @@
-Psa\EpsBankTransfer\Generated\Payment\V26\PaymentConfirmationDetails\PaymentConfirmationDetailsAType:
+Psa\EpsBankTransfer\Internal\Generated\Payment\V26\PaymentConfirmationDetails\PaymentConfirmationDetailsAType:
     properties:
         remittanceIdentifier:
             expose: true
@@ -29,7 +29,7 @@ Psa\EpsBankTransfer\Generated\Payment\V26\PaymentConfirmationDetails\PaymentConf
             accessor:
                 getter: getPaymentInitiatorDetails
                 setter: setPaymentInitiatorDetails
-            type: Psa\EpsBankTransfer\Generated\Payment\V26\PaymentInitiatorDetails
+            type: Psa\EpsBankTransfer\Internal\Generated\Payment\V26\PaymentInitiatorDetails
         payConApprovingUnitDetails:
             expose: true
             access_type: public_method
@@ -39,7 +39,7 @@ Psa\EpsBankTransfer\Generated\Payment\V26\PaymentConfirmationDetails\PaymentConf
             accessor:
                 getter: getPayConApprovingUnitDetails
                 setter: setPayConApprovingUnitDetails
-            type: Psa\EpsBankTransfer\Generated\Payment\V26\PayConApprovingUnitDetails
+            type: Psa\EpsBankTransfer\Internal\Generated\Payment\V26\PayConApprovingUnitDetails
         payConApprovalTime:
             expose: true
             access_type: public_method
@@ -79,4 +79,4 @@ Psa\EpsBankTransfer\Generated\Payment\V26\PaymentConfirmationDetails\PaymentConf
             accessor:
                 getter: getSignature
                 setter: setSignature
-            type: Psa\EpsBankTransfer\Generated\XmlDsig\Signature
+            type: Psa\EpsBankTransfer\Internal\Generated\XmlDsig\Signature

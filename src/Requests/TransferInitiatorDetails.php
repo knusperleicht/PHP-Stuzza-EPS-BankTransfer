@@ -6,20 +6,21 @@ namespace Psa\EpsBankTransfer\Requests;
 use DateInterval;
 use DateTime;
 use Exception;
-use Psa\EpsBankTransfer\Generated;
-use Psa\EpsBankTransfer\Generated\Epi\BeneficiaryPartyDetails;
-use Psa\EpsBankTransfer\Generated\Epi\BfiPartyDetails;
-use Psa\EpsBankTransfer\Generated\Epi\EpiDetails;
-use Psa\EpsBankTransfer\Generated\Epi\IdentificationDetails;
-use Psa\EpsBankTransfer\Generated\Epi\InstructedAmount;
-use Psa\EpsBankTransfer\Generated\Epi\PartyDetails;
-use Psa\EpsBankTransfer\Generated\Epi\PaymentInstructionDetails;
-use Psa\EpsBankTransfer\Generated\Protocol\V26\AuthenticationDetails;
-use Psa\EpsBankTransfer\Generated\Protocol\V26\EpsProtocolDetails;
-use Psa\EpsBankTransfer\Generated\Protocol\V26\TransactionNokUrl;
-use Psa\EpsBankTransfer\Generated\Protocol\V26\TransactionOkUrl;
-use Psa\EpsBankTransfer\Generated\Protocol\V26\TransferInitiatorDetails as V6TransferInitiatorDetails;
-use Psa\EpsBankTransfer\Generated\Protocol\V26\TransferMsgDetails;
+use Psa\EpsBankTransfer\Internal\Generated\AustrianRules\AustrianRulesDetails;
+use Psa\EpsBankTransfer\Internal\Generated\Epi\BeneficiaryPartyDetails;
+use Psa\EpsBankTransfer\Internal\Generated\Epi\BfiPartyDetails;
+use Psa\EpsBankTransfer\Internal\Generated\Epi\EpiDetails;
+use Psa\EpsBankTransfer\Internal\Generated\Epi\IdentificationDetails;
+use Psa\EpsBankTransfer\Internal\Generated\Epi\InstructedAmount;
+use Psa\EpsBankTransfer\Internal\Generated\Epi\PartyDetails;
+use Psa\EpsBankTransfer\Internal\Generated\Epi\PaymentInstructionDetails;
+use Psa\EpsBankTransfer\Internal\Generated\Payment\V26\PaymentInitiatorDetails;
+use Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\AuthenticationDetails;
+use Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\EpsProtocolDetails;
+use Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\TransactionNokUrl;
+use Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\TransactionOkUrl;
+use Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\TransferInitiatorDetails as V6TransferInitiatorDetails;
+use Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\TransferMsgDetails;
 use Psa\EpsBankTransfer\Requests\Parts\PaymentFlowUrls;
 use Psa\EpsBankTransfer\Requests\Parts\WebshopArticle;
 use Psa\EpsBankTransfer\Utilities\MoneyFormatter;
@@ -217,7 +218,7 @@ class TransferInitiatorDetails
         $transferInitiatorDetails = new V6TransferInitiatorDetails();
         $xml->setTransferInitiatorDetails($transferInitiatorDetails);
 
-        $paymentInitiatorDetails = new Generated\Payment\V26\PaymentInitiatorDetails();
+        $paymentInitiatorDetails = new PaymentInitiatorDetails();
         $transferInitiatorDetails->setPaymentInitiatorDetails($paymentInitiatorDetails);
 
         $transferMsgDetails = new TransferMsgDetails();
@@ -234,7 +235,7 @@ class TransferInitiatorDetails
         if (!empty($this->webshopArticles)) {
             $articles = [];
             foreach ($this->webshopArticles as $article) {
-                $webshopArticle = new Generated\Protocol\V26\WebshopArticle();
+                $webshopArticle = new \Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\WebshopArticle();
                 $webshopArticle->setArticleName($article->name);
                 $webshopArticle->setArticleCount($article->count);
                 $webshopArticle->setArticlePrice($article->price);
@@ -287,7 +288,7 @@ class TransferInitiatorDetails
 
         $paymentInitiatorDetails->setEpiDetails($epiDetails);
 
-        $austrianRulesDetails = new Generated\AustrianRules\AustrianRulesDetails();
+        $austrianRulesDetails = new AustrianRulesDetails();
         $austrianRulesDetails->setDigSig('SIG');
 
         if (!empty($this->expirationTime)) {

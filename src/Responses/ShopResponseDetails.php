@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Psa\EpsBankTransfer\Responses;
 
-use Psa\EpsBankTransfer\Generated\Payment\V26\ShopConfirmationDetails;
-use Psa\EpsBankTransfer\Generated\Protocol\V26\EpsProtocolDetails;
+use Psa\EpsBankTransfer\Internal\Generated\Payment\V26\ShopConfirmationDetails;
+use Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\EpsProtocolDetails;
 
 class ShopResponseDetails
 {
@@ -23,7 +23,7 @@ class ShopResponseDetails
     public function buildShopResponseDetails(): EpsProtocolDetails
     {
         $epsProtocolDetails = new EpsProtocolDetails();
-        $shopResponseDetails = new \Psa\EpsBankTransfer\Generated\Protocol\V26\ShopResponseDetails();
+        $shopResponseDetails = new \Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\ShopResponseDetails();
 
         if (!empty($this->errorMessage)) {
             $shopResponseDetails->setErrorMsg($this->errorMessage);

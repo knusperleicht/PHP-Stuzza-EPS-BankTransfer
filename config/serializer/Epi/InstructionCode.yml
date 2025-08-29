@@ -1,4 +1,4 @@
-Psa\EpsBankTransfer\Generated\Epi\InstructionCode:
+Psa\EpsBankTransfer\Internal\Generated\Epi\InstructionCode:
     xml_root_name: InstructionCode
     xml_root_namespace: 'http://www.stuzza.at/namespaces/eps/epi/2013/02'
     properties:

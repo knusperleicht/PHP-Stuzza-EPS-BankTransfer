@@ -1,4 +1,4 @@
-Psa\EpsBankTransfer\Generated\XmlDsig\CanonicalizationMethodType:
+Psa\EpsBankTransfer\Internal\Generated\XmlDsig\CanonicalizationMethodType:
     properties:
         algorithm:
             expose: true

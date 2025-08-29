@@ -1,4 +1,4 @@
-Psa\EpsBankTransfer\Generated\XmlDsig\ObjectType:
+Psa\EpsBankTransfer\Internal\Generated\XmlDsig\ObjectType:
     properties:
         id:
             expose: true

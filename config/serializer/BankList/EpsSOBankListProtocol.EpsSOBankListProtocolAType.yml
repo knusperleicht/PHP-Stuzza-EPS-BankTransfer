@@ -1,4 +1,4 @@
-Psa\EpsBankTransfer\Generated\BankList\EpsSOBankListProtocol\EpsSOBankListProtocolAType:
+Psa\EpsBankTransfer\Internal\Generated\BankList\EpsSOBankListProtocol\EpsSOBankListProtocolAType:
     properties:
         bank:
             expose: true
@@ -13,7 +13,7 @@ Psa\EpsBankTransfer\Generated\BankList\EpsSOBankListProtocol\EpsSOBankListProtoc
                 inline: true
                 entry_name: bank
                 namespace: 'http://www.eps.or.at/epsSO/epsSOBankListProtocol/201008'
-            type: array<Psa\EpsBankTransfer\Generated\BankList\BankDataType>
+            type: array<Psa\EpsBankTransfer\Internal\Generated\BankList\BankDataType>
         errorDetails:
             expose: true
             access_type: public_method
@@ -23,4 +23,4 @@ Psa\EpsBankTransfer\Generated\BankList\EpsSOBankListProtocol\EpsSOBankListProtoc
             accessor:
                 getter: getErrorDetails
                 setter: setErrorDetails
-            type: Psa\EpsBankTransfer\Generated\BankList\ErrorDataType
+            type: Psa\EpsBankTransfer\Internal\Generated\BankList\ErrorDataType

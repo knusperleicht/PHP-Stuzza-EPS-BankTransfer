@@ -1,4 +1,4 @@
-Psa\EpsBankTransfer\Generated\Protocol\V26\BankConfirmationDetails\BankConfirmationDetailsAType:
+Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\BankConfirmationDetails\BankConfirmationDetailsAType:
     properties:
         sessionId:
             expose: true
@@ -19,4 +19,4 @@ Psa\EpsBankTransfer\Generated\Protocol\V26\BankConfirmationDetails\BankConfirmat
             accessor:
                 getter: getPaymentConfirmationDetails
                 setter: setPaymentConfirmationDetails
-            type: Psa\EpsBankTransfer\Generated\Payment\V26\PaymentConfirmationDetails
+            type: Psa\EpsBankTransfer\Internal\Generated\Payment\V26\PaymentConfirmationDetails
