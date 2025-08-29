@@ -8,7 +8,6 @@ use Externet\EpsBankTransfer\Domain\Bank;
 use Externet\EpsBankTransfer\Domain\BankList;
 use Externet\EpsBankTransfer\Exceptions\BankListException;
 use Externet\EpsBankTransfer\Exceptions\XmlValidationException;
-use Externet\EpsBankTransfer\Internal\AbstractSoCommunicator;
 use Externet\EpsBankTransfer\Tests\Helper\SoCommunicatorTestTrait;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;

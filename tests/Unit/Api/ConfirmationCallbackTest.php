@@ -3,11 +3,13 @@ declare(strict_types=1);
 
 namespace Externet\EpsBankTransfer\Tests\Api;
 
+use DateTime;
+use Externet\EpsBankTransfer\Domain\BankConfirmationDetails;
+use Externet\EpsBankTransfer\Domain\VitalityCheckDetails;
 use Externet\EpsBankTransfer\Exceptions\CallbackResponseException;
 use Externet\EpsBankTransfer\Exceptions\EpsException;
 use Externet\EpsBankTransfer\Exceptions\InvalidCallbackException;
 use Externet\EpsBankTransfer\Exceptions\XmlValidationException;
-use Externet\EpsBankTransfer\Generated\Protocol\V26\BankConfirmationDetails;
 use Externet\EpsBankTransfer\Tests\Helper\SoCommunicatorTestTrait;
 use Externet\EpsBankTransfer\Utilities\XmlValidator;
 use PHPUnit\Framework\TestCase;
@@ -102,22 +104,18 @@ class ConfirmationCallbackTest extends TestCase
             $temp
         );
 
-        $this->assertInstanceOf(BankConfirmationDetails::class, $bankDetails);
-        $this->assertEquals('AT1234567890XYZ', $bankDetails->getPaymentConfirmationDetails()->getRemittanceIdentifier());
-        $this->assertEquals('13212452dea', $bankDetails->getSessionId());
-        $this->assertEquals('AAAAAAAAAAA', $bankDetails->getPaymentConfirmationDetails()->getPayConApprovingUnitDetails()->getApprovingUnitBankIdentifier());
-        $this->assertEquals(
-            '2007-03-19T11:11:00.000000',
-            $bankDetails->getPaymentConfirmationDetails()->getPayConApprovalTime()->format('Y-m-d\TH:i:s.u')
+        $expectedBankDetails = new BankConfirmationDetails(
+            '13212452dea',
+            'AT1234567890XYZ',
+            'AAAAAAAAAAA',
+            new DateTime('2007-03-19T11:11:00.000000-0500'),
+            '120000302122320812201106461',
+            'OK'
         );
-        $this->assertEquals('120000302122320812201106461', $bankDetails->getPaymentConfirmationDetails()->getPaymentReferenceIdentifier());
-        $this->assertEquals('OK', $bankDetails->getPaymentConfirmationDetails()->getStatusCode());
+        $this->assertEquals($expectedBankDetails, $bankDetails);
 
         $actual = file_get_contents($temp);
         XmlValidator::ValidateEpsProtocol($actual);
-        $this->assertStringContainsString($bankDetails->getSessionId(), $actual);
-        $this->assertStringContainsString($bankDetails->getPaymentConfirmationDetails()->getStatusCode(), $actual);
-        $this->assertStringContainsString($bankDetails->getPaymentConfirmationDetails()->getPaymentReferenceIdentifier(), $actual);
         $this->assertXmlEqualsFixture('ShopResponseDetailsOK.xml', $actual);
     }
 
@@ -186,19 +184,29 @@ class ConfirmationCallbackTest extends TestCase
 
     public function testHandleConfirmationUrlVitalityWritesInputToOutputStream(): void
     {
+        $vitalityDetails = null;
         $temp = tempnam(sys_get_temp_dir(), 'SoCommunicatorTest_');
         $rawXml = file_get_contents($this->fixturePath('V26/VitalityCheckDetails.xml'));
         $this->target->handleConfirmationUrl(
             function () {
                 return true;
             },
-            function () use ($rawXml) {
-                $this->assertNotEmpty($rawXml);
+            function ($xml, $vc) use ($rawXml, &$vitalityDetails) {
+                $this->assertSame($rawXml, $xml);
+                $vitalityDetails = $vc;
                 return true;
             },
             $this->fixturePath('V26/VitalityCheckDetails.xml'),
             $temp
         );
+
+        $expectedVitalityDetails = new VitalityCheckDetails(
+            'AT1234567890XYZ'
+        );
+        $this->assertEquals($expectedVitalityDetails, $vitalityDetails);
+
+        $actual = file_get_contents($temp);
+        XmlValidator::ValidateEpsProtocol($actual);
         $this->assertXmlEqualsFixture('V26/VitalityCheckDetails.xml', file_get_contents($temp));
     }
 

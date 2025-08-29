@@ -5,6 +5,8 @@ namespace Externet\EpsBankTransfer\Internal\V26;
 
 use Exception;
 use Externet\EpsBankTransfer\Api\SoCommunicator;
+use Externet\EpsBankTransfer\Domain\BankConfirmationDetails;
+use Externet\EpsBankTransfer\Domain\VitalityCheckDetails;
 use Externet\EpsBankTransfer\Exceptions\CallbackResponseException;
 use Externet\EpsBankTransfer\Exceptions\EpsException;
 use Externet\EpsBankTransfer\Exceptions\InvalidCallbackException;
@@ -126,12 +128,22 @@ class SoV26Communicator
             $shopConfirmationDetails = new ShopResponseDetails();
 
             if ($protocol->getVitalityCheckDetails() !== null) {
-                $this->handleVitalityCheck($vitalityCheckCallback, $rawXml, $protocol->getVitalityCheckDetails(), $outputStream);
+                $this->handleVitalityCheck(
+                    $vitalityCheckCallback,
+                    $rawXml,
+                    VitalityCheckDetails::fromV26($protocol->getVitalityCheckDetails()),
+                    $outputStream
+                );
                 return;
             }
 
             if ($protocol->getBankConfirmationDetails() !== null) {
-                $this->handleBankConfirmation($confirmationCallback, $rawXml, $protocol->getBankConfirmationDetails(), $shopConfirmationDetails, $outputStream);
+                $this->handleBankConfirmation(
+                    $confirmationCallback,
+                    $rawXml,
+                    BankConfirmationDetails::fromV26($protocol),
+                    $shopConfirmationDetails,
+                    $outputStream);
                 return;
             }
 
@@ -181,7 +193,7 @@ class SoV26Communicator
     /**
      * @throws CallbackResponseException
      */
-    private function handleVitalityCheck(?callable $callback, string $rawXml, $vitality, string $outputStream): void
+    private function handleVitalityCheck(?callable $callback, string $rawXml, VitalityCheckDetails $vitality, string $outputStream): void
     {
         if ($callback !== null) {
             if (call_user_func($callback, $rawXml, $vitality) !== true) {
@@ -194,12 +206,14 @@ class SoV26Communicator
     /**
      * @throws CallbackResponseException
      */
-    private function handleBankConfirmation(callable $callback, string $rawXml, $confirmation, ShopResponseDetails $response, string $outputStream): void
+    private function handleBankConfirmation(callable $callback, string $rawXml,
+                                            BankConfirmationDetails $confirmation, ShopResponseDetails $response,
+                                            string $outputStream): void
     {
         $response->setSessionId($confirmation->getSessionId());
-        $response->setStatusCode($confirmation->getPaymentConfirmationDetails()->getStatusCode());
+        $response->setStatusCode($confirmation->getStatusCode());
         $response->setPaymentReferenceIdentifier(
-            $confirmation->getPaymentConfirmationDetails()->getPaymentReferenceIdentifier()
+            $confirmation->getPaymentReferenceIdentifier()
         );
 
         if (call_user_func($callback, $rawXml, $confirmation) !== true) {
