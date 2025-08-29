@@ -1,9 +1,10 @@
 <?php
+declare(strict_types=1);
 require_once('../vendor/autoload.php');
 
-use Externet\EpsBankTransfer\Api\AbstractSoCommunicator;
-use Externet\EpsBankTransfer\Api\V26\SoV26Communicator;
 use Externet\EpsBankTransfer\Generated\Protocol\V26\BankConfirmationDetails;
+use Externet\EpsBankTransfer\Internal\AbstractSoCommunicator;
+use Externet\EpsBankTransfer\Internal\V26\SoV26Communicator;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Symfony\Component\HttpClient\Psr18Client;
 
@@ -24,7 +25,7 @@ try {
         new Psr18Client(),
         $psr17Factory,
         $psr17Factory,
-        AbstractSoCommunicator::TEST_MODE_URL,
+        SoCommunicator::TEST_MODE_URL,
         new Monolog\Logger('eps')
     );
     $soCommunicator->handleConfirmationUrl(

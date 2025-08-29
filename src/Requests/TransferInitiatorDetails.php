@@ -18,7 +18,7 @@ use Externet\EpsBankTransfer\Generated\Protocol\V26\AuthenticationDetails;
 use Externet\EpsBankTransfer\Generated\Protocol\V26\EpsProtocolDetails;
 use Externet\EpsBankTransfer\Generated\Protocol\V26\TransactionNokUrl;
 use Externet\EpsBankTransfer\Generated\Protocol\V26\TransactionOkUrl;
-use Externet\EpsBankTransfer\Generated\Protocol\V26\TransferInitiatorDetails;
+use Externet\EpsBankTransfer\Generated\Protocol\V26\TransferInitiatorDetails as V6TransferInitiatorDetails;
 use Externet\EpsBankTransfer\Generated\Protocol\V26\TransferMsgDetails;
 use Externet\EpsBankTransfer\Requests\Parts\PaymentFlowUrls;
 use Externet\EpsBankTransfer\Requests\Parts\WebshopArticle;
@@ -28,98 +28,98 @@ use InvalidArgumentException;
 /**
  * EPS payment order message
  */
-class InitiateTransferRequest
+class TransferInitiatorDetails
 {
 
     /**
      * Business partner identification through UserID (= Merchant ID) issued by an eps bank
      * @var string
      */
-    public $userId;
+    private $userId;
 
     /**
      * Secret given by bank
      * @var string
      */
-    public $secret;
+    private $secret;
 
     /**
      * Creation date of payment order (xsd::date)
      * @var string
      */
-    public $date;
+    private $date;
 
     /**
      * ISO 9362 Bank Identifier Code (BIC) for bank identification
      * @var string
      */
-    public $bfiBicIdentifier;
+    private $bfiBicIdentifier;
 
     /**
      * Identification of beneficiary (name and address) in unstructured form. Beneficiary does not need to match account holder.
      * @var string
      */
-    public $beneficiaryNameAddressText;
+    private $beneficiaryNameAddressText;
 
     /**
      * Beneficiary's account details specified by IBAN (International Bank Account Number), e.g. AT611904300234573201 (11-digit account number: 00234573201)
      * @var string
      */
-    public $beneficiaryAccountIdentifier;
+    private $beneficiaryAccountIdentifier;
 
     /**
      * Payment order message reference, e.g., for merchant research purposes
      * @var string
      */
-    public $referenceIdentifier;
+    private $referenceIdentifier;
 
     /**
      *
-     * @var string
+     * @var string|null
      */
-    public $unstructuredRemittanceIdentifier;
+    private $unstructuredRemittanceIdentifier;
 
     /**
      * Unique merchant reference (= beneficiary) for a business transaction that must be returned unchanged to the merchant in payment transactions
-     * @var string
+     * @var string|null
      */
-    public $remittanceIdentifier;
+    private $remittanceIdentifier;
 
     /**
      * Min/max execution time for eps payment
      * @var string
      */
-    public $expirationTime;
+    private $expirationTime;
 
     /**
      * For cent values, they must be transmitted separated from the euro amount by a period, e.g. 150.55 (NOT 150,55)!
      * @var string
      */
-    public $instructedAmount;
+    private $instructedAmount;
 
     /**
      * Currency specification according to ISO 4217
      * @var string
      */
-    public $amountCurrencyIdentifier = 'EUR';
+    private $amountCurrencyIdentifier = 'EUR';
 
     /**
      * Array of webshop articles
      * @var WebshopArticle[]
      */
-    public $webshopArticles;
+    private $webshopArticles;
 
     /**
      * Merchant specification of relevant URL addresses
      * @var PaymentFlowUrls
      */
-    public $transferMsgDetails;
+    private $transferMsgDetails;
 
     /**
      * Optional specification of bank details/BIC of the payment obligor / buyer
      * @var string
      */
-    public $orderingCustomerOfiIdentifier;
+    private $orderingCustomerOfiIdentifier;
 
     /**
      * @param string $userId
@@ -132,6 +132,17 @@ class InitiateTransferRequest
      * @param PaymentFlowUrls $transferMsgDetails
      * @param string|null $date
      */
+
+    /**
+     * @var int Length of the suffix for obscurity
+     */
+    public $obscuritySuffixLength;
+
+    /**
+     * @var string|null Seed value used for obscurity
+     */
+    public $obscuritySeed;
+
     public function __construct(string          $userId,
                                 string          $secret,
                                 string          $bfiBicIdentifier,
@@ -140,7 +151,9 @@ class InitiateTransferRequest
                                 string          $referenceIdentifier,
                                                 $instructedAmount,
                                 PaymentFlowUrls $transferMsgDetails,
-                                string          $date = null)
+                                string          $date = null,
+                                int $obscuritySuffixLength = 0,
+                                ?string $obscuritySeed = null)
     {
         $this->userId = $userId;
         $this->secret = $secret;
@@ -153,6 +166,8 @@ class InitiateTransferRequest
         $this->transferMsgDetails = $transferMsgDetails;
 
         $this->date = $date == null ? date("Y-m-d") : $date;
+        $this->obscuritySuffixLength = $obscuritySuffixLength;
+        $this->obscuritySeed = $obscuritySeed;
     }
 
     /**
@@ -199,7 +214,7 @@ class InitiateTransferRequest
         $xml = new EpsProtocolDetails();
         $xml->setSessionLanguage("DE");
 
-        $transferInitiatorDetails = new TransferInitiatorDetails();
+        $transferInitiatorDetails = new V6TransferInitiatorDetails();
         $xml->setTransferInitiatorDetails($transferInitiatorDetails);
 
         $paymentInitiatorDetails = new Generated\Payment\V26\PaymentInitiatorDetails();
@@ -429,5 +444,49 @@ class InitiateTransferRequest
     public function setOrderingCustomerOfiIdentifier(string $orderingCustomerOfiIdentifier): void
     {
         $this->orderingCustomerOfiIdentifier = $orderingCustomerOfiIdentifier;
+    }
+
+    public function getObscuritySuffixLength(): int
+    {
+        return $this->obscuritySuffixLength;
+    }
+
+    public function setObscuritySuffixLength(int $obscuritySuffixLength): void
+    {
+        $this->obscuritySuffixLength = $obscuritySuffixLength;
+    }
+
+    public function getObscuritySeed(): ?string
+    {
+        return $this->obscuritySeed;
+    }
+
+    public function setObscuritySeed(?string $obscuritySeed): void
+    {
+        $this->obscuritySeed = $obscuritySeed;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRemittanceIdentifier(): ?string
+    {
+        return $this->remittanceIdentifier;
+    }
+
+    /**
+     * @return string
+     */
+    public function getInstructedAmount(): string
+    {
+        return $this->instructedAmount;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUnstructuredRemittanceIdentifier(): ?string
+    {
+        return $this->unstructuredRemittanceIdentifier;
     }
 }

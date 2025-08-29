@@ -1,20 +1,20 @@
 <?php
 declare(strict_types=1);
 
-namespace Externet\EpsBankTransfer\Tests\Api\V26;
+namespace Externet\EpsBankTransfer\Tests\Api;
 
 use Externet\EpsBankTransfer\Exceptions\CallbackResponseException;
+use Externet\EpsBankTransfer\Exceptions\EpsException;
 use Externet\EpsBankTransfer\Exceptions\InvalidCallbackException;
-use Externet\EpsBankTransfer\Exceptions\ShopResponseException;
 use Externet\EpsBankTransfer\Exceptions\XmlValidationException;
 use Externet\EpsBankTransfer\Generated\Protocol\V26\BankConfirmationDetails;
-use Externet\EpsBankTransfer\Tests\Helper\SoV26CommunicatorTestTrait;
+use Externet\EpsBankTransfer\Tests\Helper\SoCommunicatorTestTrait;
 use Externet\EpsBankTransfer\Utilities\XmlValidator;
 use PHPUnit\Framework\TestCase;
 
 class ConfirmationCallbackTest extends TestCase
 {
-    use SoV26CommunicatorTestTrait;
+    use SoCommunicatorTestTrait;
 
     protected function setUp(): void
     {
@@ -23,15 +23,15 @@ class ConfirmationCallbackTest extends TestCase
     }
 
     private function handleConfirmation(
-        ?callable $bankCallback,
-                  $vitalityCallback,
+        ?callable $confirmationCallback,
+        ?callable $vitalityCheckCallback,
         string $xmlFile,
         ?string $outputFile = null
     ): void {
         $dataPath = $this->fixturePath($xmlFile);
         $this->target->handleConfirmationUrl(
-            $bankCallback,
-            $vitalityCallback,
+            $confirmationCallback,
+            $vitalityCheckCallback,
             $dataPath,
             $outputFile ?? 'php://temp'
         );
@@ -40,7 +40,7 @@ class ConfirmationCallbackTest extends TestCase
     public function testHandleConfirmationUrlThrowsExceptionOnMissingCallback(): void
     {
         $this->expectException(InvalidCallbackException::class);
-        $this->expectExceptionMessage('confirmationCallback not callable or missing');
+        $this->expectExceptionMessage('ConfirmationCallback not callable or missing');
         $this->handleConfirmation(null, null, 'BankConfirmationDetailsWithoutSignature.xml');
     }
 
@@ -51,10 +51,12 @@ class ConfirmationCallbackTest extends TestCase
             $this->handleConfirmation(null, null, 'BankConfirmationDetailsWithoutSignature.xml', $temp);
         } catch (InvalidCallbackException $e) {
             $msg = $e->getMessage();
+        } finally {
+            $actual = file_get_contents($temp);
+            XmlValidator::ValidateEpsProtocol($actual);
+            $this->assertStringContainsString($msg, $actual);
+            @unlink($temp);
         }
-        $actual = file_get_contents($temp);
-        XmlValidator::ValidateEpsProtocol($actual);
-        $this->assertStringContainsString($msg, $actual);
     }
 
     public function testHandleConfirmationUrlThrowsExceptionOnInvalidXml(): void
@@ -147,11 +149,13 @@ class ConfirmationCallbackTest extends TestCase
             );
         } catch (CallbackResponseException $e) {
             $msg = $e->getMessage();
+        } finally {
+            $actual = file_get_contents($temp);
+            XmlValidator::ValidateEpsProtocol($actual);
+            $this->assertStringContainsString($msg, $actual);
+            $this->assertXmlEqualsFixture('ShopResponseDetailsError.xml', $actual);
+            @unlink($temp);
         }
-        $actual = file_get_contents($temp);
-        XmlValidator::ValidateEpsProtocol($actual);
-        $this->assertStringContainsString($msg, $actual);
-        $this->assertXmlEqualsFixture('ShopResponseDetailsError.xml', $actual);
     }
 
     public function testHandleConfirmationUrlVitalityCheckDoesNotCallBankConfirmationCallback(): void
@@ -163,41 +167,6 @@ class ConfirmationCallbackTest extends TestCase
             'V26/VitalityCheckDetails.xml'
         );
         $this->assertFalse($called);
-    }
-
-    public function testHandleConfirmationUrlVitalityThrowsExceptionOnInvalidValidationCallback(): void
-    {
-        $this->expectException(InvalidCallbackException::class);
-        $this->expectExceptionMessage('vitalityCheckCallback not callable');
-        $this->handleConfirmation(
-            function () { return true; },
-            "invalid",
-            'V26/VitalityCheckDetails.xml'
-        );
-    }
-
-    /**
-     * @throws XmlValidationException
-     */
-    public function testHandleConfirmationUrlVitalityReturnsErrorOnInvalidValidationCallback(): void
-    {
-        $temp = tempnam(sys_get_temp_dir(), 'SoCommunicatorTest_');
-        try {
-            $this->handleConfirmation(
-                function () {
-                    return true;
-                },
-                'invalid',
-                'V26/VitalityCheckDetails.xml',
-                $temp
-            );
-        } catch (InvalidCallbackException $e) {
-            $msg = $e->getMessage();
-        }
-        $actual = file_get_contents($temp);
-        XmlValidator::ValidateEpsProtocol($actual);
-        $this->assertStringContainsString($msg, $actual);
-        $this->assertXmlEqualsFixture('ShopResponseDetailsErrorVitalityCheckNotCallable.xml', $actual);
     }
 
     public function testHandleConfirmationUrlVitalityThrowsExceptionWhenCallbackDoesNotReturnTrue(): void
@@ -215,12 +184,6 @@ class ConfirmationCallbackTest extends TestCase
         );
     }
 
-    /**
-     * @throws ShopResponseException
-     * @throws XmlValidationException
-     * @throws InvalidCallbackException
-     * @throws CallbackResponseException
-     */
     public function testHandleConfirmationUrlVitalityWritesInputToOutputStream(): void
     {
         $temp = tempnam(sys_get_temp_dir(), 'SoCommunicatorTest_');
@@ -242,6 +205,8 @@ class ConfirmationCallbackTest extends TestCase
     public function testHandleConfirmationUrlReturnsErrorOnInvalidXml(): void
     {
         $temp = tempnam(sys_get_temp_dir(), 'SoCommunicatorTest_');
+        $this->expectException(EpsException::class);
+        $this->expectExceptionMessage('XML does not validate against XSD');
         try {
             $this->handleConfirmation(
                 function () {
@@ -251,12 +216,11 @@ class ConfirmationCallbackTest extends TestCase
                 'V26/BankConfirmationDetailsInvalid.xml',
                 $temp
             );
-        } catch (XmlValidationException $e) {
-            $msg = $e->getMessage();
+        } finally {
+            $actual = file_get_contents($temp);
+            XmlValidator::ValidateEpsProtocol($actual);
+            $this->assertXmlEqualsFixture('ShopResponseDetailsXMLError.xml', $actual);
+            @unlink($temp);
         }
-        $actual = file_get_contents($temp);
-        XmlValidator::ValidateEpsProtocol($actual);
-        $this->assertStringContainsString('XML does not validate against XSD.', $msg);
-        $this->assertXmlEqualsFixture('ShopResponseDetailsXMLError.xml', $actual);
     }
 }

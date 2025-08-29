@@ -1,9 +1,10 @@
 <?php
+declare(strict_types=1);
 require_once('../vendor/autoload.php');
 
 use Externet\EpsBankTransfer;
-use Externet\EpsBankTransfer\Api\V26\SoV26Communicator;
-use Externet\EpsBankTransfer\Requests\InitiateTransferRequest;
+use Externet\EpsBankTransfer\Internal\V26\SoV26Communicator;
+use Externet\EpsBankTransfer\Requests\TransferInitiatorDetails;
 use Externet\EpsBankTransfer\Requests\Parts\PaymentFlowUrls;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Symfony\Component\HttpClient\Psr18Client;
@@ -21,7 +22,7 @@ $paymentFlowUrls = new PaymentFlowUrls(
     'https://yourdomain.example.com/Failure.html'     // The URL that the buyer will be redirected to on cancel or failure = epsp:TransactionNokUrl
 );
 
-$initiateTransferRequest = new InitiateTransferRequest(
+$initiateTransferRequest = new TransferInitiatorDetails(
     $userID,
     $pin,
     $bic,
@@ -54,7 +55,7 @@ $soCommunicator = new SoV26Communicator(
     new Psr18Client(),
     $psr17Factory,
     $psr17Factory,
-    EpsBankTransfer\Api\AbstractSoCommunicator::TEST_MODE_URL,
+    EpsBankTransfer\Internal\SoCommunicator::TEST_MODE_URL,
     new Monolog\Logger('eps')
 );
 // Optional: You can provide a bank selection on your payment site
@@ -65,7 +66,7 @@ $soCommunicator = new SoV26Communicator(
 
 // Send transfer initiator details to default URL
 try {
-    $protocolDetails = $soCommunicator->initiateTransferRequest($initiateTransferRequest);
+    $protocolDetails = $soCommunicator->sendTransferInitiatorDetails($initiateTransferRequest);
 
     if ($protocolDetails->getBankResponseDetails()->getErrorDetails()->getErrorCode() !== '000') {
         $errorCode = $protocolDetails->getBankResponseDetails()->getErrorDetails()->getErrorCode();

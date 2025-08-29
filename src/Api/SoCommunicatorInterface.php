@@ -3,31 +3,85 @@ declare(strict_types=1);
 
 namespace Externet\EpsBankTransfer\Api;
 
-use Externet\EpsBankTransfer\Requests\InitiateTransferRequest;
+use Externet\EpsBankTransfer\Domain\BankList;
+use Externet\EpsBankTransfer\Domain\ProtocolDetails;
+use Externet\EpsBankTransfer\Domain\RefundResponse;
+use Externet\EpsBankTransfer\Requests\RefundRequest;
+use Externet\EpsBankTransfer\Requests\TransferInitiatorDetails;
 
+/**
+ * Public API interface for interacting with the EPS Scheme Operator (SO).
+ *
+ * This interface abstracts high-level operations:
+ * - Fetching the bank list supported by EPS
+ * - Initiating a payment (transfer initiator)
+ * - Requesting a refund
+ * - Handling callback requests (confirmation and vitality check)
+ */
 interface SoCommunicatorInterface
 {
     /**
-     * @param InitiateTransferRequest $transferInitiatorDetails
-     * @param string|null $targetUrl
-     * @return object Protocol details object (version-specific)
+     * Fetches the current bank list from the Scheme Operator (SO).
+     *
+     * The bank list is currently available for interface version 2.6 only.
+     *
+     * @param string $version Interface version ("2.6" or "2.7"). Bank list is 2.6.
+     * @param string|null $targetUrl Optional custom target URL instead of the default.
+     * @return BankList List of supported banks.
      */
-    public function initiateTransferRequest(
-        InitiateTransferRequest $transferInitiatorDetails,
-        ?string                 $targetUrl = null
-    );
+    public function getBanks(string $version = '2.6', ?string $targetUrl = null): BankList;
+    /**
+     * Sends a Transfer Initiator request to the Scheme Operator (SO).
+     *
+     * @param TransferInitiatorDetails $transferInitiatorDetails Details of the payment initiation.
+     * @param string|null $targetUrl Optional custom target URL instead of the default.
+     * @param string $version Version of the SO interface ("2.6" or "2.7").
+     * @return ProtocolDetails Result of the request mapped into a domain object.
+     */
+    public function sendTransferInitiatorDetails(
+        TransferInitiatorDetails $transferInitiatorDetails,
+        ?string                  $targetUrl = null,
+        string                   $version = '2.6'
+    ): ProtocolDetails;
 
     /**
-     * @param callable|null $confirmationCallback
-     * @param callable|null $vitalityCheckCallback
-     * @param string $rawPostStream
-     * @param string $outputStream
-     * @return void
+     * Sends a refund request to the Scheme Operator (SO).
+     *
+     * Refund is currently available for interface version 2.6 only.
+     *
+     * @param RefundRequest $refundRequest Refund request details.
+     * @param string $version Version of the SO interface ("2.6" or "2.7").
+     * @param string|null $targetUrl Optional custom target URL instead of the default.
+     * @return RefundResponse Result of the request mapped into a domain object.
+     */
+    public function sendRefundRequest(
+        RefundRequest $refundRequest,
+        string        $version = '2.6',
+        ?string       $targetUrl = null
+    ): RefundResponse;
+
+    /**
+     * Processes callback requests from the SO (Bank Confirmation / VitalityCheck).
+     *
+     * The confirmation callback should return true when the confirmation has been processed successfully.
+     * The vitality check callback (optional) should return true for a valid vitality check.
+     *
+     * @param callable|null $confirmationCallback Callback invoked for payment confirmations. Must return true.
+     * @param callable|null $vitalityCheckCallback Optional callback for vitality checks. Must return true.
+     * @param string $rawPostStream Input stream to read the raw POST data (e.g. "php://input").
+     * @param string $outputStream Output stream to write the response (e.g. "php://output").
      */
     public function handleConfirmationUrl(
         $confirmationCallback = null,
         $vitalityCheckCallback = null,
         string $rawPostStream = 'php://input',
         string $outputStream = 'php://output'
-    );
+    ): void;
+
+    /**
+     * Configuration: Set the base URL of the Scheme Operator (e.g., LIVE or TEST).
+     *
+     * @param string $baseUrl Base URL used for outgoing requests.
+     */
+    public function setBaseUrl(string $baseUrl): void;
 }

@@ -33,12 +33,6 @@ class SoCommunicatorCore
     /** @var string */
     private $baseUrl;
 
-    /** @var int */
-    private $obscuritySuffixLength = 0;
-
-    /** @var string|null */
-    private $obscuritySeed;
-
     public function __construct(
         ClientInterface $httpClient,
         RequestFactoryInterface $requestFactory,
@@ -54,24 +48,9 @@ class SoCommunicatorCore
         $this->serializer     = SerializerFactory::create();
     }
 
-    public function setBaseUrl(string $baseUrl): void
-    {
-        $this->baseUrl = $baseUrl;
-    }
-
     public function getBaseUrl(): string
     {
         return $this->baseUrl;
-    }
-
-    public function setObscuritySuffixLength(int $length): void
-    {
-        $this->obscuritySuffixLength = $length;
-    }
-
-    public function setObscuritySeed(?string $seed): void
-    {
-        $this->obscuritySeed = $seed;
     }
 
     // ==============
@@ -128,31 +107,32 @@ class SoCommunicatorCore
         return (string)$response->getBody();
     }
 
-    public function appendHash(string $string): string
+    public function appendHash(string $string, int $obscuritySuffixLength = 0, ?string $obscuritySeed = null): string
     {
-        if ($this->obscuritySuffixLength === 0) {
+        if ($obscuritySuffixLength === 0) {
             return $string;
         }
 
-        if (empty($this->obscuritySeed)) {
+        if (empty($obscuritySeed)) {
             throw new \UnexpectedValueException('No security seed set when using security suffix.');
         }
 
-        $hash = base64_encode(crypt($string, $this->obscuritySeed));
-        return $string . substr($hash, 0, $this->obscuritySuffixLength);
+        $hash = hash('sha256', $string . $obscuritySeed);
+        return $string . substr($hash, 0, $obscuritySuffixLength);
     }
 
     /**
      * @throws UnknownRemittanceIdentifierException
      */
-    public function stripHash(string $suffixed): string
+    public function stripHash(string $suffixed, int $obscuritySuffixLength = 0, ?string $obscuritySeed = null): string
     {
-        if ($this->obscuritySuffixLength === 0) {
+        if ($obscuritySuffixLength === 0) {
             return $suffixed;
         }
 
-        $remittanceIdentifier = substr($suffixed, 0, -$this->obscuritySuffixLength);
-        if ($this->appendHash($remittanceIdentifier) !== $suffixed) {
+        $remittanceIdentifier = substr($suffixed, 0, -$obscuritySuffixLength);
+
+        if ($this->appendHash($remittanceIdentifier, $obscuritySuffixLength, $obscuritySeed) !== $suffixed) {
             throw new UnknownRemittanceIdentifierException(
                 'Unknown RemittanceIdentifier supplied: ' . $suffixed
             );

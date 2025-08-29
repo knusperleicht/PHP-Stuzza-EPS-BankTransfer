@@ -1,11 +1,8 @@
 <?php
+declare(strict_types=1);
 
 namespace Externet\EpsBankTransfer\Exceptions;
 
-class XmlValidationException extends ShopResponseException
+class XmlValidationException extends EpsException
 {
-    public function getShopResponseErrorMessage(): string
-    {
-        return 'Error occurred during XML validation';
-    }
 }

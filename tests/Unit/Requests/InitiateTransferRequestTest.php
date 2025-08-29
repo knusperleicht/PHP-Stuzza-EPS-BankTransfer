@@ -4,7 +4,7 @@ namespace Externet\EpsBankTransfer\Tests\Requests;
 
 use Exception;
 use Externet\EpsBankTransfer\Exceptions\XmlValidationException;
-use Externet\EpsBankTransfer\Requests\InitiateTransferRequest;
+use Externet\EpsBankTransfer\Requests\TransferInitiatorDetails;
 use Externet\EpsBankTransfer\Requests\Parts\PaymentFlowUrls;
 use Externet\EpsBankTransfer\Requests\Parts\WebshopArticle;
 use Externet\EpsBankTransfer\Serializer\SerializerFactory;
@@ -65,7 +65,7 @@ class InitiateTransferRequestTest extends TestCase
     public function testGenerateTransferInitiatorDetailsWithOfiIdentifier()
     {
         $data = $this->createTransferInitiatorDetailsWithArticle();
-        $data->orderingCustomerOfiIdentifier = self::TEST_OFI_IDENTIFIER;
+        $data->setOrderingCustomerOfiIdentifier(self::TEST_OFI_IDENTIFIER);
 
         $xmlData = $this->serializer->serialize($data->buildEpsProtocolDetails(), 'xml');
         XmlValidator::ValidateEpsProtocol($xmlData);
@@ -91,7 +91,7 @@ class InitiateTransferRequestTest extends TestCase
     {
         $data = $this->createTransferInitiatorDetails();
         $data->setExpirationMinutes(self::TEST_EXPIRATION_MINUTES);
-        $data->remittanceIdentifier = 'Order1';
+        $data->setRemittanceIdentifier('Order1');
 
         $epsProtocolDetails = $data->buildEpsProtocolDetails();
         $xmlData = $this->serializer->serialize($epsProtocolDetails, 'xml');
@@ -107,7 +107,7 @@ class InitiateTransferRequestTest extends TestCase
     public function testTransferInitiatorDetailsWithUnstructuredRemittanceIdentifier()
     {
         $data = $this->createTransferInitiatorDetails();
-        $data->unstructuredRemittanceIdentifier = self::TEST_UNSTRUCTURED_REMITTANCE;
+        $data->setUnstructuredRemittanceIdentifier(self::TEST_UNSTRUCTURED_REMITTANCE);
         $data->setExpirationMinutes(self::TEST_EXPIRATION_MINUTES);
         $epsProtocolDetails = $data->buildEpsProtocolDetails();
 
@@ -121,7 +121,7 @@ class InitiateTransferRequestTest extends TestCase
     {
         $data = $this->createTransferInitiatorDetails();
         $remittanceIdentifier = "remittanceIdentifier";
-        $data->remittanceIdentifier = $remittanceIdentifier;
+        $data->setRemittanceIdentifier($remittanceIdentifier);
 
         $actual = $data->getMD5Fingerprint();
         $expected = $this->calculateFingerprint($remittanceIdentifier);
@@ -133,7 +133,7 @@ class InitiateTransferRequestTest extends TestCase
     {
         $data = $this->createTransferInitiatorDetails();
         $unstructuredRemittanceIdentifier = 'unstructuredRemittanceIdentifier';
-        $data->unstructuredRemittanceIdentifier = $unstructuredRemittanceIdentifier;
+        $data->setUnstructuredRemittanceIdentifier($unstructuredRemittanceIdentifier);
 
         $actual = $data->getMD5Fingerprint();
         $expected = $this->calculateFingerprint($unstructuredRemittanceIdentifier);
@@ -150,9 +150,9 @@ class InitiateTransferRequestTest extends TestCase
         );
     }
 
-    private function createTransferInitiatorDetails(): InitiateTransferRequest
+    private function createTransferInitiatorDetails(): TransferInitiatorDetails
     {
-        return new InitiateTransferRequest(
+        return new TransferInitiatorDetails(
             self::TEST_USER_ID,
             self::TEST_SECRET,
             self::TEST_BIC,
@@ -168,11 +168,11 @@ class InitiateTransferRequestTest extends TestCase
     /**
      * @throws Exception
      */
-    private function createTransferInitiatorDetailsWithArticle(): InitiateTransferRequest
+    private function createTransferInitiatorDetailsWithArticle(): TransferInitiatorDetails
     {
         $data = $this->createTransferInitiatorDetails();
-        $data->remittanceIdentifier = self::TEST_REMITTANCE_ID;
-        $data->webshopArticles[] = new WebshopArticle(self::TEST_ARTICLE_NAME, self::TEST_ARTICLE_COUNT, self::TEST_AMOUNT);
+        $data->setRemittanceIdentifier(self::TEST_REMITTANCE_ID);
+        $data->addArticle(new WebshopArticle(self::TEST_ARTICLE_NAME, self::TEST_ARTICLE_COUNT, self::TEST_AMOUNT));
         return $data;
     }
 
@@ -189,6 +189,4 @@ class InitiateTransferRequestTest extends TestCase
             self::TEST_USER_ID
         );
     }
-
-
 }
