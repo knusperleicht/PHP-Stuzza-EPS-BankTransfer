@@ -1,4 +1,4 @@
-Externet\EpsBankTransfer\Generated\XmlDsig\KeyInfoType:
+Psa\EpsBankTransfer\Generated\XmlDsig\KeyInfoType:
     properties:
         id:
             expose: true
@@ -36,7 +36,7 @@ Externet\EpsBankTransfer\Generated\XmlDsig\KeyInfoType:
                 inline: true
                 entry_name: KeyValue
                 namespace: 'http://www.w3.org/2000/09/xmldsig#'
-            type: array<Externet\EpsBankTransfer\Generated\XmlDsig\KeyValue>
+            type: array<Psa\EpsBankTransfer\Generated\XmlDsig\KeyValue>
         retrievalMethod:
             expose: true
             access_type: public_method
@@ -50,7 +50,7 @@ Externet\EpsBankTransfer\Generated\XmlDsig\KeyInfoType:
                 inline: true
                 entry_name: RetrievalMethod
                 namespace: 'http://www.w3.org/2000/09/xmldsig#'
-            type: array<Externet\EpsBankTransfer\Generated\XmlDsig\RetrievalMethod>
+            type: array<Psa\EpsBankTransfer\Generated\XmlDsig\RetrievalMethod>
         x509Data:
             expose: true
             access_type: public_method
@@ -64,7 +64,7 @@ Externet\EpsBankTransfer\Generated\XmlDsig\KeyInfoType:
                 inline: true
                 entry_name: X509Data
                 namespace: 'http://www.w3.org/2000/09/xmldsig#'
-            type: array<Externet\EpsBankTransfer\Generated\XmlDsig\X509Data>
+            type: array<Psa\EpsBankTransfer\Generated\XmlDsig\X509Data>
         pGPData:
             expose: true
             access_type: public_method
@@ -78,7 +78,7 @@ Externet\EpsBankTransfer\Generated\XmlDsig\KeyInfoType:
                 inline: true
                 entry_name: PGPData
                 namespace: 'http://www.w3.org/2000/09/xmldsig#'
-            type: array<Externet\EpsBankTransfer\Generated\XmlDsig\PGPData>
+            type: array<Psa\EpsBankTransfer\Generated\XmlDsig\PGPData>
         sPKIData:
             expose: true
             access_type: public_method

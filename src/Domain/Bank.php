@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Externet\EpsBankTransfer\Domain;
+namespace Psa\EpsBankTransfer\Domain;
 
 /**
  * Value object representing a bank entry from the EPS bank list.

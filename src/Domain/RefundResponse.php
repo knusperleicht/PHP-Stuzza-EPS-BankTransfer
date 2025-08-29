@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Externet\EpsBankTransfer\Domain;
+namespace Psa\EpsBankTransfer\Domain;
 
-use Externet\EpsBankTransfer\Generated\Refund\EpsRefundResponse;
+use Psa\EpsBankTransfer\Generated\Refund\EpsRefundResponse;
 
 /**
  * Result of an EPS refund request mapped into a domain object.

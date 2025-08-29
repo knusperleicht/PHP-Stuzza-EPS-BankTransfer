@@ -1,4 +1,4 @@
-Externet\EpsBankTransfer\Generated\Protocol\V26\ConfirmationStatusRequest\ConfirmationStatusRequestAType:
+Psa\EpsBankTransfer\Generated\Protocol\V26\ConfirmationStatusRequest\ConfirmationStatusRequestAType:
     properties:
         transactionId:
             expose: true
@@ -19,4 +19,4 @@ Externet\EpsBankTransfer\Generated\Protocol\V26\ConfirmationStatusRequest\Confir
             accessor:
                 getter: getAuthenticationDetails
                 setter: setAuthenticationDetails
-            type: Externet\EpsBankTransfer\Generated\Protocol\V26\AuthenticationDetails
+            type: Psa\EpsBankTransfer\Generated\Protocol\V26\AuthenticationDetails

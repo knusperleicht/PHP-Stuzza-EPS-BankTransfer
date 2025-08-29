@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace Externet\EpsBankTransfer\Internal\V27;
+namespace Psa\EpsBankTransfer\Internal\V27;
 
-use Externet\EpsBankTransfer\Generated\BankList\EpsSOBankListProtocol;
-use Externet\EpsBankTransfer\Generated\Protocol\V27\EpsProtocolDetails;
-use Externet\EpsBankTransfer\Generated\Refund\EpsRefundResponse;
-use Externet\EpsBankTransfer\Internal\SoCommunicatorCore;
-use Externet\EpsBankTransfer\Requests\RefundRequest;
-use Externet\EpsBankTransfer\Requests\TransferInitiatorDetails;
+use Psa\EpsBankTransfer\Generated\BankList\EpsSOBankListProtocol;
+use Psa\EpsBankTransfer\Generated\Protocol\V27\EpsProtocolDetails;
+use Psa\EpsBankTransfer\Generated\Refund\EpsRefundResponse;
+use Psa\EpsBankTransfer\Internal\SoCommunicatorCore;
+use Psa\EpsBankTransfer\Requests\RefundRequest;
+use Psa\EpsBankTransfer\Requests\TransferInitiatorDetails;
 use JMS\Serializer\SerializerInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;

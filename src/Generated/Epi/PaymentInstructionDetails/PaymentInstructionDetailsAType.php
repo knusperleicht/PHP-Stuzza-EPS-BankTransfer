@@ -1,6 +1,6 @@
 <?php
 
-namespace Externet\EpsBankTransfer\Generated\Epi\PaymentInstructionDetails;
+namespace Psa\EpsBankTransfer\Generated\Epi\PaymentInstructionDetails;
 
 /**
  * Class representing PaymentInstructionDetailsAType
@@ -34,7 +34,7 @@ class PaymentInstructionDetailsAType
     private $unstructuredRemittanceIdentifier = null;
 
     /**
-     * @var \Externet\EpsBankTransfer\Generated\Epi\InstructedAmount $instructedAmount
+     * @var \Psa\EpsBankTransfer\Generated\Epi\InstructedAmount $instructedAmount
      */
     private $instructedAmount = null;
 
@@ -44,7 +44,7 @@ class PaymentInstructionDetailsAType
     private $chargeCode = null;
 
     /**
-     * @var \Externet\EpsBankTransfer\Generated\Epi\DateOptionDetails $dateOptionDetails
+     * @var \Psa\EpsBankTransfer\Generated\Epi\DateOptionDetails $dateOptionDetails
      */
     private $dateOptionDetails = null;
 
@@ -161,7 +161,7 @@ class PaymentInstructionDetailsAType
     /**
      * Gets as instructedAmount
      *
-     * @return \Externet\EpsBankTransfer\Generated\Epi\InstructedAmount
+     * @return \Psa\EpsBankTransfer\Generated\Epi\InstructedAmount
      */
     public function getInstructedAmount()
     {
@@ -171,10 +171,10 @@ class PaymentInstructionDetailsAType
     /**
      * Sets a new instructedAmount
      *
-     * @param \Externet\EpsBankTransfer\Generated\Epi\InstructedAmount $instructedAmount
+     * @param \Psa\EpsBankTransfer\Generated\Epi\InstructedAmount $instructedAmount
      * @return self
      */
-    public function setInstructedAmount(\Externet\EpsBankTransfer\Generated\Epi\InstructedAmount $instructedAmount)
+    public function setInstructedAmount(\Psa\EpsBankTransfer\Generated\Epi\InstructedAmount $instructedAmount)
     {
         $this->instructedAmount = $instructedAmount;
         return $this;
@@ -205,7 +205,7 @@ class PaymentInstructionDetailsAType
     /**
      * Gets as dateOptionDetails
      *
-     * @return \Externet\EpsBankTransfer\Generated\Epi\DateOptionDetails
+     * @return \Psa\EpsBankTransfer\Generated\Epi\DateOptionDetails
      */
     public function getDateOptionDetails()
     {
@@ -215,10 +215,10 @@ class PaymentInstructionDetailsAType
     /**
      * Sets a new dateOptionDetails
      *
-     * @param \Externet\EpsBankTransfer\Generated\Epi\DateOptionDetails $dateOptionDetails
+     * @param \Psa\EpsBankTransfer\Generated\Epi\DateOptionDetails $dateOptionDetails
      * @return self
      */
-    public function setDateOptionDetails(?\Externet\EpsBankTransfer\Generated\Epi\DateOptionDetails $dateOptionDetails = null)
+    public function setDateOptionDetails(?\Psa\EpsBankTransfer\Generated\Epi\DateOptionDetails $dateOptionDetails = null)
     {
         $this->dateOptionDetails = $dateOptionDetails;
         return $this;

@@ -1,8 +1,8 @@
 <?php
 
-namespace Externet\EpsBankTransfer\Generated\Protocol\V27;
+namespace Psa\EpsBankTransfer\Generated\Protocol\V27;
 
-use Externet\EpsBankTransfer\Generated\Protocol\V27\EpsProtocolDetails\EpsProtocolDetailsAType;
+use Psa\EpsBankTransfer\Generated\Protocol\V27\EpsProtocolDetails\EpsProtocolDetailsAType;
 
 /**
  * Class representing EpsProtocolDetails

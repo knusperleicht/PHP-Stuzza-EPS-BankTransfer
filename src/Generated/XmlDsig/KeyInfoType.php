@@ -1,6 +1,6 @@
 <?php
 
-namespace Externet\EpsBankTransfer\Generated\XmlDsig;
+namespace Psa\EpsBankTransfer\Generated\XmlDsig;
 
 /**
  * Class representing KeyInfoType
@@ -24,28 +24,28 @@ class KeyInfoType
     ];
 
     /**
-     * @var \Externet\EpsBankTransfer\Generated\XmlDsig\KeyValue[] $keyValue
+     * @var \Psa\EpsBankTransfer\Generated\XmlDsig\KeyValue[] $keyValue
      */
     private $keyValue = [
         
     ];
 
     /**
-     * @var \Externet\EpsBankTransfer\Generated\XmlDsig\RetrievalMethod[] $retrievalMethod
+     * @var \Psa\EpsBankTransfer\Generated\XmlDsig\RetrievalMethod[] $retrievalMethod
      */
     private $retrievalMethod = [
         
     ];
 
     /**
-     * @var \Externet\EpsBankTransfer\Generated\XmlDsig\X509Data[] $x509Data
+     * @var \Psa\EpsBankTransfer\Generated\XmlDsig\X509Data[] $x509Data
      */
     private $x509Data = [
         
     ];
 
     /**
-     * @var \Externet\EpsBankTransfer\Generated\XmlDsig\PGPData[] $pGPData
+     * @var \Psa\EpsBankTransfer\Generated\XmlDsig\PGPData[] $pGPData
      */
     private $pGPData = [
         
@@ -145,9 +145,9 @@ class KeyInfoType
      * Adds as keyValue
      *
      * @return self
-     * @param \Externet\EpsBankTransfer\Generated\XmlDsig\KeyValue $keyValue
+     * @param \Psa\EpsBankTransfer\Generated\XmlDsig\KeyValue $keyValue
      */
-    public function addToKeyValue(\Externet\EpsBankTransfer\Generated\XmlDsig\KeyValue $keyValue)
+    public function addToKeyValue(\Psa\EpsBankTransfer\Generated\XmlDsig\KeyValue $keyValue)
     {
         $this->keyValue[] = $keyValue;
         return $this;
@@ -178,7 +178,7 @@ class KeyInfoType
     /**
      * Gets as keyValue
      *
-     * @return \Externet\EpsBankTransfer\Generated\XmlDsig\KeyValue[]
+     * @return \Psa\EpsBankTransfer\Generated\XmlDsig\KeyValue[]
      */
     public function getKeyValue()
     {
@@ -188,7 +188,7 @@ class KeyInfoType
     /**
      * Sets a new keyValue
      *
-     * @param \Externet\EpsBankTransfer\Generated\XmlDsig\KeyValue[] $keyValue
+     * @param \Psa\EpsBankTransfer\Generated\XmlDsig\KeyValue[] $keyValue
      * @return self
      */
     public function setKeyValue(array $keyValue = null)
@@ -201,9 +201,9 @@ class KeyInfoType
      * Adds as retrievalMethod
      *
      * @return self
-     * @param \Externet\EpsBankTransfer\Generated\XmlDsig\RetrievalMethod $retrievalMethod
+     * @param \Psa\EpsBankTransfer\Generated\XmlDsig\RetrievalMethod $retrievalMethod
      */
-    public function addToRetrievalMethod(\Externet\EpsBankTransfer\Generated\XmlDsig\RetrievalMethod $retrievalMethod)
+    public function addToRetrievalMethod(\Psa\EpsBankTransfer\Generated\XmlDsig\RetrievalMethod $retrievalMethod)
     {
         $this->retrievalMethod[] = $retrievalMethod;
         return $this;
@@ -234,7 +234,7 @@ class KeyInfoType
     /**
      * Gets as retrievalMethod
      *
-     * @return \Externet\EpsBankTransfer\Generated\XmlDsig\RetrievalMethod[]
+     * @return \Psa\EpsBankTransfer\Generated\XmlDsig\RetrievalMethod[]
      */
     public function getRetrievalMethod()
     {
@@ -244,7 +244,7 @@ class KeyInfoType
     /**
      * Sets a new retrievalMethod
      *
-     * @param \Externet\EpsBankTransfer\Generated\XmlDsig\RetrievalMethod[] $retrievalMethod
+     * @param \Psa\EpsBankTransfer\Generated\XmlDsig\RetrievalMethod[] $retrievalMethod
      * @return self
      */
     public function setRetrievalMethod(array $retrievalMethod = null)
@@ -257,9 +257,9 @@ class KeyInfoType
      * Adds as x509Data
      *
      * @return self
-     * @param \Externet\EpsBankTransfer\Generated\XmlDsig\X509Data $x509Data
+     * @param \Psa\EpsBankTransfer\Generated\XmlDsig\X509Data $x509Data
      */
-    public function addToX509Data(\Externet\EpsBankTransfer\Generated\XmlDsig\X509Data $x509Data)
+    public function addToX509Data(\Psa\EpsBankTransfer\Generated\XmlDsig\X509Data $x509Data)
     {
         $this->x509Data[] = $x509Data;
         return $this;
@@ -290,7 +290,7 @@ class KeyInfoType
     /**
      * Gets as x509Data
      *
-     * @return \Externet\EpsBankTransfer\Generated\XmlDsig\X509Data[]
+     * @return \Psa\EpsBankTransfer\Generated\XmlDsig\X509Data[]
      */
     public function getX509Data()
     {
@@ -300,7 +300,7 @@ class KeyInfoType
     /**
      * Sets a new x509Data
      *
-     * @param \Externet\EpsBankTransfer\Generated\XmlDsig\X509Data[] $x509Data
+     * @param \Psa\EpsBankTransfer\Generated\XmlDsig\X509Data[] $x509Data
      * @return self
      */
     public function setX509Data(array $x509Data = null)
@@ -313,9 +313,9 @@ class KeyInfoType
      * Adds as pGPData
      *
      * @return self
-     * @param \Externet\EpsBankTransfer\Generated\XmlDsig\PGPData $pGPData
+     * @param \Psa\EpsBankTransfer\Generated\XmlDsig\PGPData $pGPData
      */
-    public function addToPGPData(\Externet\EpsBankTransfer\Generated\XmlDsig\PGPData $pGPData)
+    public function addToPGPData(\Psa\EpsBankTransfer\Generated\XmlDsig\PGPData $pGPData)
     {
         $this->pGPData[] = $pGPData;
         return $this;
@@ -346,7 +346,7 @@ class KeyInfoType
     /**
      * Gets as pGPData
      *
-     * @return \Externet\EpsBankTransfer\Generated\XmlDsig\PGPData[]
+     * @return \Psa\EpsBankTransfer\Generated\XmlDsig\PGPData[]
      */
     public function getPGPData()
     {
@@ -356,7 +356,7 @@ class KeyInfoType
     /**
      * Sets a new pGPData
      *
-     * @param \Externet\EpsBankTransfer\Generated\XmlDsig\PGPData[] $pGPData
+     * @param \Psa\EpsBankTransfer\Generated\XmlDsig\PGPData[] $pGPData
      * @return self
      */
     public function setPGPData(array $pGPData = null)

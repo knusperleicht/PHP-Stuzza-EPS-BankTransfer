@@ -42,13 +42,13 @@
   },
   "autoload": {
     "psr-4": {
-      "Externet\\EpsBankTransfer\\": "src/"
+      "Psa\\EpsBankTransfer\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Externet\\EpsBankTransfer\\Tests\\": "tests/Unit/",
-      "Externet\\EpsBankTransfer\\Tests\\Helper\\": "tests/Helper/"
+      "Psa\\EpsBankTransfer\\Tests\\": "tests/Unit/",
+      "Psa\\EpsBankTransfer\\Tests\\Helper\\": "tests/Helper/"
     }
   }
 }

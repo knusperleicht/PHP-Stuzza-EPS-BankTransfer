@@ -1,6 +1,6 @@
 <?php
 
-namespace Externet\EpsBankTransfer\Generated\Epi\InstructedAmount;
+namespace Psa\EpsBankTransfer\Generated\Epi\InstructedAmount;
 
 /**
  * Class representing InstructedAmountAType

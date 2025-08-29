@@ -1,4 +1,4 @@
-Externet\EpsBankTransfer\Generated\Epi\ReferenceIdentifier:
+Psa\EpsBankTransfer\Generated\Epi\ReferenceIdentifier:
     xml_root_name: ReferenceIdentifier
     xml_root_namespace: 'http://www.stuzza.at/namespaces/eps/epi/2013/02'
     properties:

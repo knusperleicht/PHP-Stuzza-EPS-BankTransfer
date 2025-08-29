@@ -2,9 +2,9 @@
 declare(strict_types=1);
 require_once('../vendor/autoload.php');
 
-use Externet\EpsBankTransfer\Api\SoCommunicator;
-use Externet\EpsBankTransfer\Domain\BankConfirmationDetails;
-use Externet\EpsBankTransfer\Domain\VitalityCheckDetails;
+use Psa\EpsBankTransfer\Api\SoCommunicator;
+use Psa\EpsBankTransfer\Domain\BankConfirmationDetails;
+use Psa\EpsBankTransfer\Domain\VitalityCheckDetails;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Symfony\Component\HttpClient\Psr18Client;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Externet\EpsBankTransfer\Generated\Payment\V26\ShopConfirmationDetails;
+namespace Psa\EpsBankTransfer\Generated\Payment\V26\ShopConfirmationDetails;
 
 /**
  * Class representing ShopConfirmationDetailsAType

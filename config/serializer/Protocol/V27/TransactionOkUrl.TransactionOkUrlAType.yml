@@ -1,4 +1,4 @@
-Externet\EpsBankTransfer\Generated\Protocol\V27\TransactionOkUrl\TransactionOkUrlAType:
+Psa\EpsBankTransfer\Generated\Protocol\V27\TransactionOkUrl\TransactionOkUrlAType:
     properties:
         __value:
             expose: true

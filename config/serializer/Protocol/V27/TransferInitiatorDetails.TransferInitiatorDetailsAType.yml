@@ -1,4 +1,4 @@
-Externet\EpsBankTransfer\Generated\Protocol\V27\TransferInitiatorDetails\TransferInitiatorDetailsAType:
+Psa\EpsBankTransfer\Generated\Protocol\V27\TransferInitiatorDetails\TransferInitiatorDetailsAType:
     properties:
         paymentInitiatorDetails:
             expose: true
@@ -9,7 +9,7 @@ Externet\EpsBankTransfer\Generated\Protocol\V27\TransferInitiatorDetails\Transfe
             accessor:
                 getter: getPaymentInitiatorDetails
                 setter: setPaymentInitiatorDetails
-            type: Externet\EpsBankTransfer\Generated\Payment\V27\PaymentInitiatorDetails
+            type: Psa\EpsBankTransfer\Generated\Payment\V27\PaymentInitiatorDetails
         transferMsgDetails:
             expose: true
             access_type: public_method
@@ -19,7 +19,7 @@ Externet\EpsBankTransfer\Generated\Protocol\V27\TransferInitiatorDetails\Transfe
             accessor:
                 getter: getTransferMsgDetails
                 setter: setTransferMsgDetails
-            type: Externet\EpsBankTransfer\Generated\Protocol\V27\TransferMsgDetails
+            type: Psa\EpsBankTransfer\Generated\Protocol\V27\TransferMsgDetails
         webshopDetails:
             expose: true
             access_type: public_method
@@ -29,7 +29,7 @@ Externet\EpsBankTransfer\Generated\Protocol\V27\TransferInitiatorDetails\Transfe
             accessor:
                 getter: getWebshopDetails
                 setter: setWebshopDetails
-            type: array<Externet\EpsBankTransfer\Generated\Protocol\V27\WebshopArticle>
+            type: array<Psa\EpsBankTransfer\Generated\Protocol\V27\WebshopArticle>
             xml_list:
                 inline: false
                 entry_name: WebshopArticle
@@ -64,4 +64,4 @@ Externet\EpsBankTransfer\Generated\Protocol\V27\TransferInitiatorDetails\Transfe
             accessor:
                 getter: getAuthenticationDetails
                 setter: setAuthenticationDetails
-            type: Externet\EpsBankTransfer\Generated\Protocol\V27\AuthenticationDetails
+            type: Psa\EpsBankTransfer\Generated\Protocol\V27\AuthenticationDetails

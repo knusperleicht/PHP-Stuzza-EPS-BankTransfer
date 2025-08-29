@@ -1,6 +1,6 @@
 <?php
 
-namespace Externet\EpsBankTransfer\Generated\XmlDsig;
+namespace Psa\EpsBankTransfer\Generated\XmlDsig;
 
 /**
  * Class representing TransformType

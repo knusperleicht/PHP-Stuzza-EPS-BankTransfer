@@ -1,4 +1,4 @@
-Externet\EpsBankTransfer\Generated\Refund\EpsRefundResponse\EpsRefundResponseAType:
+Psa\EpsBankTransfer\Generated\Refund\EpsRefundResponse\EpsRefundResponseAType:
     properties:
         statusCode:
             expose: true

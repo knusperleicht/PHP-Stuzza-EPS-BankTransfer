@@ -1,6 +1,6 @@
 <?php
 
-namespace Externet\EpsBankTransfer\Generated\XmlDsig;
+namespace Psa\EpsBankTransfer\Generated\XmlDsig;
 
 /**
  * Class representing KeyValueType
@@ -12,19 +12,19 @@ class KeyValueType
 {
 
     /**
-     * @var \Externet\EpsBankTransfer\Generated\XmlDsig\DSAKeyValue $dSAKeyValue
+     * @var \Psa\EpsBankTransfer\Generated\XmlDsig\DSAKeyValue $dSAKeyValue
      */
     private $dSAKeyValue = null;
 
     /**
-     * @var \Externet\EpsBankTransfer\Generated\XmlDsig\RSAKeyValue $rSAKeyValue
+     * @var \Psa\EpsBankTransfer\Generated\XmlDsig\RSAKeyValue $rSAKeyValue
      */
     private $rSAKeyValue = null;
 
     /**
      * Gets as dSAKeyValue
      *
-     * @return \Externet\EpsBankTransfer\Generated\XmlDsig\DSAKeyValue
+     * @return \Psa\EpsBankTransfer\Generated\XmlDsig\DSAKeyValue
      */
     public function getDSAKeyValue()
     {
@@ -34,10 +34,10 @@ class KeyValueType
     /**
      * Sets a new dSAKeyValue
      *
-     * @param \Externet\EpsBankTransfer\Generated\XmlDsig\DSAKeyValue $dSAKeyValue
+     * @param \Psa\EpsBankTransfer\Generated\XmlDsig\DSAKeyValue $dSAKeyValue
      * @return self
      */
-    public function setDSAKeyValue(?\Externet\EpsBankTransfer\Generated\XmlDsig\DSAKeyValue $dSAKeyValue = null)
+    public function setDSAKeyValue(?\Psa\EpsBankTransfer\Generated\XmlDsig\DSAKeyValue $dSAKeyValue = null)
     {
         $this->dSAKeyValue = $dSAKeyValue;
         return $this;
@@ -46,7 +46,7 @@ class KeyValueType
     /**
      * Gets as rSAKeyValue
      *
-     * @return \Externet\EpsBankTransfer\Generated\XmlDsig\RSAKeyValue
+     * @return \Psa\EpsBankTransfer\Generated\XmlDsig\RSAKeyValue
      */
     public function getRSAKeyValue()
     {
@@ -56,10 +56,10 @@ class KeyValueType
     /**
      * Sets a new rSAKeyValue
      *
-     * @param \Externet\EpsBankTransfer\Generated\XmlDsig\RSAKeyValue $rSAKeyValue
+     * @param \Psa\EpsBankTransfer\Generated\XmlDsig\RSAKeyValue $rSAKeyValue
      * @return self
      */
-    public function setRSAKeyValue(?\Externet\EpsBankTransfer\Generated\XmlDsig\RSAKeyValue $rSAKeyValue = null)
+    public function setRSAKeyValue(?\Psa\EpsBankTransfer\Generated\XmlDsig\RSAKeyValue $rSAKeyValue = null)
     {
         $this->rSAKeyValue = $rSAKeyValue;
         return $this;

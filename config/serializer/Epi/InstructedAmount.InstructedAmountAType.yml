@@ -1,4 +1,4 @@
-Externet\EpsBankTransfer\Generated\Epi\InstructedAmount\InstructedAmountAType:
+Psa\EpsBankTransfer\Generated\Epi\InstructedAmount\InstructedAmountAType:
     properties:
         __value:
             expose: true

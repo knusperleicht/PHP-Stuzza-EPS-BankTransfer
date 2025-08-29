@@ -1,6 +1,6 @@
 <?php
 
-namespace Externet\EpsBankTransfer\Generated\Protocol\V26\WebshopArticle;
+namespace Psa\EpsBankTransfer\Generated\Protocol\V26\WebshopArticle;
 
 /**
  * Class representing WebshopArticleAType

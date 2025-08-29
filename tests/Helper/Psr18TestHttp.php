@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Externet\EpsBankTransfer\Tests\Helper;
+namespace Psa\EpsBankTransfer\Tests\Helper;
 
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Client\ClientInterface;

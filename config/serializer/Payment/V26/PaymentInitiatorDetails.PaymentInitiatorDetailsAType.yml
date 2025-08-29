@@ -1,4 +1,4 @@
-Externet\EpsBankTransfer\Generated\Payment\V26\PaymentInitiatorDetails\PaymentInitiatorDetailsAType:
+Psa\EpsBankTransfer\Generated\Payment\V26\PaymentInitiatorDetails\PaymentInitiatorDetailsAType:
     properties:
         epiDetails:
             expose: true
@@ -9,7 +9,7 @@ Externet\EpsBankTransfer\Generated\Payment\V26\PaymentInitiatorDetails\PaymentIn
             accessor:
                 getter: getEpiDetails
                 setter: setEpiDetails
-            type: Externet\EpsBankTransfer\Generated\Epi\EpiDetails
+            type: Psa\EpsBankTransfer\Generated\Epi\EpiDetails
         austrianRulesDetails:
             expose: true
             access_type: public_method
@@ -19,4 +19,4 @@ Externet\EpsBankTransfer\Generated\Payment\V26\PaymentInitiatorDetails\PaymentIn
             accessor:
                 getter: getAustrianRulesDetails
                 setter: setAustrianRulesDetails
-            type: Externet\EpsBankTransfer\Generated\AustrianRules\AustrianRulesDetails
+            type: Psa\EpsBankTransfer\Generated\AustrianRules\AustrianRulesDetails

@@ -1,6 +1,6 @@
 <?php
 
-namespace Externet\EpsBankTransfer\Generated\Payment\V27\PaymentInitiatorDetails;
+namespace Psa\EpsBankTransfer\Generated\Payment\V27\PaymentInitiatorDetails;
 
 /**
  * Class representing PaymentInitiatorDetailsAType
@@ -9,19 +9,19 @@ class PaymentInitiatorDetailsAType
 {
 
     /**
-     * @var \Externet\EpsBankTransfer\Generated\Epi\EpiDetails $epiDetails
+     * @var \Psa\EpsBankTransfer\Generated\Epi\EpiDetails $epiDetails
      */
     private $epiDetails = null;
 
     /**
-     * @var \Externet\EpsBankTransfer\Generated\AustrianRules\AustrianRulesDetails $austrianRulesDetails
+     * @var \Psa\EpsBankTransfer\Generated\AustrianRules\AustrianRulesDetails $austrianRulesDetails
      */
     private $austrianRulesDetails = null;
 
     /**
      * Gets as epiDetails
      *
-     * @return \Externet\EpsBankTransfer\Generated\Epi\EpiDetails
+     * @return \Psa\EpsBankTransfer\Generated\Epi\EpiDetails
      */
     public function getEpiDetails()
     {
@@ -31,10 +31,10 @@ class PaymentInitiatorDetailsAType
     /**
      * Sets a new epiDetails
      *
-     * @param \Externet\EpsBankTransfer\Generated\Epi\EpiDetails $epiDetails
+     * @param \Psa\EpsBankTransfer\Generated\Epi\EpiDetails $epiDetails
      * @return self
      */
-    public function setEpiDetails(\Externet\EpsBankTransfer\Generated\Epi\EpiDetails $epiDetails)
+    public function setEpiDetails(\Psa\EpsBankTransfer\Generated\Epi\EpiDetails $epiDetails)
     {
         $this->epiDetails = $epiDetails;
         return $this;
@@ -43,7 +43,7 @@ class PaymentInitiatorDetailsAType
     /**
      * Gets as austrianRulesDetails
      *
-     * @return \Externet\EpsBankTransfer\Generated\AustrianRules\AustrianRulesDetails
+     * @return \Psa\EpsBankTransfer\Generated\AustrianRules\AustrianRulesDetails
      */
     public function getAustrianRulesDetails()
     {
@@ -53,10 +53,10 @@ class PaymentInitiatorDetailsAType
     /**
      * Sets a new austrianRulesDetails
      *
-     * @param \Externet\EpsBankTransfer\Generated\AustrianRules\AustrianRulesDetails $austrianRulesDetails
+     * @param \Psa\EpsBankTransfer\Generated\AustrianRules\AustrianRulesDetails $austrianRulesDetails
      * @return self
      */
-    public function setAustrianRulesDetails(?\Externet\EpsBankTransfer\Generated\AustrianRules\AustrianRulesDetails $austrianRulesDetails = null)
+    public function setAustrianRulesDetails(?\Psa\EpsBankTransfer\Generated\AustrianRules\AustrianRulesDetails $austrianRulesDetails = null)
     {
         $this->austrianRulesDetails = $austrianRulesDetails;
         return $this;

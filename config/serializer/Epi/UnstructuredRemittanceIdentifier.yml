@@ -1,4 +1,4 @@
-Externet\EpsBankTransfer\Generated\Epi\UnstructuredRemittanceIdentifier:
+Psa\EpsBankTransfer\Generated\Epi\UnstructuredRemittanceIdentifier:
     xml_root_name: UnstructuredRemittanceIdentifier
     xml_root_namespace: 'http://www.stuzza.at/namespaces/eps/epi/2013/02'
     properties:

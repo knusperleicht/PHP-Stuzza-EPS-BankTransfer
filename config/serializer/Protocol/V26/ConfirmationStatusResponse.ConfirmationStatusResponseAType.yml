@@ -1,4 +1,4 @@
-Externet\EpsBankTransfer\Generated\Protocol\V26\ConfirmationStatusResponse\ConfirmationStatusResponseAType:
+Psa\EpsBankTransfer\Generated\Protocol\V26\ConfirmationStatusResponse\ConfirmationStatusResponseAType:
     properties:
         sessionId:
             expose: true
@@ -19,7 +19,7 @@ Externet\EpsBankTransfer\Generated\Protocol\V26\ConfirmationStatusResponse\Confi
             accessor:
                 getter: getPaymentConfirmationDetails
                 setter: setPaymentConfirmationDetails
-            type: Externet\EpsBankTransfer\Generated\Payment\V26\PaymentConfirmationDetails
+            type: Psa\EpsBankTransfer\Generated\Payment\V26\PaymentConfirmationDetails
         errorDetails:
             expose: true
             access_type: public_method
@@ -29,4 +29,4 @@ Externet\EpsBankTransfer\Generated\Protocol\V26\ConfirmationStatusResponse\Confi
             accessor:
                 getter: getErrorDetails
                 setter: setErrorDetails
-            type: Externet\EpsBankTransfer\Generated\Protocol\V26\ErrorDetails
+            type: Psa\EpsBankTransfer\Generated\Protocol\V26\ErrorDetails

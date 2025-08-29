@@ -1,16 +1,16 @@
 <?php
 
-namespace Externet\EpsBankTransfer\Tests\Requests;
+namespace Psa\EpsBankTransfer\Tests\Requests;
 
 use Exception;
-use Externet\EpsBankTransfer\Exceptions\XmlValidationException;
-use Externet\EpsBankTransfer\Requests\TransferInitiatorDetails;
-use Externet\EpsBankTransfer\Requests\Parts\PaymentFlowUrls;
-use Externet\EpsBankTransfer\Requests\Parts\WebshopArticle;
-use Externet\EpsBankTransfer\Serializer\SerializerFactory;
-use Externet\EpsBankTransfer\Tests\Helper\XmlFixtureTestTrait;
-use Externet\EpsBankTransfer\Utilities\Fingerprint;
-use Externet\EpsBankTransfer\Utilities\XmlValidator;
+use Psa\EpsBankTransfer\Exceptions\XmlValidationException;
+use Psa\EpsBankTransfer\Requests\TransferInitiatorDetails;
+use Psa\EpsBankTransfer\Requests\Parts\PaymentFlowUrls;
+use Psa\EpsBankTransfer\Requests\Parts\WebshopArticle;
+use Psa\EpsBankTransfer\Serializer\SerializerFactory;
+use Psa\EpsBankTransfer\Tests\Helper\XmlFixtureTestTrait;
+use Psa\EpsBankTransfer\Utilities\Fingerprint;
+use Psa\EpsBankTransfer\Utilities\XmlValidator;
 use JMS\Serializer\SerializerInterface;
 use PHPUnit\Framework\TestCase;
 

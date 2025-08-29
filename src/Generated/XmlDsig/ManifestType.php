@@ -1,6 +1,6 @@
 <?php
 
-namespace Externet\EpsBankTransfer\Generated\XmlDsig;
+namespace Psa\EpsBankTransfer\Generated\XmlDsig;
 
 /**
  * Class representing ManifestType
@@ -17,7 +17,7 @@ class ManifestType
     private $id = null;
 
     /**
-     * @var \Externet\EpsBankTransfer\Generated\XmlDsig\Reference[] $reference
+     * @var \Psa\EpsBankTransfer\Generated\XmlDsig\Reference[] $reference
      */
     private $reference = [
         
@@ -49,9 +49,9 @@ class ManifestType
      * Adds as reference
      *
      * @return self
-     * @param \Externet\EpsBankTransfer\Generated\XmlDsig\Reference $reference
+     * @param \Psa\EpsBankTransfer\Generated\XmlDsig\Reference $reference
      */
-    public function addToReference(\Externet\EpsBankTransfer\Generated\XmlDsig\Reference $reference)
+    public function addToReference(\Psa\EpsBankTransfer\Generated\XmlDsig\Reference $reference)
     {
         $this->reference[] = $reference;
         return $this;
@@ -82,7 +82,7 @@ class ManifestType
     /**
      * Gets as reference
      *
-     * @return \Externet\EpsBankTransfer\Generated\XmlDsig\Reference[]
+     * @return \Psa\EpsBankTransfer\Generated\XmlDsig\Reference[]
      */
     public function getReference()
     {
@@ -92,7 +92,7 @@ class ManifestType
     /**
      * Sets a new reference
      *
-     * @param \Externet\EpsBankTransfer\Generated\XmlDsig\Reference[] $reference
+     * @param \Psa\EpsBankTransfer\Generated\XmlDsig\Reference[] $reference
      * @return self
      */
     public function setReference(array $reference)

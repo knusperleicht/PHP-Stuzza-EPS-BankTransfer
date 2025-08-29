@@ -1,4 +1,4 @@
-Externet\EpsBankTransfer\Generated\Payment\V27\StatusReason\StatusReasonAType:
+Psa\EpsBankTransfer\Generated\Payment\V27\StatusReason\StatusReasonAType:
     properties:
         from:
             expose: true

@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Externet\EpsBankTransfer\Internal;
+namespace Psa\EpsBankTransfer\Internal;
 
-use Externet\EpsBankTransfer\Exceptions\UnknownRemittanceIdentifierException;
-use Externet\EpsBankTransfer\Serializer\SerializerFactory;
+use Psa\EpsBankTransfer\Exceptions\UnknownRemittanceIdentifierException;
+use Psa\EpsBankTransfer\Serializer\SerializerFactory;
 use JMS\Serializer\SerializerInterface;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;

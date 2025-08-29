@@ -1,6 +1,6 @@
 <?php
 
-namespace Externet\EpsBankTransfer\Generated\Payment\V27\PaymentConfirmationDetails;
+namespace Psa\EpsBankTransfer\Generated\Payment\V27\PaymentConfirmationDetails;
 
 /**
  * Class representing PaymentConfirmationDetailsAType
@@ -19,12 +19,12 @@ class PaymentConfirmationDetailsAType
     private $unstructuredRemittanceIdentifier = null;
 
     /**
-     * @var \Externet\EpsBankTransfer\Generated\Payment\V27\PaymentInitiatorDetails $paymentInitiatorDetails
+     * @var \Psa\EpsBankTransfer\Generated\Payment\V27\PaymentInitiatorDetails $paymentInitiatorDetails
      */
     private $paymentInitiatorDetails = null;
 
     /**
-     * @var \Externet\EpsBankTransfer\Generated\Payment\V27\PayConApprovingUnitDetails $payConApprovingUnitDetails
+     * @var \Psa\EpsBankTransfer\Generated\Payment\V27\PayConApprovingUnitDetails $payConApprovingUnitDetails
      */
     private $payConApprovingUnitDetails = null;
 
@@ -44,12 +44,12 @@ class PaymentConfirmationDetailsAType
     private $statusCode = null;
 
     /**
-     * @var \Externet\EpsBankTransfer\Generated\Payment\V27\StatusReason $statusReason
+     * @var \Psa\EpsBankTransfer\Generated\Payment\V27\StatusReason $statusReason
      */
     private $statusReason = null;
 
     /**
-     * @var \Externet\EpsBankTransfer\Generated\XmlDsig\Signature $signature
+     * @var \Psa\EpsBankTransfer\Generated\XmlDsig\Signature $signature
      */
     private $signature = null;
 
@@ -100,7 +100,7 @@ class PaymentConfirmationDetailsAType
     /**
      * Gets as paymentInitiatorDetails
      *
-     * @return \Externet\EpsBankTransfer\Generated\Payment\V27\PaymentInitiatorDetails
+     * @return \Psa\EpsBankTransfer\Generated\Payment\V27\PaymentInitiatorDetails
      */
     public function getPaymentInitiatorDetails()
     {
@@ -110,10 +110,10 @@ class PaymentConfirmationDetailsAType
     /**
      * Sets a new paymentInitiatorDetails
      *
-     * @param \Externet\EpsBankTransfer\Generated\Payment\V27\PaymentInitiatorDetails $paymentInitiatorDetails
+     * @param \Psa\EpsBankTransfer\Generated\Payment\V27\PaymentInitiatorDetails $paymentInitiatorDetails
      * @return self
      */
-    public function setPaymentInitiatorDetails(?\Externet\EpsBankTransfer\Generated\Payment\V27\PaymentInitiatorDetails $paymentInitiatorDetails = null)
+    public function setPaymentInitiatorDetails(?\Psa\EpsBankTransfer\Generated\Payment\V27\PaymentInitiatorDetails $paymentInitiatorDetails = null)
     {
         $this->paymentInitiatorDetails = $paymentInitiatorDetails;
         return $this;
@@ -122,7 +122,7 @@ class PaymentConfirmationDetailsAType
     /**
      * Gets as payConApprovingUnitDetails
      *
-     * @return \Externet\EpsBankTransfer\Generated\Payment\V27\PayConApprovingUnitDetails
+     * @return \Psa\EpsBankTransfer\Generated\Payment\V27\PayConApprovingUnitDetails
      */
     public function getPayConApprovingUnitDetails()
     {
@@ -132,10 +132,10 @@ class PaymentConfirmationDetailsAType
     /**
      * Sets a new payConApprovingUnitDetails
      *
-     * @param \Externet\EpsBankTransfer\Generated\Payment\V27\PayConApprovingUnitDetails $payConApprovingUnitDetails
+     * @param \Psa\EpsBankTransfer\Generated\Payment\V27\PayConApprovingUnitDetails $payConApprovingUnitDetails
      * @return self
      */
-    public function setPayConApprovingUnitDetails(\Externet\EpsBankTransfer\Generated\Payment\V27\PayConApprovingUnitDetails $payConApprovingUnitDetails)
+    public function setPayConApprovingUnitDetails(\Psa\EpsBankTransfer\Generated\Payment\V27\PayConApprovingUnitDetails $payConApprovingUnitDetails)
     {
         $this->payConApprovingUnitDetails = $payConApprovingUnitDetails;
         return $this;
@@ -210,7 +210,7 @@ class PaymentConfirmationDetailsAType
     /**
      * Gets as statusReason
      *
-     * @return \Externet\EpsBankTransfer\Generated\Payment\V27\StatusReason
+     * @return \Psa\EpsBankTransfer\Generated\Payment\V27\StatusReason
      */
     public function getStatusReason()
     {
@@ -220,10 +220,10 @@ class PaymentConfirmationDetailsAType
     /**
      * Sets a new statusReason
      *
-     * @param \Externet\EpsBankTransfer\Generated\Payment\V27\StatusReason $statusReason
+     * @param \Psa\EpsBankTransfer\Generated\Payment\V27\StatusReason $statusReason
      * @return self
      */
-    public function setStatusReason(?\Externet\EpsBankTransfer\Generated\Payment\V27\StatusReason $statusReason = null)
+    public function setStatusReason(?\Psa\EpsBankTransfer\Generated\Payment\V27\StatusReason $statusReason = null)
     {
         $this->statusReason = $statusReason;
         return $this;
@@ -232,7 +232,7 @@ class PaymentConfirmationDetailsAType
     /**
      * Gets as signature
      *
-     * @return \Externet\EpsBankTransfer\Generated\XmlDsig\Signature
+     * @return \Psa\EpsBankTransfer\Generated\XmlDsig\Signature
      */
     public function getSignature()
     {
@@ -242,10 +242,10 @@ class PaymentConfirmationDetailsAType
     /**
      * Sets a new signature
      *
-     * @param \Externet\EpsBankTransfer\Generated\XmlDsig\Signature $signature
+     * @param \Psa\EpsBankTransfer\Generated\XmlDsig\Signature $signature
      * @return self
      */
-    public function setSignature(?\Externet\EpsBankTransfer\Generated\XmlDsig\Signature $signature = null)
+    public function setSignature(?\Psa\EpsBankTransfer\Generated\XmlDsig\Signature $signature = null)
     {
         $this->signature = $signature;
         return $this;

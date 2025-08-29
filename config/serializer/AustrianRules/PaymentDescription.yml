@@ -1,4 +1,4 @@
-Externet\EpsBankTransfer\Generated\AustrianRules\PaymentDescription:
+Psa\EpsBankTransfer\Generated\AustrianRules\PaymentDescription:
     xml_root_name: PaymentDescription
     xml_root_namespace: 'http://www.stuzza.at/namespaces/eps/austrianrules/2014/10'
     properties:

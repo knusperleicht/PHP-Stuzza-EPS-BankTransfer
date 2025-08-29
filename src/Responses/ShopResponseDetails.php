@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Externet\EpsBankTransfer\Responses;
+namespace Psa\EpsBankTransfer\Responses;
 
-use Externet\EpsBankTransfer\Generated\Payment\V26\ShopConfirmationDetails;
-use Externet\EpsBankTransfer\Generated\Protocol\V26\EpsProtocolDetails;
+use Psa\EpsBankTransfer\Generated\Payment\V26\ShopConfirmationDetails;
+use Psa\EpsBankTransfer\Generated\Protocol\V26\EpsProtocolDetails;
 
 class ShopResponseDetails
 {
@@ -23,7 +23,7 @@ class ShopResponseDetails
     public function buildShopResponseDetails(): EpsProtocolDetails
     {
         $epsProtocolDetails = new EpsProtocolDetails();
-        $shopResponseDetails = new \Externet\EpsBankTransfer\Generated\Protocol\V26\ShopResponseDetails();
+        $shopResponseDetails = new \Psa\EpsBankTransfer\Generated\Protocol\V26\ShopResponseDetails();
 
         if (!empty($this->errorMessage)) {
             $shopResponseDetails->setErrorMsg($this->errorMessage);

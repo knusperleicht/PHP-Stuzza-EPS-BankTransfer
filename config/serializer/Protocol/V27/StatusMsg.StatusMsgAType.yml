@@ -1,4 +1,4 @@
-Externet\EpsBankTransfer\Generated\Protocol\V27\StatusMsg\StatusMsgAType:
+Psa\EpsBankTransfer\Generated\Protocol\V27\StatusMsg\StatusMsgAType:
     properties:
         transactionId:
             expose: true

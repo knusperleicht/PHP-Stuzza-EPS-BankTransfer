@@ -1,6 +1,6 @@
 <?php
 
-namespace Externet\EpsBankTransfer\Generated\Protocol\V26\ConfirmationStatusResponse;
+namespace Psa\EpsBankTransfer\Generated\Protocol\V26\ConfirmationStatusResponse;
 
 /**
  * Class representing ConfirmationStatusResponseAType
@@ -14,12 +14,12 @@ class ConfirmationStatusResponseAType
     private $sessionId = null;
 
     /**
-     * @var \Externet\EpsBankTransfer\Generated\Payment\V26\PaymentConfirmationDetails $paymentConfirmationDetails
+     * @var \Psa\EpsBankTransfer\Generated\Payment\V26\PaymentConfirmationDetails $paymentConfirmationDetails
      */
     private $paymentConfirmationDetails = null;
 
     /**
-     * @var \Externet\EpsBankTransfer\Generated\Protocol\V26\ErrorDetails $errorDetails
+     * @var \Psa\EpsBankTransfer\Generated\Protocol\V26\ErrorDetails $errorDetails
      */
     private $errorDetails = null;
 
@@ -48,7 +48,7 @@ class ConfirmationStatusResponseAType
     /**
      * Gets as paymentConfirmationDetails
      *
-     * @return \Externet\EpsBankTransfer\Generated\Payment\V26\PaymentConfirmationDetails
+     * @return \Psa\EpsBankTransfer\Generated\Payment\V26\PaymentConfirmationDetails
      */
     public function getPaymentConfirmationDetails()
     {
@@ -58,10 +58,10 @@ class ConfirmationStatusResponseAType
     /**
      * Sets a new paymentConfirmationDetails
      *
-     * @param \Externet\EpsBankTransfer\Generated\Payment\V26\PaymentConfirmationDetails $paymentConfirmationDetails
+     * @param \Psa\EpsBankTransfer\Generated\Payment\V26\PaymentConfirmationDetails $paymentConfirmationDetails
      * @return self
      */
-    public function setPaymentConfirmationDetails(?\Externet\EpsBankTransfer\Generated\Payment\V26\PaymentConfirmationDetails $paymentConfirmationDetails = null)
+    public function setPaymentConfirmationDetails(?\Psa\EpsBankTransfer\Generated\Payment\V26\PaymentConfirmationDetails $paymentConfirmationDetails = null)
     {
         $this->paymentConfirmationDetails = $paymentConfirmationDetails;
         return $this;
@@ -70,7 +70,7 @@ class ConfirmationStatusResponseAType
     /**
      * Gets as errorDetails
      *
-     * @return \Externet\EpsBankTransfer\Generated\Protocol\V26\ErrorDetails
+     * @return \Psa\EpsBankTransfer\Generated\Protocol\V26\ErrorDetails
      */
     public function getErrorDetails()
     {
@@ -80,10 +80,10 @@ class ConfirmationStatusResponseAType
     /**
      * Sets a new errorDetails
      *
-     * @param \Externet\EpsBankTransfer\Generated\Protocol\V26\ErrorDetails $errorDetails
+     * @param \Psa\EpsBankTransfer\Generated\Protocol\V26\ErrorDetails $errorDetails
      * @return self
      */
-    public function setErrorDetails(?\Externet\EpsBankTransfer\Generated\Protocol\V26\ErrorDetails $errorDetails = null)
+    public function setErrorDetails(?\Psa\EpsBankTransfer\Generated\Protocol\V26\ErrorDetails $errorDetails = null)
     {
         $this->errorDetails = $errorDetails;
         return $this;

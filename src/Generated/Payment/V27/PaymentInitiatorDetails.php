@@ -1,8 +1,8 @@
 <?php
 
-namespace Externet\EpsBankTransfer\Generated\Payment\V27;
+namespace Psa\EpsBankTransfer\Generated\Payment\V27;
 
-use Externet\EpsBankTransfer\Generated\Payment\V27\PaymentInitiatorDetails\PaymentInitiatorDetailsAType;
+use Psa\EpsBankTransfer\Generated\Payment\V27\PaymentInitiatorDetails\PaymentInitiatorDetailsAType;
 
 /**
  * Class representing PaymentInitiatorDetails

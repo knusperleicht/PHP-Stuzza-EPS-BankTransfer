@@ -1,4 +1,4 @@
-Externet\EpsBankTransfer\Generated\Epi\BeneficiaryPartyDetails\BeneficiaryPartyDetailsAType:
+Psa\EpsBankTransfer\Generated\Epi\BeneficiaryPartyDetails\BeneficiaryPartyDetailsAType:
     properties:
         beneficiaryNameAddressText:
             expose: true

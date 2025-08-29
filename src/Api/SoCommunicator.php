@@ -1,19 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace Externet\EpsBankTransfer\Api;
+namespace Psa\EpsBankTransfer\Api;
 
-use Externet\EpsBankTransfer\Domain\BankList;
-use Externet\EpsBankTransfer\Domain\ProtocolDetails;
-use Externet\EpsBankTransfer\Domain\RefundResponse;
-use Externet\EpsBankTransfer\Exceptions\BankListException;
-use Externet\EpsBankTransfer\Exceptions\CallbackResponseException;
-use Externet\EpsBankTransfer\Exceptions\InvalidCallbackException;
-use Externet\EpsBankTransfer\Exceptions\XmlValidationException;
-use Externet\EpsBankTransfer\Internal\V26\SoV26Communicator;
-use Externet\EpsBankTransfer\Internal\V27\SoV27Communicator;
-use Externet\EpsBankTransfer\Requests\RefundRequest;
-use Externet\EpsBankTransfer\Requests\TransferInitiatorDetails;
+use Psa\EpsBankTransfer\Domain\BankList;
+use Psa\EpsBankTransfer\Domain\ProtocolDetails;
+use Psa\EpsBankTransfer\Domain\RefundResponse;
+use Psa\EpsBankTransfer\Exceptions\BankListException;
+use Psa\EpsBankTransfer\Exceptions\CallbackResponseException;
+use Psa\EpsBankTransfer\Exceptions\InvalidCallbackException;
+use Psa\EpsBankTransfer\Exceptions\XmlValidationException;
+use Psa\EpsBankTransfer\Internal\V26\SoV26Communicator;
+use Psa\EpsBankTransfer\Internal\V27\SoV27Communicator;
+use Psa\EpsBankTransfer\Requests\RefundRequest;
+use Psa\EpsBankTransfer\Requests\TransferInitiatorDetails;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;

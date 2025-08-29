@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Externet\EpsBankTransfer\Utilities;
+namespace Psa\EpsBankTransfer\Utilities;
 
-use Externet\EpsBankTransfer\Exceptions\XmlValidationException;
+use Psa\EpsBankTransfer\Exceptions\XmlValidationException;
 
 class XmlValidator
 {

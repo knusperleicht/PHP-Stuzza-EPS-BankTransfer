@@ -1,4 +1,4 @@
-Externet\EpsBankTransfer\Generated\Epi\PaymentInstructionDetails\PaymentInstructionDetailsAType:
+Psa\EpsBankTransfer\Generated\Epi\PaymentInstructionDetails\PaymentInstructionDetailsAType:
     properties:
         paymentInstructionIdentifier:
             expose: true
@@ -59,7 +59,7 @@ Externet\EpsBankTransfer\Generated\Epi\PaymentInstructionDetails\PaymentInstruct
             accessor:
                 getter: getInstructedAmount
                 setter: setInstructedAmount
-            type: Externet\EpsBankTransfer\Generated\Epi\InstructedAmount
+            type: Psa\EpsBankTransfer\Generated\Epi\InstructedAmount
         chargeCode:
             expose: true
             access_type: public_method
@@ -79,4 +79,4 @@ Externet\EpsBankTransfer\Generated\Epi\PaymentInstructionDetails\PaymentInstruct
             accessor:
                 getter: getDateOptionDetails
                 setter: setDateOptionDetails
-            type: Externet\EpsBankTransfer\Generated\Epi\DateOptionDetails
+            type: Psa\EpsBankTransfer\Generated\Epi\DateOptionDetails

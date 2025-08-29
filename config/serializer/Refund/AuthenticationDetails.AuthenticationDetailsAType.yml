@@ -1,4 +1,4 @@
-Externet\EpsBankTransfer\Generated\Refund\AuthenticationDetails\AuthenticationDetailsAType:
+Psa\EpsBankTransfer\Generated\Refund\AuthenticationDetails\AuthenticationDetailsAType:
     properties:
         userId:
             expose: true
@@ -29,4 +29,4 @@ Externet\EpsBankTransfer\Generated\Refund\AuthenticationDetails\AuthenticationDe
             accessor:
                 getter: getSignature
                 setter: setSignature
-            type: Externet\EpsBankTransfer\Generated\XmlDsig\Signature
+            type: Psa\EpsBankTransfer\Generated\XmlDsig\Signature

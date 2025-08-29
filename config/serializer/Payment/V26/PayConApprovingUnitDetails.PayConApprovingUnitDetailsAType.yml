@@ -1,4 +1,4 @@
-Externet\EpsBankTransfer\Generated\Payment\V26\PayConApprovingUnitDetails\PayConApprovingUnitDetailsAType:
+Psa\EpsBankTransfer\Generated\Payment\V26\PayConApprovingUnitDetails\PayConApprovingUnitDetailsAType:
     properties:
         approvingUnitBankIdentifier:
             expose: true

@@ -1,28 +1,28 @@
 <?php
 declare(strict_types=1);
 
-namespace Externet\EpsBankTransfer\Requests;
+namespace Psa\EpsBankTransfer\Requests;
 
 use DateInterval;
 use DateTime;
 use Exception;
-use Externet\EpsBankTransfer\Generated;
-use Externet\EpsBankTransfer\Generated\Epi\BeneficiaryPartyDetails;
-use Externet\EpsBankTransfer\Generated\Epi\BfiPartyDetails;
-use Externet\EpsBankTransfer\Generated\Epi\EpiDetails;
-use Externet\EpsBankTransfer\Generated\Epi\IdentificationDetails;
-use Externet\EpsBankTransfer\Generated\Epi\InstructedAmount;
-use Externet\EpsBankTransfer\Generated\Epi\PartyDetails;
-use Externet\EpsBankTransfer\Generated\Epi\PaymentInstructionDetails;
-use Externet\EpsBankTransfer\Generated\Protocol\V26\AuthenticationDetails;
-use Externet\EpsBankTransfer\Generated\Protocol\V26\EpsProtocolDetails;
-use Externet\EpsBankTransfer\Generated\Protocol\V26\TransactionNokUrl;
-use Externet\EpsBankTransfer\Generated\Protocol\V26\TransactionOkUrl;
-use Externet\EpsBankTransfer\Generated\Protocol\V26\TransferInitiatorDetails as V6TransferInitiatorDetails;
-use Externet\EpsBankTransfer\Generated\Protocol\V26\TransferMsgDetails;
-use Externet\EpsBankTransfer\Requests\Parts\PaymentFlowUrls;
-use Externet\EpsBankTransfer\Requests\Parts\WebshopArticle;
-use Externet\EpsBankTransfer\Utilities\MoneyFormatter;
+use Psa\EpsBankTransfer\Generated;
+use Psa\EpsBankTransfer\Generated\Epi\BeneficiaryPartyDetails;
+use Psa\EpsBankTransfer\Generated\Epi\BfiPartyDetails;
+use Psa\EpsBankTransfer\Generated\Epi\EpiDetails;
+use Psa\EpsBankTransfer\Generated\Epi\IdentificationDetails;
+use Psa\EpsBankTransfer\Generated\Epi\InstructedAmount;
+use Psa\EpsBankTransfer\Generated\Epi\PartyDetails;
+use Psa\EpsBankTransfer\Generated\Epi\PaymentInstructionDetails;
+use Psa\EpsBankTransfer\Generated\Protocol\V26\AuthenticationDetails;
+use Psa\EpsBankTransfer\Generated\Protocol\V26\EpsProtocolDetails;
+use Psa\EpsBankTransfer\Generated\Protocol\V26\TransactionNokUrl;
+use Psa\EpsBankTransfer\Generated\Protocol\V26\TransactionOkUrl;
+use Psa\EpsBankTransfer\Generated\Protocol\V26\TransferInitiatorDetails as V6TransferInitiatorDetails;
+use Psa\EpsBankTransfer\Generated\Protocol\V26\TransferMsgDetails;
+use Psa\EpsBankTransfer\Requests\Parts\PaymentFlowUrls;
+use Psa\EpsBankTransfer\Requests\Parts\WebshopArticle;
+use Psa\EpsBankTransfer\Utilities\MoneyFormatter;
 use InvalidArgumentException;
 
 /**

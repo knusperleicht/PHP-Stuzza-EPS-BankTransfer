@@ -1,6 +1,6 @@
 <?php
 
-namespace Externet\EpsBankTransfer\Generated\Protocol\V27\BankResponseDetails;
+namespace Psa\EpsBankTransfer\Generated\Protocol\V27\BankResponseDetails;
 
 /**
  * Class representing BankResponseDetailsAType
@@ -14,7 +14,7 @@ class BankResponseDetailsAType
     private $clientRedirectUrl = null;
 
     /**
-     * @var \Externet\EpsBankTransfer\Generated\Protocol\V27\ErrorDetails $errorDetails
+     * @var \Psa\EpsBankTransfer\Generated\Protocol\V27\ErrorDetails $errorDetails
      */
     private $errorDetails = null;
 
@@ -53,7 +53,7 @@ class BankResponseDetailsAType
     /**
      * Gets as errorDetails
      *
-     * @return \Externet\EpsBankTransfer\Generated\Protocol\V27\ErrorDetails
+     * @return \Psa\EpsBankTransfer\Generated\Protocol\V27\ErrorDetails
      */
     public function getErrorDetails()
     {
@@ -63,10 +63,10 @@ class BankResponseDetailsAType
     /**
      * Sets a new errorDetails
      *
-     * @param \Externet\EpsBankTransfer\Generated\Protocol\V27\ErrorDetails $errorDetails
+     * @param \Psa\EpsBankTransfer\Generated\Protocol\V27\ErrorDetails $errorDetails
      * @return self
      */
-    public function setErrorDetails(\Externet\EpsBankTransfer\Generated\Protocol\V27\ErrorDetails $errorDetails)
+    public function setErrorDetails(\Psa\EpsBankTransfer\Generated\Protocol\V27\ErrorDetails $errorDetails)
     {
         $this->errorDetails = $errorDetails;
         return $this;

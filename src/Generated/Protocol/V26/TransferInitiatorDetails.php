@@ -1,8 +1,8 @@
 <?php
 
-namespace Externet\EpsBankTransfer\Generated\Protocol\V26;
+namespace Psa\EpsBankTransfer\Generated\Protocol\V26;
 
-use Externet\EpsBankTransfer\Generated\Protocol\V26\TransferInitiatorDetails\TransferInitiatorDetailsAType;
+use Psa\EpsBankTransfer\Generated\Protocol\V26\TransferInitiatorDetails\TransferInitiatorDetailsAType;
 
 /**
  * Class representing TransferInitiatorDetails

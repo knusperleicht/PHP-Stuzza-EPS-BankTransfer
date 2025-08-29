@@ -1,6 +1,6 @@
 <?php
 
-namespace Externet\EpsBankTransfer\Generated\BankList\EpsSOBankListProtocol;
+namespace Psa\EpsBankTransfer\Generated\BankList\EpsSOBankListProtocol;
 
 /**
  * Class representing EpsSOBankListProtocolAType
@@ -9,14 +9,14 @@ class EpsSOBankListProtocolAType
 {
 
     /**
-     * @var \Externet\EpsBankTransfer\Generated\BankList\BankDataType[] $bank
+     * @var \Psa\EpsBankTransfer\Generated\BankList\BankDataType[] $bank
      */
     private $bank = [
         
     ];
 
     /**
-     * @var \Externet\EpsBankTransfer\Generated\BankList\ErrorDataType $errorDetails
+     * @var \Psa\EpsBankTransfer\Generated\BankList\ErrorDataType $errorDetails
      */
     private $errorDetails = null;
 
@@ -24,9 +24,9 @@ class EpsSOBankListProtocolAType
      * Adds as bank
      *
      * @return self
-     * @param \Externet\EpsBankTransfer\Generated\BankList\BankDataType $bank
+     * @param \Psa\EpsBankTransfer\Generated\BankList\BankDataType $bank
      */
-    public function addToBank(\Externet\EpsBankTransfer\Generated\BankList\BankDataType $bank)
+    public function addToBank(\Psa\EpsBankTransfer\Generated\BankList\BankDataType $bank)
     {
         $this->bank[] = $bank;
         return $this;
@@ -57,7 +57,7 @@ class EpsSOBankListProtocolAType
     /**
      * Gets as bank
      *
-     * @return \Externet\EpsBankTransfer\Generated\BankList\BankDataType[]
+     * @return \Psa\EpsBankTransfer\Generated\BankList\BankDataType[]
      */
     public function getBank()
     {
@@ -67,7 +67,7 @@ class EpsSOBankListProtocolAType
     /**
      * Sets a new bank
      *
-     * @param \Externet\EpsBankTransfer\Generated\BankList\BankDataType[] $bank
+     * @param \Psa\EpsBankTransfer\Generated\BankList\BankDataType[] $bank
      * @return self
      */
     public function setBank(array $bank = null)
@@ -79,7 +79,7 @@ class EpsSOBankListProtocolAType
     /**
      * Gets as errorDetails
      *
-     * @return \Externet\EpsBankTransfer\Generated\BankList\ErrorDataType
+     * @return \Psa\EpsBankTransfer\Generated\BankList\ErrorDataType
      */
     public function getErrorDetails()
     {
@@ -89,10 +89,10 @@ class EpsSOBankListProtocolAType
     /**
      * Sets a new errorDetails
      *
-     * @param \Externet\EpsBankTransfer\Generated\BankList\ErrorDataType $errorDetails
+     * @param \Psa\EpsBankTransfer\Generated\BankList\ErrorDataType $errorDetails
      * @return self
      */
-    public function setErrorDetails(?\Externet\EpsBankTransfer\Generated\BankList\ErrorDataType $errorDetails = null)
+    public function setErrorDetails(?\Psa\EpsBankTransfer\Generated\BankList\ErrorDataType $errorDetails = null)
     {
         $this->errorDetails = $errorDetails;
         return $this;

@@ -1,16 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace Externet\EpsBankTransfer\Tests\Requests;
+namespace Psa\EpsBankTransfer\Tests\Requests;
 
 use DateTime;
 use Exception;
-use Externet\EpsBankTransfer\Generated\Refund\Amount;
-use Externet\EpsBankTransfer\Generated\Refund\AuthenticationDetails;
-use Externet\EpsBankTransfer\Generated\Refund\EpsRefundRequest;
-use Externet\EpsBankTransfer\Serializer\SerializerFactory;
-use Externet\EpsBankTransfer\Tests\Helper\XmlFixtureTestTrait;
-use Externet\EpsBankTransfer\Utilities\Fingerprint;
+use Psa\EpsBankTransfer\Generated\Refund\Amount;
+use Psa\EpsBankTransfer\Generated\Refund\AuthenticationDetails;
+use Psa\EpsBankTransfer\Generated\Refund\EpsRefundRequest;
+use Psa\EpsBankTransfer\Serializer\SerializerFactory;
+use Psa\EpsBankTransfer\Tests\Helper\XmlFixtureTestTrait;
+use Psa\EpsBankTransfer\Utilities\Fingerprint;
 use JMS\Serializer\SerializerInterface;
 use PHPUnit\Framework\TestCase;
 

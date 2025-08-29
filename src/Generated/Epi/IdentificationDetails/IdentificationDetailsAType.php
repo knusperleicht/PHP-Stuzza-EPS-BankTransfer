@@ -1,6 +1,6 @@
 <?php
 
-namespace Externet\EpsBankTransfer\Generated\Epi\IdentificationDetails;
+namespace Psa\EpsBankTransfer\Generated\Epi\IdentificationDetails;
 
 /**
  * Class representing IdentificationDetailsAType

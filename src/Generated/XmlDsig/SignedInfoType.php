@@ -1,6 +1,6 @@
 <?php
 
-namespace Externet\EpsBankTransfer\Generated\XmlDsig;
+namespace Psa\EpsBankTransfer\Generated\XmlDsig;
 
 /**
  * Class representing SignedInfoType
@@ -17,17 +17,17 @@ class SignedInfoType
     private $id = null;
 
     /**
-     * @var \Externet\EpsBankTransfer\Generated\XmlDsig\CanonicalizationMethod $canonicalizationMethod
+     * @var \Psa\EpsBankTransfer\Generated\XmlDsig\CanonicalizationMethod $canonicalizationMethod
      */
     private $canonicalizationMethod = null;
 
     /**
-     * @var \Externet\EpsBankTransfer\Generated\XmlDsig\SignatureMethod $signatureMethod
+     * @var \Psa\EpsBankTransfer\Generated\XmlDsig\SignatureMethod $signatureMethod
      */
     private $signatureMethod = null;
 
     /**
-     * @var \Externet\EpsBankTransfer\Generated\XmlDsig\Reference[] $reference
+     * @var \Psa\EpsBankTransfer\Generated\XmlDsig\Reference[] $reference
      */
     private $reference = [
         
@@ -58,7 +58,7 @@ class SignedInfoType
     /**
      * Gets as canonicalizationMethod
      *
-     * @return \Externet\EpsBankTransfer\Generated\XmlDsig\CanonicalizationMethod
+     * @return \Psa\EpsBankTransfer\Generated\XmlDsig\CanonicalizationMethod
      */
     public function getCanonicalizationMethod()
     {
@@ -68,10 +68,10 @@ class SignedInfoType
     /**
      * Sets a new canonicalizationMethod
      *
-     * @param \Externet\EpsBankTransfer\Generated\XmlDsig\CanonicalizationMethod $canonicalizationMethod
+     * @param \Psa\EpsBankTransfer\Generated\XmlDsig\CanonicalizationMethod $canonicalizationMethod
      * @return self
      */
-    public function setCanonicalizationMethod(\Externet\EpsBankTransfer\Generated\XmlDsig\CanonicalizationMethod $canonicalizationMethod)
+    public function setCanonicalizationMethod(\Psa\EpsBankTransfer\Generated\XmlDsig\CanonicalizationMethod $canonicalizationMethod)
     {
         $this->canonicalizationMethod = $canonicalizationMethod;
         return $this;
@@ -80,7 +80,7 @@ class SignedInfoType
     /**
      * Gets as signatureMethod
      *
-     * @return \Externet\EpsBankTransfer\Generated\XmlDsig\SignatureMethod
+     * @return \Psa\EpsBankTransfer\Generated\XmlDsig\SignatureMethod
      */
     public function getSignatureMethod()
     {
@@ -90,10 +90,10 @@ class SignedInfoType
     /**
      * Sets a new signatureMethod
      *
-     * @param \Externet\EpsBankTransfer\Generated\XmlDsig\SignatureMethod $signatureMethod
+     * @param \Psa\EpsBankTransfer\Generated\XmlDsig\SignatureMethod $signatureMethod
      * @return self
      */
-    public function setSignatureMethod(\Externet\EpsBankTransfer\Generated\XmlDsig\SignatureMethod $signatureMethod)
+    public function setSignatureMethod(\Psa\EpsBankTransfer\Generated\XmlDsig\SignatureMethod $signatureMethod)
     {
         $this->signatureMethod = $signatureMethod;
         return $this;
@@ -103,9 +103,9 @@ class SignedInfoType
      * Adds as reference
      *
      * @return self
-     * @param \Externet\EpsBankTransfer\Generated\XmlDsig\Reference $reference
+     * @param \Psa\EpsBankTransfer\Generated\XmlDsig\Reference $reference
      */
-    public function addToReference(\Externet\EpsBankTransfer\Generated\XmlDsig\Reference $reference)
+    public function addToReference(\Psa\EpsBankTransfer\Generated\XmlDsig\Reference $reference)
     {
         $this->reference[] = $reference;
         return $this;
@@ -136,7 +136,7 @@ class SignedInfoType
     /**
      * Gets as reference
      *
-     * @return \Externet\EpsBankTransfer\Generated\XmlDsig\Reference[]
+     * @return \Psa\EpsBankTransfer\Generated\XmlDsig\Reference[]
      */
     public function getReference()
     {
@@ -146,7 +146,7 @@ class SignedInfoType
     /**
      * Sets a new reference
      *
-     * @param \Externet\EpsBankTransfer\Generated\XmlDsig\Reference[] $reference
+     * @param \Psa\EpsBankTransfer\Generated\XmlDsig\Reference[] $reference
      * @return self
      */
     public function setReference(array $reference)

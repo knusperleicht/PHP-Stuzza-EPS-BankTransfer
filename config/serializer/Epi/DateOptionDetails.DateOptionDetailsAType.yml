@@ -1,4 +1,4 @@
-Externet\EpsBankTransfer\Generated\Epi\DateOptionDetails\DateOptionDetailsAType:
+Psa\EpsBankTransfer\Generated\Epi\DateOptionDetails\DateOptionDetailsAType:
     properties:
         dateSpecificationCode:
             expose: true

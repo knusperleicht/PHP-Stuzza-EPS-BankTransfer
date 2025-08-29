@@ -1,6 +1,6 @@
 <?php
 
-namespace Externet\EpsBankTransfer\Generated\Protocol\V26\TransactionDetailsRequest;
+namespace Psa\EpsBankTransfer\Generated\Protocol\V26\TransactionDetailsRequest;
 
 /**
  * Class representing TransactionDetailsRequestAType
@@ -19,7 +19,7 @@ class TransactionDetailsRequestAType
     private $bankId = null;
 
     /**
-     * @var \Externet\EpsBankTransfer\Generated\XmlDsig\Signature $signature
+     * @var \Psa\EpsBankTransfer\Generated\XmlDsig\Signature $signature
      */
     private $signature = null;
 
@@ -70,7 +70,7 @@ class TransactionDetailsRequestAType
     /**
      * Gets as signature
      *
-     * @return \Externet\EpsBankTransfer\Generated\XmlDsig\Signature
+     * @return \Psa\EpsBankTransfer\Generated\XmlDsig\Signature
      */
     public function getSignature()
     {
@@ -80,10 +80,10 @@ class TransactionDetailsRequestAType
     /**
      * Sets a new signature
      *
-     * @param \Externet\EpsBankTransfer\Generated\XmlDsig\Signature $signature
+     * @param \Psa\EpsBankTransfer\Generated\XmlDsig\Signature $signature
      * @return self
      */
-    public function setSignature(?\Externet\EpsBankTransfer\Generated\XmlDsig\Signature $signature = null)
+    public function setSignature(?\Psa\EpsBankTransfer\Generated\XmlDsig\Signature $signature = null)
     {
         $this->signature = $signature;
         return $this;

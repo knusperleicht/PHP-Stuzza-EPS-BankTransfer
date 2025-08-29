@@ -1,6 +1,6 @@
 <?php
 
-namespace Externet\EpsBankTransfer\Generated\Epi\PartyDetails;
+namespace Psa\EpsBankTransfer\Generated\Epi\PartyDetails;
 
 /**
  * Class representing PartyDetailsAType
@@ -9,19 +9,19 @@ class PartyDetailsAType
 {
 
     /**
-     * @var \Externet\EpsBankTransfer\Generated\Epi\BfiPartyDetails $bfiPartyDetails
+     * @var \Psa\EpsBankTransfer\Generated\Epi\BfiPartyDetails $bfiPartyDetails
      */
     private $bfiPartyDetails = null;
 
     /**
-     * @var \Externet\EpsBankTransfer\Generated\Epi\BeneficiaryPartyDetails $beneficiaryPartyDetails
+     * @var \Psa\EpsBankTransfer\Generated\Epi\BeneficiaryPartyDetails $beneficiaryPartyDetails
      */
     private $beneficiaryPartyDetails = null;
 
     /**
      * Gets as bfiPartyDetails
      *
-     * @return \Externet\EpsBankTransfer\Generated\Epi\BfiPartyDetails
+     * @return \Psa\EpsBankTransfer\Generated\Epi\BfiPartyDetails
      */
     public function getBfiPartyDetails()
     {
@@ -31,10 +31,10 @@ class PartyDetailsAType
     /**
      * Sets a new bfiPartyDetails
      *
-     * @param \Externet\EpsBankTransfer\Generated\Epi\BfiPartyDetails $bfiPartyDetails
+     * @param \Psa\EpsBankTransfer\Generated\Epi\BfiPartyDetails $bfiPartyDetails
      * @return self
      */
-    public function setBfiPartyDetails(\Externet\EpsBankTransfer\Generated\Epi\BfiPartyDetails $bfiPartyDetails)
+    public function setBfiPartyDetails(\Psa\EpsBankTransfer\Generated\Epi\BfiPartyDetails $bfiPartyDetails)
     {
         $this->bfiPartyDetails = $bfiPartyDetails;
         return $this;
@@ -43,7 +43,7 @@ class PartyDetailsAType
     /**
      * Gets as beneficiaryPartyDetails
      *
-     * @return \Externet\EpsBankTransfer\Generated\Epi\BeneficiaryPartyDetails
+     * @return \Psa\EpsBankTransfer\Generated\Epi\BeneficiaryPartyDetails
      */
     public function getBeneficiaryPartyDetails()
     {
@@ -53,10 +53,10 @@ class PartyDetailsAType
     /**
      * Sets a new beneficiaryPartyDetails
      *
-     * @param \Externet\EpsBankTransfer\Generated\Epi\BeneficiaryPartyDetails $beneficiaryPartyDetails
+     * @param \Psa\EpsBankTransfer\Generated\Epi\BeneficiaryPartyDetails $beneficiaryPartyDetails
      * @return self
      */
-    public function setBeneficiaryPartyDetails(\Externet\EpsBankTransfer\Generated\Epi\BeneficiaryPartyDetails $beneficiaryPartyDetails)
+    public function setBeneficiaryPartyDetails(\Psa\EpsBankTransfer\Generated\Epi\BeneficiaryPartyDetails $beneficiaryPartyDetails)
     {
         $this->beneficiaryPartyDetails = $beneficiaryPartyDetails;
         return $this;

@@ -1,4 +1,4 @@
-Externet\EpsBankTransfer\Generated\Protocol\V27\AuthenticationDetails\AuthenticationDetailsAType:
+Psa\EpsBankTransfer\Generated\Protocol\V27\AuthenticationDetails\AuthenticationDetailsAType:
     properties:
         userId:
             expose: true
@@ -29,4 +29,4 @@ Externet\EpsBankTransfer\Generated\Protocol\V27\AuthenticationDetails\Authentica
             accessor:
                 getter: getSignature
                 setter: setSignature
-            type: Externet\EpsBankTransfer\Generated\XmlDsig\Signature
+            type: Psa\EpsBankTransfer\Generated\XmlDsig\Signature

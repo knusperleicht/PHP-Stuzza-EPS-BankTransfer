@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Externet\EpsBankTransfer\Tests\Utilities;
+namespace Psa\EpsBankTransfer\Tests\Utilities;
 
-use Externet\EpsBankTransfer\Utilities\MoneyFormatter;
+use Psa\EpsBankTransfer\Utilities\MoneyFormatter;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 

@@ -1,4 +1,4 @@
-Externet\EpsBankTransfer\Generated\Refund\Amount\AmountAType:
+Psa\EpsBankTransfer\Generated\Refund\Amount\AmountAType:
     properties:
         __value:
             expose: true

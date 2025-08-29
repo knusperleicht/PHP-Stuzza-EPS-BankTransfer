@@ -1,6 +1,6 @@
 <?php
 
-namespace Externet\EpsBankTransfer\Generated\XmlDsig;
+namespace Psa\EpsBankTransfer\Generated\XmlDsig;
 
 /**
  * Class representing ReferenceType
@@ -27,12 +27,12 @@ class ReferenceType
     private $type = null;
 
     /**
-     * @var \Externet\EpsBankTransfer\Generated\XmlDsig\Transform[] $transforms
+     * @var \Psa\EpsBankTransfer\Generated\XmlDsig\Transform[] $transforms
      */
     private $transforms = null;
 
     /**
-     * @var \Externet\EpsBankTransfer\Generated\XmlDsig\DigestMethod $digestMethod
+     * @var \Psa\EpsBankTransfer\Generated\XmlDsig\DigestMethod $digestMethod
      */
     private $digestMethod = null;
 
@@ -111,9 +111,9 @@ class ReferenceType
      * Adds as transform
      *
      * @return self
-     * @param \Externet\EpsBankTransfer\Generated\XmlDsig\Transform $transform
+     * @param \Psa\EpsBankTransfer\Generated\XmlDsig\Transform $transform
      */
-    public function addToTransforms(\Externet\EpsBankTransfer\Generated\XmlDsig\Transform $transform)
+    public function addToTransforms(\Psa\EpsBankTransfer\Generated\XmlDsig\Transform $transform)
     {
         $this->transforms[] = $transform;
         return $this;
@@ -144,7 +144,7 @@ class ReferenceType
     /**
      * Gets as transforms
      *
-     * @return \Externet\EpsBankTransfer\Generated\XmlDsig\Transform[]
+     * @return \Psa\EpsBankTransfer\Generated\XmlDsig\Transform[]
      */
     public function getTransforms()
     {
@@ -154,7 +154,7 @@ class ReferenceType
     /**
      * Sets a new transforms
      *
-     * @param \Externet\EpsBankTransfer\Generated\XmlDsig\Transform[] $transforms
+     * @param \Psa\EpsBankTransfer\Generated\XmlDsig\Transform[] $transforms
      * @return self
      */
     public function setTransforms(array $transforms = null)
@@ -166,7 +166,7 @@ class ReferenceType
     /**
      * Gets as digestMethod
      *
-     * @return \Externet\EpsBankTransfer\Generated\XmlDsig\DigestMethod
+     * @return \Psa\EpsBankTransfer\Generated\XmlDsig\DigestMethod
      */
     public function getDigestMethod()
     {
@@ -176,10 +176,10 @@ class ReferenceType
     /**
      * Sets a new digestMethod
      *
-     * @param \Externet\EpsBankTransfer\Generated\XmlDsig\DigestMethod $digestMethod
+     * @param \Psa\EpsBankTransfer\Generated\XmlDsig\DigestMethod $digestMethod
      * @return self
      */
-    public function setDigestMethod(\Externet\EpsBankTransfer\Generated\XmlDsig\DigestMethod $digestMethod)
+    public function setDigestMethod(\Psa\EpsBankTransfer\Generated\XmlDsig\DigestMethod $digestMethod)
     {
         $this->digestMethod = $digestMethod;
         return $this;

@@ -1,8 +1,8 @@
 <?php
 
-namespace Externet\EpsBankTransfer\Generated\Protocol\V26;
+namespace Psa\EpsBankTransfer\Generated\Protocol\V26;
 
-use Externet\EpsBankTransfer\Generated\Protocol\V26\ShopResponseDetails\ShopResponseDetailsAType;
+use Psa\EpsBankTransfer\Generated\Protocol\V26\ShopResponseDetails\ShopResponseDetailsAType;
 
 /**
  * Class representing ShopResponseDetails

@@ -1,6 +1,6 @@
 <?php
 
-namespace Externet\EpsBankTransfer\Generated\Epi\EpiDetails;
+namespace Psa\EpsBankTransfer\Generated\Epi\EpiDetails;
 
 /**
  * Class representing EpiDetailsAType
@@ -9,24 +9,24 @@ class EpiDetailsAType
 {
 
     /**
-     * @var \Externet\EpsBankTransfer\Generated\Epi\IdentificationDetails $identificationDetails
+     * @var \Psa\EpsBankTransfer\Generated\Epi\IdentificationDetails $identificationDetails
      */
     private $identificationDetails = null;
 
     /**
-     * @var \Externet\EpsBankTransfer\Generated\Epi\PartyDetails $partyDetails
+     * @var \Psa\EpsBankTransfer\Generated\Epi\PartyDetails $partyDetails
      */
     private $partyDetails = null;
 
     /**
-     * @var \Externet\EpsBankTransfer\Generated\Epi\PaymentInstructionDetails $paymentInstructionDetails
+     * @var \Psa\EpsBankTransfer\Generated\Epi\PaymentInstructionDetails $paymentInstructionDetails
      */
     private $paymentInstructionDetails = null;
 
     /**
      * Gets as identificationDetails
      *
-     * @return \Externet\EpsBankTransfer\Generated\Epi\IdentificationDetails
+     * @return \Psa\EpsBankTransfer\Generated\Epi\IdentificationDetails
      */
     public function getIdentificationDetails()
     {
@@ -36,10 +36,10 @@ class EpiDetailsAType
     /**
      * Sets a new identificationDetails
      *
-     * @param \Externet\EpsBankTransfer\Generated\Epi\IdentificationDetails $identificationDetails
+     * @param \Psa\EpsBankTransfer\Generated\Epi\IdentificationDetails $identificationDetails
      * @return self
      */
-    public function setIdentificationDetails(\Externet\EpsBankTransfer\Generated\Epi\IdentificationDetails $identificationDetails)
+    public function setIdentificationDetails(\Psa\EpsBankTransfer\Generated\Epi\IdentificationDetails $identificationDetails)
     {
         $this->identificationDetails = $identificationDetails;
         return $this;
@@ -48,7 +48,7 @@ class EpiDetailsAType
     /**
      * Gets as partyDetails
      *
-     * @return \Externet\EpsBankTransfer\Generated\Epi\PartyDetails
+     * @return \Psa\EpsBankTransfer\Generated\Epi\PartyDetails
      */
     public function getPartyDetails()
     {
@@ -58,10 +58,10 @@ class EpiDetailsAType
     /**
      * Sets a new partyDetails
      *
-     * @param \Externet\EpsBankTransfer\Generated\Epi\PartyDetails $partyDetails
+     * @param \Psa\EpsBankTransfer\Generated\Epi\PartyDetails $partyDetails
      * @return self
      */
-    public function setPartyDetails(\Externet\EpsBankTransfer\Generated\Epi\PartyDetails $partyDetails)
+    public function setPartyDetails(\Psa\EpsBankTransfer\Generated\Epi\PartyDetails $partyDetails)
     {
         $this->partyDetails = $partyDetails;
         return $this;
@@ -70,7 +70,7 @@ class EpiDetailsAType
     /**
      * Gets as paymentInstructionDetails
      *
-     * @return \Externet\EpsBankTransfer\Generated\Epi\PaymentInstructionDetails
+     * @return \Psa\EpsBankTransfer\Generated\Epi\PaymentInstructionDetails
      */
     public function getPaymentInstructionDetails()
     {
@@ -80,10 +80,10 @@ class EpiDetailsAType
     /**
      * Sets a new paymentInstructionDetails
      *
-     * @param \Externet\EpsBankTransfer\Generated\Epi\PaymentInstructionDetails $paymentInstructionDetails
+     * @param \Psa\EpsBankTransfer\Generated\Epi\PaymentInstructionDetails $paymentInstructionDetails
      * @return self
      */
-    public function setPaymentInstructionDetails(\Externet\EpsBankTransfer\Generated\Epi\PaymentInstructionDetails $paymentInstructionDetails)
+    public function setPaymentInstructionDetails(\Psa\EpsBankTransfer\Generated\Epi\PaymentInstructionDetails $paymentInstructionDetails)
     {
         $this->paymentInstructionDetails = $paymentInstructionDetails;
         return $this;

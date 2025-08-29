@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Externet\EpsBankTransfer\Tests\Utilities;
+namespace Psa\EpsBankTransfer\Tests\Utilities;
 
-use Externet\EpsBankTransfer\Exceptions\XmlValidationException;
-use Externet\EpsBankTransfer\Tests\Helper\XmlFixtureTestTrait;
-use Externet\EpsBankTransfer\Utilities\XmlValidator;
+use Psa\EpsBankTransfer\Exceptions\XmlValidationException;
+use Psa\EpsBankTransfer\Tests\Helper\XmlFixtureTestTrait;
+use Psa\EpsBankTransfer\Utilities\XmlValidator;
 use PHPUnit\Framework\TestCase;
 
 class XmlValidatorTest extends TestCase

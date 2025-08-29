@@ -1,8 +1,8 @@
 <?php
 
-namespace Externet\EpsBankTransfer\Generated\Epi;
+namespace Psa\EpsBankTransfer\Generated\Epi;
 
-use Externet\EpsBankTransfer\Generated\Epi\PartyDetails\PartyDetailsAType;
+use Psa\EpsBankTransfer\Generated\Epi\PartyDetails\PartyDetailsAType;
 
 /**
  * Class representing PartyDetails

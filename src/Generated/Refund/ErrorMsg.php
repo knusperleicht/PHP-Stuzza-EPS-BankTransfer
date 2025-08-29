@@ -1,6 +1,6 @@
 <?php
 
-namespace Externet\EpsBankTransfer\Generated\Refund;
+namespace Psa\EpsBankTransfer\Generated\Refund;
 
 /**
  * Class representing ErrorMsg

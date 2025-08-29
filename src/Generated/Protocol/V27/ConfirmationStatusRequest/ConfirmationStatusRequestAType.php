@@ -1,6 +1,6 @@
 <?php
 
-namespace Externet\EpsBankTransfer\Generated\Protocol\V27\ConfirmationStatusRequest;
+namespace Psa\EpsBankTransfer\Generated\Protocol\V27\ConfirmationStatusRequest;
 
 /**
  * Class representing ConfirmationStatusRequestAType
@@ -14,7 +14,7 @@ class ConfirmationStatusRequestAType
     private $transactionId = null;
 
     /**
-     * @var \Externet\EpsBankTransfer\Generated\Protocol\V27\AuthenticationDetails $authenticationDetails
+     * @var \Psa\EpsBankTransfer\Generated\Protocol\V27\AuthenticationDetails $authenticationDetails
      */
     private $authenticationDetails = null;
 
@@ -43,7 +43,7 @@ class ConfirmationStatusRequestAType
     /**
      * Gets as authenticationDetails
      *
-     * @return \Externet\EpsBankTransfer\Generated\Protocol\V27\AuthenticationDetails
+     * @return \Psa\EpsBankTransfer\Generated\Protocol\V27\AuthenticationDetails
      */
     public function getAuthenticationDetails()
     {
@@ -53,10 +53,10 @@ class ConfirmationStatusRequestAType
     /**
      * Sets a new authenticationDetails
      *
-     * @param \Externet\EpsBankTransfer\Generated\Protocol\V27\AuthenticationDetails $authenticationDetails
+     * @param \Psa\EpsBankTransfer\Generated\Protocol\V27\AuthenticationDetails $authenticationDetails
      * @return self
      */
-    public function setAuthenticationDetails(\Externet\EpsBankTransfer\Generated\Protocol\V27\AuthenticationDetails $authenticationDetails)
+    public function setAuthenticationDetails(\Psa\EpsBankTransfer\Generated\Protocol\V27\AuthenticationDetails $authenticationDetails)
     {
         $this->authenticationDetails = $authenticationDetails;
         return $this;

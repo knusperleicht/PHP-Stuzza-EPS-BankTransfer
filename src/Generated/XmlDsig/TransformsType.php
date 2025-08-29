@@ -1,6 +1,6 @@
 <?php
 
-namespace Externet\EpsBankTransfer\Generated\XmlDsig;
+namespace Psa\EpsBankTransfer\Generated\XmlDsig;
 
 /**
  * Class representing TransformsType
@@ -12,7 +12,7 @@ class TransformsType
 {
 
     /**
-     * @var \Externet\EpsBankTransfer\Generated\XmlDsig\Transform[] $transform
+     * @var \Psa\EpsBankTransfer\Generated\XmlDsig\Transform[] $transform
      */
     private $transform = [
         
@@ -22,9 +22,9 @@ class TransformsType
      * Adds as transform
      *
      * @return self
-     * @param \Externet\EpsBankTransfer\Generated\XmlDsig\Transform $transform
+     * @param \Psa\EpsBankTransfer\Generated\XmlDsig\Transform $transform
      */
-    public function addToTransform(\Externet\EpsBankTransfer\Generated\XmlDsig\Transform $transform)
+    public function addToTransform(\Psa\EpsBankTransfer\Generated\XmlDsig\Transform $transform)
     {
         $this->transform[] = $transform;
         return $this;
@@ -55,7 +55,7 @@ class TransformsType
     /**
      * Gets as transform
      *
-     * @return \Externet\EpsBankTransfer\Generated\XmlDsig\Transform[]
+     * @return \Psa\EpsBankTransfer\Generated\XmlDsig\Transform[]
      */
     public function getTransform()
     {
@@ -65,7 +65,7 @@ class TransformsType
     /**
      * Sets a new transform
      *
-     * @param \Externet\EpsBankTransfer\Generated\XmlDsig\Transform[] $transform
+     * @param \Psa\EpsBankTransfer\Generated\XmlDsig\Transform[] $transform
      * @return self
      */
     public function setTransform(array $transform)

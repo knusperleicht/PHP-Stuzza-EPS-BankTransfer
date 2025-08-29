@@ -1,4 +1,4 @@
-Externet\EpsBankTransfer\Generated\Protocol\V26\MD5Fingerprint:
+Psa\EpsBankTransfer\Generated\Protocol\V26\MD5Fingerprint:
     xml_root_name: MD5Fingerprint
     xml_root_namespace: 'http://www.stuzza.at/namespaces/eps/protocol/2014/10'
     properties:

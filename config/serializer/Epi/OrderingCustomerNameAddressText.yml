@@ -1,4 +1,4 @@
-Externet\EpsBankTransfer\Generated\Epi\OrderingCustomerNameAddressText:
+Psa\EpsBankTransfer\Generated\Epi\OrderingCustomerNameAddressText:
     xml_root_name: OrderingCustomerNameAddressText
     xml_root_namespace: 'http://www.stuzza.at/namespaces/eps/epi/2013/02'
     properties:

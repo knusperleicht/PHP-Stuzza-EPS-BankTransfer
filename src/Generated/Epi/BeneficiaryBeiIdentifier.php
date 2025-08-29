@@ -1,6 +1,6 @@
 <?php
 
-namespace Externet\EpsBankTransfer\Generated\Epi;
+namespace Psa\EpsBankTransfer\Generated\Epi;
 
 /**
  * Class representing BeneficiaryBeiIdentifier

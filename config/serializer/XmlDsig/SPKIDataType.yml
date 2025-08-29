@@ -1,4 +1,4 @@
-Externet\EpsBankTransfer\Generated\XmlDsig\SPKIDataType:
+Psa\EpsBankTransfer\Generated\XmlDsig\SPKIDataType:
     properties:
         sPKISexp:
             expose: true

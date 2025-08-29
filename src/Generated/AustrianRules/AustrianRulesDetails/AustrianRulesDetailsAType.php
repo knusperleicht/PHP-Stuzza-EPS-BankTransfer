@@ -1,6 +1,6 @@
 <?php
 
-namespace Externet\EpsBankTransfer\Generated\AustrianRules\AustrianRulesDetails;
+namespace Psa\EpsBankTransfer\Generated\AustrianRules\AustrianRulesDetails;
 
 /**
  * Class representing AustrianRulesDetailsAType
@@ -19,7 +19,7 @@ class AustrianRulesDetailsAType
     private $paymentDescription = null;
 
     /**
-     * @var \Externet\EpsBankTransfer\Generated\AustrianRules\TradeCategoryDetails $tradeCategoryDetails
+     * @var \Psa\EpsBankTransfer\Generated\AustrianRules\TradeCategoryDetails $tradeCategoryDetails
      */
     private $tradeCategoryDetails = null;
 
@@ -85,7 +85,7 @@ class AustrianRulesDetailsAType
     /**
      * Gets as tradeCategoryDetails
      *
-     * @return \Externet\EpsBankTransfer\Generated\AustrianRules\TradeCategoryDetails
+     * @return \Psa\EpsBankTransfer\Generated\AustrianRules\TradeCategoryDetails
      */
     public function getTradeCategoryDetails()
     {
@@ -95,10 +95,10 @@ class AustrianRulesDetailsAType
     /**
      * Sets a new tradeCategoryDetails
      *
-     * @param \Externet\EpsBankTransfer\Generated\AustrianRules\TradeCategoryDetails $tradeCategoryDetails
+     * @param \Psa\EpsBankTransfer\Generated\AustrianRules\TradeCategoryDetails $tradeCategoryDetails
      * @return self
      */
-    public function setTradeCategoryDetails(?\Externet\EpsBankTransfer\Generated\AustrianRules\TradeCategoryDetails $tradeCategoryDetails = null)
+    public function setTradeCategoryDetails(?\Psa\EpsBankTransfer\Generated\AustrianRules\TradeCategoryDetails $tradeCategoryDetails = null)
     {
         $this->tradeCategoryDetails = $tradeCategoryDetails;
         return $this;

@@ -1,8 +1,8 @@
 <?php
 
-namespace Externet\EpsBankTransfer\Generated\Payment\V27;
+namespace Psa\EpsBankTransfer\Generated\Payment\V27;
 
-use Externet\EpsBankTransfer\Generated\Payment\V27\StatusReason\StatusReasonAType;
+use Psa\EpsBankTransfer\Generated\Payment\V27\StatusReason\StatusReasonAType;
 
 /**
  * Class representing StatusReason

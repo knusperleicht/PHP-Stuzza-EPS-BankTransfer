@@ -1,6 +1,6 @@
 <?php
 
-namespace Externet\EpsBankTransfer\Generated\Protocol\V27;
+namespace Psa\EpsBankTransfer\Generated\Protocol\V27;
 
 /**
  * Class representing UserId

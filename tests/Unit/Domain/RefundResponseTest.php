@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Externet\EpsBankTransfer\Tests\Domain;
+namespace Psa\EpsBankTransfer\Tests\Domain;
 
-use Externet\EpsBankTransfer\Domain\RefundResponse;
+use Psa\EpsBankTransfer\Domain\RefundResponse;
 use PHPUnit\Framework\TestCase;
 
 class RefundResponseTest extends TestCase
@@ -30,7 +30,7 @@ class RefundResponseTest extends TestCase
         // RefundResponse::fromV26 only calls the two methods; we can bypass type check by using Closure binding is not possible.
         // To keep strict typing, we wrap a dynamic object into an anonymous class that extends the expected FQN at runtime via class_alias below.
         $this->ensureRefundEpsClassExists();
-        $eps = new class extends \Externet\EpsBankTransfer\Generated\Refund\EpsRefundResponse {
+        $eps = new class extends \Psa\EpsBankTransfer\Generated\Refund\EpsRefundResponse {
             public function __construct(){}
             public function getStatusCode(): string { return '000'; }
             public function getErrorMsg(): ?string { return 'Keine Fehler - dt accepted'; }
@@ -44,7 +44,7 @@ class RefundResponseTest extends TestCase
     public function testFromV26MapsNullErrorMessage(): void
     {
         $this->ensureRefundEpsClassExists();
-        $eps = new class extends \Externet\EpsBankTransfer\Generated\Refund\EpsRefundResponse {
+        $eps = new class extends \Psa\EpsBankTransfer\Generated\Refund\EpsRefundResponse {
             public function __construct(){}
             public function getStatusCode(): string { return '105'; }
             public function getErrorMsg(): ?string { return null; }
@@ -57,8 +57,8 @@ class RefundResponseTest extends TestCase
 
     private function ensureRefundEpsClassExists(): void
     {
-        if (!class_exists('Externet\\EpsBankTransfer\\Generated\\Refund\\EpsRefundResponse')) {
-            eval('namespace Externet\\EpsBankTransfer\\Generated\\Refund; abstract class EpsRefundResponse { abstract public function getStatusCode(): string; abstract public function getErrorMsg(): ?string; }');
+        if (!class_exists('Psa\\EpsBankTransfer\\Generated\\Refund\\EpsRefundResponse')) {
+            eval('namespace Psa\\EpsBankTransfer\\Generated\\Refund; abstract class EpsRefundResponse { abstract public function getStatusCode(): string; abstract public function getErrorMsg(): ?string; }');
         }
     }
 }

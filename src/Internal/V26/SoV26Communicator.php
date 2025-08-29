@@ -1,25 +1,25 @@
 <?php
 declare(strict_types=1);
 
-namespace Externet\EpsBankTransfer\Internal\V26;
+namespace Psa\EpsBankTransfer\Internal\V26;
 
 use Exception;
-use Externet\EpsBankTransfer\Api\SoCommunicator;
-use Externet\EpsBankTransfer\Domain\BankConfirmationDetails;
-use Externet\EpsBankTransfer\Domain\VitalityCheckDetails;
-use Externet\EpsBankTransfer\Exceptions\CallbackResponseException;
-use Externet\EpsBankTransfer\Exceptions\EpsException;
-use Externet\EpsBankTransfer\Exceptions\InvalidCallbackException;
-use Externet\EpsBankTransfer\Exceptions\XmlValidationException;
-use Externet\EpsBankTransfer\Generated\BankList\EpsSOBankListProtocol;
-use Externet\EpsBankTransfer\Generated\Protocol\V26\EpsProtocolDetails;
-use Externet\EpsBankTransfer\Generated\Refund\EpsRefundResponse;
-use Externet\EpsBankTransfer\Internal\SoCommunicatorCore;
-use Externet\EpsBankTransfer\Internal\V27\SoV27Communicator;
-use Externet\EpsBankTransfer\Requests\RefundRequest;
-use Externet\EpsBankTransfer\Requests\TransferInitiatorDetails;
-use Externet\EpsBankTransfer\Responses\ShopResponseDetails;
-use Externet\EpsBankTransfer\Utilities\XmlValidator;
+use Psa\EpsBankTransfer\Api\SoCommunicator;
+use Psa\EpsBankTransfer\Domain\BankConfirmationDetails;
+use Psa\EpsBankTransfer\Domain\VitalityCheckDetails;
+use Psa\EpsBankTransfer\Exceptions\CallbackResponseException;
+use Psa\EpsBankTransfer\Exceptions\EpsException;
+use Psa\EpsBankTransfer\Exceptions\InvalidCallbackException;
+use Psa\EpsBankTransfer\Exceptions\XmlValidationException;
+use Psa\EpsBankTransfer\Generated\BankList\EpsSOBankListProtocol;
+use Psa\EpsBankTransfer\Generated\Protocol\V26\EpsProtocolDetails;
+use Psa\EpsBankTransfer\Generated\Refund\EpsRefundResponse;
+use Psa\EpsBankTransfer\Internal\SoCommunicatorCore;
+use Psa\EpsBankTransfer\Internal\V27\SoV27Communicator;
+use Psa\EpsBankTransfer\Requests\RefundRequest;
+use Psa\EpsBankTransfer\Requests\TransferInitiatorDetails;
+use Psa\EpsBankTransfer\Responses\ShopResponseDetails;
+use Psa\EpsBankTransfer\Utilities\XmlValidator;
 use JMS\Serializer\SerializerInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;

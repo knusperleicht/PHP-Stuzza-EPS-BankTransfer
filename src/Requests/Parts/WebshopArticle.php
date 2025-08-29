@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Externet\EpsBankTransfer\Requests\Parts;
+namespace Psa\EpsBankTransfer\Requests\Parts;
 
-use Externet\EpsBankTransfer\Utilities\MoneyFormatter;
+use Psa\EpsBankTransfer\Utilities\MoneyFormatter;
 
 class WebshopArticle
 {

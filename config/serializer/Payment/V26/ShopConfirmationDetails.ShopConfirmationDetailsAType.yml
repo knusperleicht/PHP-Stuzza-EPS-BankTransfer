@@ -1,4 +1,4 @@
-Externet\EpsBankTransfer\Generated\Payment\V26\ShopConfirmationDetails\ShopConfirmationDetailsAType:
+Psa\EpsBankTransfer\Generated\Payment\V26\ShopConfirmationDetails\ShopConfirmationDetailsAType:
     properties:
         statusCode:
             expose: true

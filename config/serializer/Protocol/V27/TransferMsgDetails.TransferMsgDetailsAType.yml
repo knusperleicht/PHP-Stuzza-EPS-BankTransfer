@@ -1,4 +1,4 @@
-Externet\EpsBankTransfer\Generated\Protocol\V27\TransferMsgDetails\TransferMsgDetailsAType:
+Psa\EpsBankTransfer\Generated\Protocol\V27\TransferMsgDetails\TransferMsgDetailsAType:
     properties:
         confirmationUrl:
             expose: true
@@ -19,7 +19,7 @@ Externet\EpsBankTransfer\Generated\Protocol\V27\TransferMsgDetails\TransferMsgDe
             accessor:
                 getter: getTransactionOkUrl
                 setter: setTransactionOkUrl
-            type: Externet\EpsBankTransfer\Generated\Protocol\V27\TransactionOkUrl
+            type: Psa\EpsBankTransfer\Generated\Protocol\V27\TransactionOkUrl
         transactionNokUrl:
             expose: true
             access_type: public_method
@@ -29,4 +29,4 @@ Externet\EpsBankTransfer\Generated\Protocol\V27\TransferMsgDetails\TransferMsgDe
             accessor:
                 getter: getTransactionNokUrl
                 setter: setTransactionNokUrl
-            type: Externet\EpsBankTransfer\Generated\Protocol\V27\TransactionNokUrl
+            type: Psa\EpsBankTransfer\Generated\Protocol\V27\TransactionNokUrl

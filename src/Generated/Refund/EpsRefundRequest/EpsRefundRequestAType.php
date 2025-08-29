@@ -1,6 +1,6 @@
 <?php
 
-namespace Externet\EpsBankTransfer\Generated\Refund\EpsRefundRequest;
+namespace Psa\EpsBankTransfer\Generated\Refund\EpsRefundRequest;
 
 /**
  * Class representing EpsRefundRequestAType
@@ -24,7 +24,7 @@ class EpsRefundRequestAType
     private $merchantIBAN = null;
 
     /**
-     * @var \Externet\EpsBankTransfer\Generated\Refund\Amount $amount
+     * @var \Psa\EpsBankTransfer\Generated\Refund\Amount $amount
      */
     private $amount = null;
 
@@ -34,7 +34,7 @@ class EpsRefundRequestAType
     private $refundReference = null;
 
     /**
-     * @var \Externet\EpsBankTransfer\Generated\Refund\AuthenticationDetails $authenticationDetails
+     * @var \Psa\EpsBankTransfer\Generated\Refund\AuthenticationDetails $authenticationDetails
      */
     private $authenticationDetails = null;
 
@@ -107,7 +107,7 @@ class EpsRefundRequestAType
     /**
      * Gets as amount
      *
-     * @return \Externet\EpsBankTransfer\Generated\Refund\Amount
+     * @return \Psa\EpsBankTransfer\Generated\Refund\Amount
      */
     public function getAmount()
     {
@@ -117,10 +117,10 @@ class EpsRefundRequestAType
     /**
      * Sets a new amount
      *
-     * @param \Externet\EpsBankTransfer\Generated\Refund\Amount $amount
+     * @param \Psa\EpsBankTransfer\Generated\Refund\Amount $amount
      * @return self
      */
-    public function setAmount(\Externet\EpsBankTransfer\Generated\Refund\Amount $amount)
+    public function setAmount(\Psa\EpsBankTransfer\Generated\Refund\Amount $amount)
     {
         $this->amount = $amount;
         return $this;
@@ -151,7 +151,7 @@ class EpsRefundRequestAType
     /**
      * Gets as authenticationDetails
      *
-     * @return \Externet\EpsBankTransfer\Generated\Refund\AuthenticationDetails
+     * @return \Psa\EpsBankTransfer\Generated\Refund\AuthenticationDetails
      */
     public function getAuthenticationDetails()
     {
@@ -161,10 +161,10 @@ class EpsRefundRequestAType
     /**
      * Sets a new authenticationDetails
      *
-     * @param \Externet\EpsBankTransfer\Generated\Refund\AuthenticationDetails $authenticationDetails
+     * @param \Psa\EpsBankTransfer\Generated\Refund\AuthenticationDetails $authenticationDetails
      * @return self
      */
-    public function setAuthenticationDetails(\Externet\EpsBankTransfer\Generated\Refund\AuthenticationDetails $authenticationDetails)
+    public function setAuthenticationDetails(\Psa\EpsBankTransfer\Generated\Refund\AuthenticationDetails $authenticationDetails)
     {
         $this->authenticationDetails = $authenticationDetails;
         return $this;

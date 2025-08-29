@@ -1,4 +1,4 @@
-Externet\EpsBankTransfer\Generated\Payment\V27\ReasonCode:
+Psa\EpsBankTransfer\Generated\Payment\V27\ReasonCode:
     xml_root_name: ReasonCode
     xml_root_namespace: 'http://www.stuzza.at/namespaces/eps/payment/2025/01'
     properties:

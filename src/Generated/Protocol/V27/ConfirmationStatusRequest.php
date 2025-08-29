@@ -1,8 +1,8 @@
 <?php
 
-namespace Externet\EpsBankTransfer\Generated\Protocol\V27;
+namespace Psa\EpsBankTransfer\Generated\Protocol\V27;
 
-use Externet\EpsBankTransfer\Generated\Protocol\V27\ConfirmationStatusRequest\ConfirmationStatusRequestAType;
+use Psa\EpsBankTransfer\Generated\Protocol\V27\ConfirmationStatusRequest\ConfirmationStatusRequestAType;
 
 /**
  * Class representing ConfirmationStatusRequest

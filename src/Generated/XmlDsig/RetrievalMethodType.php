@@ -1,6 +1,6 @@
 <?php
 
-namespace Externet\EpsBankTransfer\Generated\XmlDsig;
+namespace Psa\EpsBankTransfer\Generated\XmlDsig;
 
 /**
  * Class representing RetrievalMethodType
@@ -22,7 +22,7 @@ class RetrievalMethodType
     private $type = null;
 
     /**
-     * @var \Externet\EpsBankTransfer\Generated\XmlDsig\Transform[] $transforms
+     * @var \Psa\EpsBankTransfer\Generated\XmlDsig\Transform[] $transforms
      */
     private $transforms = null;
 
@@ -74,9 +74,9 @@ class RetrievalMethodType
      * Adds as transform
      *
      * @return self
-     * @param \Externet\EpsBankTransfer\Generated\XmlDsig\Transform $transform
+     * @param \Psa\EpsBankTransfer\Generated\XmlDsig\Transform $transform
      */
-    public function addToTransforms(\Externet\EpsBankTransfer\Generated\XmlDsig\Transform $transform)
+    public function addToTransforms(\Psa\EpsBankTransfer\Generated\XmlDsig\Transform $transform)
     {
         $this->transforms[] = $transform;
         return $this;
@@ -107,7 +107,7 @@ class RetrievalMethodType
     /**
      * Gets as transforms
      *
-     * @return \Externet\EpsBankTransfer\Generated\XmlDsig\Transform[]
+     * @return \Psa\EpsBankTransfer\Generated\XmlDsig\Transform[]
      */
     public function getTransforms()
     {
@@ -117,7 +117,7 @@ class RetrievalMethodType
     /**
      * Sets a new transforms
      *
-     * @param \Externet\EpsBankTransfer\Generated\XmlDsig\Transform[] $transforms
+     * @param \Psa\EpsBankTransfer\Generated\XmlDsig\Transform[] $transforms
      * @return self
      */
     public function setTransforms(array $transforms = null)

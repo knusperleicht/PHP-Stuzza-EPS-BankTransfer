@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Externet\EpsBankTransfer\Domain;
+namespace Psa\EpsBankTransfer\Domain;
 
 use DateTimeInterface;
 use Exception;
-use Externet\EpsBankTransfer\Generated\Protocol\V26\EpsProtocolDetails;
+use Psa\EpsBankTransfer\Generated\Protocol\V26\EpsProtocolDetails;
 
 class BankConfirmationDetails
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace Externet\EpsBankTransfer\Generated\Protocol\V27;
+namespace Psa\EpsBankTransfer\Generated\Protocol\V27;
 
-use Externet\EpsBankTransfer\Generated\Protocol\V27\VitalityCheckDetails\VitalityCheckDetailsAType;
+use Psa\EpsBankTransfer\Generated\Protocol\V27\VitalityCheckDetails\VitalityCheckDetailsAType;
 
 /**
  * Class representing VitalityCheckDetails

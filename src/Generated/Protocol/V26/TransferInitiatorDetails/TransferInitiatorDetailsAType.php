@@ -1,6 +1,6 @@
 <?php
 
-namespace Externet\EpsBankTransfer\Generated\Protocol\V26\TransferInitiatorDetails;
+namespace Psa\EpsBankTransfer\Generated\Protocol\V26\TransferInitiatorDetails;
 
 /**
  * Class representing TransferInitiatorDetailsAType
@@ -9,17 +9,17 @@ class TransferInitiatorDetailsAType
 {
 
     /**
-     * @var \Externet\EpsBankTransfer\Generated\Payment\V26\PaymentInitiatorDetails $paymentInitiatorDetails
+     * @var \Psa\EpsBankTransfer\Generated\Payment\V26\PaymentInitiatorDetails $paymentInitiatorDetails
      */
     private $paymentInitiatorDetails = null;
 
     /**
-     * @var \Externet\EpsBankTransfer\Generated\Protocol\V26\TransferMsgDetails $transferMsgDetails
+     * @var \Psa\EpsBankTransfer\Generated\Protocol\V26\TransferMsgDetails $transferMsgDetails
      */
     private $transferMsgDetails = null;
 
     /**
-     * @var \Externet\EpsBankTransfer\Generated\Protocol\V26\WebshopArticle[] $webshopDetails
+     * @var \Psa\EpsBankTransfer\Generated\Protocol\V26\WebshopArticle[] $webshopDetails
      */
     private $webshopDetails = null;
 
@@ -34,14 +34,14 @@ class TransferInitiatorDetailsAType
     private $qRCodeUrl = null;
 
     /**
-     * @var \Externet\EpsBankTransfer\Generated\Protocol\V26\AuthenticationDetails $authenticationDetails
+     * @var \Psa\EpsBankTransfer\Generated\Protocol\V26\AuthenticationDetails $authenticationDetails
      */
     private $authenticationDetails = null;
 
     /**
      * Gets as paymentInitiatorDetails
      *
-     * @return \Externet\EpsBankTransfer\Generated\Payment\V26\PaymentInitiatorDetails
+     * @return \Psa\EpsBankTransfer\Generated\Payment\V26\PaymentInitiatorDetails
      */
     public function getPaymentInitiatorDetails()
     {
@@ -51,10 +51,10 @@ class TransferInitiatorDetailsAType
     /**
      * Sets a new paymentInitiatorDetails
      *
-     * @param \Externet\EpsBankTransfer\Generated\Payment\V26\PaymentInitiatorDetails $paymentInitiatorDetails
+     * @param \Psa\EpsBankTransfer\Generated\Payment\V26\PaymentInitiatorDetails $paymentInitiatorDetails
      * @return self
      */
-    public function setPaymentInitiatorDetails(\Externet\EpsBankTransfer\Generated\Payment\V26\PaymentInitiatorDetails $paymentInitiatorDetails)
+    public function setPaymentInitiatorDetails(\Psa\EpsBankTransfer\Generated\Payment\V26\PaymentInitiatorDetails $paymentInitiatorDetails)
     {
         $this->paymentInitiatorDetails = $paymentInitiatorDetails;
         return $this;
@@ -63,7 +63,7 @@ class TransferInitiatorDetailsAType
     /**
      * Gets as transferMsgDetails
      *
-     * @return \Externet\EpsBankTransfer\Generated\Protocol\V26\TransferMsgDetails
+     * @return \Psa\EpsBankTransfer\Generated\Protocol\V26\TransferMsgDetails
      */
     public function getTransferMsgDetails()
     {
@@ -73,10 +73,10 @@ class TransferInitiatorDetailsAType
     /**
      * Sets a new transferMsgDetails
      *
-     * @param \Externet\EpsBankTransfer\Generated\Protocol\V26\TransferMsgDetails $transferMsgDetails
+     * @param \Psa\EpsBankTransfer\Generated\Protocol\V26\TransferMsgDetails $transferMsgDetails
      * @return self
      */
-    public function setTransferMsgDetails(\Externet\EpsBankTransfer\Generated\Protocol\V26\TransferMsgDetails $transferMsgDetails)
+    public function setTransferMsgDetails(\Psa\EpsBankTransfer\Generated\Protocol\V26\TransferMsgDetails $transferMsgDetails)
     {
         $this->transferMsgDetails = $transferMsgDetails;
         return $this;
@@ -86,9 +86,9 @@ class TransferInitiatorDetailsAType
      * Adds as webshopArticle
      *
      * @return self
-     * @param \Externet\EpsBankTransfer\Generated\Protocol\V26\WebshopArticle $webshopArticle
+     * @param \Psa\EpsBankTransfer\Generated\Protocol\V26\WebshopArticle $webshopArticle
      */
-    public function addToWebshopDetails(\Externet\EpsBankTransfer\Generated\Protocol\V26\WebshopArticle $webshopArticle)
+    public function addToWebshopDetails(\Psa\EpsBankTransfer\Generated\Protocol\V26\WebshopArticle $webshopArticle)
     {
         $this->webshopDetails[] = $webshopArticle;
         return $this;
@@ -119,7 +119,7 @@ class TransferInitiatorDetailsAType
     /**
      * Gets as webshopDetails
      *
-     * @return \Externet\EpsBankTransfer\Generated\Protocol\V26\WebshopArticle[]
+     * @return \Psa\EpsBankTransfer\Generated\Protocol\V26\WebshopArticle[]
      */
     public function getWebshopDetails()
     {
@@ -129,7 +129,7 @@ class TransferInitiatorDetailsAType
     /**
      * Sets a new webshopDetails
      *
-     * @param \Externet\EpsBankTransfer\Generated\Protocol\V26\WebshopArticle[] $webshopDetails
+     * @param \Psa\EpsBankTransfer\Generated\Protocol\V26\WebshopArticle[] $webshopDetails
      * @return self
      */
     public function setWebshopDetails(array $webshopDetails = null)
@@ -185,7 +185,7 @@ class TransferInitiatorDetailsAType
     /**
      * Gets as authenticationDetails
      *
-     * @return \Externet\EpsBankTransfer\Generated\Protocol\V26\AuthenticationDetails
+     * @return \Psa\EpsBankTransfer\Generated\Protocol\V26\AuthenticationDetails
      */
     public function getAuthenticationDetails()
     {
@@ -195,10 +195,10 @@ class TransferInitiatorDetailsAType
     /**
      * Sets a new authenticationDetails
      *
-     * @param \Externet\EpsBankTransfer\Generated\Protocol\V26\AuthenticationDetails $authenticationDetails
+     * @param \Psa\EpsBankTransfer\Generated\Protocol\V26\AuthenticationDetails $authenticationDetails
      * @return self
      */
-    public function setAuthenticationDetails(\Externet\EpsBankTransfer\Generated\Protocol\V26\AuthenticationDetails $authenticationDetails)
+    public function setAuthenticationDetails(\Psa\EpsBankTransfer\Generated\Protocol\V26\AuthenticationDetails $authenticationDetails)
     {
         $this->authenticationDetails = $authenticationDetails;
         return $this;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Externet\EpsBankTransfer\Generated\Refund\Amount;
+namespace Psa\EpsBankTransfer\Generated\Refund\Amount;
 
 /**
  * Class representing AmountAType

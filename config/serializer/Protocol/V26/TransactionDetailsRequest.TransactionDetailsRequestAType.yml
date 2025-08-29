@@ -1,4 +1,4 @@
-Externet\EpsBankTransfer\Generated\Protocol\V26\TransactionDetailsRequest\TransactionDetailsRequestAType:
+Psa\EpsBankTransfer\Generated\Protocol\V26\TransactionDetailsRequest\TransactionDetailsRequestAType:
     properties:
         transactionId:
             expose: true
@@ -29,4 +29,4 @@ Externet\EpsBankTransfer\Generated\Protocol\V26\TransactionDetailsRequest\Transa
             accessor:
                 getter: getSignature
                 setter: setSignature
-            type: Externet\EpsBankTransfer\Generated\XmlDsig\Signature
+            type: Psa\EpsBankTransfer\Generated\XmlDsig\Signature

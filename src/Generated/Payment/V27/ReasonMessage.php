@@ -1,6 +1,6 @@
 <?php
 
-namespace Externet\EpsBankTransfer\Generated\Payment\V27;
+namespace Psa\EpsBankTransfer\Generated\Payment\V27;
 
 /**
  * Class representing ReasonMessage

@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Externet\EpsBankTransfer\Requests;
+namespace Psa\EpsBankTransfer\Requests;
 use Exception;
-use Externet\EpsBankTransfer\Generated\Refund\Amount;
-use Externet\EpsBankTransfer\Generated\Refund\AuthenticationDetails;
-use Externet\EpsBankTransfer\Generated\Refund\EpsRefundRequest;
-use Externet\EpsBankTransfer\Utilities\Fingerprint;
+use Psa\EpsBankTransfer\Generated\Refund\Amount;
+use Psa\EpsBankTransfer\Generated\Refund\AuthenticationDetails;
+use Psa\EpsBankTransfer\Generated\Refund\EpsRefundRequest;
+use Psa\EpsBankTransfer\Utilities\Fingerprint;
 
 class RefundRequest
 {

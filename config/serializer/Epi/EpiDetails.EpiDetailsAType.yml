@@ -1,4 +1,4 @@
-Externet\EpsBankTransfer\Generated\Epi\EpiDetails\EpiDetailsAType:
+Psa\EpsBankTransfer\Generated\Epi\EpiDetails\EpiDetailsAType:
     properties:
         identificationDetails:
             expose: true
@@ -9,7 +9,7 @@ Externet\EpsBankTransfer\Generated\Epi\EpiDetails\EpiDetailsAType:
             accessor:
                 getter: getIdentificationDetails
                 setter: setIdentificationDetails
-            type: Externet\EpsBankTransfer\Generated\Epi\IdentificationDetails
+            type: Psa\EpsBankTransfer\Generated\Epi\IdentificationDetails
         partyDetails:
             expose: true
             access_type: public_method
@@ -19,7 +19,7 @@ Externet\EpsBankTransfer\Generated\Epi\EpiDetails\EpiDetailsAType:
             accessor:
                 getter: getPartyDetails
                 setter: setPartyDetails
-            type: Externet\EpsBankTransfer\Generated\Epi\PartyDetails
+            type: Psa\EpsBankTransfer\Generated\Epi\PartyDetails
         paymentInstructionDetails:
             expose: true
             access_type: public_method
@@ -29,4 +29,4 @@ Externet\EpsBankTransfer\Generated\Epi\EpiDetails\EpiDetailsAType:
             accessor:
                 getter: getPaymentInstructionDetails
                 setter: setPaymentInstructionDetails
-            type: Externet\EpsBankTransfer\Generated\Epi\PaymentInstructionDetails
+            type: Psa\EpsBankTransfer\Generated\Epi\PaymentInstructionDetails

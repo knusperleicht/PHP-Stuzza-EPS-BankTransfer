@@ -1,4 +1,4 @@
-Externet\EpsBankTransfer\Generated\Protocol\V26\ErrorCode:
+Psa\EpsBankTransfer\Generated\Protocol\V26\ErrorCode:
     xml_root_name: ErrorCode
     xml_root_namespace: 'http://www.stuzza.at/namespaces/eps/protocol/2014/10'
     properties:

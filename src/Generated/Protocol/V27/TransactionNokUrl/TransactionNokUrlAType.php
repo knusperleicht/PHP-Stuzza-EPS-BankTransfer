@@ -1,6 +1,6 @@
 <?php
 
-namespace Externet\EpsBankTransfer\Generated\Protocol\V27\TransactionNokUrl;
+namespace Psa\EpsBankTransfer\Generated\Protocol\V27\TransactionNokUrl;
 
 /**
  * Class representing TransactionNokUrlAType

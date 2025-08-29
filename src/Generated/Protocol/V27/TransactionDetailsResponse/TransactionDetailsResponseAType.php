@@ -1,6 +1,6 @@
 <?php
 
-namespace Externet\EpsBankTransfer\Generated\Protocol\V27\TransactionDetailsResponse;
+namespace Psa\EpsBankTransfer\Generated\Protocol\V27\TransactionDetailsResponse;
 
 /**
  * Class representing TransactionDetailsResponseAType
@@ -9,34 +9,34 @@ class TransactionDetailsResponseAType
 {
 
     /**
-     * @var \Externet\EpsBankTransfer\Generated\Payment\V27\PaymentInitiatorDetails $paymentInitiatorDetails
+     * @var \Psa\EpsBankTransfer\Generated\Payment\V27\PaymentInitiatorDetails $paymentInitiatorDetails
      */
     private $paymentInitiatorDetails = null;
 
     /**
-     * @var \Externet\EpsBankTransfer\Generated\Protocol\V27\TransferMsgDetails $transferMsgDetails
+     * @var \Psa\EpsBankTransfer\Generated\Protocol\V27\TransferMsgDetails $transferMsgDetails
      */
     private $transferMsgDetails = null;
 
     /**
-     * @var \Externet\EpsBankTransfer\Generated\Protocol\V27\WebshopArticle[] $webshopDetails
+     * @var \Psa\EpsBankTransfer\Generated\Protocol\V27\WebshopArticle[] $webshopDetails
      */
     private $webshopDetails = null;
 
     /**
-     * @var \Externet\EpsBankTransfer\Generated\XmlDsig\Signature $signature
+     * @var \Psa\EpsBankTransfer\Generated\XmlDsig\Signature $signature
      */
     private $signature = null;
 
     /**
-     * @var \Externet\EpsBankTransfer\Generated\Protocol\V27\ErrorDetails $errorDetails
+     * @var \Psa\EpsBankTransfer\Generated\Protocol\V27\ErrorDetails $errorDetails
      */
     private $errorDetails = null;
 
     /**
      * Gets as paymentInitiatorDetails
      *
-     * @return \Externet\EpsBankTransfer\Generated\Payment\V27\PaymentInitiatorDetails
+     * @return \Psa\EpsBankTransfer\Generated\Payment\V27\PaymentInitiatorDetails
      */
     public function getPaymentInitiatorDetails()
     {
@@ -46,10 +46,10 @@ class TransactionDetailsResponseAType
     /**
      * Sets a new paymentInitiatorDetails
      *
-     * @param \Externet\EpsBankTransfer\Generated\Payment\V27\PaymentInitiatorDetails $paymentInitiatorDetails
+     * @param \Psa\EpsBankTransfer\Generated\Payment\V27\PaymentInitiatorDetails $paymentInitiatorDetails
      * @return self
      */
-    public function setPaymentInitiatorDetails(?\Externet\EpsBankTransfer\Generated\Payment\V27\PaymentInitiatorDetails $paymentInitiatorDetails = null)
+    public function setPaymentInitiatorDetails(?\Psa\EpsBankTransfer\Generated\Payment\V27\PaymentInitiatorDetails $paymentInitiatorDetails = null)
     {
         $this->paymentInitiatorDetails = $paymentInitiatorDetails;
         return $this;
@@ -58,7 +58,7 @@ class TransactionDetailsResponseAType
     /**
      * Gets as transferMsgDetails
      *
-     * @return \Externet\EpsBankTransfer\Generated\Protocol\V27\TransferMsgDetails
+     * @return \Psa\EpsBankTransfer\Generated\Protocol\V27\TransferMsgDetails
      */
     public function getTransferMsgDetails()
     {
@@ -68,10 +68,10 @@ class TransactionDetailsResponseAType
     /**
      * Sets a new transferMsgDetails
      *
-     * @param \Externet\EpsBankTransfer\Generated\Protocol\V27\TransferMsgDetails $transferMsgDetails
+     * @param \Psa\EpsBankTransfer\Generated\Protocol\V27\TransferMsgDetails $transferMsgDetails
      * @return self
      */
-    public function setTransferMsgDetails(?\Externet\EpsBankTransfer\Generated\Protocol\V27\TransferMsgDetails $transferMsgDetails = null)
+    public function setTransferMsgDetails(?\Psa\EpsBankTransfer\Generated\Protocol\V27\TransferMsgDetails $transferMsgDetails = null)
     {
         $this->transferMsgDetails = $transferMsgDetails;
         return $this;
@@ -81,9 +81,9 @@ class TransactionDetailsResponseAType
      * Adds as webshopArticle
      *
      * @return self
-     * @param \Externet\EpsBankTransfer\Generated\Protocol\V27\WebshopArticle $webshopArticle
+     * @param \Psa\EpsBankTransfer\Generated\Protocol\V27\WebshopArticle $webshopArticle
      */
-    public function addToWebshopDetails(\Externet\EpsBankTransfer\Generated\Protocol\V27\WebshopArticle $webshopArticle)
+    public function addToWebshopDetails(\Psa\EpsBankTransfer\Generated\Protocol\V27\WebshopArticle $webshopArticle)
     {
         $this->webshopDetails[] = $webshopArticle;
         return $this;
@@ -114,7 +114,7 @@ class TransactionDetailsResponseAType
     /**
      * Gets as webshopDetails
      *
-     * @return \Externet\EpsBankTransfer\Generated\Protocol\V27\WebshopArticle[]
+     * @return \Psa\EpsBankTransfer\Generated\Protocol\V27\WebshopArticle[]
      */
     public function getWebshopDetails()
     {
@@ -124,7 +124,7 @@ class TransactionDetailsResponseAType
     /**
      * Sets a new webshopDetails
      *
-     * @param \Externet\EpsBankTransfer\Generated\Protocol\V27\WebshopArticle[] $webshopDetails
+     * @param \Psa\EpsBankTransfer\Generated\Protocol\V27\WebshopArticle[] $webshopDetails
      * @return self
      */
     public function setWebshopDetails(array $webshopDetails = null)
@@ -136,7 +136,7 @@ class TransactionDetailsResponseAType
     /**
      * Gets as signature
      *
-     * @return \Externet\EpsBankTransfer\Generated\XmlDsig\Signature
+     * @return \Psa\EpsBankTransfer\Generated\XmlDsig\Signature
      */
     public function getSignature()
     {
@@ -146,10 +146,10 @@ class TransactionDetailsResponseAType
     /**
      * Sets a new signature
      *
-     * @param \Externet\EpsBankTransfer\Generated\XmlDsig\Signature $signature
+     * @param \Psa\EpsBankTransfer\Generated\XmlDsig\Signature $signature
      * @return self
      */
-    public function setSignature(?\Externet\EpsBankTransfer\Generated\XmlDsig\Signature $signature = null)
+    public function setSignature(?\Psa\EpsBankTransfer\Generated\XmlDsig\Signature $signature = null)
     {
         $this->signature = $signature;
         return $this;
@@ -158,7 +158,7 @@ class TransactionDetailsResponseAType
     /**
      * Gets as errorDetails
      *
-     * @return \Externet\EpsBankTransfer\Generated\Protocol\V27\ErrorDetails
+     * @return \Psa\EpsBankTransfer\Generated\Protocol\V27\ErrorDetails
      */
     public function getErrorDetails()
     {
@@ -168,10 +168,10 @@ class TransactionDetailsResponseAType
     /**
      * Sets a new errorDetails
      *
-     * @param \Externet\EpsBankTransfer\Generated\Protocol\V27\ErrorDetails $errorDetails
+     * @param \Psa\EpsBankTransfer\Generated\Protocol\V27\ErrorDetails $errorDetails
      * @return self
      */
-    public function setErrorDetails(?\Externet\EpsBankTransfer\Generated\Protocol\V27\ErrorDetails $errorDetails = null)
+    public function setErrorDetails(?\Psa\EpsBankTransfer\Generated\Protocol\V27\ErrorDetails $errorDetails = null)
     {
         $this->errorDetails = $errorDetails;
         return $this;

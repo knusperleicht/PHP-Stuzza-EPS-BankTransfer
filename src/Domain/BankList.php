@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Externet\EpsBankTransfer\Domain;
+namespace Psa\EpsBankTransfer\Domain;
 
-use Externet\EpsBankTransfer\Generated\BankList\EpsSOBankListProtocol;
+use Psa\EpsBankTransfer\Generated\BankList\EpsSOBankListProtocol;
 
 /**
  * Collection of Bank value objects.

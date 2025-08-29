@@ -1,4 +1,4 @@
-Externet\EpsBankTransfer\Generated\XmlDsig\SignaturePropertiesType:
+Psa\EpsBankTransfer\Generated\XmlDsig\SignaturePropertiesType:
     properties:
         id:
             expose: true
@@ -22,4 +22,4 @@ Externet\EpsBankTransfer\Generated\XmlDsig\SignaturePropertiesType:
                 inline: true
                 entry_name: SignatureProperty
                 namespace: 'http://www.w3.org/2000/09/xmldsig#'
-            type: array<Externet\EpsBankTransfer\Generated\XmlDsig\SignatureProperty>
+            type: array<Psa\EpsBankTransfer\Generated\XmlDsig\SignatureProperty>

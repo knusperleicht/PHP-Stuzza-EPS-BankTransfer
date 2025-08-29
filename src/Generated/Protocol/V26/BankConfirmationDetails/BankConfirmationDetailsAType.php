@@ -1,6 +1,6 @@
 <?php
 
-namespace Externet\EpsBankTransfer\Generated\Protocol\V26\BankConfirmationDetails;
+namespace Psa\EpsBankTransfer\Generated\Protocol\V26\BankConfirmationDetails;
 
 /**
  * Class representing BankConfirmationDetailsAType
@@ -14,7 +14,7 @@ class BankConfirmationDetailsAType
     private $sessionId = null;
 
     /**
-     * @var \Externet\EpsBankTransfer\Generated\Payment\V26\PaymentConfirmationDetails $paymentConfirmationDetails
+     * @var \Psa\EpsBankTransfer\Generated\Payment\V26\PaymentConfirmationDetails $paymentConfirmationDetails
      */
     private $paymentConfirmationDetails = null;
 
@@ -43,7 +43,7 @@ class BankConfirmationDetailsAType
     /**
      * Gets as paymentConfirmationDetails
      *
-     * @return \Externet\EpsBankTransfer\Generated\Payment\V26\PaymentConfirmationDetails
+     * @return \Psa\EpsBankTransfer\Generated\Payment\V26\PaymentConfirmationDetails
      */
     public function getPaymentConfirmationDetails()
     {
@@ -53,10 +53,10 @@ class BankConfirmationDetailsAType
     /**
      * Sets a new paymentConfirmationDetails
      *
-     * @param \Externet\EpsBankTransfer\Generated\Payment\V26\PaymentConfirmationDetails $paymentConfirmationDetails
+     * @param \Psa\EpsBankTransfer\Generated\Payment\V26\PaymentConfirmationDetails $paymentConfirmationDetails
      * @return self
      */
-    public function setPaymentConfirmationDetails(\Externet\EpsBankTransfer\Generated\Payment\V26\PaymentConfirmationDetails $paymentConfirmationDetails)
+    public function setPaymentConfirmationDetails(\Psa\EpsBankTransfer\Generated\Payment\V26\PaymentConfirmationDetails $paymentConfirmationDetails)
     {
         $this->paymentConfirmationDetails = $paymentConfirmationDetails;
         return $this;

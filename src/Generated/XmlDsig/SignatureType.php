@@ -1,6 +1,6 @@
 <?php
 
-namespace Externet\EpsBankTransfer\Generated\XmlDsig;
+namespace Psa\EpsBankTransfer\Generated\XmlDsig;
 
 /**
  * Class representing SignatureType
@@ -17,22 +17,22 @@ class SignatureType
     private $id = null;
 
     /**
-     * @var \Externet\EpsBankTransfer\Generated\XmlDsig\SignedInfo $signedInfo
+     * @var \Psa\EpsBankTransfer\Generated\XmlDsig\SignedInfo $signedInfo
      */
     private $signedInfo = null;
 
     /**
-     * @var \Externet\EpsBankTransfer\Generated\XmlDsig\SignatureValue $signatureValue
+     * @var \Psa\EpsBankTransfer\Generated\XmlDsig\SignatureValue $signatureValue
      */
     private $signatureValue = null;
 
     /**
-     * @var \Externet\EpsBankTransfer\Generated\XmlDsig\KeyInfo $keyInfo
+     * @var \Psa\EpsBankTransfer\Generated\XmlDsig\KeyInfo $keyInfo
      */
     private $keyInfo = null;
 
     /**
-     * @var \Externet\EpsBankTransfer\Generated\XmlDsig\ObjectXsd[] $object
+     * @var \Psa\EpsBankTransfer\Generated\XmlDsig\ObjectXsd[] $object
      */
     private $object = [
         
@@ -63,7 +63,7 @@ class SignatureType
     /**
      * Gets as signedInfo
      *
-     * @return \Externet\EpsBankTransfer\Generated\XmlDsig\SignedInfo
+     * @return \Psa\EpsBankTransfer\Generated\XmlDsig\SignedInfo
      */
     public function getSignedInfo()
     {
@@ -73,10 +73,10 @@ class SignatureType
     /**
      * Sets a new signedInfo
      *
-     * @param \Externet\EpsBankTransfer\Generated\XmlDsig\SignedInfo $signedInfo
+     * @param \Psa\EpsBankTransfer\Generated\XmlDsig\SignedInfo $signedInfo
      * @return self
      */
-    public function setSignedInfo(\Externet\EpsBankTransfer\Generated\XmlDsig\SignedInfo $signedInfo)
+    public function setSignedInfo(\Psa\EpsBankTransfer\Generated\XmlDsig\SignedInfo $signedInfo)
     {
         $this->signedInfo = $signedInfo;
         return $this;
@@ -85,7 +85,7 @@ class SignatureType
     /**
      * Gets as signatureValue
      *
-     * @return \Externet\EpsBankTransfer\Generated\XmlDsig\SignatureValue
+     * @return \Psa\EpsBankTransfer\Generated\XmlDsig\SignatureValue
      */
     public function getSignatureValue()
     {
@@ -95,10 +95,10 @@ class SignatureType
     /**
      * Sets a new signatureValue
      *
-     * @param \Externet\EpsBankTransfer\Generated\XmlDsig\SignatureValue $signatureValue
+     * @param \Psa\EpsBankTransfer\Generated\XmlDsig\SignatureValue $signatureValue
      * @return self
      */
-    public function setSignatureValue(\Externet\EpsBankTransfer\Generated\XmlDsig\SignatureValue $signatureValue)
+    public function setSignatureValue(\Psa\EpsBankTransfer\Generated\XmlDsig\SignatureValue $signatureValue)
     {
         $this->signatureValue = $signatureValue;
         return $this;
@@ -107,7 +107,7 @@ class SignatureType
     /**
      * Gets as keyInfo
      *
-     * @return \Externet\EpsBankTransfer\Generated\XmlDsig\KeyInfo
+     * @return \Psa\EpsBankTransfer\Generated\XmlDsig\KeyInfo
      */
     public function getKeyInfo()
     {
@@ -117,10 +117,10 @@ class SignatureType
     /**
      * Sets a new keyInfo
      *
-     * @param \Externet\EpsBankTransfer\Generated\XmlDsig\KeyInfo $keyInfo
+     * @param \Psa\EpsBankTransfer\Generated\XmlDsig\KeyInfo $keyInfo
      * @return self
      */
-    public function setKeyInfo(?\Externet\EpsBankTransfer\Generated\XmlDsig\KeyInfo $keyInfo = null)
+    public function setKeyInfo(?\Psa\EpsBankTransfer\Generated\XmlDsig\KeyInfo $keyInfo = null)
     {
         $this->keyInfo = $keyInfo;
         return $this;
@@ -130,9 +130,9 @@ class SignatureType
      * Adds as object
      *
      * @return self
-     * @param \Externet\EpsBankTransfer\Generated\XmlDsig\ObjectXsd $object
+     * @param \Psa\EpsBankTransfer\Generated\XmlDsig\ObjectXsd $object
      */
-    public function addToObject(\Externet\EpsBankTransfer\Generated\XmlDsig\ObjectXsd $object)
+    public function addToObject(\Psa\EpsBankTransfer\Generated\XmlDsig\ObjectXsd $object)
     {
         $this->object[] = $object;
         return $this;
@@ -163,7 +163,7 @@ class SignatureType
     /**
      * Gets as object
      *
-     * @return \Externet\EpsBankTransfer\Generated\XmlDsig\ObjectXsd[]
+     * @return \Psa\EpsBankTransfer\Generated\XmlDsig\ObjectXsd[]
      */
     public function getObject()
     {
@@ -173,7 +173,7 @@ class SignatureType
     /**
      * Sets a new object
      *
-     * @param \Externet\EpsBankTransfer\Generated\XmlDsig\ObjectXsd[] $object
+     * @param \Psa\EpsBankTransfer\Generated\XmlDsig\ObjectXsd[] $object
      * @return self
      */
     public function setObject(array $object = null)

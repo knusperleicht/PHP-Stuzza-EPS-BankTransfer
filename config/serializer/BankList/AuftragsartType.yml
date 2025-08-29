@@ -1,4 +1,4 @@
-Externet\EpsBankTransfer\Generated\BankList\AuftragsartType:
+Psa\EpsBankTransfer\Generated\BankList\AuftragsartType:
     properties:
         __value:
             expose: true

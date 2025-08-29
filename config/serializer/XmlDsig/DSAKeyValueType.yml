@@ -1,4 +1,4 @@
-Externet\EpsBankTransfer\Generated\XmlDsig\DSAKeyValueType:
+Psa\EpsBankTransfer\Generated\XmlDsig\DSAKeyValueType:
     properties:
         p:
             expose: true

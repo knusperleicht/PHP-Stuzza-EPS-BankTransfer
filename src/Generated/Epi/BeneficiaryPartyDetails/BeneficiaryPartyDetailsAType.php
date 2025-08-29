@@ -1,6 +1,6 @@
 <?php
 
-namespace Externet\EpsBankTransfer\Generated\Epi\BeneficiaryPartyDetails;
+namespace Psa\EpsBankTransfer\Generated\Epi\BeneficiaryPartyDetails;
 
 /**
  * Class representing BeneficiaryPartyDetailsAType

@@ -1,4 +1,4 @@
-Externet\EpsBankTransfer\Generated\XmlDsig\TransformsType:
+Psa\EpsBankTransfer\Generated\XmlDsig\TransformsType:
     properties:
         transform:
             expose: true
@@ -13,4 +13,4 @@ Externet\EpsBankTransfer\Generated\XmlDsig\TransformsType:
                 inline: true
                 entry_name: Transform
                 namespace: 'http://www.w3.org/2000/09/xmldsig#'
-            type: array<Externet\EpsBankTransfer\Generated\XmlDsig\Transform>
+            type: array<Psa\EpsBankTransfer\Generated\XmlDsig\Transform>

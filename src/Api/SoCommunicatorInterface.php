@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Externet\EpsBankTransfer\Api;
+namespace Psa\EpsBankTransfer\Api;
 
-use Externet\EpsBankTransfer\Domain\BankList;
-use Externet\EpsBankTransfer\Domain\ProtocolDetails;
-use Externet\EpsBankTransfer\Domain\RefundResponse;
-use Externet\EpsBankTransfer\Requests\RefundRequest;
-use Externet\EpsBankTransfer\Requests\TransferInitiatorDetails;
+use Psa\EpsBankTransfer\Domain\BankList;
+use Psa\EpsBankTransfer\Domain\ProtocolDetails;
+use Psa\EpsBankTransfer\Domain\RefundResponse;
+use Psa\EpsBankTransfer\Requests\RefundRequest;
+use Psa\EpsBankTransfer\Requests\TransferInitiatorDetails;
 
 /**
  * Public API interface for interacting with the EPS Scheme Operator (SO).

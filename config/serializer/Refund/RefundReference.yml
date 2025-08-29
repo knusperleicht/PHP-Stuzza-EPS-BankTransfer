@@ -1,4 +1,4 @@
-Externet\EpsBankTransfer\Generated\Refund\RefundReference:
+Psa\EpsBankTransfer\Generated\Refund\RefundReference:
     xml_root_name: RefundReference
     xml_root_namespace: 'http://www.stuzza.at/namespaces/eps/refund/2018/09'
     properties:

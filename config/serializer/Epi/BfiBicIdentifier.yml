@@ -1,4 +1,4 @@
-Externet\EpsBankTransfer\Generated\Epi\BfiBicIdentifier:
+Psa\EpsBankTransfer\Generated\Epi\BfiBicIdentifier:
     xml_root_name: BfiBicIdentifier
     xml_root_namespace: 'http://www.stuzza.at/namespaces/eps/epi/2013/02'
     properties:

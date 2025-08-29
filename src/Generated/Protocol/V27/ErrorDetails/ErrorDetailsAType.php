@@ -1,6 +1,6 @@
 <?php
 
-namespace Externet\EpsBankTransfer\Generated\Protocol\V27\ErrorDetails;
+namespace Psa\EpsBankTransfer\Generated\Protocol\V27\ErrorDetails;
 
 /**
  * Class representing ErrorDetailsAType

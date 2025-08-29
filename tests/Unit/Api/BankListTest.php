@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace Externet\EpsBankTransfer\Tests\Api;
+namespace Psa\EpsBankTransfer\Tests\Api;
 
-use Externet\EpsBankTransfer\Api\SoCommunicator;
-use Externet\EpsBankTransfer\Domain\Bank;
-use Externet\EpsBankTransfer\Domain\BankList;
-use Externet\EpsBankTransfer\Exceptions\BankListException;
-use Externet\EpsBankTransfer\Exceptions\XmlValidationException;
-use Externet\EpsBankTransfer\Tests\Helper\SoCommunicatorTestTrait;
+use Psa\EpsBankTransfer\Api\SoCommunicator;
+use Psa\EpsBankTransfer\Domain\Bank;
+use Psa\EpsBankTransfer\Domain\BankList;
+use Psa\EpsBankTransfer\Exceptions\BankListException;
+use Psa\EpsBankTransfer\Exceptions\XmlValidationException;
+use Psa\EpsBankTransfer\Tests\Helper\SoCommunicatorTestTrait;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 

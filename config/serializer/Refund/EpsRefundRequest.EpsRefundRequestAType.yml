@@ -1,4 +1,4 @@
-Externet\EpsBankTransfer\Generated\Refund\EpsRefundRequest\EpsRefundRequestAType:
+Psa\EpsBankTransfer\Generated\Refund\EpsRefundRequest\EpsRefundRequestAType:
     properties:
         creDtTm:
             expose: true
@@ -39,7 +39,7 @@ Externet\EpsBankTransfer\Generated\Refund\EpsRefundRequest\EpsRefundRequestAType
             accessor:
                 getter: getAmount
                 setter: setAmount
-            type: Externet\EpsBankTransfer\Generated\Refund\Amount
+            type: Psa\EpsBankTransfer\Generated\Refund\Amount
         refundReference:
             expose: true
             access_type: public_method
@@ -59,4 +59,4 @@ Externet\EpsBankTransfer\Generated\Refund\EpsRefundRequest\EpsRefundRequestAType
             accessor:
                 getter: getAuthenticationDetails
                 setter: setAuthenticationDetails
-            type: Externet\EpsBankTransfer\Generated\Refund\AuthenticationDetails
+            type: Psa\EpsBankTransfer\Generated\Refund\AuthenticationDetails

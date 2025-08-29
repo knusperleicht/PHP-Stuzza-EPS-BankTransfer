@@ -1,6 +1,6 @@
 <?php
 
-namespace Externet\EpsBankTransfer\Generated\BankList;
+namespace Psa\EpsBankTransfer\Generated\BankList;
 
 /**
  * Class representing ErrorDataType

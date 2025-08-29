@@ -1,4 +1,4 @@
-Externet\EpsBankTransfer\Generated\Protocol\V27\TransactionNokUrl\TransactionNokUrlAType:
+Psa\EpsBankTransfer\Generated\Protocol\V27\TransactionNokUrl\TransactionNokUrlAType:
     properties:
         __value:
             expose: true

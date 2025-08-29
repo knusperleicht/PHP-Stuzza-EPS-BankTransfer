@@ -1,4 +1,4 @@
-Externet\EpsBankTransfer\Generated\Epi\PartyDetails\PartyDetailsAType:
+Psa\EpsBankTransfer\Generated\Epi\PartyDetails\PartyDetailsAType:
     properties:
         bfiPartyDetails:
             expose: true
@@ -9,7 +9,7 @@ Externet\EpsBankTransfer\Generated\Epi\PartyDetails\PartyDetailsAType:
             accessor:
                 getter: getBfiPartyDetails
                 setter: setBfiPartyDetails
-            type: Externet\EpsBankTransfer\Generated\Epi\BfiPartyDetails
+            type: Psa\EpsBankTransfer\Generated\Epi\BfiPartyDetails
         beneficiaryPartyDetails:
             expose: true
             access_type: public_method
@@ -19,4 +19,4 @@ Externet\EpsBankTransfer\Generated\Epi\PartyDetails\PartyDetailsAType:
             accessor:
                 getter: getBeneficiaryPartyDetails
                 setter: setBeneficiaryPartyDetails
-            type: Externet\EpsBankTransfer\Generated\Epi\BeneficiaryPartyDetails
+            type: Psa\EpsBankTransfer\Generated\Epi\BeneficiaryPartyDetails

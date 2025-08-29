@@ -1,4 +1,4 @@
-Externet\EpsBankTransfer\Generated\Protocol\V26\WebshopDetails\WebshopDetailsAType:
+Psa\EpsBankTransfer\Generated\Protocol\V26\WebshopDetails\WebshopDetailsAType:
     properties:
         webshopArticle:
             expose: true
@@ -13,4 +13,4 @@ Externet\EpsBankTransfer\Generated\Protocol\V26\WebshopDetails\WebshopDetailsATy
                 inline: true
                 entry_name: WebshopArticle
                 namespace: 'http://www.stuzza.at/namespaces/eps/protocol/2014/10'
-            type: array<Externet\EpsBankTransfer\Generated\Protocol\V26\WebshopArticle>
+            type: array<Psa\EpsBankTransfer\Generated\Protocol\V26\WebshopArticle>

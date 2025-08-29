@@ -1,4 +1,4 @@
-Externet\EpsBankTransfer\Generated\Protocol\V26\EpsProtocolDetails:
+Psa\EpsBankTransfer\Generated\Protocol\V26\EpsProtocolDetails:
   xml_root_name: EpsProtocolDetails
   xml_root_namespace: 'http://www.stuzza.at/namespaces/eps/protocol/2014/10'
   xml_root_prefix: epsp

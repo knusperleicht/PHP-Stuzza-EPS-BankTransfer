@@ -1,6 +1,6 @@
 <?php
 
-namespace Externet\EpsBankTransfer\Generated\Protocol\V27\WebshopDetails;
+namespace Psa\EpsBankTransfer\Generated\Protocol\V27\WebshopDetails;
 
 /**
  * Class representing WebshopDetailsAType
@@ -9,7 +9,7 @@ class WebshopDetailsAType
 {
 
     /**
-     * @var \Externet\EpsBankTransfer\Generated\Protocol\V27\WebshopArticle[] $webshopArticle
+     * @var \Psa\EpsBankTransfer\Generated\Protocol\V27\WebshopArticle[] $webshopArticle
      */
     private $webshopArticle = [
         
@@ -19,9 +19,9 @@ class WebshopDetailsAType
      * Adds as webshopArticle
      *
      * @return self
-     * @param \Externet\EpsBankTransfer\Generated\Protocol\V27\WebshopArticle $webshopArticle
+     * @param \Psa\EpsBankTransfer\Generated\Protocol\V27\WebshopArticle $webshopArticle
      */
-    public function addToWebshopArticle(\Externet\EpsBankTransfer\Generated\Protocol\V27\WebshopArticle $webshopArticle)
+    public function addToWebshopArticle(\Psa\EpsBankTransfer\Generated\Protocol\V27\WebshopArticle $webshopArticle)
     {
         $this->webshopArticle[] = $webshopArticle;
         return $this;
@@ -52,7 +52,7 @@ class WebshopDetailsAType
     /**
      * Gets as webshopArticle
      *
-     * @return \Externet\EpsBankTransfer\Generated\Protocol\V27\WebshopArticle[]
+     * @return \Psa\EpsBankTransfer\Generated\Protocol\V27\WebshopArticle[]
      */
     public function getWebshopArticle()
     {
@@ -62,7 +62,7 @@ class WebshopDetailsAType
     /**
      * Sets a new webshopArticle
      *
-     * @param \Externet\EpsBankTransfer\Generated\Protocol\V27\WebshopArticle[] $webshopArticle
+     * @param \Psa\EpsBankTransfer\Generated\Protocol\V27\WebshopArticle[] $webshopArticle
      * @return self
      */
     public function setWebshopArticle(array $webshopArticle)
