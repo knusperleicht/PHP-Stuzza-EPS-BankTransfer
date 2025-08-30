@@ -65,7 +65,6 @@ class TransferInitiatorDetailsTest extends TestCase
 
         $response = $this->target->sendTransferInitiatorDetails(
             $this->getMockedTransferInitiatorDetails(),
-            null,
             '2.6'
         );
 
@@ -90,7 +89,7 @@ class TransferInitiatorDetailsTest extends TestCase
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('Not implemented yet - waiting for XSD 2.7');
 
-        $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails(), null, '2.7');
+        $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails(), '2.7');
     }
 
     public function testSendTransferInitiatorDetailsThrowsOnUnsupportedVersion(): void
@@ -98,7 +97,7 @@ class TransferInitiatorDetailsTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Unsupported version');
 
-        $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails(), null, 'foo');
+        $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails(), 'foo');
     }
 
     /* ============================================================
@@ -111,7 +110,7 @@ class TransferInitiatorDetailsTest extends TestCase
         $this->expectException(XmlValidationException::class);
         $this->mockResponse(200, 'invalidData');
 
-        $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails(), null, '2.6');
+        $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails(), '2.6');
     }
 
     public function testSendTransferInitiatorDetailsThrowsExceptionOn404(): void
@@ -119,7 +118,7 @@ class TransferInitiatorDetailsTest extends TestCase
         $this->expectException(RuntimeException::class);
         $this->mockResponse(404, 'Not found');
 
-        $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails(), null, '2.6');
+        $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails(), '2.6');
     }
 
     public function testSendTransferInitiatorDetailsThrowsExceptionOnWrongContentType(): void
@@ -127,7 +126,7 @@ class TransferInitiatorDetailsTest extends TestCase
         $this->mockResponse(200, '<xml>valid but wrong header</xml>', ['Content-Type' => 'text/plain']);
 
         $this->expectException(XmlValidationException::class);
-        $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails(), null, '2.6');
+        $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails(), '2.6');
     }
 
     /* ============================================================
@@ -141,7 +140,7 @@ class TransferInitiatorDetailsTest extends TestCase
         $this->target->setBaseUrl('http://example.com');
         $this->mockResponse(200, $this->loadFixture('V26/BankResponseDetails004.xml'));
 
-        $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails(), null, '2.6');
+        $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails(), '2.6');
 
         $this->assertEquals(
             'http://example.com/transinit/eps/v2_6',
@@ -154,7 +153,7 @@ class TransferInitiatorDetailsTest extends TestCase
         $url = 'https://routing.eps.or.at/appl/epsSO/transinit/eps/v2_6/23ea3d14-278c-4e81-a021-d7b77492b611';
         $this->mockResponse(200, $this->loadFixture('V26/BankResponseDetails000.xml'));
 
-        $response = $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails(), $url, '2.6');
+        $response = $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails(), '2.6', $url);
 
         $expected = new ProtocolDetails(
             '000',
@@ -180,7 +179,7 @@ class TransferInitiatorDetailsTest extends TestCase
         $details->setObscuritySuffixLength(8);
 
         $this->mockResponse(200, $this->loadFixture('V26/BankResponseDetails000.xml'));
-        $this->target->sendTransferInitiatorDetails($details, null, '2.6');
+        $this->target->sendTransferInitiatorDetails($details, '2.6');
     }
 
     public function testSendTransferInitiatorDetailsWithSecurityAppendsHash(): void
@@ -193,7 +192,7 @@ class TransferInitiatorDetailsTest extends TestCase
         $transferInitiatorDetails->setRemittanceIdentifier('Order1');
 
         $url = 'https://routing.eps.or.at/appl/epsSO/transinit/eps/v2_6/23ea3d14-278c-4e81-a021-d7b77492b611';
-        $this->target->sendTransferInitiatorDetails($transferInitiatorDetails, $url, '2.6');
+        $this->target->sendTransferInitiatorDetails($transferInitiatorDetails, '2.6', $url);
 
         // Only verify we appended the hash-related values into body; response mapping and URL are covered elsewhere
         $body = $this->http->getLastRequestInfo()['body'];
@@ -211,7 +210,7 @@ class TransferInitiatorDetailsTest extends TestCase
         $this->mockResponse(200, $this->loadFixture('V26/BankResponseDetails004.xml'));
 
         // Trigger sending to build request body (response mapping is covered by dedicated tests)
-        $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails(), null, '2.6');
+        $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails(), '2.6');
 
         $body = $this->http->getLastRequestInfo()['body'];
         $this->assertStringContainsString('orderid', $body); // remittanceIdentifier
@@ -253,7 +252,7 @@ class TransferInitiatorDetailsTest extends TestCase
         );
         $ti->setRemittanceIdentifier('orderid');
 
-        $this->target->sendTransferInitiatorDetails($ti, null, '2.6');
+        $this->target->sendTransferInitiatorDetails($ti, '2.6');
 
         $body = $this->http->getLastRequestInfo()['body'];
         $this->assertStringContainsString($expectedInXml, $body);

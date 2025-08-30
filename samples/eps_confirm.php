@@ -2,6 +2,10 @@
 declare(strict_types=1);
 require_once('../vendor/autoload.php');
 
+// Optional: Specify EPS interface version for all calls. Default is '2.6'.
+// You can omit passing this constant to use the default.
+const EPS_INTERFACE_VERSION = '2.6';
+
 use Psa\EpsBankTransfer\Api\SoCommunicator;
 use Psa\EpsBankTransfer\Domain\BankConfirmationDetails;
 use Psa\EpsBankTransfer\Domain\VitalityCheckDetails;
@@ -47,7 +51,8 @@ try {
         $paymentConfirmationCallback,
         $vitalityCheckCallback,       // Vitality check callback
         'php://input',   // Raw POST body received from the SO
-        'php://output'    // Raw output stream returned to the SO
+        'php://output',  // Raw output stream returned to the SO
+        EPS_INTERFACE_VERSION // Optional: omit to use default '2.6'
     );
 } catch (\Exception $e) {
     // Log and return a generic server error

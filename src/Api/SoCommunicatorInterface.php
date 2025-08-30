@@ -34,14 +34,14 @@ interface SoCommunicatorInterface
      * Sends a Transfer Initiator request to the Scheme Operator (SO).
      *
      * @param TransferInitiatorDetails $transferInitiatorDetails Details of the payment initiation.
-     * @param string|null $targetUrl Optional custom target URL instead of the default.
      * @param string $version Version of the SO interface ("2.6" or "2.7").
+     * @param string|null $targetUrl Optional custom target URL instead of the default.
      * @return ProtocolDetails Result of the request mapped into a domain object.
      */
     public function sendTransferInitiatorDetails(
         TransferInitiatorDetails $transferInitiatorDetails,
-        ?string                  $targetUrl = null,
-        string                   $version = '2.6'
+        string                   $version = '2.6',
+        ?string                  $targetUrl = null
     ): ProtocolDetails;
 
     /**

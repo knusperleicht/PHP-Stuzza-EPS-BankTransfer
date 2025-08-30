@@ -156,15 +156,15 @@ class SoCommunicator implements SoCommunicatorInterface
      * Send transfer initiator details to the SO and map the response to a domain object.
      *
      * @param TransferInitiatorDetails $transferInitiatorDetails Payment initiation details.
-     * @param string|null $targetUrl Optional custom target URL instead of the default.
      * @param string $version Interface version ("2.6" or "2.7").
+     * @param string|null $targetUrl Optional custom target URL instead of the default.
      * @return ProtocolDetails Protocol details mapped to a domain object.
      * @throws XmlValidationException When response validation fails.
      */
     public function sendTransferInitiatorDetails(
         TransferInitiatorDetails $transferInitiatorDetails,
-        ?string $targetUrl = null,
-        string $version = '2.6'
+        string $version = '2.6',
+        ?string $targetUrl = null
     ): ProtocolDetails
     {
         $this->assertValidVersion($version);
