@@ -99,12 +99,11 @@ class SoV27Communicator
      *
      * Not implemented until XSD 2.7 is available.
      *
-     * @param string $version Ignored for now.
      * @param string|null $targetUrl Optional custom target URL instead of the default.
      * @return EpsSOBankListProtocol
      * @throws \LogicException Always thrown until v2.7 support is implemented.
      */
-    public function getBanks($version = '2.6', ?string $targetUrl = null): EpsSOBankListProtocol
+    public function getBanks(?string $targetUrl = null): EpsSOBankListProtocol
     {
         throw new \LogicException('Not implemented yet - waiting for XSD 2.7');
     }

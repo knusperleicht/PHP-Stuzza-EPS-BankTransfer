@@ -7,35 +7,40 @@ use Psa\EpsBankTransfer\Exceptions\XmlValidationException;
 
 class XmlValidator
 {
+    private const VERSION_MAPPING = [
+        '2.6' => 'V26',
+        '2.7' => 'V27'
+    ];
+
     /**
      * @throws XmlValidationException
      */
     public static function ValidateBankList($xml): bool
     {
-        return self::ValidateXml($xml, self::GetXSD('epsSOBankListProtocol.xsd'));
+        return self::validateXml($xml, self::gtXSD('epsSOBankListProtocol.xsd'));
     }
 
     /**
      * @throws XmlValidationException
      */
-    public static function ValidateEpsProtocol($xml, string $version = null): bool
+    public static function validateEpsProtocol(string $xml, string $version = '2.6'): bool
     {
-        $filename = $version ? "EPSProtocol-V{$version}.xsd" : 'EPSProtocol-V26.xsd';
-        return self::ValidateXml($xml, self::GetXSD($filename));
+        $mappedVersion = self::VERSION_MAPPING[$version] ?? 'V26';
+        $filename = "EPSProtocol-{$mappedVersion}.xsd";
+        return self::validateXml($xml, self::gtXSD($filename));
     }
 
     /**
      * @throws XmlValidationException
      */
-    public static function ValidateEpsRefund($xml, string $version = null): bool
+    public static function validateEpsRefund($xml, string $version = '2.6'): bool
     {
-        $filename = $version ? "EPSRefund-V{$version}.xsd" : 'EPSRefund-V26.xsd';
-        return self::ValidateXml($xml, self::GetXSD($filename));
+        $mappedVersion = self::VERSION_MAPPING[$version] ?? 'V26';
+        $filename = "EPSRefund-{$mappedVersion}.xsd";
+        return self::validateXml($xml, self::gtXSD($filename));
     }
 
-    // HELPER FUNCTIONS
-
-    private static function GetXSD($filename): string
+    private static function gtXSD($filename): string
     {
         return dirname(__DIR__, 2)
             . DIRECTORY_SEPARATOR . 'resources'
@@ -46,7 +51,7 @@ class XmlValidator
     /**
      * @throws XmlValidationException
      */
-    private static function ValidateXml($xml, $xsd): bool
+    private static function validateXml($xml, $xsd): bool
     {
         if (empty($xml)) {
             throw new XmlValidationException('XML is empty');

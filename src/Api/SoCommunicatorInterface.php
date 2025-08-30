@@ -70,12 +70,14 @@ interface SoCommunicatorInterface
      * @param callable|null $vitalityCheckCallback Optional callback for vitality checks. Must return true.
      * @param string $rawPostStream Input stream to read the raw POST data (e.g. "php://input").
      * @param string $outputStream Output stream to write the response (e.g. "php://output").
+     * @param string $version Interface version ("2.6" or "2.7").
      */
     public function handleConfirmationUrl(
         $confirmationCallback = null,
         $vitalityCheckCallback = null,
         string $rawPostStream = 'php://input',
-        string $outputStream = 'php://output'
+        string $outputStream = 'php://output',
+        string $version = '2.6'
     ): void;
 
     /**

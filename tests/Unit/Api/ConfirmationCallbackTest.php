@@ -55,7 +55,7 @@ class ConfirmationCallbackTest extends TestCase
             $msg = $e->getMessage();
         } finally {
             $actual = file_get_contents($temp);
-            XmlValidator::ValidateEpsProtocol($actual);
+            XmlValidator::validateEpsProtocol($actual);
             $this->assertStringContainsString($msg, $actual);
             @unlink($temp);
         }
@@ -115,7 +115,7 @@ class ConfirmationCallbackTest extends TestCase
         $this->assertEquals($expectedBankDetails, $bankDetails);
 
         $actual = file_get_contents($temp);
-        XmlValidator::ValidateEpsProtocol($actual);
+        XmlValidator::validateEpsProtocol($actual);
         $this->assertXmlEqualsFixture('ShopResponseDetailsOK.xml', $actual);
     }
 
@@ -149,7 +149,7 @@ class ConfirmationCallbackTest extends TestCase
             $msg = $e->getMessage();
         } finally {
             $actual = file_get_contents($temp);
-            XmlValidator::ValidateEpsProtocol($actual);
+            XmlValidator::validateEpsProtocol($actual);
             $this->assertStringContainsString($msg, $actual);
             $this->assertXmlEqualsFixture('ShopResponseDetailsError.xml', $actual);
             @unlink($temp);
@@ -206,7 +206,7 @@ class ConfirmationCallbackTest extends TestCase
         $this->assertEquals($expectedVitalityDetails, $vitalityDetails);
 
         $actual = file_get_contents($temp);
-        XmlValidator::ValidateEpsProtocol($actual);
+        XmlValidator::validateEpsProtocol($actual);
         $this->assertXmlEqualsFixture('V26/VitalityCheckDetails.xml', file_get_contents($temp));
     }
 
@@ -226,9 +226,22 @@ class ConfirmationCallbackTest extends TestCase
             );
         } finally {
             $actual = file_get_contents($temp);
-            XmlValidator::ValidateEpsProtocol($actual);
+            XmlValidator::validateEpsProtocol($actual);
             $this->assertXmlEqualsFixture('ShopResponseDetailsXMLError.xml', $actual);
             @unlink($temp);
         }
+    }
+    public function testHandleConfirmationUrlThrowsLogicExceptionForV27(): void
+    {
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('Not implemented yet - waiting for XSD 2.7');
+        // Use any XML fixture, the version selection happens via the argument below
+        $this->target->handleConfirmationUrl(
+            function () { return true; },
+            null,
+            $this->fixturePath('V26/BankConfirmationDetailsWithoutSignature.xml'),
+            'php://temp',
+            '2.7'
+        );
     }
 }

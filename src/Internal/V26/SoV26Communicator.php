@@ -36,6 +36,7 @@ class SoV26Communicator
     public const BANKLIST = '/data/haendler/v2_6';
     public const REFUND   = '/refund/eps/v2_6';
     public const TRANSFER = '/transinit/eps/v2_6';
+    public const VERSION = '2.6';
 
     /** @var SoCommunicatorCore */
     private $core;
@@ -94,7 +95,7 @@ class SoV26Communicator
         $xmlData = $this->serializer->serialize($transferInitiatorDetails->buildEpsProtocolDetails(), 'xml');
         $response = $this->core->postUrl($targetUrl, $xmlData, 'Send payment order');
 
-        XmlValidator::ValidateEpsProtocol($response);
+        XmlValidator::validateEpsProtocol($response, self::VERSION);
 
         return $this->serializer->deserialize($response, EpsProtocolDetails::class, 'xml');
     }
@@ -120,7 +121,7 @@ class SoV26Communicator
             }
 
             $rawXml = file_get_contents($rawPostStream);
-            XmlValidator::ValidateEpsProtocol($rawXml);
+            XmlValidator::validateEpsProtocol($rawXml, self::VERSION);
 
             $protocol = $this->serializer->deserialize($rawXml, EpsProtocolDetails::class, 'xml');
             $shopConfirmationDetails = new ShopResponseDetails();
@@ -183,7 +184,7 @@ class SoV26Communicator
             'Sending refund request to ' . $targetUrl
         );
 
-        XmlValidator::ValidateEpsRefund($responseXml);
+        XmlValidator::validateEpsRefund($responseXml, self::VERSION);
 
         return $this->serializer->deserialize($responseXml, EpsRefundResponse::class, 'xml');
     }

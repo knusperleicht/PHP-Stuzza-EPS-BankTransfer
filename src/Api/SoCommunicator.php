@@ -186,6 +186,7 @@ class SoCommunicator implements SoCommunicatorInterface
      * @param callable|null $vitalityCheckCallback Optional callback invoked on vitality checks.
      * @param string $rawPostStream Input stream for raw POST data (e.g. "php://input").
      * @param string $outputStream Output stream for the SO response (e.g. "php://output").
+     * @param string $version Interface version ("2.6" or "2.7").
      * @throws InvalidCallbackException When the provided callbacks are invalid.
      * @throws XmlValidationException When request/response validation fails.
      * @throws CallbackResponseException When callback handling fails or returns an invalid response.
@@ -194,10 +195,23 @@ class SoCommunicator implements SoCommunicatorInterface
         $confirmationCallback = null,
         $vitalityCheckCallback = null,
         $rawPostStream = 'php://input',
-        $outputStream = 'php://output'
+        $outputStream = 'php://output',
+        string $version = '2.6'
     ): void
     {
-        $this->getV26()->handleConfirmationUrl(
+        $this->assertValidVersion($version);
+
+        if ($version === '2.6') {
+            $this->getV26()->handleConfirmationUrl(
+                $confirmationCallback,
+                $vitalityCheckCallback,
+                $rawPostStream,
+                $outputStream
+            );
+            return;
+        }
+
+        $this->getV27()->handleConfirmationUrl(
             $confirmationCallback,
             $vitalityCheckCallback,
             $rawPostStream,

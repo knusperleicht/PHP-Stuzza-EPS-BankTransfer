@@ -21,16 +21,15 @@ class SerializerFactory
 
         self::$instance = SerializerBuilder::create()
             ->setSerializationVisitor('xml', new NoCdataXmlSerializationVisitorFactory())
-
-            ->addMetadataDir($projectRoot . '/config/serializer/Protocol/V26', 'Psa\\EpsBankTransfer\\Internal\\Generated\\Protocol\\V26')
-            ->addMetadataDir($projectRoot . '/config/serializer/Protocol/V27', 'Psa\\EpsBankTransfer\\Internal\\Generated\\Protocol\\V27')
-            ->addMetadataDir($projectRoot . '/config/serializer/Payment/V26', 'Psa\\EpsBankTransfer\\Internal\\Generated\\Payment\\V26')
-            ->addMetadataDir($projectRoot . '/config/serializer/Payment/V27', 'Psa\\EpsBankTransfer\\Internal\\Generated\\Payment\\V27')
-            ->addMetadataDir($projectRoot . '/config/serializer/AustrianRules', 'Psa\\EpsBankTransfer\\Internal\\Generated\\AustrianRules')
-            ->addMetadataDir($projectRoot . '/config/serializer/Epi', 'Psa\\EpsBankTransfer\\Internal\\Generated\\Epi')
-            ->addMetadataDir($projectRoot . '/config/serializer/Refund', 'Psa\\EpsBankTransfer\\Internal\\Generated\\Refund')
-            ->addMetadataDir($projectRoot . '/config/serializer/BankList', 'Psa\\EpsBankTransfer\\Internal\\Generated\\BankList')
-            ->addMetadataDir($projectRoot . '/config/serializer/XmlDsig', 'Psa\\EpsBankTransfer\\Internal\\Generated\\XmlDsig')
+            ->addMetadataDir($projectRoot . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'serializer' . DIRECTORY_SEPARATOR . 'Protocol' . DIRECTORY_SEPARATOR . 'V26', 'Psa\\EpsBankTransfer\\Internal\\Generated\\Protocol\\V26')
+            ->addMetadataDir($projectRoot . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'serializer' . DIRECTORY_SEPARATOR . 'Protocol' . DIRECTORY_SEPARATOR . 'V27', 'Psa\\EpsBankTransfer\\Internal\\Generated\\Protocol\\V27')
+            ->addMetadataDir($projectRoot . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'serializer' . DIRECTORY_SEPARATOR . 'Payment' . DIRECTORY_SEPARATOR . 'V26', 'Psa\\EpsBankTransfer\\Internal\\Generated\\Payment\\V26')
+            ->addMetadataDir($projectRoot . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'serializer' . DIRECTORY_SEPARATOR . 'Payment' . DIRECTORY_SEPARATOR . 'V27', 'Psa\\EpsBankTransfer\\Internal\\Generated\\Payment\\V27')
+            ->addMetadataDir($projectRoot . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'serializer' . DIRECTORY_SEPARATOR . 'AustrianRules', 'Psa\\EpsBankTransfer\\Internal\\Generated\\AustrianRules')
+            ->addMetadataDir($projectRoot . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'serializer' . DIRECTORY_SEPARATOR . 'Epi', 'Psa\\EpsBankTransfer\\Internal\\Generated\\Epi')
+            ->addMetadataDir($projectRoot . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'serializer' . DIRECTORY_SEPARATOR . 'Refund', 'Psa\\EpsBankTransfer\\Internal\\Generated\\Refund')
+            ->addMetadataDir($projectRoot . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'serializer' . DIRECTORY_SEPARATOR . 'BankList', 'Psa\\EpsBankTransfer\\Internal\\Generated\\BankList')
+            ->addMetadataDir($projectRoot . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'serializer' . DIRECTORY_SEPARATOR . 'XmlDsig', 'Psa\\EpsBankTransfer\\Internal\\Generated\\XmlDsig')
             ->setDebug(true)
             ->build();
 
