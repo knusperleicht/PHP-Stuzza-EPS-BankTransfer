@@ -27,9 +27,8 @@ jobs:
         if: ${{ env.PACKAGIST_USERNAME != '' && env.PACKAGIST_TOKEN != '' }}
         run: |
           curl -s -X POST \
-            -u "${{ env.PACKAGIST_USERNAME }}:${{ env.PACKAGIST_TOKEN }}" \
             -H "Content-Type: application/json" \
-            https://packagist.org/api/update-package?username=${{ env.PACKAGIST_USERNAME }} \
+            "https://packagist.org/api/update-package?username=${{ env.PACKAGIST_USERNAME }}&apiToken=${{ env.PACKAGIST_TOKEN }}" \
             -d '{"repository":{"url":"https://github.com/knusperleicht/eps-bank-transfer"}}'
       - name: Missing secrets notice
         if: ${{ env.PACKAGIST_USERNAME == '' || env.PACKAGIST_TOKEN == '' }}
