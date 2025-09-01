@@ -28,7 +28,6 @@ jobs:
 
           echo "Triggering Packagist update..."
           curl -s -X POST \
-            -u "$PACKAGIST_USERNAME:$PACKAGIST_TOKEN" \
             -H "Content-Type: application/json" \
-            https://packagist.org/api/update-package \
-            -d '{"repository":{"url":"https://github.com/knusperleicht/eps-bank-transfer"}}'
+            "https://packagist.org/api/update-package?username=$PACKAGIST_USERNAME&apiToken=$PACKAGIST_TOKEN" \
+            -d '{"repository":{"url":"https://packagist.org/packages/knusperleicht/eps-bank-transfer"}}'
