@@ -94,7 +94,7 @@ vendor/bin/phpunit
 
 ## License
 
-GPL-2.0 – see LICENSE.
+GPL-2.0-or-later – see LICENSE.
 
 ## Credits
 

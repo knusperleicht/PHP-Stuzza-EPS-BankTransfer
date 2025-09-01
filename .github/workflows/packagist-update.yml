@@ -1,0 +1,34 @@
+name: Packagist Update
+
+on:
+  push:
+    branches: [ release ]
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  notify:
+    name: Notify Packagist
+    runs-on: ubuntu-latest
+    # Only run for:
+    # - pushes to the release branch
+    # - releases whose target commit is from the release branch
+    # - manual runs are allowed but can be limited via branch selection in the UI
+    if: >-
+      ${{ (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/release')) ||
+          (github.event_name == 'release' && github.event.release.target_commitish == 'release') ||
+          (github.event_name == 'workflow_dispatch') }}
+    steps:
+      - name: Trigger Packagist hook
+        if: ${{ secrets.PACKAGIST_USERNAME && secrets.PACKAGIST_TOKEN }}
+        run: |
+          curl -s -X POST \
+            -u "${{ secrets.PACKAGIST_USERNAME }}:${{ secrets.PACKAGIST_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            https://packagist.org/api/update-package?username=${{ secrets.PACKAGIST_USERNAME }} \
+            -d '{"repository":{"url":"https://github.com/hakito/PHP-Stuzza-EPS-BankTransfer"}}'
+      - name: Missing secrets notice
+        if: ${{ !secrets.PACKAGIST_USERNAME || !secrets.PACKAGIST_TOKEN }}
+        run: |
+          echo "Skipping Packagist notify. Please add repository secrets PACKAGIST_USERNAME and PACKAGIST_TOKEN."
