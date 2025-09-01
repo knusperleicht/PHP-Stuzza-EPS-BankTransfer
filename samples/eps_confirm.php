@@ -10,6 +10,7 @@ use Psa\EpsBankTransfer\Api\SoCommunicator;
 use Psa\EpsBankTransfer\Domain\BankConfirmationDetails;
 use Psa\EpsBankTransfer\Domain\VitalityCheckDetails;
 use Nyholm\Psr7\Factory\Psr17Factory;
+use Psa\EpsBankTransfer\Exceptions\EpsException;
 use Symfony\Component\HttpClient\Psr18Client;
 
 // This endpoint is called by the EPS Scheme Operator (SO):
@@ -32,10 +33,9 @@ $paymentConfirmationCallback = function (string $plainXml, BankConfirmationDetai
 };
 
 $vitalityCheckCallback = function (string $plainXml, VitalityCheckDetails $vitalityCheckDetails) {
-    // Return true to indicate your endpoint is healthy and reachable
+    // Return true to indicate your endpoint is healthy and reachable (EPS "VitalityCheck")
     return true;
 };
-
 try {
     $psr17Factory = new Psr17Factory();
     $soCommunicator = new SoCommunicator(
@@ -54,8 +54,12 @@ try {
         'php://output',  // Raw output stream returned to the SO
         EPS_INTERFACE_VERSION // Optional: omit to use default '2.6'
     );
+} catch (EpsException $e) {
+    // Log and return a generic server error for EPS-specific errors
+    error_log('EPS Error: ' . $e->getMessage());
+    http_response_code(500);
 } catch (\Exception $e) {
-    // Log and return a generic server error
-    error_log($e->getMessage());
+    // Log and return a generic server error for other unexpected errors
+    error_log('Unexpected Error: ' . $e->getMessage());
     http_response_code(500);
 }

@@ -15,19 +15,19 @@ class XmlValidatorTest extends TestCase
     public function testBanksThrowsExceptionOnEmptyData(): void
     {
         $this->expectException(XmlValidationException::class);
-        XmlValidator::ValidateBankList('');
+        XmlValidator::validateBankList('');
     }
 
     public function testBanksThrowsExceptionOnInvalidData(): void
     {
         $this->expectException(XmlValidationException::class);
-        XmlValidator::ValidateBankList('bar');
+        XmlValidator::validateBankList('bar');
     }
 
     public function testBanksThrowsExceptionOnInvalidXml(): void
     {
         $this->expectException(XmlValidationException::class);
-        XmlValidator::ValidateBankList($this->loadFixture('BankListInvalid.xml'));
+        XmlValidator::validateBankList($this->loadFixture('BankListInvalid.xml'));
     }
 
     /**
@@ -35,7 +35,7 @@ class XmlValidatorTest extends TestCase
      */
     public function testBanksReturnsXmlString(): void
     {
-        $result = XmlValidator::ValidateBankList($this->loadFixture('BankListSample.xml'));
+        $result = XmlValidator::validateBankList($this->loadFixture('BankListSample.xml'));
         $this->assertTrue($result);
     }
 

@@ -26,7 +26,7 @@ class RefundRequest
     public $merchantIban;
 
     /**
-     * @var float|string Refund amount
+     * @var string Refund amount as decimal (e.g., "1.00").
      */
     public $amount;
 
@@ -71,11 +71,16 @@ class RefundRequest
         $this->pin = $pin;
     }
 
-
     /**
-     * @throws Exception
+     * Domain to EPS schema mapping (Refund v2.6).
+     *
+     * Populates EpsRefundRequest from the domain RefundRequest. Amount must be a decimal string
+     * (e.g., "1.00"). Currency must be ISO 4217 (EPS refund supports EUR).
+     *
+     * @return EpsRefundRequest Fully populated refund request.
+     * @throws Exception When date parsing fails or invalid values are given.
      */
-    public function buildEpsRefundRequest(): EpsRefundRequest
+    public function toV26(): EpsRefundRequest
     {
         $refundRequest = new EpsRefundRequest();
 

@@ -60,7 +60,7 @@ class SoCommunicator implements SoCommunicatorInterface
         ClientInterface $httpClient,
         RequestFactoryInterface $requestFactory,
         StreamFactoryInterface $streamFactory,
-        $baseUrl = self::LIVE_MODE_URL,
+        string $baseUrl = self::LIVE_MODE_URL,
         LoggerInterface $logger = null
     ) {
         $this->httpClient = $httpClient;

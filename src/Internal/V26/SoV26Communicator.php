@@ -92,7 +92,7 @@ class SoV26Communicator
 
         $targetUrl = $targetUrl ?? $this->core->getBaseUrl() . SoV26Communicator::TRANSFER;
 
-        $xmlData = $this->serializer->serialize($transferInitiatorDetails->buildEpsProtocolDetails(), 'xml');
+        $xmlData = $this->serializer->serialize($transferInitiatorDetails->toV26(), 'xml');
         $response = $this->core->postUrl($targetUrl, $xmlData, 'Send payment order');
 
         XmlValidator::validateEpsProtocol($response, self::VERSION);
@@ -124,7 +124,6 @@ class SoV26Communicator
             XmlValidator::validateEpsProtocol($rawXml, self::VERSION);
 
             $protocol = $this->serializer->deserialize($rawXml, EpsProtocolDetails::class, 'xml');
-            $shopConfirmationDetails = new ShopResponseDetails();
 
             if ($protocol->getVitalityCheckDetails() !== null) {
                 $this->handleVitalityCheck(
@@ -141,7 +140,6 @@ class SoV26Communicator
                     $confirmationCallback,
                     $rawXml,
                     BankConfirmationDetails::fromV26($protocol),
-                    $shopConfirmationDetails,
                     $outputStream);
                 return;
             }
@@ -162,13 +160,14 @@ class SoV26Communicator
         $targetUrl = $targetUrl ?? $this->core->getBaseUrl() . SoV26Communicator::BANKLIST;
         $body = $this->core->getUrl($targetUrl, 'Requesting bank list');
 
-        XmlValidator::ValidateBankList($body);
+        XmlValidator::validateBankList($body);
 
         return $this->serializer->deserialize($body, EpsSOBankListProtocol::class, 'xml');
     }
 
     /**
      * @throws XmlValidationException
+     * @throws Exception
      */
     public function sendRefundRequest(
         RefundRequest $refundRequest,
@@ -177,7 +176,7 @@ class SoV26Communicator
     {
         $targetUrl = $targetUrl ?? $this->core->getBaseUrl() . SoV26Communicator::REFUND;
 
-        $xmlData = $this->serializer->serialize($refundRequest->buildEpsRefundRequest(), 'xml');
+        $xmlData = $this->serializer->serialize($refundRequest->toV26(), 'xml');
         $responseXml = $this->core->postUrl(
             $targetUrl,
             $xmlData,
@@ -206,12 +205,13 @@ class SoV26Communicator
      * @throws CallbackResponseException
      */
     private function handleBankConfirmation(callable $callback, string $rawXml,
-                                            BankConfirmationDetails $confirmation, ShopResponseDetails $response,
+                                            BankConfirmationDetails $confirmation,
                                             string $outputStream): void
     {
-        $response->setSessionId($confirmation->getSessionId());
-        $response->setStatusCode($confirmation->getStatusCode());
-        $response->setPaymentReferenceIdentifier(
+        $shopConfirmationDetails = new ShopResponseDetails();
+        $shopConfirmationDetails->setSessionId($confirmation->getSessionId());
+        $shopConfirmationDetails->setStatusCode($confirmation->getStatusCode());
+        $shopConfirmationDetails->setPaymentReferenceIdentifier(
             $confirmation->getPaymentReferenceIdentifier()
         );
 
@@ -219,7 +219,7 @@ class SoV26Communicator
             throw new CallbackResponseException('Confirmation callback must return true');
         }
 
-        $xml = $this->serializer->serialize($response->buildShopResponseDetails(), 'xml');
+        $xml = $this->serializer->serialize($shopConfirmationDetails->toV26(), 'xml');
         file_put_contents($outputStream, $xml);
     }
 
@@ -233,6 +233,6 @@ class SoV26Communicator
             $shopConfirmationDetails->setErrorMessage('Exception "' . get_class($e) . '" occurred during confirmation handling');
         }
 
-        file_put_contents($outputStream, $this->serializer->serialize($shopConfirmationDetails->buildShopResponseDetails(), 'xml'));
+        file_put_contents($outputStream, $this->serializer->serialize($shopConfirmationDetails->toV26(), 'xml'));
     }
 }

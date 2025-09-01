@@ -3,9 +3,15 @@ declare(strict_types=1);
 
 namespace Psa\EpsBankTransfer\Api;
 
+use InvalidArgumentException;
+use LogicException;
 use Psa\EpsBankTransfer\Domain\BankList;
 use Psa\EpsBankTransfer\Domain\ProtocolDetails;
 use Psa\EpsBankTransfer\Domain\RefundResponse;
+use Psa\EpsBankTransfer\Exceptions\BankListException;
+use Psa\EpsBankTransfer\Exceptions\CallbackResponseException;
+use Psa\EpsBankTransfer\Exceptions\InvalidCallbackException;
+use Psa\EpsBankTransfer\Exceptions\XmlValidationException;
 use Psa\EpsBankTransfer\Requests\RefundRequest;
 use Psa\EpsBankTransfer\Requests\TransferInitiatorDetails;
 
@@ -28,8 +34,13 @@ interface SoCommunicatorInterface
      * @param string $version Interface version ("2.6" or "2.7"). Bank list is 2.6.
      * @param string|null $targetUrl Optional custom target URL instead of the default.
      * @return BankList List of supported banks.
+     * @throws InvalidArgumentException When an unsupported version is provided.
+     * @throws BankListException When SO responds with an error payload.
+     * @throws XmlValidationException When response XML fails XSD validation.
+     * @throws LogicException For version 2.7 (not implemented yet).
      */
     public function getBanks(string $version = '2.6', ?string $targetUrl = null): BankList;
+
     /**
      * Sends a Transfer Initiator request to the Scheme Operator (SO).
      *
@@ -37,6 +48,9 @@ interface SoCommunicatorInterface
      * @param string $version Version of the SO interface ("2.6" or "2.7").
      * @param string|null $targetUrl Optional custom target URL instead of the default.
      * @return ProtocolDetails Result of the request mapped into a domain object.
+     * @throws InvalidArgumentException When an unsupported version is provided.
+     * @throws XmlValidationException When request/response XML validation fails.
+     * @throws LogicException For version 2.7 (not implemented yet).
      */
     public function sendTransferInitiatorDetails(
         TransferInitiatorDetails $transferInitiatorDetails,
@@ -53,6 +67,9 @@ interface SoCommunicatorInterface
      * @param string $version Version of the SO interface ("2.6" or "2.7").
      * @param string|null $targetUrl Optional custom target URL instead of the default.
      * @return RefundResponse Result of the request mapped into a domain object.
+     * @throws InvalidArgumentException When an unsupported version is provided.
+     * @throws XmlValidationException When request/response XML validation fails.
+     * @throws LogicException For version 2.7 (not implemented yet).
      */
     public function sendRefundRequest(
         RefundRequest $refundRequest,
@@ -71,6 +88,10 @@ interface SoCommunicatorInterface
      * @param string $rawPostStream Input stream to read the raw POST data (e.g. "php://input").
      * @param string $outputStream Output stream to write the response (e.g. "php://output").
      * @param string $version Interface version ("2.6" or "2.7").
+     * @throws InvalidCallbackException When callbacks are missing or not callable.
+     * @throws XmlValidationException When request/response XML validation fails.
+     * @throws CallbackResponseException When a callback does not return true.
+     * @throws LogicException For version 2.7 (not implemented yet).
      */
     public function handleConfirmationUrl(
         $confirmationCallback = null,

@@ -54,7 +54,7 @@ class InitiateTransferRequestTest extends TestCase
     public function testGenerateTransferInitiatorDetails()
     {
         $data = $this->createTransferInitiatorDetailsWithArticle();
-        $xmlData = $this->serializer->serialize($data->buildEpsProtocolDetails(), 'xml');
+        $xmlData = $this->serializer->serialize($data->toV26(), 'xml');
         XmlValidator::validateEpsProtocol($xmlData);
         $this->assertXmlEqualsFixture('TransferInitiatorDetailsWithoutSignature.xml', $xmlData);
     }
@@ -67,7 +67,7 @@ class InitiateTransferRequestTest extends TestCase
         $data = $this->createTransferInitiatorDetailsWithArticle();
         $data->setOrderingCustomerOfiIdentifier(self::TEST_OFI_IDENTIFIER);
 
-        $xmlData = $this->serializer->serialize($data->buildEpsProtocolDetails(), 'xml');
+        $xmlData = $this->serializer->serialize($data->toV26(), 'xml');
         XmlValidator::validateEpsProtocol($xmlData);
         $this->assertXmlEqualsFixture('TransferInitiatorDetailsWithoutSignatureAndOrderingCustomerOfiIdentifier.xml', $xmlData);
     }
@@ -93,7 +93,7 @@ class InitiateTransferRequestTest extends TestCase
         $data->setExpirationMinutes(self::TEST_EXPIRATION_MINUTES);
         $data->setRemittanceIdentifier('Order1');
 
-        $epsProtocolDetails = $data->buildEpsProtocolDetails();
+        $epsProtocolDetails = $data->toV26();
         $xmlData = $this->serializer->serialize($epsProtocolDetails, 'xml');
 
         XmlValidator::validateEpsProtocol($xmlData);
@@ -109,7 +109,7 @@ class InitiateTransferRequestTest extends TestCase
         $data = $this->createTransferInitiatorDetails();
         $data->setUnstructuredRemittanceIdentifier(self::TEST_UNSTRUCTURED_REMITTANCE);
         $data->setExpirationMinutes(self::TEST_EXPIRATION_MINUTES);
-        $epsProtocolDetails = $data->buildEpsProtocolDetails();
+        $epsProtocolDetails = $data->toV26();
 
         $xmlData = $this->serializer->serialize($epsProtocolDetails, 'xml');
 

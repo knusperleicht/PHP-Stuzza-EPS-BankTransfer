@@ -15,7 +15,7 @@ class XmlValidator
     /**
      * @throws XmlValidationException
      */
-    public static function ValidateBankList($xml): bool
+    public static function validateBankList($xml): bool
     {
         return self::validateXml($xml, self::gtXSD('epsSOBankListProtocol.xsd'));
     }
@@ -40,7 +40,7 @@ class XmlValidator
         return self::validateXml($xml, self::gtXSD($filename));
     }
 
-    private static function gtXSD($filename): string
+    private static function gtXSD(string $filename): string
     {
         return dirname(__DIR__, 2)
             . DIRECTORY_SEPARATOR . 'resources'

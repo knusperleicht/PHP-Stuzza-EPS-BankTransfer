@@ -123,15 +123,15 @@ class TransferInitiatorDetails
     private $orderingCustomerOfiIdentifier;
 
     /**
-     * @param string $userId
-     * @param string $secret
-     * @param string $bfiBicIdentifier
-     * @param string $beneficiaryNameAddressText
-     * @param string $beneficiaryAccountIdentifier
-     * @param string $referenceIdentifier
-     * @param int $instructedAmount in cents
-     * @param PaymentFlowUrls $transferMsgDetails
-     * @param string|null $date
+     * @param string $userId User ID (epsp:UserId)
+     * @param string $secret Merchant PIN/secret used in MD5 fingerprint (not transmitted directly)
+     * @param string $bfiBicIdentifier BIC of beneficiary bank (epi:BfiBicIdentifier)
+     * @param string $beneficiaryNameAddressText Beneficiary name/address (<=140 chars; banks often guarantee 70)
+     * @param string $beneficiaryAccountIdentifier Beneficiary IBAN (epi:BeneficiaryAccountIdentifier)
+     * @param string $referenceIdentifier Reference Identifier (epi:ReferenceIdentifier)
+     * @param int|string $instructedAmount Amount in euro cents (e.g., 9999 = €99.99)
+     * @param PaymentFlowUrls $transferMsgDetails Confirmation/redirect URLs (epsp:TransferMsgDetails)
+     * @param string|null $date Optional date in YYYY-MM-DD (default: today)
      */
 
     /**
@@ -188,8 +188,9 @@ class TransferInitiatorDetails
     }
 
     /**
+     * Set the instructed amount.
      *
-     * @param int $amount in cents
+     * @param int|string $amount Amount in euro cents (e.g., 9999 = €99.99). Must be integer-like.
      */
     public function setInstructedAmount($amount)
     {
@@ -208,9 +209,18 @@ class TransferInitiatorDetails
     }
 
     /**
-     * @throws Exception
+     * Domain to EPS schema mapping (v2.6).
+     *
+     * Creates and populates an EpsProtocolDetails tree from the current
+     * TransferInitiatorDetails. All values must adhere to EPS v2.6 rules:
+     * - InstructedAmount as decimal string (formatted from euro-cents input)
+     * - Exactly one of RemittanceIdentifier or UnstructuredRemittanceIdentifier may be set
+     * - MD5Fingerprint derived from merchant secret and core fields
+     *
+     * @return EpsProtocolDetails Fully populated protocol details ready to serialize.
+     * @throws Exception When date/time parsing or constraints fail.
      */
-    public function buildEpsProtocolDetails(): EpsProtocolDetails
+    public function toV26(): EpsProtocolDetails
     {
         $xml = new EpsProtocolDetails();
         $xml->setSessionLanguage("DE");

@@ -8,6 +8,16 @@ use Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\EpsProtocolDetails;
 
 class ShopResponseDetails
 {
+    /**
+     * Build EPS v2.6 schema object from domain ShopResponseDetails.
+     *
+     * Returns an EpsProtocolDetails payload ready to be serialized and sent back
+     * to the Scheme Operator (SO) as confirmation response.
+     *
+     * Rules (v2.6):
+     * - When errorMessage is set, only ErrorMsg (and optional SessionId) is populated.
+     * - Otherwise a ShopConfirmationDetails block with StatusCode and PaymentReferenceIdentifier is provided.
+     */
     /** @var string Human-readable error message provided by the shop, if any */
     public $errorMessage;
 
@@ -20,7 +30,12 @@ class ShopResponseDetails
     /** @var string Bank-generated payment reference identifier */
     public $paymentReferenceIdentifier;
 
-    public function buildShopResponseDetails(): EpsProtocolDetails
+    /**
+     * Domain to EPS schema mapping (v2.6).
+     *
+     * @return EpsProtocolDetails Fully populated response ready to return to SO.
+     */
+    public function toV26(): EpsProtocolDetails
     {
         $epsProtocolDetails = new EpsProtocolDetails();
         $shopResponseDetails = new \Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\ShopResponseDetails();
