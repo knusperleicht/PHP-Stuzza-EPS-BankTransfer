@@ -1,10 +1,11 @@
 # EPS Bank Transfer (knusperleicht/eps-bank-transfer)
 
-[![Tests](https://github.com/knusperleicht/eps-bank-transfer/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/knusperleicht/eps-bank-transfer/actions/workflows/tests.yml)
+[![Tests](https://github.com/knusperleicht/eps-bank-transfer/actions/workflows/tests.yml/badge.svg?branch=release)](https://github.com/knusperleicht/eps-bank-transfer/actions/workflows/tests.yml)
 [![Latest Stable Version](https://img.shields.io/packagist/v/knusperleicht/eps-bank-transfer.svg)](https://packagist.org/packages/knusperleicht/eps-bank-transfer)
 [![Total Downloads](https://img.shields.io/packagist/dt/knusperleicht/eps-bank-transfer.svg)](https://packagist.org/packages/knusperleicht/eps-bank-transfer)
 [![License](https://img.shields.io/badge/license-GPL--2.0--or--later-blue.svg)](LICENSE)
 [![PHP Version Support](https://img.shields.io/packagist/php-v/knusperleicht/eps-bank-transfer.svg)](https://packagist.org/packages/knusperleicht/eps-bank-transfer)
+
 
 A PHP library for integrating the Austrian EPS bank transfer (PSA, specification v2.6, with preparation for v2.7). It
 helps you start EPS payments, handle the confirmation (callback/return), and trigger refunds (full or partial).
