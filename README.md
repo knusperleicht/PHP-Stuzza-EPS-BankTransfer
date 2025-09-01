@@ -1,4 +1,4 @@
-# EPS Bank Transfer (psa/eps-bank-transfer)
+# EPS Bank Transfer (knusperleicht/eps-bank-transfer)
 
 A PHP library for integrating the Austrian EPS bank transfer (PSA, specification v2.6, with preparation for v2.7). It
 helps you start EPS payments, handle the confirmation (callback/return), and trigger refunds (full or partial).
@@ -14,7 +14,7 @@ Links:
 Install via Composer:
 
 ```sh
-composer require psa/eps-bank-transfer
+composer require knusperleicht/eps-bank-transfer
 ```
 
 ## What is this library for?

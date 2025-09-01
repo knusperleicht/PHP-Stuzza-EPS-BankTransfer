@@ -1,6 +1,6 @@
 {
-  "name": "psa/eps-bank-transfer",
-  "description": "Stuzza e-payment standard implementation for PHP",
+  "name": "knusperleicht/eps-bank-transfer",
+  "description": "PSA e-payment standard (EPS) implementation for PHP",
   "keywords": [
     "eps",
     "payments",
