@@ -30,7 +30,7 @@ jobs:
             -u "${{ env.PACKAGIST_USERNAME }}:${{ env.PACKAGIST_TOKEN }}" \
             -H "Content-Type: application/json" \
             https://packagist.org/api/update-package?username=${{ env.PACKAGIST_USERNAME }} \
-            -d '{"repository":{"url":"https://github.com/hakito/PHP-Stuzza-EPS-BankTransfer"}}'
+            -d '{"repository":{"url":"https://github.com/knusperleicht/eps-bank-transfer"}}'
       - name: Missing secrets notice
         if: ${{ env.PACKAGIST_USERNAME == '' || env.PACKAGIST_TOKEN == '' }}
         run: |
