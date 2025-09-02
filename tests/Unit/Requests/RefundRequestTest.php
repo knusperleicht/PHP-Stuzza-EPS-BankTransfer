@@ -56,7 +56,7 @@ class RefundRequestTest extends TestCase
         $authenticationDetails = new AuthenticationDetails();
         $authenticationDetails->setUserId($userId);
         $authenticationDetails->setSHA256Fingerprint(
-            Fingerprint::generateSHA256Fingerprint(
+            Fingerprint::generateRefundSHA256Fingerprint(
                 "fluxkompensator!",
                 $creationDateTime,
                 $transactionId,

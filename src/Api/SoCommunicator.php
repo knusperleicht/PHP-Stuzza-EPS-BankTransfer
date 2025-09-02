@@ -175,7 +175,8 @@ class SoCommunicator implements SoCommunicatorInterface
             return ProtocolDetails::fromV26($raw);
         }
 
-        $this->getV27()->sendTransferInitiatorDetails($transferInitiatorDetails, $targetUrl);
+        $raw = $this->getV27()->sendTransferInitiatorDetails($transferInitiatorDetails, $targetUrl);
+        return ProtocolDetails::fromV27($raw);
     }
 
     /**

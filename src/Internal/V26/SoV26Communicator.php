@@ -89,59 +89,16 @@ class SoV26Communicator
         ?string                  $targetUrl = null
     ): EpsProtocolDetails
     {
-        $this->handleObscurityConfig($transferInitiatorDetails);
+        $this->core->handleObscurityConfig($transferInitiatorDetails);
 
-        $targetUrl = $targetUrl ?? $this->core->getBaseUrl() . SoV26Communicator::TRANSFER;
+        $targetUrl = $targetUrl ?? $this->core->getBaseUrl() . self::TRANSFER;
 
         $xmlData = $this->serializer->serialize($transferInitiatorDetails->toV26(), 'xml');
-        $response = $this->core->postUrl($targetUrl, $xmlData, 'Send payment order');
+        $response = $this->core->postUrl($targetUrl, $xmlData, 'Send payment order (v2.6)');
 
         XmlValidator::validateEpsProtocol($response, self::VERSION);
 
         return $this->serializer->deserialize($response, EpsProtocolDetails::class, 'xml');
-    }
-
-    /**
-     * Apply obscurity (hash suffix) rules to remittance identifiers.
-     *
-     * Ensures total length constraints (35/140) are respected before appending
-     * an optional hash suffix based on provided ObscurityConfig.
-     *
-     * @param TransferInitiatorDetails $transferInitiatorDetails
-     */
-    private function handleObscurityConfig(TransferInitiatorDetails $transferInitiatorDetails): void
-    {
-        $cfg = $transferInitiatorDetails->getObscurityConfig();
-        $suffixLength = $cfg ? $cfg->getLength() : 0;
-        $seed = $cfg ? $cfg->getSeed() : null;
-
-        if ($transferInitiatorDetails->getRemittanceIdentifier() !== null) {
-            $base = $transferInitiatorDetails->getRemittanceIdentifier();
-            if ($suffixLength > 0 && strlen($base) + $suffixLength > 35) {
-                throw new \InvalidArgumentException('RemittanceIdentifier too long for configured obscurity length. Max total 35 characters.');
-            }
-            $transferInitiatorDetails->setRemittanceIdentifier(
-                $this->core->appendHash(
-                    $base,
-                    $suffixLength,
-                    $seed,
-                )
-            );
-        }
-
-        if ($transferInitiatorDetails->getUnstructuredRemittanceIdentifier() !== null) {
-            $base = $transferInitiatorDetails->getUnstructuredRemittanceIdentifier();
-            if ($suffixLength > 0 && strlen($base) + $suffixLength > 140) {
-                throw new \InvalidArgumentException('UnstructuredRemittanceIdentifier too long for configured obscurity length. Max total 140 characters.');
-            }
-            $transferInitiatorDetails->setUnstructuredRemittanceIdentifier(
-                $this->core->appendHash(
-                    $base,
-                    $suffixLength,
-                    $seed
-                )
-            );
-        }
     }
 
     /**
@@ -219,7 +176,7 @@ class SoV26Communicator
      */
     public function getBanks(?string $targetUrl = null): EpsSOBankListProtocol
     {
-        $targetUrl = $targetUrl ?? $this->core->getBaseUrl() . SoV26Communicator::BANKLIST;
+        $targetUrl = $targetUrl ?? $this->core->getBaseUrl() . self::BANKLIST;
         $body = $this->core->getUrl($targetUrl, 'Requesting bank list');
 
         XmlValidator::validateBankList($body);
@@ -241,7 +198,7 @@ class SoV26Communicator
         ?string       $targetUrl = null
     ): EpsRefundResponse
     {
-        $targetUrl = $targetUrl ?? $this->core->getBaseUrl() . SoV26Communicator::REFUND;
+        $targetUrl = $targetUrl ?? $this->core->getBaseUrl() . self::REFUND;
 
         $xmlData = $this->serializer->serialize($refundRequest->toV26(), 'xml');
         $responseXml = $this->core->postUrl(

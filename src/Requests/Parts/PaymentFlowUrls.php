@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace Knusperleicht\EpsBankTransfer\Requests\Parts;
 
+/**
+ * Value object holding callback/redirect URLs for the EPS payment flow.
+ */
 class PaymentFlowUrls
 {
 

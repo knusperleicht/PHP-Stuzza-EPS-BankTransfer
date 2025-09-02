@@ -111,7 +111,7 @@ class RefundRequest
         $auth = new AuthenticationDetails();
         $auth->setUserId($this->userId);
 
-        $fingerprint = Fingerprint::generateSHA256Fingerprint(
+        $fingerprint = Fingerprint::generateRefundSHA256Fingerprint(
             $this->pin,
             $this->creDtTm,
             $this->transactionId,

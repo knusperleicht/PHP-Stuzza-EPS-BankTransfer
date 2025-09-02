@@ -67,7 +67,7 @@ class XmlValidator
             $xmlError = libxml_get_last_error();
             libxml_use_internal_errors($prevState);
 
-            throw new XmlValidationException('XML does not validate against XSD. ' . $xmlError->message);
+            throw new XmlValidationException('XML does not validate against XSD.');
         }
         libxml_use_internal_errors($prevState);
         return true;

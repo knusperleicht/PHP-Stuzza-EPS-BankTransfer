@@ -3,13 +3,22 @@ declare(strict_types=1);
 
 namespace Knusperleicht\EpsBankTransfer\Internal\V27;
 
+use Exception;
 use JMS\Serializer\SerializerInterface;
+use Knusperleicht\EpsBankTransfer\Domain\BankConfirmationDetails;
+use Knusperleicht\EpsBankTransfer\Domain\VitalityCheckDetails;
+use Knusperleicht\EpsBankTransfer\Exceptions\CallbackResponseException;
+use Knusperleicht\EpsBankTransfer\Exceptions\EpsException;
+use Knusperleicht\EpsBankTransfer\Exceptions\InvalidCallbackException;
+use Knusperleicht\EpsBankTransfer\Exceptions\XmlValidationException;
 use Knusperleicht\EpsBankTransfer\Internal\Generated\BankList\EpsSOBankListProtocol;
 use Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\EpsProtocolDetails;
 use Knusperleicht\EpsBankTransfer\Internal\Generated\Refund\EpsRefundResponse;
 use Knusperleicht\EpsBankTransfer\Internal\SoCommunicatorCore;
 use Knusperleicht\EpsBankTransfer\Requests\RefundRequest;
 use Knusperleicht\EpsBankTransfer\Requests\TransferInitiatorDetails;
+use Knusperleicht\EpsBankTransfer\Responses\ShopResponseDetails;
+use Knusperleicht\EpsBankTransfer\Utilities\XmlValidator;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
@@ -24,6 +33,9 @@ use Psr\Log\LoggerInterface;
  */
 class SoV27Communicator
 {
+    public const TRANSFER = '/transinit/eps/v2_7';
+    public const VERSION = '2.7';
+
     /** @var SoCommunicatorCore */
     private $core;
 
@@ -59,33 +71,51 @@ class SoV27Communicator
     }
 
     /**
-     * Send transfer initiator details using the (future) v2.7 schema.
+     * Send a TransferInitiatorDetails request to EPS v2.7 endpoint.
      *
-     * Currently not implemented until official XSD 2.7 is published.
+     * Serializes the given request, posts it to the Scheme Operator and
+     * validates the response against the v2.7 EPS Protocol XSD.
      *
-     * @param TransferInitiatorDetails $transferInitiatorDetails Payment initiation details.
-     * @param string|null $targetUrl Optional custom target URL instead of the default.
-     * @return EpsProtocolDetails
-     * @throws \LogicException Always thrown until v2.7 support is implemented.
+     * @param TransferInitiatorDetails $transferInitiatorDetails Domain request to send
+     * @param string|null $targetUrl Optional override of the endpoint URL; defaults to baseUrl + TRANSFER
+     * @return EpsProtocolDetails Deserialized protocol response
+     * @throws XmlValidationException When response XML does not match the schema
+     * @throws Exception On underlying HTTP/serialization errors
      */
     public function sendTransferInitiatorDetails(
         TransferInitiatorDetails $transferInitiatorDetails,
         ?string                  $targetUrl = null
     ): EpsProtocolDetails
     {
-        throw new \LogicException('Not implemented yet - waiting for XSD 2.7');
+        $this->core->handleObscurityConfig($transferInitiatorDetails);
+
+        $targetUrl = $targetUrl ?? $this->core->getBaseUrl() . self::TRANSFER;
+
+        $xmlData = $this->serializer->serialize($transferInitiatorDetails->toV27(), 'xml');
+        $response = $this->core->postUrl($targetUrl, $xmlData, 'Send payment order (v2.7)');
+
+        XmlValidator::validateEpsProtocol($response, self::VERSION);
+
+        return $this->serializer->deserialize($response, EpsProtocolDetails::class, 'xml');
     }
 
     /**
-     * Handle confirmation and vitality-check callbacks for v2.7.
+     * Handle incoming EPS confirmation/vitality callback request.
      *
-     * Not implemented until XSD 2.7 is available.
+     * Reads raw XML from input stream, validates it, dispatches to the provided
+     * callback depending on whether the payload is a VitalityCheck or a
+     * BankConfirmation. For VitalityCheck, the raw payload is echoed back.
      *
-     * @param callable|null $confirmationCallback Callback for payment confirmations. Must return true.
-     * @param callable|null $vitalityCheckCallback Callback for vitality checks. Must return true.
-     * @param string $rawPostStream Input stream holding the raw POST body.
-     * @param string $outputStream Output stream to write the response to the SO.
-     * @throws \LogicException Always thrown until v2.7 support is implemented.
+     * The provided callbacks MUST return true to indicate success; otherwise a
+     * CallbackResponseException is thrown and an error response is written.
+     *
+     * @param callable|null $confirmationCallback function(string $rawXml, BankConfirmationDetails $details): bool
+     * @param callable|null $vitalityCheckCallback function(string $rawXml, VitalityCheckDetails $details): bool
+     * @param string $rawPostStream Input stream URI to read raw request XML from (default php://input)
+     * @param string $outputStream Output stream URI to write response XML to (default php://output)
+     * @throws InvalidCallbackException When callbacks are missing or not callable
+     * @throws XmlValidationException When input XML is invalid
+     * @throws CallbackResponseException When a callback returns a non-true value
      */
     public function handleConfirmationUrl(
         $confirmationCallback = null,
@@ -94,7 +124,83 @@ class SoV27Communicator
         string $outputStream = 'php://output'
     ): void
     {
-        throw new \LogicException('Not implemented yet - waiting for XSD 2.7');
+        try {
+            // Validate callbacks
+            if ($confirmationCallback === null || !is_callable($confirmationCallback)) {
+                throw new InvalidCallbackException('ConfirmationCallback not callable or missing');
+            }
+            if ($vitalityCheckCallback !== null && !is_callable($vitalityCheckCallback)) {
+                throw new InvalidCallbackException('VitalityCheckCallback not callable');
+            }
+
+            $rawXml = file_get_contents($rawPostStream);
+            XmlValidator::validateEpsProtocol($rawXml, self::VERSION);
+
+            $protocol = $this->serializer->deserialize($rawXml, EpsProtocolDetails::class, 'xml');
+
+            if ($protocol->getVitalityCheckDetails() !== null) {
+                $this->handleVitalityCheck(
+                    $vitalityCheckCallback,
+                    $rawXml,
+                    VitalityCheckDetails::fromV27($protocol->getVitalityCheckDetails()),
+                    $outputStream
+                );
+                return;
+            }
+
+            if ($protocol->getBankConfirmationDetails() !== null) {
+                $v27 = BankConfirmationDetails::fromV27($protocol);
+                $this->handleBankConfirmation(
+                    $confirmationCallback,
+                    $rawXml,
+                    $v27,
+                    $outputStream);
+                return;
+            }
+
+            throw new XmlValidationException('Unknown confirmation details structure');
+        } catch (Exception $e) {
+            $this->handleException($e, $outputStream);
+            throw $e;
+        }
+    }
+
+    private function handleVitalityCheck(?callable $callback, string $rawXml, VitalityCheckDetails $vitality, string $outputStream): void
+    {
+        if ($callback !== null) {
+            if (call_user_func($callback, $rawXml, $vitality) !== true) {
+                throw new CallbackResponseException('Vitality check callback must return true');
+            }
+        }
+        file_put_contents($outputStream, $rawXml);
+    }
+
+    private function handleBankConfirmation(callable $callback, string $rawXml, BankConfirmationDetails $confirmation, string $outputStream): void
+    {
+        $shopConfirmationDetails = new ShopResponseDetails();
+        $shopConfirmationDetails->setSessionId($confirmation->getSessionId());
+        $shopConfirmationDetails->setStatusCode($confirmation->getStatusCode());
+        $shopConfirmationDetails->setPaymentReferenceIdentifier($confirmation->getPaymentReferenceIdentifier());
+
+        if (call_user_func($callback, $rawXml, $confirmation) !== true) {
+            throw new CallbackResponseException('Confirmation callback must return true');
+        }
+
+        $xml = $this->serializer->serialize($shopConfirmationDetails->toV27(), 'xml');
+        file_put_contents($outputStream, $xml);
+    }
+
+    private function handleException(Exception $e, string $outputStream): void
+    {
+        $shopConfirmationDetails = new ShopResponseDetails();
+
+        if ($e instanceof EpsException) {
+            $shopConfirmationDetails->setErrorMessage($e->getMessage());
+        } else {
+            $shopConfirmationDetails->setErrorMessage('Exception "' . get_class($e) . '" occurred during confirmation handling');
+        }
+
+        file_put_contents($outputStream, $this->serializer->serialize($shopConfirmationDetails->toV27(), 'xml'));
     }
 
     /**
@@ -108,7 +214,7 @@ class SoV27Communicator
      */
     public function getBanks(?string $targetUrl = null): EpsSOBankListProtocol
     {
-        throw new \LogicException('Not implemented yet - waiting for XSD 2.7');
+        throw new \LogicException('Not implemented yet - use version 2.6');
     }
 
     /**
@@ -126,6 +232,6 @@ class SoV27Communicator
         ?string       $targetUrl = null
     ): EpsRefundResponse
     {
-        throw new \LogicException('Not implemented yet - waiting for XSD 2.7');
+        throw new \LogicException('Not implemented yet - use version 2.6');
     }
 }

@@ -2,9 +2,8 @@
 declare(strict_types=1);
 require_once('../vendor/autoload.php');
 
-// Optional: Specify EPS interface version for all calls. Default is '2.6'.
-// You can omit passing this constant to use the default.
-const EPS_INTERFACE_VERSION = '2.6';
+// Optional: interface version can be set in samples/config.local.php (key: 'interface_version').
+// If not provided, the library default will be used (currently '2.6').
 
 use Knusperleicht\EpsBankTransfer\Api\SoCommunicator;
 use Knusperleicht\EpsBankTransfer\Exceptions\EpsException;
@@ -90,7 +89,7 @@ $soCommunicator = new SoCommunicator(
 // Optional: Display a bank selection to the user on your checkout page
 // Example: Fetch current bank list (available for interface 2.6) and print BIC + name
 try {
-    $bankList = $soCommunicator->getBanks(EPS_INTERFACE_VERSION);
+    $bankList = $soCommunicator->getBanks($config['interface_version'] ?? null);
     foreach ($bankList->getBanks() as $bank) {
         // You could render this as a dropdown in your checkout
         echo $bank->getBic() . ' - ' . $bank->getName() . "\n";
@@ -108,6 +107,7 @@ try {
     }
 } catch (\Throwable $e) {
     // If bank list is temporarily unavailable, continue without preselection
+    echo "Bank list: " . $e->getMessage() . "\n";
 }
 
 // Optional: Override the default base URL (rarely needed)
@@ -116,7 +116,10 @@ try {
 // Perform the initiate-transfer call and handle the response
 try {
     // Optional version can be passed as the 2nd argument; default is '2.6'
-    $protocolDetails = $soCommunicator->sendTransferInitiatorDetails($initiateTransferRequest, EPS_INTERFACE_VERSION);
+    $protocolDetails = $soCommunicator->sendTransferInitiatorDetails(
+        $initiateTransferRequest,
+            $config['interface_version'] ?? null
+    );
 
     if ($protocolDetails->getErrorCode() !== '000') {
         // Non-success from SO: log/display for troubleshooting

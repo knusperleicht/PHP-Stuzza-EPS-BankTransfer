@@ -6,6 +6,9 @@ namespace Knusperleicht\EpsBankTransfer\Responses;
 use Knusperleicht\EpsBankTransfer\Internal\Generated\Payment\V26\ShopConfirmationDetails;
 use Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\EpsProtocolDetails;
 
+/**
+ * Domain model for building the shop's confirmation response to the EPS SO.
+ */
 class ShopResponseDetails
 {
     /**
@@ -49,6 +52,32 @@ class ShopResponseDetails
             $shopResponseDetails->setSessionId($this->sessionId);
 
             $shopConfirmationDetails = new ShopConfirmationDetails();
+            $shopConfirmationDetails->setStatusCode($this->statusCode);
+            $shopConfirmationDetails->setPaymentReferenceIdentifier($this->paymentReferenceIdentifier);
+            $shopResponseDetails->setShopConfirmationDetails($shopConfirmationDetails);
+        }
+
+        $epsProtocolDetails->setShopResponseDetails($shopResponseDetails);
+        return $epsProtocolDetails;
+    }
+
+    /**
+     * Build EPS v2.7 schema object from domain ShopResponseDetails.
+     */
+    public function toV27(): \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\EpsProtocolDetails
+    {
+        $epsProtocolDetails = new \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\EpsProtocolDetails();
+        $shopResponseDetails = new \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\ShopResponseDetails();
+
+        if (!empty($this->errorMessage)) {
+            $shopResponseDetails->setErrorMsg($this->errorMessage);
+            if (!empty($this->sessionId)) {
+                $shopResponseDetails->setSessionId($this->sessionId);
+            }
+        } else {
+            $shopResponseDetails->setSessionId($this->sessionId);
+
+            $shopConfirmationDetails = new \Knusperleicht\EpsBankTransfer\Internal\Generated\Payment\V27\ShopConfirmationDetails();
             $shopConfirmationDetails->setStatusCode($this->statusCode);
             $shopConfirmationDetails->setPaymentReferenceIdentifier($this->paymentReferenceIdentifier);
             $shopResponseDetails->setShopConfirmationDetails($shopConfirmationDetails);

@@ -13,7 +13,7 @@ use Knusperleicht\EpsBankTransfer\Tests\Helper\SoCommunicatorTestTrait;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
-class TransferInitiatorDetailsTest extends TestCase
+class TransferInitiatorDetailsV27Test extends TestCase
 {
     use SoCommunicatorTestTrait;
 
@@ -46,11 +46,11 @@ class TransferInitiatorDetailsTest extends TestCase
         return [
             'live' => [
                 SoCommunicator::LIVE_MODE_URL,
-                'https://routing.eps.or.at/appl/epsSO/transinit/eps/v2_6'
+                'https://routing.eps.or.at/appl/epsSO/transinit/eps/v2_7'
             ],
             'test' => [
                 SoCommunicator::TEST_MODE_URL,
-                'https://routing-test.eps.or.at/appl/epsSO/transinit/eps/v2_6'
+                'https://routing-test.eps.or.at/appl/epsSO/transinit/eps/v2_7'
             ],
         ];
     }
@@ -61,11 +61,11 @@ class TransferInitiatorDetailsTest extends TestCase
     public function testSendTransferInitiatorDetailsToCorrectUrl(string $baseUrl, string $expectedUrl): void
     {
         $this->setUpCommunicator($baseUrl);
-        $this->mockResponse(200, $this->loadFixture('V26/BankResponseDetails004.xml'));
+        $this->mockResponse(200, $this->loadFixture('V27/BankResponseDetails004.xml'));
 
         $response = $this->target->sendTransferInitiatorDetails(
             $this->getMockedTransferInitiatorDetails(),
-            '2.6'
+            '2.7'
         );
 
         $expected = new ProtocolDetails(
@@ -79,38 +79,20 @@ class TransferInitiatorDetailsTest extends TestCase
         $this->assertEquals($expectedUrl, $this->http->getLastRequestInfo()['url']);
     }
 
-    /* ============================================================
-     * Version dependent tests
-     * ============================================================
-     */
-
-    public function testSendTransferInitiatorDetailsV27Throws(): void
-    {
-        $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage('Not implemented yet - waiting for XSD 2.7');
-
-        $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails(), '2.7');
-    }
-
     public function testSendTransferInitiatorDetailsThrowsOnUnsupportedVersion(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Unsupported version');
 
-        $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails(), 'foo');
+        $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails(), 'foo', '2.7');
     }
-
-    /* ============================================================
-     * Error handling
-     * ============================================================
-     */
 
     public function testSendTransferInitiatorDetailsThrowsValidationException(): void
     {
         $this->expectException(XmlValidationException::class);
         $this->mockResponse(200, 'invalidData');
 
-        $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails(), '2.6');
+        $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails(), '2.7');
     }
 
     public function testSendTransferInitiatorDetailsThrowsExceptionOn404(): void
@@ -118,7 +100,7 @@ class TransferInitiatorDetailsTest extends TestCase
         $this->expectException(RuntimeException::class);
         $this->mockResponse(404, 'Not found');
 
-        $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails(), '2.6');
+        $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails(), '2.7');
     }
 
     public function testSendTransferInitiatorDetailsThrowsExceptionOnWrongContentType(): void
@@ -126,34 +108,28 @@ class TransferInitiatorDetailsTest extends TestCase
         $this->mockResponse(200, '<xml>valid but wrong header</xml>', ['Content-Type' => 'text/plain']);
 
         $this->expectException(XmlValidationException::class);
-        $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails(), '2.6');
+        $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails(), '2.7');
     }
-
-    /* ============================================================
-     * URL tests
-     * ============================================================
-     */
-
 
     public function testSendTransferInitiatorDetailsWithOverriddenBaseUrl(): void
     {
         $this->target->setBaseUrl('http://example.com');
-        $this->mockResponse(200, $this->loadFixture('V26/BankResponseDetails004.xml'));
+        $this->mockResponse(200, $this->loadFixture('V27/BankResponseDetails004.xml'));
 
-        $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails(), '2.6');
+        $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails(), '2.7');
 
         $this->assertEquals(
-            'http://example.com/transinit/eps/v2_6',
+            'http://example.com/transinit/eps/v2_7',
             $this->http->getLastRequestInfo()['url']
         );
     }
 
     public function testSendTransferInitiatorDetailsWithPreselectedBank(): void
     {
-        $url = 'https://routing.eps.or.at/appl/epsSO/transinit/eps/v2_6/23ea3d14-278c-4e81-a021-d7b77492b611';
-        $this->mockResponse(200, $this->loadFixture('V26/BankResponseDetails000.xml'));
+        $url = 'https://routing.eps.or.at/appl/epsSO/transinit/eps/v2_7/23ea3d14-278c-4e81-a021-d7b77492b611';
+        $this->mockResponse(200, $this->loadFixture('V27/BankResponseDetails000.xml'));
 
-        $response = $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails(), '2.6', $url);
+        $response = $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails(), '2.7', $url);
 
         $expected = new ProtocolDetails(
             '000',
@@ -165,23 +141,18 @@ class TransferInitiatorDetailsTest extends TestCase
         $this->assertEquals($expected, $response);
         $this->assertEquals($url, $this->http->getLastRequestInfo()['url']);
     }
-    
-    /* ============================================================
-     * Security tests
-     * ============================================================
-     */
 
     public function testSendTransferInitiatorDetailsWithSecurityAppendsHash(): void
     {
-        $this->mockResponse(200, $this->loadFixture('V26/BankResponseDetails000.xml'));
+        $this->mockResponse(200, $this->loadFixture('V27/BankResponseDetails000.xml'));
 
         $t = new PaymentFlowUrls('a', 'b', 'c');
         $transferInitiatorDetails = new TransferInitiatorDetails('a', 'b', 'c',
             'd', 'e', 'f', 0, $t, null, new ObscurityConfig(8, 'Some seed'));
         $transferInitiatorDetails->setRemittanceIdentifier('Order1');
 
-        $url = 'https://routing.eps.or.at/appl/epsSO/transinit/eps/v2_6/23ea3d14-278c-4e81-a021-d7b77492b611';
-        $this->target->sendTransferInitiatorDetails($transferInitiatorDetails, '2.6', $url);
+        $url = 'https://routing.eps.or.at/appl/epsSO/transinit/eps/v2_7/23ea3d14-278c-4e81-a021-d7b77492b611';
+        $this->target->sendTransferInitiatorDetails($transferInitiatorDetails, '2.7', $url);
 
         // Only verify we appended the hash-related values into body; response mapping and URL are covered elsewhere
         $body = $this->http->getLastRequestInfo()['body'];
@@ -189,17 +160,12 @@ class TransferInitiatorDetailsTest extends TestCase
         $this->assertMatchesRegularExpression('/Order1[a-f0-9]{8}/i', $body);
     }
 
-    /* ============================================================
-     * Request body tests
-     * ============================================================
-     */
-
     public function testSendTransferInitiatorDetailsRequestContainsMandatoryFields(): void
     {
-        $this->mockResponse(200, $this->loadFixture('V26/BankResponseDetails004.xml'));
+        $this->mockResponse(200, $this->loadFixture('V27/BankResponseDetails004.xml'));
 
         // Trigger sending to build request body (response mapping is covered by dedicated tests)
-        $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails(), '2.6');
+        $this->target->sendTransferInitiatorDetails($this->getMockedTransferInitiatorDetails(), '2.7');
 
         $body = $this->http->getLastRequestInfo()['body'];
         $this->assertStringContainsString('orderid', $body); // remittanceIdentifier
@@ -214,18 +180,12 @@ class TransferInitiatorDetailsTest extends TestCase
         $this->assertStringContainsString('https://example.com/failure', $body);
     }
 
-
-    /* ============================================================
-     * Amount formatting tests
-     * ============================================================
-     */
-
     /**
      * @dataProvider provideValidAmounts
      */
     public function testSendTransferInitiatorDetailsFormatsAmountCorrectly($inputAmount, string $expectedInXml): void
     {
-        $this->mockResponse(200, $this->loadFixture('V26/BankResponseDetails004.xml'));
+        $this->mockResponse(200, $this->loadFixture('V27/BankResponseDetails004.xml'));
 
         $t = new PaymentFlowUrls('https://example.com/confirmation', 'https://example.com/success', 'https://example.com/failure');
 
@@ -241,7 +201,7 @@ class TransferInitiatorDetailsTest extends TestCase
         );
         $ti->setRemittanceIdentifier('orderid');
 
-        $this->target->sendTransferInitiatorDetails($ti, '2.6');
+        $this->target->sendTransferInitiatorDetails($ti, '2.7');
 
         $body = $this->http->getLastRequestInfo()['body'];
         $this->assertStringContainsString($expectedInXml, $body);
@@ -259,38 +219,6 @@ class TransferInitiatorDetailsTest extends TestCase
             'string as int' => ['12345', '123.45'],
             'max cents' => [99, '0.99'],
             'max amount' => [999999999, '9999999.99'],
-        ];
-    }
-
-    /**
-     * @dataProvider provideInvalidAmounts
-     */
-    public function testSendTransferInitiatorDetailsThrowsOnInvalidAmount($invalidAmount): void
-    {
-        $t = new PaymentFlowUrls('a', 'b', 'c');
-
-        $this->expectException(\InvalidArgumentException::class);
-
-        new TransferInitiatorDetails(
-            'TestShop',
-            'secret123',
-            'TESTBANKXXX',
-            'Test Company GmbH',
-            'AT611904300234573201',
-            'REF123456789',
-            $invalidAmount,
-            $t
-        );
-    }
-
-    public static function provideInvalidAmounts(): array
-    {
-        return [
-            'float'         => [123.45],
-            'string float'  => ['123.45'],
-            'null'          => [null],
-            'array'         => [[100]],
-            'object'        => [(object)['val' => 100]],
         ];
     }
 }

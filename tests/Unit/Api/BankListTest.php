@@ -62,7 +62,7 @@ class BankListTest extends TestCase
     public function testGetBanksV27Throws(): void
     {
         $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage('Not implemented yet - waiting for XSD 2.7');
+        $this->expectExceptionMessage('Not implemented yet - use version 2.6');
 
         $this->target->getBanks('2.7');
     }

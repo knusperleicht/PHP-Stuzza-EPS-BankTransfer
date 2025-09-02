@@ -73,7 +73,7 @@ class RefundRequestTest extends TestCase
         $refundRequest = $this->getMockedRefundRequest();
 
         $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage('Not implemented yet - waiting for XSD 2.7');
+        $this->expectExceptionMessage('Not implemented yet - use version 2.6');
 
         $this->target->sendRefundRequest($refundRequest, '2.7');
     }

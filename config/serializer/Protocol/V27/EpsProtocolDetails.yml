@@ -1,3 +1,10 @@
 Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\EpsProtocolDetails:
     xml_root_name: EpsProtocolDetails
     xml_root_namespace: 'http://www.stuzza.at/namespaces/eps/protocol/2025/01'
+    xml_root_prefix: epsp
+    xml_namespaces:
+      epsp: 'http://www.stuzza.at/namespaces/eps/protocol/2025/01'
+      eps:  'http://www.stuzza.at/namespaces/eps/payment/2025/01'
+      atrul: 'http://www.stuzza.at/namespaces/eps/austrianrules/2014/10'
+      epi:  'http://www.stuzza.at/namespaces/eps/epi/2013/02'
+      dsig: 'http://www.w3.org/2000/09/xmldsig#'

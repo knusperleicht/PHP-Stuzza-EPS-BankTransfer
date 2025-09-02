@@ -2,9 +2,8 @@
 declare(strict_types=1);
 require_once('../vendor/autoload.php');
 
-// Optional: Specify EPS interface version for all calls. Default is '2.6'.
-// You can omit passing this constant to use the default.
-const EPS_INTERFACE_VERSION = '2.6';
+// Optional: interface version can be set in samples/config.local.php (key: 'interface_version').
+// If not provided, the library default will be used (currently '2.6').
 
 use Knusperleicht\EpsBankTransfer\Api\SoCommunicator;
 use Knusperleicht\EpsBankTransfer\Exceptions\EpsException;
@@ -47,7 +46,7 @@ $soCommunicator = new SoCommunicator(
 
 try {
     // Optional version can be passed as the 2nd argument; default is '2.6'
-    $refundResponse = $soCommunicator->sendRefundRequest($refundRequest, EPS_INTERFACE_VERSION);
+    $refundResponse = $soCommunicator->sendRefundRequest($refundRequest, '2.6'); //only 2.7 is supported at this time
 
     echo $refundResponse->getStatusCode() . ', ' . $refundResponse->getErrorMessage();
     // Note: Status code '000' (No Errors) means the bank accepted the refund request.

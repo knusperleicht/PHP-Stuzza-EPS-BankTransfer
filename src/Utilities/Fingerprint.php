@@ -3,10 +3,28 @@ declare(strict_types=1);
 
 namespace Knusperleicht\EpsBankTransfer\Utilities;
 
+/**
+ * Utility helpers to generate fingerprints required by the EPS protocol.
+ *
+ * Provides MD5 (v2.6) and SHA-256 (v2.7) fingerprint generation methods.
+ */
 class Fingerprint
 {
 
-    public static function generateMD5Fingerprint(
+    /**
+     * Generate MD5 fingerprint for EPS v2.6 requests.
+     *
+     * @param string $secret Merchant secret provided by bank.
+     * @param string $date Creation date (YYYY-MM-DD).
+     * @param string $reference Reference identifier.
+     * @param string $account Beneficiary IBAN.
+     * @param string $remittance Remittance identifier (structured or unstructured).
+     * @param string $amount Amount value with dot as decimal separator, e.g. 150.55.
+     * @param string $currency ISO 4217 currency code (e.g., EUR).
+     * @param string $userId Merchant UserID (Merchant ID).
+     * @return string Uppercase hexadecimal MD5 hash string.
+     */
+    public static function generatMD5Fingerprint(
         string $secret, string $date, string $reference,
         string $account, string $remittance, string $amount,
         string $currency, string $userId): string
@@ -14,10 +32,23 @@ class Fingerprint
         return md5($secret . $date . $reference . $account . $remittance . $amount . $currency . $userId);
     }
 
-    public static function generateSHA256Fingerprint(string $pin, string $creationDateTime,
-                                                     string $transactionId, string $merchantIban,
-                                                            $amountValue, string $amountCurrency,
-                                                     string $userId, ?string $refundReference = null): string
+    /**
+     * Generate SHA-256 fingerprint for EPS v2.6 refund requests.
+     *
+     * @param string $pin Shared secret (PIN) provided by bank.
+     * @param string $creationDateTime ISO-8601 datetime (UTC) of the request.
+     * @param string $transactionId EPS transaction identifier.
+     * @param string $merchantIban Merchant IBAN.
+     * @param string|int|float $amountValue Amount value as string or numeric; will be concatenated as-is.
+     * @param string $amountCurrency ISO 4217 currency code (e.g., EUR).
+     * @param string $userId Merchant UserID.
+     * @param string|null $refundReference Optional refund reference.
+     * @return string Uppercase hexadecimal SHA-256 hash string.
+     */
+    public static function generateRefundSHA256Fingerprint(string $pin, string $creationDateTime,
+                                                           string $transactionId, string $merchantIban,
+                                                                  $amountValue, string $amountCurrency,
+                                                           string $userId, ?string $refundReference = null): string
     {
         $inputData = $pin .
             $creationDateTime .
@@ -26,6 +57,37 @@ class Fingerprint
             $amountValue .
             $amountCurrency .
             $refundReference .
+            $userId;
+
+        return strtoupper(hash('sha256', $inputData));
+    }
+
+    /**
+     * Generate SHA-256 fingerprint for EPS v2.7 initiate transfer requests.
+     *
+     * @param string $pin Shared secret (PIN) provided by bank.
+     * @param string $creationDateTime ISO-8601 datetime (UTC) of the request.
+     * @param string $referenceIdentifier Reference identifier.
+     * @param string $beneficiaryAccountIdentifier Beneficiary IBAN.
+     * @param string $remittanceIdentifier Structured or unstructured remittance identifier.
+     * @param string|int|float $amountValue Amount value as string or numeric; will be concatenated as-is.
+     * @param string $amountCurrency ISO 4217 currency code (e.g., EUR).
+     * @param string $userId Merchant UserID.
+     * @return string Uppercase hexadecimal SHA-256 hash string.
+     */
+    public static function generateInitiateTransferSHA256Fingerprint(string $pin, string $creationDateTime,
+                                                                     string $referenceIdentifier, string $beneficiaryAccountIdentifier,
+                                                                     string $remittanceIdentifier,
+                                                                            $amountValue, string $amountCurrency,
+                                                                     string $userId): string
+    {
+        $inputData = $pin .
+            $creationDateTime .
+            $referenceIdentifier .
+            $beneficiaryAccountIdentifier .
+            $remittanceIdentifier .
+            $amountValue .
+            $amountCurrency .
             $userId;
 
         return strtoupper(hash('sha256', $inputData));

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<epsp:EpsProtocolDetails xsi:schemaLocation="http://www.stuzza.at/namespaces/eps/protocol/2025/01 EPSProtocol-V27.xsd"
+                         xmlns:epi="http://www.stuzza.at/namespaces/eps/epi/2013/02"
+                         xmlns:epsp="http://www.stuzza.at/namespaces/eps/protocol/2025/01"
+                         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <epsp:VitalityCheckDetails>
+        <epi:UnstructuredRemittanceIdentifier>AT1234567890XYZ</epi:UnstructuredRemittanceIdentifier>
+        <epi:OrderingCustomerIdentifier>AT12ABCDEFGH</epi:OrderingCustomerIdentifier>
+    </epsp:VitalityCheckDetails>
+</epsp:EpsProtocolDetails>

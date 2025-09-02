@@ -5,10 +5,11 @@ namespace Knusperleicht\EpsBankTransfer\Domain;
 
 use DateTimeInterface;
 use Exception;
-use Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\EpsProtocolDetails;
+use Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\EpsProtocolDetails as V26Details;
+use Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\EpsProtocolDetails as V27Details;
 
 /**
- * Domain representation of an EPS Bank Confirmation (v2.6).
+ * Domain representation of an EPS Bank Confirmation.
  */
 class BankConfirmationDetails
 {
@@ -25,6 +26,12 @@ class BankConfirmationDetails
     /** @var string */
     private $statusCode;
     /** @var string|null */
+    private $statusReasonCode;
+    /** @var string|null */
+    private $statusReasonMessage;
+    /** @var string|null */
+    private $statusReasonFrom;
+    /** @var string|null */
     private $referenceIdentifier;
     /** @var string|null */
     private $orderingCustomerNameAddressText;
@@ -40,6 +47,9 @@ class BankConfirmationDetails
         DateTimeInterface $approvalTime,
         string            $paymentReferenceIdentifier,
         string            $statusCode,
+        ?string           $statusReasonCode = null,
+        ?string           $statusReasonMessage = null,
+        ?string           $statusReasonFrom = null,
         ?string           $referenceIdentifier = null,
         ?string           $orderingCustomerNameAddressText = null,
         ?string           $orderingCustomerIdentifier = null,
@@ -52,6 +62,9 @@ class BankConfirmationDetails
         $this->approvalTime = $approvalTime;
         $this->paymentReferenceIdentifier = $paymentReferenceIdentifier;
         $this->statusCode = $statusCode;
+        $this->statusReasonCode = $statusReasonCode;
+        $this->statusReasonMessage = $statusReasonMessage;
+        $this->statusReasonFrom = $statusReasonFrom;
         $this->referenceIdentifier = $referenceIdentifier;
         $this->orderingCustomerNameAddressText = $orderingCustomerNameAddressText;
         $this->orderingCustomerIdentifier = $orderingCustomerIdentifier;
@@ -88,6 +101,21 @@ class BankConfirmationDetails
         return $this->statusCode;
     }
 
+    public function getStatusReasonCode(): ?string
+    {
+        return $this->statusReasonCode;
+    }
+
+    public function getStatusReasonMessage(): ?string
+    {
+        return $this->statusReasonMessage;
+    }
+
+    public function getStatusReasonFrom(): ?string
+    {
+        return $this->statusReasonFrom;
+    }
+
     public function getReferenceIdentifier(): ?string
     {
         return $this->referenceIdentifier;
@@ -111,11 +139,11 @@ class BankConfirmationDetails
     /**
      * Factory method: create Domain object from generated XSD object.
      *
-     * @param EpsProtocolDetails $epsProtocolDetails Parsed protocol details containing confirmation payload
+     * @param V26Details $epsProtocolDetails Parsed protocol details containing confirmation payload
      * @return self
      * @throws Exception When required fields are missing or invalid in the payload
      */
-    public static function fromV26(EpsProtocolDetails $epsProtocolDetails): self
+    public static function fromV26(V26Details $epsProtocolDetails): self
     {
         $bankConfirmation = $epsProtocolDetails->getBankConfirmationDetails();
         $pcd = $bankConfirmation->getPaymentConfirmationDetails();
@@ -161,6 +189,82 @@ class BankConfirmationDetails
             $pcd->getPayConApprovalTime(),
             $pcd->getPaymentReferenceIdentifier(),
             $pcd->getStatusCode(),
+            null,
+            null,
+            null,
+            $referenceIdentifier,
+            $orderingCustomerNameAddressText,
+            $orderingCustomerIdentifier,
+            $orderingCustomerBic
+        );
+    }
+
+    /**
+     * Factory method: create Domain object from generated XSD object.
+     *
+     * @param V27Details $epsProtocolDetails Parsed protocol details containing confirmation payload
+     * @return self
+     * @throws Exception When required fields are missing or invalid in the payload
+     */
+    public static function fromV27(V27Details $epsProtocolDetails): self
+    {
+        $bankConfirmation = $epsProtocolDetails->getBankConfirmationDetails();
+        $pcd = $bankConfirmation->getPaymentConfirmationDetails();
+
+        // According to XSD: one of the choice elements is always present at PaymentConfirmationDetails
+        $remittanceId = $pcd->getRemittanceIdentifier()
+            ?? $pcd->getUnstructuredRemittanceIdentifier();
+
+        $referenceIdentifier = null;
+        $orderingCustomerNameAddressText = null;
+        $orderingCustomerIdentifier = null;
+        $orderingCustomerBic = null;
+
+        if ($remittanceId === null && $pcd->getPaymentInitiatorDetails() !== null) {
+            $pid = $pcd->getPaymentInitiatorDetails();
+            $epi = $pid->getEpiDetails();
+            $paymentInstructionDetails = $epi->getPaymentInstructionDetails();
+
+            $remittanceId = $paymentInstructionDetails->getRemittanceIdentifier()
+                ?? $paymentInstructionDetails->getUnstructuredRemittanceIdentifier();
+
+            $identificationDetails = $epi->getIdentificationDetails();
+
+            $referenceIdentifier = $identificationDetails->getReferenceIdentifier() ?? null;
+            $orderingCustomerNameAddressText = $identificationDetails->getOrderingCustomerNameAddressText() ?? null;
+            $orderingCustomerIdentifier = $identificationDetails->getOrderingCustomerIdentifier() ?? null;
+            $orderingCustomerBic = $identificationDetails->getOrderingCustomerOfiIdentifier() ?? null;
+        }
+
+        // According to XSD: one of BankIdentifier or Identifier is always present
+        $approvingUnit = '';
+        $payConApprovingUnitDetails = $pcd->getPayConApprovingUnitDetails();
+        if ($payConApprovingUnitDetails !== null) {
+            $approvingUnit = $payConApprovingUnitDetails->getApprovingUnitBankIdentifier()
+                ?? $payConApprovingUnitDetails->getApprovingUnitIdentifier()
+                ?? '';
+        }
+
+        $statusReasonCode = null;
+        $statusReasonMessage = null;
+        $statusReasonFrom = null;
+        $statusReason = $pcd->getStatusReason();
+        if ($statusReason !== null) {
+            $statusReasonCode = $statusReason->getReasonCode();
+            $statusReasonMessage = $statusReason->getReasonMessage();
+            $statusReasonFrom = $statusReason->getFrom();
+        }
+
+        return new BankConfirmationDetails(
+            $bankConfirmation->getSessionId(),
+            (string)$remittanceId,
+            $approvingUnit,
+            $pcd->getPayConApprovalTime(),
+            $pcd->getPaymentReferenceIdentifier(),
+            $pcd->getStatusCode(),
+            $statusReasonCode,
+            $statusReasonMessage,
+            $statusReasonFrom,
             $referenceIdentifier,
             $orderingCustomerNameAddressText,
             $orderingCustomerIdentifier,

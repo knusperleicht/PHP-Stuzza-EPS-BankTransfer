@@ -2,9 +2,8 @@
 declare(strict_types=1);
 require_once('../vendor/autoload.php');
 
-// Optional: Specify EPS interface version for all calls. Default is '2.6'.
-// You can omit passing this constant to use the default.
-const EPS_INTERFACE_VERSION = '2.6';
+// Optional: interface version can be set in samples/config.local.php (key: 'interface_version').
+// If not provided, the library default will be used (currently '2.6').
 
 use Knusperleicht\EpsBankTransfer\Api\SoCommunicator;
 use Knusperleicht\EpsBankTransfer\Domain\BankConfirmationDetails;
@@ -37,6 +36,11 @@ $vitalityCheckCallback = function (string $plainXml, VitalityCheckDetails $vital
     return true;
 };
 
+// Load configuration
+$config = file_exists(__DIR__ . '/config.local.php')
+    ? require __DIR__ . '/config.local.php'
+    : require __DIR__ . '/config.example.php';
+
 try {
     $psr17Factory = new Psr17Factory();
     $soCommunicator = new SoCommunicator(
@@ -53,7 +57,7 @@ try {
         $vitalityCheckCallback,       // Vitality check callback
         'php://input',   // Raw POST body received from the SO
         'php://output',  // Raw output stream returned to the SO 
-        EPS_INTERFACE_VERSION // Optional: omit to use default '2.6'
+        $config['interface_version'] ?? null // Optional: omit to use default '2.6'
     );
 } catch (EpsException $e) {
     // Log and return a generic server error for EPS-specific errors

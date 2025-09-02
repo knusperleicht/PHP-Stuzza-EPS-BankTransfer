@@ -7,21 +7,10 @@ use DateInterval;
 use DateTime;
 use Exception;
 use InvalidArgumentException;
-use Knusperleicht\EpsBankTransfer\Internal\Generated\AustrianRules\AustrianRulesDetails;
-use Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\BeneficiaryPartyDetails;
-use Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\BfiPartyDetails;
-use Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\EpiDetails;
-use Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\IdentificationDetails;
-use Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\InstructedAmount;
-use Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\PartyDetails;
-use Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\PaymentInstructionDetails;
-use Knusperleicht\EpsBankTransfer\Internal\Generated\Payment\V26\PaymentInitiatorDetails;
-use Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\AuthenticationDetails;
-use Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\EpsProtocolDetails;
-use Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\TransactionNokUrl;
-use Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\TransactionOkUrl;
-use Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\TransferInitiatorDetails as V6TransferInitiatorDetails;
-use Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\TransferMsgDetails;
+use Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\EpsProtocolDetails as EpsProtocolDetailsV26;
+use Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\EpsProtocolDetails as EpsProtocolDetailsV27;
+use Knusperleicht\EpsBankTransfer\Requests\Mappers\TransferInitiatorDetailsV26Mapper;
+use Knusperleicht\EpsBankTransfer\Requests\Mappers\TransferInitiatorDetailsV27Mapper;
 use Knusperleicht\EpsBankTransfer\Requests\Parts\ObscurityConfig;
 use Knusperleicht\EpsBankTransfer\Requests\Parts\PaymentFlowUrls;
 use Knusperleicht\EpsBankTransfer\Requests\Parts\WebshopArticle;
@@ -194,16 +183,33 @@ class TransferInitiatorDetails
         $this->instructedAmount = MoneyFormatter::formatXsdDecimal($amount);
     }
 
+    private function remittanceForFingerprint(): ?string
+    {
+        return $this->unstructuredRemittanceIdentifier ?: $this->remittanceIdentifier;
+    }
+
     public function getMD5Fingerprint(): string
     {
-        $remittanceIdentifier = $this->unstructuredRemittanceIdentifier ?: $this->remittanceIdentifier;
-
-        return Fingerprint::generateMD5Fingerprint(
+        return Fingerprint::generatMD5Fingerprint(
             $this->secret,
             $this->date,
             $this->referenceIdentifier,
             $this->beneficiaryAccountIdentifier,
-            $remittanceIdentifier,
+            (string)$this->remittanceForFingerprint(),
+            $this->instructedAmount,
+            $this->amountCurrencyIdentifier,
+            $this->userId
+        );
+    }
+
+    public function getSha256Fingerprint(): string
+    {
+        return Fingerprint::generateInitiateTransferSHA256Fingerprint(
+            $this->secret,
+            $this->date,
+            $this->referenceIdentifier,
+            $this->beneficiaryAccountIdentifier,
+            (string)$this->remittanceForFingerprint(),
             $this->instructedAmount,
             $this->amountCurrencyIdentifier,
             $this->userId
@@ -219,97 +225,25 @@ class TransferInitiatorDetails
      * - Exactly one of RemittanceIdentifier or UnstructuredRemittanceIdentifier may be set
      * - MD5Fingerprint derived from merchant secret and core fields
      *
-     * @return EpsProtocolDetails Fully populated protocol details ready to serialize.
+     * @return EpsProtocolDetailsV26 Fully populated protocol details ready to serialize.
      * @throws Exception When date/time parsing or constraints fail.
      */
-    public function toV26(): EpsProtocolDetails
+    public function toV26(): EpsProtocolDetailsV26
     {
-        $xml = new EpsProtocolDetails();
-        $xml->setSessionLanguage("DE");
+        return TransferInitiatorDetailsV26Mapper::map($this);
+    }
 
-        $transferInitiatorDetails = new V6TransferInitiatorDetails();
-        $xml->setTransferInitiatorDetails($transferInitiatorDetails);
-
-        $paymentInitiatorDetails = new PaymentInitiatorDetails();
-        $transferInitiatorDetails->setPaymentInitiatorDetails($paymentInitiatorDetails);
-
-        $transferMsgDetails = new TransferMsgDetails();
-        $transferMsgDetails->setConfirmationUrl($this->transferMsgDetails->getConfirmationUrl());
-
-        $transactionOkUrl = new TransactionOkUrl($this->transferMsgDetails->getTransactionOkUrl());
-        $transferMsgDetails->setTransactionOkUrl($transactionOkUrl);
-
-        $transactionNokUrl = new TransactionNokUrl($this->transferMsgDetails->getTransactionNokUrl());
-        $transferMsgDetails->setTransactionNokUrl($transactionNokUrl);
-
-        $transferInitiatorDetails->setTransferMsgDetails($transferMsgDetails);
-
-        if (!empty($this->webshopArticles)) {
-            $articles = [];
-            foreach ($this->webshopArticles as $article) {
-                $webshopArticle = new \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\WebshopArticle();
-                $webshopArticle->setArticleName($article->name);
-                $webshopArticle->setArticleCount($article->count);
-                $webshopArticle->setArticlePrice($article->price);
-
-                $articles[] = $webshopArticle;
-            }
-            $transferInitiatorDetails->setWebshopDetails($articles);
-        }
-
-        $authenticationDetails = new AuthenticationDetails();
-        $authenticationDetails->setUserId($this->userId);
-        $authenticationDetails->setMD5Fingerprint($this->getMD5Fingerprint());
-        $transferInitiatorDetails->setAuthenticationDetails($authenticationDetails);
-
-        $epiDetails = new EpiDetails();
-        $identificationDetails = new IdentificationDetails();
-        $partyDetails = new PartyDetails();
-        $paymentInstructionDetails = new PaymentInstructionDetails();
-
-        if ($this->unstructuredRemittanceIdentifier == null) {
-            $paymentInstructionDetails->setRemittanceIdentifier($this->remittanceIdentifier);
-        } else {
-            $paymentInstructionDetails->setUnstructuredRemittanceIdentifier($this->unstructuredRemittanceIdentifier);
-        }
-
-        $instructedAmount = new InstructedAmount($this->instructedAmount);
-        $instructedAmount->setAmountCurrencyIdentifier($this->amountCurrencyIdentifier);
-        $paymentInstructionDetails->setInstructedAmount($instructedAmount);
-        $paymentInstructionDetails->setChargeCode('SHA');
-
-        $bfiPartyDetails = new BfiPartyDetails();
-        $bfiPartyDetails->setBfiBicIdentifier($this->bfiBicIdentifier);
-        $partyDetails->setBfiPartyDetails($bfiPartyDetails);
-
-        $beneficiaryPartyDetails = new BeneficiaryPartyDetails();
-        $beneficiaryPartyDetails->setBeneficiaryNameAddressText($this->beneficiaryNameAddressText);
-        $beneficiaryPartyDetails->setBeneficiaryAccountIdentifier($this->beneficiaryAccountIdentifier);
-        $partyDetails->setBeneficiaryPartyDetails($beneficiaryPartyDetails);
-
-        $identificationDetails->setDate($this->date);
-        $identificationDetails->setReferenceIdentifier($this->referenceIdentifier);
-
-        if (!empty($this->orderingCustomerOfiIdentifier)) {
-            $identificationDetails->setOrderingCustomerOfiIdentifier($this->orderingCustomerOfiIdentifier);
-        }
-
-        $epiDetails->setIdentificationDetails($identificationDetails);
-        $epiDetails->setPartyDetails($partyDetails);
-        $epiDetails->setPaymentInstructionDetails($paymentInstructionDetails);
-
-        $paymentInitiatorDetails->setEpiDetails($epiDetails);
-
-        $austrianRulesDetails = new AustrianRulesDetails();
-        $austrianRulesDetails->setDigSig('SIG');
-
-        if (!empty($this->expirationTime)) {
-            $austrianRulesDetails->setExpirationTime(new DateTime($this->expirationTime));
-        }
-
-        $paymentInitiatorDetails->setAustrianRulesDetails($austrianRulesDetails);
-
-        return $xml;
+    /**
+     * Domain to EPS schema mapping (v2.7).
+     *
+     * Mirrors toV26 but uses the V27 generated classes and namespaces.
+     *
+     * @return EpsProtocolDetailsV27
+     * @throws Exception
+     */
+    public function toV27(): EpsProtocolDetailsV27
+    {
+        return TransferInitiatorDetailsV27Mapper::map($this);
     }
 
     public function getWebshopArticles(): array
@@ -419,7 +353,7 @@ class TransferInitiatorDetails
         $this->referenceIdentifier = $referenceIdentifier;
     }
 
-    public function getExpirationTime(): string
+    public function getExpirationTime(): ?string
     {
         return $this->expirationTime;
     }
@@ -449,7 +383,7 @@ class TransferInitiatorDetails
         $this->transferMsgDetails = $transferMsgDetails;
     }
 
-    public function getOrderingCustomerOfiIdentifier(): string
+    public function getOrderingCustomerOfiIdentifier(): ?string
     {
         return $this->orderingCustomerOfiIdentifier;
     }

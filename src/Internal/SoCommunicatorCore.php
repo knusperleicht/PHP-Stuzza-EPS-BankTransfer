@@ -5,6 +5,7 @@ namespace Knusperleicht\EpsBankTransfer\Internal;
 
 use JMS\Serializer\SerializerInterface;
 use Knusperleicht\EpsBankTransfer\Exceptions\UnknownRemittanceIdentifierException;
+use Knusperleicht\EpsBankTransfer\Requests\TransferInitiatorDetails;
 use Knusperleicht\EpsBankTransfer\Serializer\SerializerFactory;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
@@ -140,6 +141,49 @@ class SoCommunicatorCore
         }
 
         return $remittanceIdentifier;
+    }
+
+    /**
+     * Apply obscurity (hash suffix) rules to remittance identifiers.
+     *
+     * Ensures total length constraints (35/140) are respected before appending
+     * an optional hash suffix based on provided ObscurityConfig.
+     *
+     * @param TransferInitiatorDetails $transferInitiatorDetails
+     */
+    public function handleObscurityConfig(TransferInitiatorDetails $transferInitiatorDetails): void
+    {
+        $cfg = $transferInitiatorDetails->getObscurityConfig();
+        $suffixLength = $cfg ? $cfg->getLength() : 0;
+        $seed = $cfg ? $cfg->getSeed() : null;
+
+        if ($transferInitiatorDetails->getRemittanceIdentifier() !== null) {
+            $base = $transferInitiatorDetails->getRemittanceIdentifier();
+            if ($suffixLength > 0 && strlen($base) + $suffixLength > 35) {
+                throw new \InvalidArgumentException('RemittanceIdentifier too long for configured obscurity length. Max total 35 characters.');
+            }
+            $transferInitiatorDetails->setRemittanceIdentifier(
+                $this->appendHash(
+                    $base,
+                    $suffixLength,
+                    $seed,
+                )
+            );
+        }
+
+        if ($transferInitiatorDetails->getUnstructuredRemittanceIdentifier() !== null) {
+            $base = $transferInitiatorDetails->getUnstructuredRemittanceIdentifier();
+            if ($suffixLength > 0 && strlen($base) + $suffixLength > 140) {
+                throw new \InvalidArgumentException('UnstructuredRemittanceIdentifier too long for configured obscurity length. Max total 140 characters.');
+            }
+            $transferInitiatorDetails->setUnstructuredRemittanceIdentifier(
+                $this->appendHash(
+                    $base,
+                    $suffixLength,
+                    $seed
+                )
+            );
+        }
     }
 
     private function logInfo(string $message): void
