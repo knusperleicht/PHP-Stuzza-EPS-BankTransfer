@@ -31,176 +31,44 @@ use Psr\Log\LoggerInterface;
  * XSD 2.7 is pending. All public methods throw LogicException to make the
  * limitation explicit to integrators while keeping the public API forward-compatible.
  */
-class SoV27Communicator
+class SoV27Communicator extends \Knusperleicht\EpsBankTransfer\Internal\AbstractSoCommunicator
 {
     public const TRANSFER = '/transinit/eps/v2_7';
     public const VERSION = '2.7';
 
-    /** @var SoCommunicatorCore */
-    private $core;
-
-    /** @var SerializerInterface */
-    private $serializer;
-
-    /**
-     * Create the v2.7 communicator with shared HTTP/serialization core.
-     *
-     * @param ClientInterface $httpClient PSR-18 HTTP client.
-     * @param RequestFactoryInterface $requestFactory PSR-17 request factory.
-     * @param StreamFactoryInterface $streamFactory PSR-17 stream factory.
-     * @param string $baseUrl Base URL used to build endpoint URLs.
-     * @param LoggerInterface|null $logger Optional PSR-3 logger.
-     */
-    public function __construct(
-        ClientInterface         $httpClient,
-        RequestFactoryInterface $requestFactory,
-        StreamFactoryInterface  $streamFactory,
-        string                  $baseUrl,
-        LoggerInterface         $logger = null
-    )
+    protected function getVersion(): string
     {
-        $this->core = new SoCommunicatorCore(
-            $httpClient,
-            $requestFactory,
-            $streamFactory,
-            $baseUrl,
-            $logger
-        );
-
-        $this->serializer = $this->core->getSerializer();
+        return self::VERSION;
     }
 
-    /**
-     * Send a TransferInitiatorDetails request to EPS v2.7 endpoint.
-     *
-     * Serializes the given request, posts it to the Scheme Operator and
-     * validates the response against the v2.7 EPS Protocol XSD.
-     *
-     * @param TransferInitiatorDetails $transferInitiatorDetails Domain request to send
-     * @param string|null $targetUrl Optional override of the endpoint URL; defaults to baseUrl + TRANSFER
-     * @return EpsProtocolDetails Deserialized protocol response
-     * @throws XmlValidationException When response XML does not match the schema
-     * @throws Exception On underlying HTTP/serialization errors
-     */
-    public function sendTransferInitiatorDetails(
-        TransferInitiatorDetails $transferInitiatorDetails,
-        ?string                  $targetUrl = null
-    ): EpsProtocolDetails
+    protected function getTransferPath(): string
     {
-        $this->core->handleObscurityConfig($transferInitiatorDetails);
-
-        $targetUrl = $targetUrl ?? $this->core->getBaseUrl() . self::TRANSFER;
-
-        $xmlData = $this->serializer->serialize($transferInitiatorDetails->toV27(), 'xml');
-        $response = $this->core->postUrl($targetUrl, $xmlData, 'Send payment order (v2.7)');
-
-        XmlValidator::validateEpsProtocol($response, self::VERSION);
-
-        return $this->serializer->deserialize($response, EpsProtocolDetails::class, 'xml');
+        return self::TRANSFER;
     }
 
-    /**
-     * Handle incoming EPS confirmation/vitality callback request.
-     *
-     * Reads raw XML from input stream, validates it, dispatches to the provided
-     * callback depending on whether the payload is a VitalityCheck or a
-     * BankConfirmation. For VitalityCheck, the raw payload is echoed back.
-     *
-     * The provided callbacks MUST return true to indicate success; otherwise a
-     * CallbackResponseException is thrown and an error response is written.
-     *
-     * @param callable|null $confirmationCallback function(string $rawXml, BankConfirmationDetails $details): bool
-     * @param callable|null $vitalityCheckCallback function(string $rawXml, VitalityCheckDetails $details): bool
-     * @param string $rawPostStream Input stream URI to read raw request XML from (default php://input)
-     * @param string $outputStream Output stream URI to write response XML to (default php://output)
-     * @throws InvalidCallbackException When callbacks are missing or not callable
-     * @throws XmlValidationException When input XML is invalid
-     * @throws CallbackResponseException When a callback returns a non-true value
-     */
-    public function handleConfirmationUrl(
-        $confirmationCallback = null,
-        $vitalityCheckCallback = null,
-        string $rawPostStream = 'php://input',
-        string $outputStream = 'php://output'
-    ): void
+    protected function protocolClassFqn(): string
     {
-        try {
-            // Validate callbacks
-            if ($confirmationCallback === null || !is_callable($confirmationCallback)) {
-                throw new InvalidCallbackException('ConfirmationCallback not callable or missing');
-            }
-            if ($vitalityCheckCallback !== null && !is_callable($vitalityCheckCallback)) {
-                throw new InvalidCallbackException('VitalityCheckCallback not callable');
-            }
-
-            $rawXml = file_get_contents($rawPostStream);
-            XmlValidator::validateEpsProtocol($rawXml, self::VERSION);
-
-            $protocol = $this->serializer->deserialize($rawXml, EpsProtocolDetails::class, 'xml');
-
-            if ($protocol->getVitalityCheckDetails() !== null) {
-                $this->handleVitalityCheck(
-                    $vitalityCheckCallback,
-                    $rawXml,
-                    VitalityCheckDetails::fromV27($protocol->getVitalityCheckDetails()),
-                    $outputStream
-                );
-                return;
-            }
-
-            if ($protocol->getBankConfirmationDetails() !== null) {
-                $v27 = BankConfirmationDetails::fromV27($protocol);
-                $this->handleBankConfirmation(
-                    $confirmationCallback,
-                    $rawXml,
-                    $v27,
-                    $outputStream);
-                return;
-            }
-
-            throw new XmlValidationException('Unknown confirmation details structure');
-        } catch (Exception $e) {
-            $this->handleException($e, $outputStream);
-            throw $e;
-        }
+        return EpsProtocolDetails::class;
     }
 
-    private function handleVitalityCheck(?callable $callback, string $rawXml, VitalityCheckDetails $vitality, string $outputStream): void
+    protected function serializeTransferInitiator($transferInitiatorDetails): string
     {
-        if ($callback !== null) {
-            if (call_user_func($callback, $rawXml, $vitality) !== true) {
-                throw new CallbackResponseException('Vitality check callback must return true');
-            }
-        }
-        file_put_contents($outputStream, $rawXml);
+        return $this->serializer->serialize($transferInitiatorDetails->toV27(), 'xml');
     }
 
-    private function handleBankConfirmation(callable $callback, string $rawXml, BankConfirmationDetails $confirmation, string $outputStream): void
+    protected function vitalityFromProtocol($protocol): ?VitalityCheckDetails
     {
-        $shopConfirmationDetails = new ShopResponseDetails();
-        $shopConfirmationDetails->setSessionId($confirmation->getSessionId());
-        $shopConfirmationDetails->setStatusCode($confirmation->getStatusCode());
-        $shopConfirmationDetails->setPaymentReferenceIdentifier($confirmation->getPaymentReferenceIdentifier());
-
-        if (call_user_func($callback, $rawXml, $confirmation) !== true) {
-            throw new CallbackResponseException('Confirmation callback must return true');
-        }
-
-        $xml = $this->serializer->serialize($shopConfirmationDetails->toV27(), 'xml');
-        file_put_contents($outputStream, $xml);
+        return $protocol->getVitalityCheckDetails() ? VitalityCheckDetails::fromV27($protocol->getVitalityCheckDetails()) : null;
     }
 
-    private function handleException(Exception $e, string $outputStream): void
+    protected function bankConfirmationFromProtocol($protocol): ?BankConfirmationDetails
     {
-        $shopConfirmationDetails = new ShopResponseDetails();
+        return $protocol->getBankConfirmationDetails() ? BankConfirmationDetails::fromV27($protocol) : null;
+    }
 
-        if ($e instanceof EpsException) {
-            $shopConfirmationDetails->setErrorMessage($e->getMessage());
-        } else {
-            $shopConfirmationDetails->setErrorMessage('Exception "' . get_class($e) . '" occurred during confirmation handling');
-        }
-
-        file_put_contents($outputStream, $this->serializer->serialize($shopConfirmationDetails->toV27(), 'xml'));
+    protected function shopResponseXml(ShopResponseDetails $details): string
+    {
+        return $this->serializer->serialize($details->toV27(), 'xml');
     }
 
     /**

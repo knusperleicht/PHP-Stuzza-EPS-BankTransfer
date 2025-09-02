@@ -5,6 +5,12 @@ namespace Knusperleicht\EpsBankTransfer\Utilities;
 
 use Knusperleicht\EpsBankTransfer\Exceptions\XmlValidationException;
 
+/**
+ * XML validation utilities for EPS schemas.
+ *
+ * Provides helpers to validate BankList, EPS Protocol, and EPS Refund XML
+ * against the bundled XSD schemas for supported interface versions.
+ */
 class XmlValidator
 {
     private const VERSION_MAPPING = [
@@ -13,7 +19,11 @@ class XmlValidator
     ];
 
     /**
-     * @throws XmlValidationException
+     * Validate a BankList XML string against the BankList XSD.
+     *
+     * @param string $xml The XML content to validate.
+     * @return bool True if validation succeeds.
+     * @throws XmlValidationException When the XML is empty, malformed, or invalid.
      */
     public static function validateBankList($xml): bool
     {
@@ -21,7 +31,12 @@ class XmlValidator
     }
 
     /**
-     * @throws XmlValidationException
+     * Validate an EPS Protocol XML content against the version-specific XSD.
+     *
+     * @param string $xml The XML content to validate.
+     * @param string $version Interface version (e.g., "2.6" or "2.7").
+     * @return bool True if validation succeeds.
+     * @throws XmlValidationException When XML is empty, malformed, or invalid.
      */
     public static function validateEpsProtocol(string $xml, string $version = '2.6'): bool
     {
@@ -31,7 +46,12 @@ class XmlValidator
     }
 
     /**
-     * @throws XmlValidationException
+     * Validate an EPS Refund XML content against the version-specific XSD.
+     *
+     * @param string $xml The XML content to validate.
+     * @param string $version Interface version (e.g., "2.6" or "2.7").
+     * @return bool True if validation succeeds.
+     * @throws XmlValidationException When XML is empty, malformed, or invalid.
      */
     public static function validateEpsRefund($xml, string $version = '2.6'): bool
     {
@@ -40,6 +60,12 @@ class XmlValidator
         return self::validateXml($xml, self::gtXSD($filename));
     }
 
+    /**
+     * Resolve the absolute path to an XSD schema file in resources/schemas.
+     *
+     * @param string $filename Schema filename.
+     * @return string Absolute path to XSD file.
+     */
     private static function gtXSD(string $filename): string
     {
         return dirname(__DIR__, 2)
@@ -49,7 +75,12 @@ class XmlValidator
     }
 
     /**
-     * @throws XmlValidationException
+     * Validate XML string against an XSD schema file.
+     *
+     * @param string $xml XML content.
+     * @param string $xsd Absolute path to the XSD file.
+     * @return bool True if validation succeeds.
+     * @throws XmlValidationException When parsing or schema validation fails.
      */
     private static function validateXml($xml, $xsd): bool
     {

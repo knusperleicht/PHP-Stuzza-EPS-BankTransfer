@@ -55,10 +55,16 @@ class SoCommunicatorCore
         return $this->baseUrl;
     }
 
-    // ==============
-    // CORE HELPERS
-    // ==============
-
+    /**
+     * Execute a GET request and return the raw response body.
+     *
+     * Adds Accept headers for XML responses and throws a RuntimeException on
+     * transport errors or non-2xx status codes.
+     *
+     * @param string $url Fully-qualified URL to request.
+     * @param string|null $logMessage Optional message for info logs.
+     * @return string Raw response body.
+     */
     public function getUrl(string $url, string $logMessage = null): string
     {
         $this->logInfo($logMessage ?: 'GET ' . $url);
@@ -82,6 +88,17 @@ class SoCommunicatorCore
         return (string)$response->getBody();
     }
 
+    /**
+     * Execute a POST request with XML body and return the raw response body.
+     *
+     * Sets appropriate XML headers and throws a RuntimeException on transport
+     * errors or non-2xx status codes.
+     *
+     * @param string $url Endpoint URL.
+     * @param string $xmlBody XML payload to send.
+     * @param string|null $logMessage Optional message for info logs.
+     * @return string Raw response body.
+     */
     public function postUrl(string $url, string $xmlBody, string $logMessage = null): string
     {
         $this->logInfo($logMessage ?: 'POST ' . $url);
@@ -109,6 +126,18 @@ class SoCommunicatorCore
         return (string)$response->getBody();
     }
 
+    /**
+     * Append a deterministic hash suffix to a string for obscurity purposes.
+     *
+     * If obscuritySuffixLength is 0, the original string is returned. When a
+     * non-zero length is provided, obscuritySeed must be set; otherwise an
+     * UnexpectedValueException is thrown.
+     *
+     * @param string $string Base string.
+     * @param int $obscuritySuffixLength Number of characters from the hash to append.
+     * @param string|null $obscuritySeed Secret seed for hashing.
+     * @return string Suffix-augmented string.
+     */
     public function appendHash(string $string, int $obscuritySuffixLength = 0, ?string $obscuritySeed = null): string
     {
         if ($obscuritySuffixLength === 0) {
@@ -124,7 +153,17 @@ class SoCommunicatorCore
     }
 
     /**
-     * @throws UnknownRemittanceIdentifierException
+     * Remove and verify an obscurity hash suffix from the given string.
+     *
+     * If obscuritySuffixLength is 0, the input string is returned unchanged.
+     * Otherwise, the suffix is stripped and re-computed for verification; if it
+     * does not match, an UnknownRemittanceIdentifierException is thrown.
+     *
+     * @param string $suffixed Input string which may have a hash suffix.
+     * @param int $obscuritySuffixLength Length of the suffix to strip.
+     * @param string|null $obscuritySeed Secret seed used for hashing.
+     * @return string Original string without suffix.
+     * @throws UnknownRemittanceIdentifierException When verification fails.
      */
     public function stripHash(string $suffixed, int $obscuritySuffixLength = 0, ?string $obscuritySeed = null): string
     {
@@ -144,12 +183,13 @@ class SoCommunicatorCore
     }
 
     /**
-     * Apply obscurity (hash suffix) rules to remittance identifiers.
+     * Apply obscurity (hash suffix) rules to remittance identifiers in the request.
      *
-     * Ensures total length constraints (35/140) are respected before appending
-     * an optional hash suffix based on provided ObscurityConfig.
+     * Ensures total length constraints (35 characters for RemittanceIdentifier,
+     * 140 for UnstructuredRemittanceIdentifier) before appending an optional
+     * hash suffix based on provided ObscurityConfig.
      *
-     * @param TransferInitiatorDetails $transferInitiatorDetails
+     * @param TransferInitiatorDetails $transferInitiatorDetails The request to mutate in-place.
      */
     public function handleObscurityConfig(TransferInitiatorDetails $transferInitiatorDetails): void
     {
@@ -200,6 +240,11 @@ class SoCommunicatorCore
         }
     }
 
+    /**
+     * Get the configured JMS Serializer instance used for XML (de)serialization.
+     *
+     * @return SerializerInterface
+     */
     public function getSerializer(): SerializerInterface
     {
         return $this->serializer;

@@ -74,7 +74,7 @@ class SoCommunicator implements SoCommunicatorInterface
     /**
      * Lazily create and return the version 2.6 communicator.
      */
-    private function getV26(): ?SoV26Communicator
+    private function getV26(): SoV26Communicator
     {
         if ($this->v26 === null) {
             $this->v26 = new SoV26Communicator(
@@ -91,7 +91,7 @@ class SoCommunicator implements SoCommunicatorInterface
     /**
      * Lazily create and return the version 2.7 communicator.
      */
-    private function getV27(): ?SoV27Communicator
+    private function getV27(): SoV27Communicator
     {
         if ($this->v27 === null) {
             $this->v27 = new SoV27Communicator(
