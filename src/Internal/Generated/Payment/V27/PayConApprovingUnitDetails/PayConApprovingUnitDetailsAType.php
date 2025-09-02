@@ -7,7 +7,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Payment\V27\PayConApprovingUnit
  */
 class PayConApprovingUnitDetailsAType
 {
-
     /**
      * @var string $approvingUnitBankIdentifier
      */
@@ -61,7 +60,5 @@ class PayConApprovingUnitDetailsAType
         $this->approvingUnitIdentifier = $approvingUnitIdentifier;
         return $this;
     }
-
-
 }
 

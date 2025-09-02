@@ -7,7 +7,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\StatusMsg;
  */
 class StatusMsgAType
 {
-
     /**
      * @var string $transactionId
      */
@@ -61,7 +60,5 @@ class StatusMsgAType
         $this->status = $status;
         return $this;
     }
-
-
 }
 

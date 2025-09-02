@@ -9,7 +9,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\AustrianRules;
  */
 class DigSig
 {
-
     /**
      * @var string $__value
      */
@@ -48,7 +47,5 @@ class DigSig
     {
         return strval($this->__value);
     }
-
-
 }
 

@@ -10,7 +10,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\XmlDsig;
  */
 class SignatureType
 {
-
     /**
      * @var string $id
      */
@@ -176,12 +175,10 @@ class SignatureType
      * @param \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\ObjectXsd[] $object
      * @return self
      */
-    public function setObject(array $object = null)
+    public function setObject(?array $object = null)
     {
         $this->object = $object;
         return $this;
     }
-
-
 }
 

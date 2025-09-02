@@ -7,7 +7,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Protocol\V26;
  */
 class Status
 {
-
     /**
      * @var string $__value
      */
@@ -46,7 +45,5 @@ class Status
     {
         return strval($this->__value);
     }
-
-
 }
 

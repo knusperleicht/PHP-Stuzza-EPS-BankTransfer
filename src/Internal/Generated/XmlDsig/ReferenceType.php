@@ -10,7 +10,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\XmlDsig;
  */
 class ReferenceType
 {
-
     /**
      * @var string $id
      */
@@ -157,7 +156,7 @@ class ReferenceType
      * @param \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\Transform[] $transforms
      * @return self
      */
-    public function setTransforms(array $transforms = null)
+    public function setTransforms(?array $transforms = null)
     {
         $this->transforms = $transforms;
         return $this;
@@ -206,7 +205,5 @@ class ReferenceType
         $this->digestValue = $digestValue;
         return $this;
     }
-
-
 }
 

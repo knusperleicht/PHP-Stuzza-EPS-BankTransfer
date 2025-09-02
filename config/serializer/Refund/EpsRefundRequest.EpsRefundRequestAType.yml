@@ -9,7 +9,7 @@ Psa\EpsBankTransfer\Internal\Generated\Refund\EpsRefundRequest\EpsRefundRequestA
             accessor:
                 getter: getCreDtTm
                 setter: setCreDtTm
-            type: DateTime
+            type: "DateTime<'Y-m-d\\TH:i:s.vP'>"
         transactionId:
             expose: true
             access_type: public_method

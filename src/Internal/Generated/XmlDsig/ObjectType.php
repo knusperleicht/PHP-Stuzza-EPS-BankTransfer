@@ -10,7 +10,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\XmlDsig;
  */
 class ObjectType
 {
-
     /**
      * @var string $id
      */
@@ -91,7 +90,5 @@ class ObjectType
         $this->encoding = $encoding;
         return $this;
     }
-
-
 }
 

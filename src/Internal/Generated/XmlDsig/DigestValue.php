@@ -7,7 +7,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\XmlDsig;
  */
 class DigestValue
 {
-
     /**
      * @var string $__value
      */
@@ -46,7 +45,5 @@ class DigestValue
     {
         return strval($this->__value);
     }
-
-
 }
 

@@ -7,7 +7,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Epi\BeneficiaryPartyDetails;
  */
 class BeneficiaryPartyDetailsAType
 {
-
     /**
      * @var string $beneficiaryNameAddressText
      */
@@ -88,7 +87,5 @@ class BeneficiaryPartyDetailsAType
         $this->beneficiaryAccountIdentifier = $beneficiaryAccountIdentifier;
         return $this;
     }
-
-
 }
 

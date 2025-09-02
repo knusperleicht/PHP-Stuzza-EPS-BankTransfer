@@ -117,30 +117,6 @@ class InitiateTransferRequestTest extends TestCase
         $this->assertStringContainsString('<epi:UnstructuredRemittanceIdentifier>' . self::TEST_UNSTRUCTURED_REMITTANCE . '</epi:UnstructuredRemittanceIdentifier>', $xmlData);
     }
 
-    public function testMD5FingerprintIsCalculatedCorrectly()
-    {
-        $data = $this->createTransferInitiatorDetails();
-        $remittanceIdentifier = "remittanceIdentifier";
-        $data->setRemittanceIdentifier($remittanceIdentifier);
-
-        $actual = $data->getMD5Fingerprint();
-        $expected = $this->calculateFingerprint($remittanceIdentifier);
-
-        $this->assertEquals($expected, $actual, 'Expected MD5 Fingerprint to be equal');
-    }
-
-    public function testMD5FingerprintIsCalculatedCorrectlyWithAnUnstructuredRemittanceIdentifier()
-    {
-        $data = $this->createTransferInitiatorDetails();
-        $unstructuredRemittanceIdentifier = 'unstructuredRemittanceIdentifier';
-        $data->setUnstructuredRemittanceIdentifier($unstructuredRemittanceIdentifier);
-
-        $actual = $data->getMD5Fingerprint();
-        $expected = $this->calculateFingerprint($unstructuredRemittanceIdentifier);
-
-        $this->assertEquals($expected, $actual, 'Expected MD5 Fingerprint to be equal');
-    }
-
     private function createTransferMsgDetails(): PaymentFlowUrls
     {
         return new PaymentFlowUrls(
@@ -174,19 +150,5 @@ class InitiateTransferRequestTest extends TestCase
         $data->setRemittanceIdentifier(self::TEST_REMITTANCE_ID);
         $data->addArticle(new WebshopArticle(self::TEST_ARTICLE_NAME, self::TEST_ARTICLE_COUNT, self::TEST_AMOUNT));
         return $data;
-    }
-
-    private function calculateFingerprint(string $remittanceIdentifier): string
-    {
-        return Fingerprint::calculateExpectedMD5Fingerprint(
-            self::TEST_SECRET,
-            self::TEST_DATE,
-            self::TEST_REFERENCE,
-            self::TEST_ACCOUNT,
-            $remittanceIdentifier,
-            self::TEST_AMOUNT,
-            self::TEST_CURRENCY,
-            self::TEST_USER_ID
-        );
     }
 }

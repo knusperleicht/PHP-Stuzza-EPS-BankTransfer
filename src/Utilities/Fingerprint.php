@@ -5,12 +5,19 @@ namespace Psa\EpsBankTransfer\Utilities;
 
 class Fingerprint
 {
-    public static function calculateExpectedMD5Fingerprint(string $secret, string $date, string $reference, string $account, string $remittance, int $amount, string $currency, string $userId): string
+
+    public static function generateMD5Fingerprint(
+        string $secret, string $date, string $reference,
+        string $account, string $remittance, string $amount,
+        string $currency, string $userId): string
     {
-        return md5($secret . $date . $reference . $account . $remittance . MoneyFormatter::formatXsdDecimal($amount) . $currency . $userId);
+        return md5($secret . $date . $reference . $account . $remittance . $amount . $currency . $userId);
     }
 
-    public static function generateSHA256Fingerprint(string $pin, string $creationDateTime, string $transactionId, string $merchantIban, string $amountValue, string $amountCurrency, string $userId, ?string $refundReference = null): string
+    public static function generateSHA256Fingerprint(string $pin, string $creationDateTime,
+                                                     string $transactionId, string $merchantIban,
+                                                      $amountValue, string $amountCurrency,
+                                                     string $userId, ?string $refundReference = null): string
     {
         $inputData = $pin .
             $creationDateTime .

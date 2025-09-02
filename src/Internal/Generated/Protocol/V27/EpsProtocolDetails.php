@@ -9,7 +9,5 @@ use Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\EpsProtocolDetails\EpsPr
  */
 class EpsProtocolDetails extends EpsProtocolDetailsAType
 {
-
-
 }
 

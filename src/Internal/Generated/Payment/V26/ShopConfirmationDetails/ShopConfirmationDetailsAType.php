@@ -7,7 +7,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Payment\V26\ShopConfirmationDet
  */
 class ShopConfirmationDetailsAType
 {
-
     /**
      * @var string $statusCode
      */
@@ -61,7 +60,5 @@ class ShopConfirmationDetailsAType
         $this->paymentReferenceIdentifier = $paymentReferenceIdentifier;
         return $this;
     }
-
-
 }
 

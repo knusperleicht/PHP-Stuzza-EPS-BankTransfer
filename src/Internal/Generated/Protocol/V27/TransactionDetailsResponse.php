@@ -11,7 +11,5 @@ use Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\TransactionDetailsRespon
  */
 class TransactionDetailsResponse extends TransactionDetailsResponseAType
 {
-
-
 }
 

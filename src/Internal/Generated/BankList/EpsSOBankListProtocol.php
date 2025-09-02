@@ -11,7 +11,5 @@ use Psa\EpsBankTransfer\Internal\Generated\BankList\EpsSOBankListProtocol\EpsSOB
  */
 class EpsSOBankListProtocol extends EpsSOBankListProtocolAType
 {
-
-
 }
 

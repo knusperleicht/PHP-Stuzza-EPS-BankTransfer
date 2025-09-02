@@ -9,7 +9,5 @@ use Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\ErrorDetails\ErrorDetail
  */
 class ErrorDetails extends ErrorDetailsAType
 {
-
-
 }
 

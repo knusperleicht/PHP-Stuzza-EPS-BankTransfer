@@ -11,7 +11,5 @@ use Psa\EpsBankTransfer\Internal\Generated\Epi\DateOptionDetails\DateOptionDetai
  */
 class DateOptionDetails extends DateOptionDetailsAType
 {
-
-
 }
 

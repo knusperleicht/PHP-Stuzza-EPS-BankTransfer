@@ -10,7 +10,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\XmlDsig;
  */
 class X509DataType
 {
-
     /**
      * @var \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\X509IssuerSerialType[] $x509IssuerSerial
      */
@@ -96,7 +95,7 @@ class X509DataType
      * @param \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\X509IssuerSerialType[] $x509IssuerSerial
      * @return self
      */
-    public function setX509IssuerSerial(array $x509IssuerSerial = null)
+    public function setX509IssuerSerial(?array $x509IssuerSerial = null)
     {
         $this->x509IssuerSerial = $x509IssuerSerial;
         return $this;
@@ -152,7 +151,7 @@ class X509DataType
      * @param string $x509SKI
      * @return self
      */
-    public function setX509SKI(array $x509SKI = null)
+    public function setX509SKI(?array $x509SKI = null)
     {
         $this->x509SKI = $x509SKI;
         return $this;
@@ -208,7 +207,7 @@ class X509DataType
      * @param string[] $x509SubjectName
      * @return self
      */
-    public function setX509SubjectName(array $x509SubjectName = null)
+    public function setX509SubjectName(?array $x509SubjectName = null)
     {
         $this->x509SubjectName = $x509SubjectName;
         return $this;
@@ -264,7 +263,7 @@ class X509DataType
      * @param string $x509Certificate
      * @return self
      */
-    public function setX509Certificate(array $x509Certificate = null)
+    public function setX509Certificate(?array $x509Certificate = null)
     {
         $this->x509Certificate = $x509Certificate;
         return $this;
@@ -320,12 +319,10 @@ class X509DataType
      * @param string $x509CRL
      * @return self
      */
-    public function setX509CRL(array $x509CRL = null)
+    public function setX509CRL(?array $x509CRL = null)
     {
         $this->x509CRL = $x509CRL;
         return $this;
     }
-
-
 }
 

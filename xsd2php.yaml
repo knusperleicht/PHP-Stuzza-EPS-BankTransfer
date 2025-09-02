@@ -58,4 +58,4 @@ xsd2php:
       int: 'int'
       long: 'int'
       boolean: 'bool'
-      decimal: 'float'
+      decimal: 'string'

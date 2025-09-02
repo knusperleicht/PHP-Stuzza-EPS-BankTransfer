@@ -7,7 +7,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Epi\PaymentInstructionDetails;
  */
 class PaymentInstructionDetailsAType
 {
-
     /**
      * @var string $paymentInstructionIdentifier
      */
@@ -223,7 +222,5 @@ class PaymentInstructionDetailsAType
         $this->dateOptionDetails = $dateOptionDetails;
         return $this;
     }
-
-
 }
 

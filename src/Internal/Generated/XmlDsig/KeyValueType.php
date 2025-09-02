@@ -10,7 +10,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\XmlDsig;
  */
 class KeyValueType
 {
-
     /**
      * @var \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\DSAKeyValue $dSAKeyValue
      */
@@ -64,7 +63,5 @@ class KeyValueType
         $this->rSAKeyValue = $rSAKeyValue;
         return $this;
     }
-
-
 }
 

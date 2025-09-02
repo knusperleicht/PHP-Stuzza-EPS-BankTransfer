@@ -7,7 +7,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Epi\IdentificationDetails;
  */
 class IdentificationDetailsAType
 {
-
     /**
      * @var string $date
      */
@@ -223,7 +222,5 @@ class IdentificationDetailsAType
         $this->orderingCustomerNameAddressText = $orderingCustomerNameAddressText;
         return $this;
     }
-
-
 }
 

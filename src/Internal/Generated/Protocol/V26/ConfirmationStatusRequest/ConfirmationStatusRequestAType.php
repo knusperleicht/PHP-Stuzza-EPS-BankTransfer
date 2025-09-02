@@ -7,7 +7,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\ConfirmationStatus
  */
 class ConfirmationStatusRequestAType
 {
-
     /**
      * @var string $transactionId
      */
@@ -61,7 +60,5 @@ class ConfirmationStatusRequestAType
         $this->authenticationDetails = $authenticationDetails;
         return $this;
     }
-
-
 }
 

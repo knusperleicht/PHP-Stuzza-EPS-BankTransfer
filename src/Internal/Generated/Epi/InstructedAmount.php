@@ -11,7 +11,5 @@ use Psa\EpsBankTransfer\Internal\Generated\Epi\InstructedAmount\InstructedAmount
  */
 class InstructedAmount extends InstructedAmountAType
 {
-
-
 }
 

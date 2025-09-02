@@ -9,7 +9,5 @@ use Psa\EpsBankTransfer\Internal\Generated\Refund\EpsRefundRequest\EpsRefundRequ
  */
 class EpsRefundRequest extends EpsRefundRequestAType
 {
-
-
 }
 

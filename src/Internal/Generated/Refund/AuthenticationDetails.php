@@ -11,7 +11,5 @@ use Psa\EpsBankTransfer\Internal\Generated\Refund\AuthenticationDetails\Authenti
  */
 class AuthenticationDetails extends AuthenticationDetailsAType
 {
-
-
 }
 

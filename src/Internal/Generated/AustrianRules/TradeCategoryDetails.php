@@ -11,7 +11,5 @@ use Psa\EpsBankTransfer\Internal\Generated\AustrianRules\TradeCategoryDetails\Tr
  */
 class TradeCategoryDetails extends TradeCategoryDetailsAType
 {
-
-
 }
 

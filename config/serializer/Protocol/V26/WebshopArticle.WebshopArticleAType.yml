@@ -26,4 +26,4 @@ Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\WebshopArticle\WebshopArticl
                 getter: getArticlePrice
                 setter: setArticlePrice
             xml_attribute: true
-            type: float
+            type: string

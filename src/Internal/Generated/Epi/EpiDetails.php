@@ -11,7 +11,5 @@ use Psa\EpsBankTransfer\Internal\Generated\Epi\EpiDetails\EpiDetailsAType;
  */
 class EpiDetails extends EpiDetailsAType
 {
-
-
 }
 

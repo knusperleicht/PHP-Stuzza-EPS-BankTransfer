@@ -9,7 +9,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Payment\V27;
  */
 class ApprovingUnitBankIdentifier
 {
-
     /**
      * @var string $__value
      */
@@ -48,7 +47,5 @@ class ApprovingUnitBankIdentifier
     {
         return strval($this->__value);
     }
-
-
 }
 

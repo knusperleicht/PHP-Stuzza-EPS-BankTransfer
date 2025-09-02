@@ -36,6 +36,7 @@ $vitalityCheckCallback = function (string $plainXml, VitalityCheckDetails $vital
     // Return true to indicate your endpoint is healthy and reachable (EPS "VitalityCheck")
     return true;
 };
+
 try {
     $psr17Factory = new Psr17Factory();
     $soCommunicator = new SoCommunicator(
@@ -51,7 +52,7 @@ try {
         $paymentConfirmationCallback,
         $vitalityCheckCallback,       // Vitality check callback
         'php://input',   // Raw POST body received from the SO
-        'php://output',  // Raw output stream returned to the SO
+        'php://output',  // Raw output stream returned to the SO 
         EPS_INTERFACE_VERSION // Optional: omit to use default '2.6'
     );
 } catch (EpsException $e) {

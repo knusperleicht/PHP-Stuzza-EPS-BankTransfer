@@ -9,7 +9,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Epi;
  */
 class UnstructuredRemittanceIdentifier
 {
-
     /**
      * @var string $__value
      */
@@ -48,7 +47,5 @@ class UnstructuredRemittanceIdentifier
     {
         return strval($this->__value);
     }
-
-
 }
 

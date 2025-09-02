@@ -7,7 +7,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\WebshopArticle;
  */
 class WebshopArticleAType
 {
-
     /**
      * @var string $articleName
      */
@@ -19,7 +18,7 @@ class WebshopArticleAType
     private $articleCount = null;
 
     /**
-     * @var float $articlePrice
+     * @var string $articlePrice
      */
     private $articlePrice = null;
 
@@ -70,7 +69,7 @@ class WebshopArticleAType
     /**
      * Gets as articlePrice
      *
-     * @return float
+     * @return string
      */
     public function getArticlePrice()
     {
@@ -80,7 +79,7 @@ class WebshopArticleAType
     /**
      * Sets a new articlePrice
      *
-     * @param float $articlePrice
+     * @param string $articlePrice
      * @return self
      */
     public function setArticlePrice($articlePrice)
@@ -88,7 +87,5 @@ class WebshopArticleAType
         $this->articlePrice = $articlePrice;
         return $this;
     }
-
-
 }
 

@@ -11,7 +11,5 @@ use Psa\EpsBankTransfer\Internal\Generated\Epi\BfiPartyDetails\BfiPartyDetailsAT
  */
 class BfiPartyDetails extends BfiPartyDetailsAType
 {
-
-
 }
 

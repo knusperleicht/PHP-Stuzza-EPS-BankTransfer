@@ -9,7 +9,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Protocol\V27;
  */
 class SessionId
 {
-
     /**
      * @var string $__value
      */
@@ -48,7 +47,5 @@ class SessionId
     {
         return strval($this->__value);
     }
-
-
 }
 

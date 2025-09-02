@@ -9,7 +9,5 @@ use Psa\EpsBankTransfer\Internal\Generated\Payment\V27\StatusReason\StatusReason
  */
 class StatusReason extends StatusReasonAType
 {
-
-
 }
 

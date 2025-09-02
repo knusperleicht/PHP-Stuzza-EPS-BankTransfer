@@ -7,9 +7,8 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Refund\Amount;
  */
 class AmountAType
 {
-
     /**
-     * @var float $__value
+     * @var string $__value
      */
     private $__value = null;
 
@@ -21,7 +20,7 @@ class AmountAType
     /**
      * Construct
      *
-     * @param float $value
+     * @param string $value
      */
     public function __construct($value)
     {
@@ -31,8 +30,8 @@ class AmountAType
     /**
      * Gets or sets the inner value
      *
-     * @param float $value
-     * @return float
+     * @param string $value
+     * @return string
      */
     public function value()
     {
@@ -73,7 +72,5 @@ class AmountAType
         $this->amountCurrencyIdentifier = $amountCurrencyIdentifier;
         return $this;
     }
-
-
 }
 

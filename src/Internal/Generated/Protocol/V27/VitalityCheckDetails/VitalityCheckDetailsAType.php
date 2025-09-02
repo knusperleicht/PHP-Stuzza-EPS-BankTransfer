@@ -7,7 +7,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\VitalityCheckDetai
  */
 class VitalityCheckDetailsAType
 {
-
     /**
      * @var string $remittanceIdentifier
      */
@@ -88,7 +87,5 @@ class VitalityCheckDetailsAType
         $this->orderingCustomerIdentifier = $orderingCustomerIdentifier;
         return $this;
     }
-
-
 }
 

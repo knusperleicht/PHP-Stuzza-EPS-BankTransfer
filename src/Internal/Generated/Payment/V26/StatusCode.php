@@ -9,7 +9,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Payment\V26;
  */
 class StatusCode
 {
-
     /**
      * @var string $__value
      */
@@ -48,7 +47,5 @@ class StatusCode
     {
         return strval($this->__value);
     }
-
-
 }
 

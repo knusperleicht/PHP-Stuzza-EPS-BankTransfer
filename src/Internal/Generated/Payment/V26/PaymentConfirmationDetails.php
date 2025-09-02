@@ -11,7 +11,5 @@ use Psa\EpsBankTransfer\Internal\Generated\Payment\V26\PaymentConfirmationDetail
  */
 class PaymentConfirmationDetails extends PaymentConfirmationDetailsAType
 {
-
-
 }
 

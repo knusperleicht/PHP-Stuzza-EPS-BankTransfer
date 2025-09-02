@@ -7,7 +7,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\TransactionNokUrl;
  */
 class TransactionNokUrlAType
 {
-
     /**
      * @var string $__value
      */
@@ -79,7 +78,5 @@ class TransactionNokUrlAType
         $this->targetWindow = $targetWindow;
         return $this;
     }
-
-
 }
 

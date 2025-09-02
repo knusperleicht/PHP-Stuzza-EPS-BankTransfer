@@ -11,7 +11,5 @@ use Psa\EpsBankTransfer\Internal\Generated\Epi\IdentificationDetails\Identificat
  */
 class IdentificationDetails extends IdentificationDetailsAType
 {
-
-
 }
 

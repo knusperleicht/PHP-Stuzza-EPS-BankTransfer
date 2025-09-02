@@ -23,6 +23,8 @@ use Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\TransferInitiatorDetails
 use Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\TransferMsgDetails;
 use Psa\EpsBankTransfer\Requests\Parts\PaymentFlowUrls;
 use Psa\EpsBankTransfer\Requests\Parts\WebshopArticle;
+use Psa\EpsBankTransfer\Requests\Parts\ObscurityConfig;
+use Psa\EpsBankTransfer\Utilities\Fingerprint;
 use Psa\EpsBankTransfer\Utilities\MoneyFormatter;
 use InvalidArgumentException;
 
@@ -123,6 +125,12 @@ class TransferInitiatorDetails
     private $orderingCustomerOfiIdentifier;
 
     /**
+     * Optional obscurity configuration (seed and suffix length must be both set when provided)
+     * @var ObscurityConfig|null
+     */
+    private $obscurityConfig = null;
+
+    /**
      * @param string $userId User ID (epsp:UserId)
      * @param string $secret Merchant PIN/secret used in MD5 fingerprint (not transmitted directly)
      * @param string $bfiBicIdentifier BIC of beneficiary bank (epi:BfiBicIdentifier)
@@ -132,17 +140,8 @@ class TransferInitiatorDetails
      * @param int|string $instructedAmount Amount in euro cents (e.g., 9999 = €99.99)
      * @param PaymentFlowUrls $transferMsgDetails Confirmation/redirect URLs (epsp:TransferMsgDetails)
      * @param string|null $date Optional date in YYYY-MM-DD (default: today)
+     * @param ObscurityConfig|null $obscurityConfig Optional obscurity configuration for hash generation
      */
-
-    /**
-     * @var int Length of the suffix for obscurity
-     */
-    public $obscuritySuffixLength;
-
-    /**
-     * @var string|null Seed value used for obscurity
-     */
-    public $obscuritySeed;
 
     public function __construct(string          $userId,
                                 string          $secret,
@@ -152,9 +151,8 @@ class TransferInitiatorDetails
                                 string          $referenceIdentifier,
                                                 $instructedAmount,
                                 PaymentFlowUrls $transferMsgDetails,
-                                string          $date = null,
-                                int $obscuritySuffixLength = 0,
-                                ?string $obscuritySeed = null)
+                                ?string          $date = null,
+                                ?ObscurityConfig $obscurityConfig = null)
     {
         $this->userId = $userId;
         $this->secret = $secret;
@@ -166,9 +164,8 @@ class TransferInitiatorDetails
         $this->webshopArticles = array();
         $this->transferMsgDetails = $transferMsgDetails;
 
-        $this->date = $date == null ? date("Y-m-d") : $date;
-        $this->obscuritySuffixLength = $obscuritySuffixLength;
-        $this->obscuritySeed = $obscuritySeed;
+        $this->date = $date == null ? date('Y-m-d') : $date;
+        $this->setObscurityConfig($obscurityConfig);
     }
 
     /**
@@ -201,11 +198,16 @@ class TransferInitiatorDetails
     {
         $remittanceIdentifier = $this->unstructuredRemittanceIdentifier ?: $this->remittanceIdentifier;
 
-        $input = $this->secret . $this->date . $this->referenceIdentifier . $this->beneficiaryAccountIdentifier
-            . $remittanceIdentifier . $this->instructedAmount . $this->amountCurrencyIdentifier
-            . $this->userId;
-
-        return md5($input);
+        return Fingerprint::generateMD5Fingerprint(
+            $this->secret,
+            $this->date,
+            $this->referenceIdentifier,
+            $this->beneficiaryAccountIdentifier,
+            $remittanceIdentifier,
+            $this->instructedAmount,
+            $this->amountCurrencyIdentifier,
+            $this->userId
+        );
     }
 
     /**
@@ -457,24 +459,14 @@ class TransferInitiatorDetails
         $this->orderingCustomerOfiIdentifier = $orderingCustomerOfiIdentifier;
     }
 
-    public function getObscuritySuffixLength(): int
+    public function getObscurityConfig(): ?ObscurityConfig
     {
-        return $this->obscuritySuffixLength;
+        return $this->obscurityConfig;
     }
 
-    public function setObscuritySuffixLength(int $obscuritySuffixLength): void
+    public function setObscurityConfig($config): void
     {
-        $this->obscuritySuffixLength = $obscuritySuffixLength;
-    }
-
-    public function getObscuritySeed(): ?string
-    {
-        return $this->obscuritySeed;
-    }
-
-    public function setObscuritySeed(?string $obscuritySeed): void
-    {
-        $this->obscuritySeed = $obscuritySeed;
+        $this->obscurityConfig = $config;
     }
 
     /**

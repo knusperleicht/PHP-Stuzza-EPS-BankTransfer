@@ -10,7 +10,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\XmlDsig;
  */
 class KeyInfoType
 {
-
     /**
      * @var string $id
      */
@@ -52,9 +51,11 @@ class KeyInfoType
     ];
 
     /**
-     * @var string[] $sPKIData
+     * @var \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\SPKIData[] $sPKIData
      */
-    private $sPKIData = null;
+    private $sPKIData = [
+        
+    ];
 
     /**
      * @var string[] $mgmtData
@@ -135,7 +136,7 @@ class KeyInfoType
      * @param string[] $keyName
      * @return self
      */
-    public function setKeyName(array $keyName = null)
+    public function setKeyName(?array $keyName = null)
     {
         $this->keyName = $keyName;
         return $this;
@@ -191,7 +192,7 @@ class KeyInfoType
      * @param \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\KeyValue[] $keyValue
      * @return self
      */
-    public function setKeyValue(array $keyValue = null)
+    public function setKeyValue(?array $keyValue = null)
     {
         $this->keyValue = $keyValue;
         return $this;
@@ -247,7 +248,7 @@ class KeyInfoType
      * @param \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\RetrievalMethod[] $retrievalMethod
      * @return self
      */
-    public function setRetrievalMethod(array $retrievalMethod = null)
+    public function setRetrievalMethod(?array $retrievalMethod = null)
     {
         $this->retrievalMethod = $retrievalMethod;
         return $this;
@@ -303,7 +304,7 @@ class KeyInfoType
      * @param \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\X509Data[] $x509Data
      * @return self
      */
-    public function setX509Data(array $x509Data = null)
+    public function setX509Data(?array $x509Data = null)
     {
         $this->x509Data = $x509Data;
         return $this;
@@ -359,21 +360,21 @@ class KeyInfoType
      * @param \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\PGPData[] $pGPData
      * @return self
      */
-    public function setPGPData(array $pGPData = null)
+    public function setPGPData(?array $pGPData = null)
     {
         $this->pGPData = $pGPData;
         return $this;
     }
 
     /**
-     * Adds as sPKISexp
+     * Adds as sPKIData
      *
      * @return self
-     * @param string $sPKISexp
+     * @param \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\SPKIData $sPKIData
      */
-    public function addToSPKIData($sPKISexp)
+    public function addToSPKIData(\Psa\EpsBankTransfer\Internal\Generated\XmlDsig\SPKIData $sPKIData)
     {
-        $this->sPKIData[] = $sPKISexp;
+        $this->sPKIData[] = $sPKIData;
         return $this;
     }
 
@@ -402,7 +403,7 @@ class KeyInfoType
     /**
      * Gets as sPKIData
      *
-     * @return string[]
+     * @return \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\SPKIData[]
      */
     public function getSPKIData()
     {
@@ -412,10 +413,10 @@ class KeyInfoType
     /**
      * Sets a new sPKIData
      *
-     * @param string $sPKIData
+     * @param \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\SPKIData[] $sPKIData
      * @return self
      */
-    public function setSPKIData(array $sPKIData = null)
+    public function setSPKIData(?array $sPKIData = null)
     {
         $this->sPKIData = $sPKIData;
         return $this;
@@ -471,12 +472,10 @@ class KeyInfoType
      * @param string[] $mgmtData
      * @return self
      */
-    public function setMgmtData(array $mgmtData = null)
+    public function setMgmtData(?array $mgmtData = null)
     {
         $this->mgmtData = $mgmtData;
         return $this;
     }
-
-
 }
 

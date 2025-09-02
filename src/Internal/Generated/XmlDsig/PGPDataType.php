@@ -10,7 +10,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\XmlDsig;
  */
 class PGPDataType
 {
-
     /**
      * @var string $pGPKeyID
      */
@@ -64,7 +63,5 @@ class PGPDataType
         $this->pGPKeyPacket = $pGPKeyPacket;
         return $this;
     }
-
-
 }
 

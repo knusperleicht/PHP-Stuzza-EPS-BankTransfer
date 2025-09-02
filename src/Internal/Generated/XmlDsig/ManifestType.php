@@ -10,7 +10,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\XmlDsig;
  */
 class ManifestType
 {
-
     /**
      * @var string $id
      */
@@ -100,7 +99,5 @@ class ManifestType
         $this->reference = $reference;
         return $this;
     }
-
-
 }
 

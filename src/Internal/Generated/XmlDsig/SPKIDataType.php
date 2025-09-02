@@ -10,7 +10,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\XmlDsig;
  */
 class SPKIDataType
 {
-
     /**
      * @var string[] $sPKISexp
      */
@@ -73,7 +72,5 @@ class SPKIDataType
         $this->sPKISexp = $sPKISexp;
         return $this;
     }
-
-
 }
 

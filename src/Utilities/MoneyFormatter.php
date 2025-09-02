@@ -7,6 +7,13 @@ use InvalidArgumentException;
 
 final class MoneyFormatter
 {
+    /**
+     * Convert an integer euro-cent amount to EPS XSD decimal string (e.g., 1234 -> "12.34").
+     *
+     * @param int|string $val Integer cents (or numeric string of digits)
+     * @return string Decimal amount with two fraction digits and dot as separator
+     * @throws InvalidArgumentException When the value is not an int or digit string
+     */
     public static function formatXsdDecimal($val): string
     {
         if (is_string($val) && ctype_digit($val)) {
@@ -19,6 +26,7 @@ final class MoneyFormatter
             );
         }
 
-        return number_format($val / 100, 2, '.', '');
+        $formatted = number_format($val / 100, 2, '.', '');
+        return sprintf("%.2f", (float)$formatted);
     }
 }

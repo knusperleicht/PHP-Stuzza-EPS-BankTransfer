@@ -7,7 +7,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Epi\BfiPartyDetails;
  */
 class BfiPartyDetailsAType
 {
-
     /**
      * @var string $bfiBicIdentifier
      */
@@ -34,7 +33,5 @@ class BfiPartyDetailsAType
         $this->bfiBicIdentifier = $bfiBicIdentifier;
         return $this;
     }
-
-
 }
 

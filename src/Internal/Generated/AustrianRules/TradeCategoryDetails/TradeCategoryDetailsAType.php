@@ -7,7 +7,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\AustrianRules\TradeCategoryDeta
  */
 class TradeCategoryDetailsAType
 {
-
     /**
      * @var string $code
      */
@@ -61,7 +60,5 @@ class TradeCategoryDetailsAType
         $this->message = $message;
         return $this;
     }
-
-
 }
 

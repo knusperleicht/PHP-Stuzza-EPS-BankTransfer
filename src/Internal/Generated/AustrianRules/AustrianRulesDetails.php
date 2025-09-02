@@ -9,7 +9,5 @@ use Psa\EpsBankTransfer\Internal\Generated\AustrianRules\AustrianRulesDetails\Au
  */
 class AustrianRulesDetails extends AustrianRulesDetailsAType
 {
-
-
 }
 

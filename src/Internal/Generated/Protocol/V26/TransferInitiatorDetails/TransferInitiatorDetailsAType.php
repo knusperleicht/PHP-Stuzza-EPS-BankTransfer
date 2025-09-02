@@ -7,7 +7,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\TransferInitiatorD
  */
 class TransferInitiatorDetailsAType
 {
-
     /**
      * @var \Psa\EpsBankTransfer\Internal\Generated\Payment\V26\PaymentInitiatorDetails $paymentInitiatorDetails
      */
@@ -132,7 +131,7 @@ class TransferInitiatorDetailsAType
      * @param \Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\WebshopArticle[] $webshopDetails
      * @return self
      */
-    public function setWebshopDetails(array $webshopDetails = null)
+    public function setWebshopDetails(?array $webshopDetails = null)
     {
         $this->webshopDetails = $webshopDetails;
         return $this;
@@ -203,7 +202,5 @@ class TransferInitiatorDetailsAType
         $this->authenticationDetails = $authenticationDetails;
         return $this;
     }
-
-
 }
 

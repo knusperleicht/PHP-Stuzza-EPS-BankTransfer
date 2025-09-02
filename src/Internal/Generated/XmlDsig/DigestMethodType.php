@@ -10,7 +10,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\XmlDsig;
  */
 class DigestMethodType
 {
-
     /**
      * @var string $algorithm
      */
@@ -37,7 +36,5 @@ class DigestMethodType
         $this->algorithm = $algorithm;
         return $this;
     }
-
-
 }
 

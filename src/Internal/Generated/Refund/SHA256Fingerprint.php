@@ -9,7 +9,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Refund;
  */
 class SHA256Fingerprint
 {
-
     /**
      * @var string $__value
      */
@@ -48,7 +47,5 @@ class SHA256Fingerprint
     {
         return strval($this->__value);
     }
-
-
 }
 

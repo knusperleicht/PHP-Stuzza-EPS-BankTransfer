@@ -11,7 +11,5 @@ use Psa\EpsBankTransfer\Internal\Generated\Payment\V27\ShopConfirmationDetails\S
  */
 class ShopConfirmationDetails extends ShopConfirmationDetailsAType
 {
-
-
 }
 

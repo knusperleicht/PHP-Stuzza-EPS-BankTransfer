@@ -7,7 +7,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Epi\DateOptionDetails;
  */
 class DateOptionDetailsAType
 {
-
     /**
      * Specifies whether the DateOption is a credit (CRD) or a debit (DBD) date
      *
@@ -94,7 +93,5 @@ class DateOptionDetailsAType
         $this->optionTime = $optionTime;
         return $this;
     }
-
-
 }
 

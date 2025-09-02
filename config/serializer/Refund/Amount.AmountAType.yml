@@ -7,7 +7,7 @@ Psa\EpsBankTransfer\Internal\Generated\Refund\Amount\AmountAType:
             accessor:
                 getter: value
                 setter: value
-            type: float
+            type: string
         amountCurrencyIdentifier:
             expose: true
             access_type: public_method

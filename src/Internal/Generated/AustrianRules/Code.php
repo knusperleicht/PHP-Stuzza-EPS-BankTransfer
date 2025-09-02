@@ -9,7 +9,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\AustrianRules;
  */
 class Code
 {
-
     /**
      * @var string $__value
      */
@@ -48,7 +47,5 @@ class Code
     {
         return strval($this->__value);
     }
-
-
 }
 

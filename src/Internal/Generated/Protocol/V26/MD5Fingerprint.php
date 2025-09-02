@@ -9,7 +9,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Protocol\V26;
  */
 class MD5Fingerprint
 {
-
     /**
      * @var string $__value
      */
@@ -48,7 +47,5 @@ class MD5Fingerprint
     {
         return strval($this->__value);
     }
-
-
 }
 

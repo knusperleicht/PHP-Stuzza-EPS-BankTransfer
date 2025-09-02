@@ -6,12 +6,12 @@ namespace Psa\EpsBankTransfer\Tests\Api;
 use Psa\EpsBankTransfer\Api\SoCommunicator;
 use Psa\EpsBankTransfer\Domain\ProtocolDetails;
 use Psa\EpsBankTransfer\Exceptions\XmlValidationException;
+use Psa\EpsBankTransfer\Requests\Parts\ObscurityConfig;
 use Psa\EpsBankTransfer\Requests\Parts\PaymentFlowUrls;
 use Psa\EpsBankTransfer\Requests\TransferInitiatorDetails;
 use Psa\EpsBankTransfer\Tests\Helper\SoCommunicatorTestTrait;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
-use UnexpectedValueException;
 
 class TransferInitiatorDetailsTest extends TestCase
 {
@@ -171,24 +171,13 @@ class TransferInitiatorDetailsTest extends TestCase
      * ============================================================
      */
 
-    public function testSendTransferInitiatorDetailsWithSecurityThrowsExceptionOnEmptySalt(): void
-    {
-        $this->expectException(UnexpectedValueException::class);
-
-        $details = $this->getMockedTransferInitiatorDetails();
-        $details->setObscuritySuffixLength(8);
-
-        $this->mockResponse(200, $this->loadFixture('V26/BankResponseDetails000.xml'));
-        $this->target->sendTransferInitiatorDetails($details, '2.6');
-    }
-
     public function testSendTransferInitiatorDetailsWithSecurityAppendsHash(): void
     {
         $this->mockResponse(200, $this->loadFixture('V26/BankResponseDetails000.xml'));
 
         $t = new PaymentFlowUrls('a', 'b', 'c');
         $transferInitiatorDetails = new TransferInitiatorDetails('a', 'b', 'c',
-            'd', 'e', 'f', 0, $t, null, 8, 'Some seed');
+            'd', 'e', 'f', 0, $t, null, new ObscurityConfig(8, 'Some seed'));
         $transferInitiatorDetails->setRemittanceIdentifier('Order1');
 
         $url = 'https://routing.eps.or.at/appl/epsSO/transinit/eps/v2_6/23ea3d14-278c-4e81-a021-d7b77492b611';

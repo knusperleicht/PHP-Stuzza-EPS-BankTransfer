@@ -7,7 +7,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Epi\EpiDetails;
  */
 class EpiDetailsAType
 {
-
     /**
      * @var \Psa\EpsBankTransfer\Internal\Generated\Epi\IdentificationDetails $identificationDetails
      */
@@ -88,7 +87,5 @@ class EpiDetailsAType
         $this->paymentInstructionDetails = $paymentInstructionDetails;
         return $this;
     }
-
-
 }
 

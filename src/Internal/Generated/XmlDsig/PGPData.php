@@ -7,7 +7,5 @@ namespace Psa\EpsBankTransfer\Internal\Generated\XmlDsig;
  */
 class PGPData extends PGPDataType
 {
-
-
 }
 

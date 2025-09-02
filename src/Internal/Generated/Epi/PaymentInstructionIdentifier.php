@@ -9,7 +9,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Epi;
  */
 class PaymentInstructionIdentifier
 {
-
     /**
      * @var string $__value
      */
@@ -48,7 +47,5 @@ class PaymentInstructionIdentifier
     {
         return strval($this->__value);
     }
-
-
 }
 

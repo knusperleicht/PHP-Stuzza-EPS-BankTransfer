@@ -7,7 +7,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Epi\PartyDetails;
  */
 class PartyDetailsAType
 {
-
     /**
      * @var \Psa\EpsBankTransfer\Internal\Generated\Epi\BfiPartyDetails $bfiPartyDetails
      */
@@ -61,7 +60,5 @@ class PartyDetailsAType
         $this->beneficiaryPartyDetails = $beneficiaryPartyDetails;
         return $this;
     }
-
-
 }
 

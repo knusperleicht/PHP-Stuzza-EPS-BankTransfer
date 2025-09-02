@@ -7,7 +7,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Refund\EpsRefundResponse;
  */
 class EpsRefundResponseAType
 {
-
     /**
      * @var string $statusCode
      */
@@ -61,7 +60,5 @@ class EpsRefundResponseAType
         $this->errorMsg = $errorMsg;
         return $this;
     }
-
-
 }
 

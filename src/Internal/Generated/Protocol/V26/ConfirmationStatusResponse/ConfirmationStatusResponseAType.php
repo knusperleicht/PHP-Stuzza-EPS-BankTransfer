@@ -7,7 +7,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\ConfirmationStatus
  */
 class ConfirmationStatusResponseAType
 {
-
     /**
      * @var string $sessionId
      */
@@ -88,7 +87,5 @@ class ConfirmationStatusResponseAType
         $this->errorDetails = $errorDetails;
         return $this;
     }
-
-
 }
 

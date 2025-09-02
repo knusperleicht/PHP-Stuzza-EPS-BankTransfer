@@ -7,7 +7,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Payment\V27;
  */
 class ReasonCode
 {
-
     /**
      * @var string $__value
      */
@@ -46,7 +45,5 @@ class ReasonCode
     {
         return strval($this->__value);
     }
-
-
 }
 

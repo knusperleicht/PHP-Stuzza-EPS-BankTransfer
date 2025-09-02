@@ -7,7 +7,5 @@ namespace Psa\EpsBankTransfer\Internal\Generated\XmlDsig;
  */
 class SignedInfo extends SignedInfoType
 {
-
-
 }
 

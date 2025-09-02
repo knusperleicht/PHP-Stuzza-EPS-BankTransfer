@@ -7,7 +7,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\WebshopDetails;
  */
 class WebshopDetailsAType
 {
-
     /**
      * @var \Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\WebshopArticle[] $webshopArticle
      */
@@ -70,7 +69,5 @@ class WebshopDetailsAType
         $this->webshopArticle = $webshopArticle;
         return $this;
     }
-
-
 }
 

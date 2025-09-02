@@ -11,7 +11,5 @@ use Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\StatusMsg\StatusMsgAType
  */
 class StatusMsg extends StatusMsgAType
 {
-
-
 }
 

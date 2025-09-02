@@ -9,7 +9,5 @@ use Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\WebshopArticle\WebshopAr
  */
 class WebshopArticle extends WebshopArticleAType
 {
-
-
 }
 

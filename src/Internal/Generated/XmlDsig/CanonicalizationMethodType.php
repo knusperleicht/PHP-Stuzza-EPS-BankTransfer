@@ -10,7 +10,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\XmlDsig;
  */
 class CanonicalizationMethodType
 {
-
     /**
      * @var string $algorithm
      */
@@ -37,7 +36,5 @@ class CanonicalizationMethodType
         $this->algorithm = $algorithm;
         return $this;
     }
-
-
 }
 

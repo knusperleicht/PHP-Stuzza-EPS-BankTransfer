@@ -7,7 +7,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\AustrianRules\AustrianRulesDeta
  */
 class AustrianRulesDetailsAType
 {
-
     /**
      * @var string $realization
      */
@@ -169,7 +168,5 @@ class AustrianRulesDetailsAType
         $this->statusMsgEnabled = $statusMsgEnabled;
         return $this;
     }
-
-
 }
 

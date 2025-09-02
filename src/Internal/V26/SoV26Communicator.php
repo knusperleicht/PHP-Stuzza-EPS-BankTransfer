@@ -44,6 +44,15 @@ class SoV26Communicator
     /** @var SerializerInterface */
     private $serializer;
 
+    /**
+     * Constructor.
+     *
+     * @param ClientInterface $httpClient PSR-18 HTTP client used for requests
+     * @param RequestFactoryInterface $requestFactory PSR-17 request factory
+     * @param StreamFactoryInterface $streamFactory PSR-17 stream factory
+     * @param string $baseUrl Base URL of the EPS Scheme Operator endpoints
+     * @param LoggerInterface|null $logger Optional PSR-3 logger
+     */
     public function __construct(
         ClientInterface $httpClient,
         RequestFactoryInterface $requestFactory,
@@ -63,32 +72,23 @@ class SoV26Communicator
     }
 
     /**
-     * @throws XmlValidationException
-     * @throws Exception
+     * Send a TransferInitiatorDetails request to EPS v2.6 endpoint.
+     *
+     * Serializes the given request, posts it to the Scheme Operator and
+     * validates the response against the v2.6 EPS Protocol XSD.
+     *
+     * @param TransferInitiatorDetails $transferInitiatorDetails Domain request to send
+     * @param string|null $targetUrl Optional override of the endpoint URL; defaults to baseUrl + TRANSFER
+     * @return EpsProtocolDetails Deserialized protocol response
+     * @throws XmlValidationException When response XML does not match the schema
+     * @throws Exception On underlying HTTP/serialization errors
      */
     public function sendTransferInitiatorDetails(
         TransferInitiatorDetails $transferInitiatorDetails,
         ?string                  $targetUrl = null
-    ): EpsProtocolDetails {
-        if ($transferInitiatorDetails->getRemittanceIdentifier() !== null) {
-            $transferInitiatorDetails->setRemittanceIdentifier(
-                $this->core->appendHash(
-                    $transferInitiatorDetails->getRemittanceIdentifier(),
-                    $transferInitiatorDetails->getObscuritySuffixLength(),
-                    $transferInitiatorDetails->getObscuritySeed(),
-                )
-            );
-        }
-
-        if ($transferInitiatorDetails->getUnstructuredRemittanceIdentifier() !== null) {
-            $transferInitiatorDetails->setUnstructuredRemittanceIdentifier(
-                $this->core->appendHash(
-                    $transferInitiatorDetails->getUnstructuredRemittanceIdentifier(),
-                    $transferInitiatorDetails->getObscuritySuffixLength(),
-                    $transferInitiatorDetails->getObscuritySeed()
-                )
-            );
-        }
+    ): EpsProtocolDetails
+    {
+        $this->handleObscurityConfig($transferInitiatorDetails);
 
         $targetUrl = $targetUrl ?? $this->core->getBaseUrl() . SoV26Communicator::TRANSFER;
 
@@ -101,9 +101,65 @@ class SoV26Communicator
     }
 
     /**
-     * @throws InvalidCallbackException
-     * @throws XmlValidationException
-     * @throws CallbackResponseException
+     * Apply obscurity (hash suffix) rules to remittance identifiers.
+     *
+     * Ensures total length constraints (35/140) are respected before appending
+     * an optional hash suffix based on provided ObscurityConfig.
+     *
+     * @param TransferInitiatorDetails $transferInitiatorDetails
+     */
+    private function handleObscurityConfig(TransferInitiatorDetails $transferInitiatorDetails): void
+    {
+        $cfg = $transferInitiatorDetails->getObscurityConfig();
+        $suffixLength = $cfg ? $cfg->getLength() : 0;
+        $seed = $cfg ? $cfg->getSeed() : null;
+
+        if ($transferInitiatorDetails->getRemittanceIdentifier() !== null) {
+            $base = $transferInitiatorDetails->getRemittanceIdentifier();
+            if ($suffixLength > 0 && strlen($base) + $suffixLength > 35) {
+                throw new \InvalidArgumentException('RemittanceIdentifier too long for configured obscurity length. Max total 35 characters.');
+            }
+            $transferInitiatorDetails->setRemittanceIdentifier(
+                $this->core->appendHash(
+                    $base,
+                    $suffixLength,
+                    $seed,
+                )
+            );
+        }
+
+        if ($transferInitiatorDetails->getUnstructuredRemittanceIdentifier() !== null) {
+            $base = $transferInitiatorDetails->getUnstructuredRemittanceIdentifier();
+            if ($suffixLength > 0 && strlen($base) + $suffixLength > 140) {
+                throw new \InvalidArgumentException('UnstructuredRemittanceIdentifier too long for configured obscurity length. Max total 140 characters.');
+            }
+            $transferInitiatorDetails->setUnstructuredRemittanceIdentifier(
+                $this->core->appendHash(
+                    $base,
+                    $suffixLength,
+                    $seed
+                )
+            );
+        }
+    }
+
+    /**
+     * Handle incoming EPS confirmation/vitality callback request.
+     *
+     * Reads raw XML from input stream, validates it, dispatches to the provided
+     * callback depending on whether the payload is a VitalityCheck or a
+     * BankConfirmation. For VitalityCheck, the raw payload is echoed back.
+     *
+     * The provided callbacks MUST return true to indicate success; otherwise a
+     * CallbackResponseException is thrown and an error response is written.
+     *
+     * @param callable|null $confirmationCallback function(string $rawXml, BankConfirmationDetails $details): bool
+     * @param callable|null $vitalityCheckCallback function(string $rawXml, VitalityCheckDetails $details): bool
+     * @param string $rawPostStream Input stream URI to read raw request XML from (default php://input)
+     * @param string $outputStream Output stream URI to write response XML to (default php://output)
+     * @throws InvalidCallbackException When callbacks are missing or not callable
+     * @throws XmlValidationException When input XML is invalid
+     * @throws CallbackResponseException When a callback returns a non-true value
      */
     public function handleConfirmationUrl(
         $confirmationCallback = null,
@@ -136,10 +192,11 @@ class SoV26Communicator
             }
 
             if ($protocol->getBankConfirmationDetails() !== null) {
+                $v26 = BankConfirmationDetails::fromV26($protocol);
                 $this->handleBankConfirmation(
                     $confirmationCallback,
                     $rawXml,
-                    BankConfirmationDetails::fromV26($protocol),
+                    $v26,
                     $outputStream);
                 return;
             }
@@ -153,7 +210,11 @@ class SoV26Communicator
     }
 
     /**
-     * @throws XmlValidationException
+     * Retrieve the EPS bank list (v2.6).
+     *
+     * @param string|null $targetUrl Optional override of the bank list endpoint
+     * @return EpsSOBankListProtocol Parsed list of SO banks
+     * @throws XmlValidationException When response XML is not valid
      */
     public function getBanks(?string $targetUrl = null): EpsSOBankListProtocol
     {
@@ -166,8 +227,13 @@ class SoV26Communicator
     }
 
     /**
-     * @throws XmlValidationException
-     * @throws Exception
+     * Send a refund request to EPS v2.6 endpoint.
+     *
+     * @param RefundRequest $refundRequest Domain refund request
+     * @param string|null $targetUrl Optional override of the endpoint URL
+     * @return EpsRefundResponse Parsed EPS refund response
+     * @throws XmlValidationException When response XML is invalid
+     * @throws Exception On underlying HTTP/serialization errors
      */
     public function sendRefundRequest(
         RefundRequest $refundRequest,
@@ -189,7 +255,16 @@ class SoV26Communicator
     }
 
     /**
-     * @throws CallbackResponseException
+     * Handle a VitalityCheck callback.
+     *
+     * Invokes user callback (if provided). The callback must return true. On success
+     * the raw XML is written back to the output stream as required by EPS.
+     *
+     * @param callable|null $callback function(string $rawXml, VitalityCheckDetails $details): bool
+     * @param string $rawXml Raw request XML
+     * @param VitalityCheckDetails $vitality Parsed vitality check details
+     * @param string $outputStream Output stream URI
+     * @throws CallbackResponseException When callback does not return true
      */
     private function handleVitalityCheck(?callable $callback, string $rawXml, VitalityCheckDetails $vitality, string $outputStream): void
     {
@@ -202,7 +277,16 @@ class SoV26Communicator
     }
 
     /**
-     * @throws CallbackResponseException
+     * Handle a BankConfirmation callback.
+     *
+     * Builds a ShopResponseDetails and expects the provided callback to return true.
+     * On success the shop response is serialized and written to the output stream.
+     *
+     * @param callable $callback function(string $rawXml, BankConfirmationDetails $details): bool
+     * @param string $rawXml Raw request XML
+     * @param BankConfirmationDetails $confirmation Parsed bank confirmation details
+     * @param string $outputStream Output stream URI
+     * @throws CallbackResponseException When callback does not return true
      */
     private function handleBankConfirmation(callable $callback, string $rawXml,
                                             BankConfirmationDetails $confirmation,
@@ -223,6 +307,15 @@ class SoV26Communicator
         file_put_contents($outputStream, $xml);
     }
 
+    /**
+     * Convert an exception into a ShopResponseDetails XML and write to output.
+     *
+     * EPS requires a structured response even on errors; this helper takes any
+     * thrown exception and serializes an error message accordingly.
+     *
+     * @param Exception $e The exception that occurred
+     * @param string $outputStream Output stream URI
+     */
     private function handleException(Exception $e, string $outputStream): void
     {
         $shopConfirmationDetails = new ShopResponseDetails();

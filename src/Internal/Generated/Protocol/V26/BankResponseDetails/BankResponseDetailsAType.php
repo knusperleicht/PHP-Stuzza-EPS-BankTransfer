@@ -7,7 +7,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\BankResponseDetail
  */
 class BankResponseDetailsAType
 {
-
     /**
      * @var string $clientRedirectUrl
      */
@@ -115,7 +114,5 @@ class BankResponseDetailsAType
         $this->qRCodeUrl = $qRCodeUrl;
         return $this;
     }
-
-
 }
 

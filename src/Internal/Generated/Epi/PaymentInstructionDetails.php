@@ -11,7 +11,5 @@ use Psa\EpsBankTransfer\Internal\Generated\Epi\PaymentInstructionDetails\Payment
  */
 class PaymentInstructionDetails extends PaymentInstructionDetailsAType
 {
-
-
 }
 

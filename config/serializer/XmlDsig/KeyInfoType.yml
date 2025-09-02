@@ -88,12 +88,11 @@ Psa\EpsBankTransfer\Internal\Generated\XmlDsig\KeyInfoType:
             accessor:
                 getter: getSPKIData
                 setter: setSPKIData
-            type: array<string>
             xml_list:
-                inline: false
-                entry_name: SPKISexp
-                skip_when_empty: true
+                inline: true
+                entry_name: SPKIData
                 namespace: 'http://www.w3.org/2000/09/xmldsig#'
+            type: array<Psa\EpsBankTransfer\Internal\Generated\XmlDsig\SPKIData>
         mgmtData:
             expose: true
             access_type: public_method

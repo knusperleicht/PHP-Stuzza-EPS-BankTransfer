@@ -7,7 +7,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\ErrorDetails;
  */
 class ErrorDetailsAType
 {
-
     /**
      * @var string $errorCode
      */
@@ -61,7 +60,5 @@ class ErrorDetailsAType
         $this->errorMsg = $errorMsg;
         return $this;
     }
-
-
 }
 

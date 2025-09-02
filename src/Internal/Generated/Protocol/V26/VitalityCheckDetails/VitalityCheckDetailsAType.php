@@ -7,7 +7,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\VitalityCheckDetai
  */
 class VitalityCheckDetailsAType
 {
-
     /**
      * @var string $remittanceIdentifier
      */
@@ -61,7 +60,5 @@ class VitalityCheckDetailsAType
         $this->unstructuredRemittanceIdentifier = $unstructuredRemittanceIdentifier;
         return $this;
     }
-
-
 }
 

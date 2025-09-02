@@ -7,7 +7,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\ShopResponseDetail
  */
 class ShopResponseDetailsAType
 {
-
     /**
      * @var string $sessionId
      */
@@ -88,7 +87,5 @@ class ShopResponseDetailsAType
         $this->errorMsg = $errorMsg;
         return $this;
     }
-
-
 }
 

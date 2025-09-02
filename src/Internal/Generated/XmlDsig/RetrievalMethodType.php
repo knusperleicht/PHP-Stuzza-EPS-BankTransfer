@@ -10,7 +10,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\XmlDsig;
  */
 class RetrievalMethodType
 {
-
     /**
      * @var string $uRI
      */
@@ -120,12 +119,10 @@ class RetrievalMethodType
      * @param \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\Transform[] $transforms
      * @return self
      */
-    public function setTransforms(array $transforms = null)
+    public function setTransforms(?array $transforms = null)
     {
         $this->transforms = $transforms;
         return $this;
     }
-
-
 }
 

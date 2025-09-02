@@ -7,7 +7,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\BankList\EpsSOBankListProtocol;
  */
 class EpsSOBankListProtocolAType
 {
-
     /**
      * @var \Psa\EpsBankTransfer\Internal\Generated\BankList\BankDataType[] $bank
      */
@@ -70,7 +69,7 @@ class EpsSOBankListProtocolAType
      * @param \Psa\EpsBankTransfer\Internal\Generated\BankList\BankDataType[] $bank
      * @return self
      */
-    public function setBank(array $bank = null)
+    public function setBank(?array $bank = null)
     {
         $this->bank = $bank;
         return $this;
@@ -97,7 +96,5 @@ class EpsSOBankListProtocolAType
         $this->errorDetails = $errorDetails;
         return $this;
     }
-
-
 }
 

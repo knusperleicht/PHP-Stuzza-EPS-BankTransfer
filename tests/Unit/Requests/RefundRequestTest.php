@@ -13,6 +13,7 @@ use Psa\EpsBankTransfer\Tests\Helper\XmlFixtureTestTrait;
 use Psa\EpsBankTransfer\Utilities\Fingerprint;
 use JMS\Serializer\SerializerInterface;
 use PHPUnit\Framework\TestCase;
+use Psa\EpsBankTransfer\Utilities\MoneyFormatter;
 
 class RefundRequestTest extends TestCase
 {
@@ -33,43 +34,43 @@ class RefundRequestTest extends TestCase
      * @throws Exception
      */
     public function testGenerateRefundRequestWithReason(
-        string  $CreDtTm,
-        string  $TransactionId,
-        string  $MerchantIBAN,
-        float   $Amount,
-        string  $AmountCurrencyIdentifier,
-        string  $UserId,
-        ?string $RefundReference,
+        string  $creationDateTime,
+        string  $transactionId,
+        string  $merchantIBAN,
+                $amount,
+        string  $amountCurrencyIdentifier,
+        string  $userId,
+        ?string $refundReference,
         string  $expectedXmlFile
     )
     {
         $refundRequest = new EpsRefundRequest();
-        $refundRequest->setCreDtTm(new DateTime($CreDtTm));
-        $refundRequest->setTransactionId($TransactionId);
-        $refundRequest->setMerchantIBAN($MerchantIBAN);
+        $refundRequest->setCreDtTm(new DateTime($creationDateTime));
+        $refundRequest->setTransactionId($transactionId);
+        $refundRequest->setMerchantIBAN($merchantIBAN);
 
-        $amount = new Amount($Amount);
-        $amount->setAmountCurrencyIdentifier($AmountCurrencyIdentifier);
+        $amount = new Amount(MoneyFormatter::formatXsdDecimal($amount));
+        $amount->setAmountCurrencyIdentifier($amountCurrencyIdentifier);
         $refundRequest->setAmount($amount);
 
         $authenticationDetails = new AuthenticationDetails();
-        $authenticationDetails->setUserId($UserId);
+        $authenticationDetails->setUserId($userId);
         $authenticationDetails->setSHA256Fingerprint(
             Fingerprint::generateSHA256Fingerprint(
                 "fluxkompensator!",
-                $CreDtTm,
-                $TransactionId,
-                $MerchantIBAN,
-                (string)$Amount,
-                $AmountCurrencyIdentifier,
-                $UserId,
-                $RefundReference
+                $creationDateTime,
+                $transactionId,
+                $merchantIBAN,
+                (string)$amount,
+                $amountCurrencyIdentifier,
+                $userId,
+                $refundReference
             )
         );
         $refundRequest->setAuthenticationDetails($authenticationDetails);
 
-        if ($RefundReference !== null) {
-            $refundRequest->setRefundReference($RefundReference);
+        if ($refundReference !== null) {
+            $refundRequest->setRefundReference($refundReference);
         }
 
         $xml = $this->serializer->serialize($refundRequest, 'xml');
@@ -84,7 +85,7 @@ class RefundRequestTest extends TestCase
                 "2024-09-25T08:09:53.454+02:00",
                 "epsJMG15K752",
                 "AT175700054011014943",
-                10.00,
+                1000,
                 "EUR",
                 "HYPTAT22XXX_143921",
                 "REFUND-123456789",
@@ -94,7 +95,7 @@ class RefundRequestTest extends TestCase
                 "2025-09-25T08:09:53.454+02:00",
                 "epsJMG15K753",
                 "AT175700054011014943",
-                12.90,
+                1290,
                 "EUR",
                 "HYPTAT22XXX_143921",
                 null,

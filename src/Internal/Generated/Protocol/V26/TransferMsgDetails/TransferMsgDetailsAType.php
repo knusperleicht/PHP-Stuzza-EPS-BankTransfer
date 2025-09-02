@@ -7,7 +7,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\TransferMsgDetails
  */
 class TransferMsgDetailsAType
 {
-
     /**
      * @var string $confirmationUrl
      */
@@ -88,7 +87,5 @@ class TransferMsgDetailsAType
         $this->transactionNokUrl = $transactionNokUrl;
         return $this;
     }
-
-
 }
 

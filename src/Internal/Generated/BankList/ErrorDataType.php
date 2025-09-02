@@ -10,7 +10,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\BankList;
  */
 class ErrorDataType
 {
-
     /**
      * @var string $errorCode
      */
@@ -64,7 +63,5 @@ class ErrorDataType
         $this->errorMsg = $errorMsg;
         return $this;
     }
-
-
 }
 

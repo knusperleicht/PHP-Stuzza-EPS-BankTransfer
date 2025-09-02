@@ -11,7 +11,5 @@ use Psa\EpsBankTransfer\Internal\Generated\Epi\PartyDetails\PartyDetailsAType;
  */
 class PartyDetails extends PartyDetailsAType
 {
-
-
 }
 

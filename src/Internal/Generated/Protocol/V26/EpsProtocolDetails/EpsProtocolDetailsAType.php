@@ -7,7 +7,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\EpsProtocolDetails
  */
 class EpsProtocolDetailsAType
 {
-
     /**
      * @var string $sessionLanguage
      */
@@ -304,7 +303,5 @@ class EpsProtocolDetailsAType
         $this->statusMsg = $statusMsg;
         return $this;
     }
-
-
 }
 

@@ -9,7 +9,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Epi;
  */
 class Url
 {
-
     /**
      * @var string $__value
      */
@@ -48,7 +47,5 @@ class Url
     {
         return strval($this->__value);
     }
-
-
 }
 

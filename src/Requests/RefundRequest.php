@@ -7,6 +7,7 @@ use Psa\EpsBankTransfer\Internal\Generated\Refund\Amount;
 use Psa\EpsBankTransfer\Internal\Generated\Refund\AuthenticationDetails;
 use Psa\EpsBankTransfer\Internal\Generated\Refund\EpsRefundRequest;
 use Psa\EpsBankTransfer\Utilities\Fingerprint;
+use Psa\EpsBankTransfer\Utilities\MoneyFormatter;
 
 class RefundRequest
 {
@@ -64,11 +65,21 @@ class RefundRequest
         $this->creDtTm = $creDtTm;
         $this->transactionId = $transactionId;
         $this->merchantIban = $merchantIban;
-        $this->amount = $amount;
+        $this->setAmount($amount);
         $this->amountCurrencyIdentifier = $amountCurrencyIdentifier;
         $this->refundReference = $refundReference;
         $this->userId = $userId;
         $this->pin = $pin;
+    }
+
+    /**
+     * Set the amount.
+     *
+     * @param int|string $amount Amount in euro cents (e.g., 9999 = €99.99). Must be integer-like.
+     */
+    public function setAmount($amount): void
+    {
+        $this->amount = MoneyFormatter::formatXsdDecimal($amount);
     }
 
     /**
@@ -115,5 +126,4 @@ class RefundRequest
 
         return $refundRequest;
     }
-
 }

@@ -11,7 +11,5 @@ use Psa\EpsBankTransfer\Internal\Generated\Payment\V27\PayConApprovingUnitDetail
  */
 class PayConApprovingUnitDetails extends PayConApprovingUnitDetailsAType
 {
-
-
 }
 

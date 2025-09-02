@@ -7,7 +7,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Payment\V26\PaymentInitiatorDet
  */
 class PaymentInitiatorDetailsAType
 {
-
     /**
      * @var \Psa\EpsBankTransfer\Internal\Generated\Epi\EpiDetails $epiDetails
      */
@@ -61,7 +60,5 @@ class PaymentInitiatorDetailsAType
         $this->austrianRulesDetails = $austrianRulesDetails;
         return $this;
     }
-
-
 }
 

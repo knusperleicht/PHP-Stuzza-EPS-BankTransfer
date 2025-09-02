@@ -12,21 +12,27 @@ use Psa\EpsBankTransfer\Requests\RefundRequest;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Symfony\Component\HttpClient\Psr18Client;
 
+// Load configuration
+$config = file_exists(__DIR__ . '/config.local.php')
+    ? require __DIR__ . '/config.local.php'
+    : require __DIR__ . '/config.example.php';
+
 // === Refund configuration ===
-$userID = 'AKLJS231534';                // EPS merchant (User) ID = epsr:UserId
-$pin = 'topSecret';                     // Merchant PIN/secret used to compute SHA-256 fingerprint (epsr:SHA256Fingerprint)
-$merchantIban = 'AT611904300234573201'; // Your merchant IBAN to receive/issue refunds
+$userID = $config['user_id'];               // EPS merchant (User) ID = epsr:UserId
+$pin = $config['pin'];                      // Merchant PIN/secret used to compute SHA-256 fingerprint (epsr:SHA256Fingerprint)
+$merchantIban = $config['merchant_iban'];   // Your merchant IBAN to receive/issue refunds
 
 $refundRequest = new RefundRequest(
-    date('Y-m-d\TH:i:s'),           // Current timestamp (must not differ more than ~3 hours from SO time)
-    'epsM7DPP3R12',            // EPS Transaction ID (from epsp:BankResponse of the original payment)
+    date('Y-m-d\TH:i:s.vP'),  // Current timestamp (must not differ more than ~3 hours from SO time)
+    $config['sample_refund_transaction_id'],        // EPS Transaction ID (from epsp:BankResponse of the original payment)
     $merchantIban,
-    '1.00',                        // Refund amount (must be <= original amount)
-    'EUR',            // Currency (EPS Refund 1.0.1 only accepts EUR)
+    1,                  // Refund amount in cents (must be <= original amount)
+    'EUR',                // Currency (EPS Refund 1.0.1 only accepts EUR)
     $userID,
     $pin,
-    'Refund Reason'         // Optional RefundReference (Auftraggeberreferenz)
+    'Refund Reason'       // Optional RefundReference (Auftraggeberreferenz)
 );
+
 
 // === Send the refund request to the EPS Scheme Operator (SO) ===
 $testMode = true;

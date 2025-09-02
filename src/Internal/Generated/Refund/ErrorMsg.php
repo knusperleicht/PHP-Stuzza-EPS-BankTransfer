@@ -7,7 +7,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Refund;
  */
 class ErrorMsg
 {
-
     /**
      * @var string $__value
      */
@@ -46,7 +45,5 @@ class ErrorMsg
     {
         return strval($this->__value);
     }
-
-
 }
 

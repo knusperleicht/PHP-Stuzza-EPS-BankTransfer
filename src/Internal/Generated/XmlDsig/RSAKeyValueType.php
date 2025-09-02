@@ -10,7 +10,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\XmlDsig;
  */
 class RSAKeyValueType
 {
-
     /**
      * @var string $modulus
      */
@@ -64,7 +63,5 @@ class RSAKeyValueType
         $this->exponent = $exponent;
         return $this;
     }
-
-
 }
 

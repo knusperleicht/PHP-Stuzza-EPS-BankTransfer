@@ -10,7 +10,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\BankList;
  */
 class AuftragsartType
 {
-
     /**
      * @var string $__value
      */
@@ -76,7 +75,5 @@ class AuftragsartType
         $this->terminueberweisung = $terminueberweisung;
         return $this;
     }
-
-
 }
 

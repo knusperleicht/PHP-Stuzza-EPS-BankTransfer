@@ -10,7 +10,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\XmlDsig;
  */
 class TransformsType
 {
-
     /**
      * @var \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\Transform[] $transform
      */
@@ -73,7 +72,5 @@ class TransformsType
         $this->transform = $transform;
         return $this;
     }
-
-
 }
 

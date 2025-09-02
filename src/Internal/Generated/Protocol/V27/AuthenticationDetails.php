@@ -11,7 +11,5 @@ use Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\AuthenticationDetails\Au
  */
 class AuthenticationDetails extends AuthenticationDetailsAType
 {
-
-
 }
 

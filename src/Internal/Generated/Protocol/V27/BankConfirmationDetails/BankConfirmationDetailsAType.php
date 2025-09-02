@@ -7,7 +7,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\BankConfirmationDe
  */
 class BankConfirmationDetailsAType
 {
-
     /**
      * @var string $sessionId
      */
@@ -61,7 +60,5 @@ class BankConfirmationDetailsAType
         $this->paymentConfirmationDetails = $paymentConfirmationDetails;
         return $this;
     }
-
-
 }
 

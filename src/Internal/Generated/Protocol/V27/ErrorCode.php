@@ -7,7 +7,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Protocol\V27;
  */
 class ErrorCode
 {
-
     /**
      * @var string $__value
      */
@@ -46,7 +45,5 @@ class ErrorCode
     {
         return strval($this->__value);
     }
-
-
 }
 

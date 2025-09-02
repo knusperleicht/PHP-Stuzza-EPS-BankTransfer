@@ -9,7 +9,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Payment\V26;
  */
 class PaymentReferenceIdentifier
 {
-
     /**
      * @var string $__value
      */
@@ -48,7 +47,5 @@ class PaymentReferenceIdentifier
     {
         return strval($this->__value);
     }
-
-
 }
 

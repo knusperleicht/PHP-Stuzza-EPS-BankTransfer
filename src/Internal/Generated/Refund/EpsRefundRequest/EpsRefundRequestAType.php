@@ -7,7 +7,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Refund\EpsRefundRequest;
  */
 class EpsRefundRequestAType
 {
-
     /**
      * @var \DateTime $creDtTm
      */
@@ -169,7 +168,5 @@ class EpsRefundRequestAType
         $this->authenticationDetails = $authenticationDetails;
         return $this;
     }
-
-
 }
 

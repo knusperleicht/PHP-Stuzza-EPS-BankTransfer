@@ -7,7 +7,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Payment\V27\PaymentConfirmation
  */
 class PaymentConfirmationDetailsAType
 {
-
     /**
      * @var string $remittanceIdentifier
      */
@@ -250,7 +249,5 @@ class PaymentConfirmationDetailsAType
         $this->signature = $signature;
         return $this;
     }
-
-
 }
 

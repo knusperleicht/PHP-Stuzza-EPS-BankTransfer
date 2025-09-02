@@ -7,7 +7,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Payment\V27\StatusReason;
  */
 class StatusReasonAType
 {
-
     /**
      * @var string $from
      */
@@ -88,7 +87,5 @@ class StatusReasonAType
         $this->reasonMessage = $reasonMessage;
         return $this;
     }
-
-
 }
 

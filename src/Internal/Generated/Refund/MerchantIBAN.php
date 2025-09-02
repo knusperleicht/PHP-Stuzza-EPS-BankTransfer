@@ -9,7 +9,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Refund;
  */
 class MerchantIBAN
 {
-
     /**
      * @var string $__value
      */
@@ -48,7 +47,5 @@ class MerchantIBAN
     {
         return strval($this->__value);
     }
-
-
 }
 

@@ -10,7 +10,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\XmlDsig;
  */
 class SignaturePropertiesType
 {
-
     /**
      * @var string $id
      */
@@ -100,7 +99,5 @@ class SignaturePropertiesType
         $this->signatureProperty = $signatureProperty;
         return $this;
     }
-
-
 }
 

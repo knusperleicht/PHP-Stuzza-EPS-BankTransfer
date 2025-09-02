@@ -11,7 +11,5 @@ use Psa\EpsBankTransfer\Internal\Generated\Refund\Amount\AmountAType;
  */
 class Amount extends AmountAType
 {
-
-
 }
 

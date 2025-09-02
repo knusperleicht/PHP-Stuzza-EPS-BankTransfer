@@ -10,7 +10,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\XmlDsig;
  */
 class SignatureValueType
 {
-
     /**
      * @var string $__value
      */
@@ -76,7 +75,5 @@ class SignatureValueType
         $this->id = $id;
         return $this;
     }
-
-
 }
 

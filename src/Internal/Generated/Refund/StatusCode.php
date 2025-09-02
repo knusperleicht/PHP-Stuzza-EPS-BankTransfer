@@ -15,7 +15,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Refund;
  */
 class StatusCode
 {
-
     /**
      * @var string $__value
      */
@@ -54,7 +53,5 @@ class StatusCode
     {
         return strval($this->__value);
     }
-
-
 }
 

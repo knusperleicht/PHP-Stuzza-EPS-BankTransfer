@@ -7,7 +7,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\TransactionDetails
  */
 class TransactionDetailsResponseAType
 {
-
     /**
      * @var \Psa\EpsBankTransfer\Internal\Generated\Payment\V26\PaymentInitiatorDetails $paymentInitiatorDetails
      */
@@ -127,7 +126,7 @@ class TransactionDetailsResponseAType
      * @param \Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\WebshopArticle[] $webshopDetails
      * @return self
      */
-    public function setWebshopDetails(array $webshopDetails = null)
+    public function setWebshopDetails(?array $webshopDetails = null)
     {
         $this->webshopDetails = $webshopDetails;
         return $this;
@@ -176,7 +175,5 @@ class TransactionDetailsResponseAType
         $this->errorDetails = $errorDetails;
         return $this;
     }
-
-
 }
 

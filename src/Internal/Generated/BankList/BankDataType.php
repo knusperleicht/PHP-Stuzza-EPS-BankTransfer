@@ -10,7 +10,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\BankList;
  */
 class BankDataType
 {
-
     /**
      * @var string $bic
      */
@@ -208,7 +207,5 @@ class BankDataType
         $this->zahlungsweiseInt = $zahlungsweiseInt;
         return $this;
     }
-
-
 }
 

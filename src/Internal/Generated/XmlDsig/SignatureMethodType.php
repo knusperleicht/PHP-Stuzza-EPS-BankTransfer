@@ -10,7 +10,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\XmlDsig;
  */
 class SignatureMethodType
 {
-
     /**
      * @var string $algorithm
      */
@@ -64,7 +63,5 @@ class SignatureMethodType
         $this->hMACOutputLength = $hMACOutputLength;
         return $this;
     }
-
-
 }
 

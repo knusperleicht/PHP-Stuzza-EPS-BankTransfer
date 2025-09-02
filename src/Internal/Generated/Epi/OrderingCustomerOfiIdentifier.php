@@ -9,7 +9,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Epi;
  */
 class OrderingCustomerOfiIdentifier
 {
-
     /**
      * @var string $__value
      */
@@ -48,7 +47,5 @@ class OrderingCustomerOfiIdentifier
     {
         return strval($this->__value);
     }
-
-
 }
 

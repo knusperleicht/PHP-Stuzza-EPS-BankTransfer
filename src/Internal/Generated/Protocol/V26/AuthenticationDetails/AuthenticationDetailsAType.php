@@ -7,7 +7,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\AuthenticationDeta
  */
 class AuthenticationDetailsAType
 {
-
     /**
      * @var string $userId
      */
@@ -88,7 +87,5 @@ class AuthenticationDetailsAType
         $this->signature = $signature;
         return $this;
     }
-
-
 }
 

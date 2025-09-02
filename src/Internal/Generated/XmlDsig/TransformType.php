@@ -10,7 +10,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\XmlDsig;
  */
 class TransformType
 {
-
     /**
      * @var string $algorithm
      */
@@ -95,12 +94,10 @@ class TransformType
      * @param string[] $xPath
      * @return self
      */
-    public function setXPath(array $xPath = null)
+    public function setXPath(?array $xPath = null)
     {
         $this->xPath = $xPath;
         return $this;
     }
-
-
 }
 

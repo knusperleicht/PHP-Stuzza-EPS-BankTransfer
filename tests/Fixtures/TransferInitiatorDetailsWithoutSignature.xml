@@ -18,7 +18,7 @@
         </epi:PartyDetails>
         <epi:PaymentInstructionDetails>
           <epi:RemittanceIdentifier>AT1234567890XYZ</epi:RemittanceIdentifier>
-          <epi:InstructedAmount AmountCurrencyIdentifier="EUR">150.0</epi:InstructedAmount>
+          <epi:InstructedAmount AmountCurrencyIdentifier="EUR">150.00</epi:InstructedAmount>
           <epi:ChargeCode>SHA</epi:ChargeCode>
         </epi:PaymentInstructionDetails>
       </epi:EpiDetails>
@@ -32,7 +32,7 @@
       <epsp:TransactionNokUrl>http://10.18.70.8:7001/transactionnok?fehler.asp</epsp:TransactionNokUrl>
     </epsp:TransferMsgDetails>
     <epsp:WebshopDetails>
-      <epsp:WebshopArticle ArticleName="Toaster" ArticleCount="1" ArticlePrice="150.0"/>
+      <epsp:WebshopArticle ArticleName="Toaster" ArticleCount="1" ArticlePrice="150.00"/>
     </epsp:WebshopDetails>
     <epsp:AuthenticationDetails>
       <epsp:UserId>AKLJS231534</epsp:UserId>

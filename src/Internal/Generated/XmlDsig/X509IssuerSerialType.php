@@ -10,7 +10,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\XmlDsig;
  */
 class X509IssuerSerialType
 {
-
     /**
      * @var string $x509IssuerName
      */
@@ -64,7 +63,5 @@ class X509IssuerSerialType
         $this->x509SerialNumber = $x509SerialNumber;
         return $this;
     }
-
-
 }
 

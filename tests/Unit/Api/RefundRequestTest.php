@@ -23,19 +23,19 @@ class RefundRequestTest extends TestCase
     private function getMockedRefundRequest(): RefundRequest
     {
         return new RefundRequest(
-            '2025-02-10T15:30:00',
-            '1234567890',
-            'AT611904300234573201',
-            '100.50',
+            '2018-09-25T08:09:53.454+02:00',
+            'epsJMG15K752',
+            'AT175700054011014943',
+            3,
             'EUR',
-            'TestUserId',
-            'secret123',
-            'Duplicate transaction'
+            'HYPTAT22XXX_143921',
+            'fluxkompensator!',
+            'REFUND-123456789'
         );
     }
 
     /* ============================================================
-     * Version dependent tests
+     * Version dependent tests 
      * ============================================================
      */
 
@@ -53,8 +53,19 @@ class RefundRequestTest extends TestCase
 
         $this->assertEquals($expected, $result);
 
-        $lastUrl = $this->http->getLastRequestInfo()['url'];
+        $lastRequestInfo = $this->http->getLastRequestInfo();
+        $lastUrl = $lastRequestInfo['url'];
+        $lastBody = $lastRequestInfo['body'];
+
         $this->assertStringContainsString('/v2_6', $lastUrl);
+        $this->assertStringContainsString('2018-09-25T08:09:53.454+02:00', $lastBody);
+        $this->assertStringContainsString('epsJMG15K752', $lastBody);
+        $this->assertStringContainsString('AT175700054011014943', $lastBody);
+        $this->assertStringContainsString('0.03', $lastBody);
+        $this->assertStringContainsString('EUR', $lastBody);
+        $this->assertStringContainsString('HYPTAT22XXX_143921', $lastBody);
+        $this->assertStringContainsString('DB189543CF68F36893465F5844092B26C332B95A97F1AF6A1B1392CCC605BC40', $lastBody);
+        $this->assertStringContainsString('REFUND-123456789', $lastBody);
     }
 
     public function testSendRefundRequestV27Throws(): void

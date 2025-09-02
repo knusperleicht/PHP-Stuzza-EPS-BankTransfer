@@ -11,7 +11,5 @@ use Psa\EpsBankTransfer\Internal\Generated\Epi\BeneficiaryPartyDetails\Beneficia
  */
 class BeneficiaryPartyDetails extends BeneficiaryPartyDetailsAType
 {
-
-
 }
 

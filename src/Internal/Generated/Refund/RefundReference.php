@@ -9,7 +9,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Refund;
  */
 class RefundReference
 {
-
     /**
      * @var string $__value
      */
@@ -48,7 +47,5 @@ class RefundReference
     {
         return strval($this->__value);
     }
-
-
 }
 

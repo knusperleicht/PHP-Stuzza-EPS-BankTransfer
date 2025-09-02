@@ -10,7 +10,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\XmlDsig;
  */
 class SignedInfoType
 {
-
     /**
      * @var string $id
      */
@@ -154,7 +153,5 @@ class SignedInfoType
         $this->reference = $reference;
         return $this;
     }
-
-
 }
 

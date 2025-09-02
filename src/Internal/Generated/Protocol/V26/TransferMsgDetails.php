@@ -11,7 +11,5 @@ use Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\TransferMsgDetails\Trans
  */
 class TransferMsgDetails extends TransferMsgDetailsAType
 {
-
-
 }
 

@@ -9,7 +9,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Refund;
  */
 class UserId
 {
-
     /**
      * @var string $__value
      */
@@ -48,7 +47,5 @@ class UserId
     {
         return strval($this->__value);
     }
-
-
 }
 

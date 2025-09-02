@@ -10,7 +10,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\XmlDsig;
  */
 class DSAKeyValueType
 {
-
     /**
      * @var string $p
      */
@@ -199,7 +198,5 @@ class DSAKeyValueType
         $this->pgenCounter = $pgenCounter;
         return $this;
     }
-
-
 }
 

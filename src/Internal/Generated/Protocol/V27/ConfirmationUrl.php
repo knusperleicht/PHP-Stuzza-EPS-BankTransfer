@@ -9,7 +9,6 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Protocol\V27;
  */
 class ConfirmationUrl
 {
-
     /**
      * @var string $__value
      */
@@ -48,7 +47,5 @@ class ConfirmationUrl
     {
         return strval($this->__value);
     }
-
-
 }
 

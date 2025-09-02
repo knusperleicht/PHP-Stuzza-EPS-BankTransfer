@@ -7,7 +7,5 @@ namespace Psa\EpsBankTransfer\Internal\Generated\XmlDsig;
  */
 class X509Data extends X509DataType
 {
-
-
 }
 
