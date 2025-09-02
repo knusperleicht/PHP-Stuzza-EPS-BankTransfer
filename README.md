@@ -1,6 +1,6 @@
 # EPS Bank Transfer (knusperleicht/eps-bank-transfer)
 
-[![Tests](https://github.com/knusperleicht/eps-bank-transfer/actions/workflows/tests.yml/badge.svg?branch=release)](https://github.com/knusperleicht/eps-bank-transfer/actions/workflows/tests.yml)
+[![Tests](https://github.com/knusperleicht/eps-bank-transfer/actions/workflows/tests.yml/badge.svg)](https://github.com/knusperleicht/eps-bank-transfer/actions/workflows/tests.yml)
 [![Latest Stable Version](https://img.shields.io/packagist/v/knusperleicht/eps-bank-transfer.svg)](https://packagist.org/packages/knusperleicht/eps-bank-transfer)
 [![Total Downloads](https://img.shields.io/packagist/dt/knusperleicht/eps-bank-transfer.svg)](https://packagist.org/packages/knusperleicht/eps-bank-transfer)
 [![License](https://img.shields.io/badge/license-GPL--2.0--or--later-blue.svg)](LICENSE)
