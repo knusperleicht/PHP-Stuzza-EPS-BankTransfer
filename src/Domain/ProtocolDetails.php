@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Psa\EpsBankTransfer\Domain;
+namespace Knusperleicht\EpsBankTransfer\Domain;
 
-use Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\EpsProtocolDetails as V26Details;
-use Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\EpsProtocolDetails as V27Details;
+use Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\EpsProtocolDetails as V26Details;
+use Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\EpsProtocolDetails as V27Details;
 
 /**
  * Result of an EPS transfer initiation mapped into a compact domain object.

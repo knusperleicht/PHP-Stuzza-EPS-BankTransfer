@@ -1,6 +1,6 @@
 <?php
 
-namespace Psa\EpsBankTransfer\Internal\Generated\XmlDsig;
+namespace Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig;
 
 /**
  * Class representing DigestValue

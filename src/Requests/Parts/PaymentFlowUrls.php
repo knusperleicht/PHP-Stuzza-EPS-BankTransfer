@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Psa\EpsBankTransfer\Requests\Parts;
+namespace Knusperleicht\EpsBankTransfer\Requests\Parts;
 
 class PaymentFlowUrls
 {

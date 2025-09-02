@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Psa\EpsBankTransfer\Tests\Helper;
+namespace Knusperleicht\EpsBankTransfer\Tests\Helper;
 
 trait XmlFixtureTestTrait
 {

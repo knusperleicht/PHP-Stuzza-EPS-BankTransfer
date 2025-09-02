@@ -1,8 +1,8 @@
 <?php
 
-namespace Psa\EpsBankTransfer\Internal\Generated\Refund;
+namespace Knusperleicht\EpsBankTransfer\Internal\Generated\Refund;
 
-use Psa\EpsBankTransfer\Internal\Generated\Refund\EpsRefundRequest\EpsRefundRequestAType;
+use Knusperleicht\EpsBankTransfer\Internal\Generated\Refund\EpsRefundRequest\EpsRefundRequestAType;
 
 /**
  * Class representing EpsRefundRequest

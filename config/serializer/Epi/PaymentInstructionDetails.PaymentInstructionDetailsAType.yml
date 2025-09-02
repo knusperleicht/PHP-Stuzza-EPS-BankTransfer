@@ -1,4 +1,4 @@
-Psa\EpsBankTransfer\Internal\Generated\Epi\PaymentInstructionDetails\PaymentInstructionDetailsAType:
+Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\PaymentInstructionDetails\PaymentInstructionDetailsAType:
     properties:
         paymentInstructionIdentifier:
             expose: true
@@ -59,7 +59,7 @@ Psa\EpsBankTransfer\Internal\Generated\Epi\PaymentInstructionDetails\PaymentInst
             accessor:
                 getter: getInstructedAmount
                 setter: setInstructedAmount
-            type: Psa\EpsBankTransfer\Internal\Generated\Epi\InstructedAmount
+            type: Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\InstructedAmount
         chargeCode:
             expose: true
             access_type: public_method
@@ -79,4 +79,4 @@ Psa\EpsBankTransfer\Internal\Generated\Epi\PaymentInstructionDetails\PaymentInst
             accessor:
                 getter: getDateOptionDetails
                 setter: setDateOptionDetails
-            type: Psa\EpsBankTransfer\Internal\Generated\Epi\DateOptionDetails
+            type: Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\DateOptionDetails

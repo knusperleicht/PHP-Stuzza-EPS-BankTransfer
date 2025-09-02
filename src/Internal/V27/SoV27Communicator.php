@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace Psa\EpsBankTransfer\Internal\V27;
+namespace Knusperleicht\EpsBankTransfer\Internal\V27;
 
-use Psa\EpsBankTransfer\Internal\Generated\BankList\EpsSOBankListProtocol;
-use Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\EpsProtocolDetails;
-use Psa\EpsBankTransfer\Internal\Generated\Refund\EpsRefundResponse;
-use Psa\EpsBankTransfer\Internal\SoCommunicatorCore;
-use Psa\EpsBankTransfer\Requests\RefundRequest;
-use Psa\EpsBankTransfer\Requests\TransferInitiatorDetails;
 use JMS\Serializer\SerializerInterface;
+use Knusperleicht\EpsBankTransfer\Internal\Generated\BankList\EpsSOBankListProtocol;
+use Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\EpsProtocolDetails;
+use Knusperleicht\EpsBankTransfer\Internal\Generated\Refund\EpsRefundResponse;
+use Knusperleicht\EpsBankTransfer\Internal\SoCommunicatorCore;
+use Knusperleicht\EpsBankTransfer\Requests\RefundRequest;
+use Knusperleicht\EpsBankTransfer\Requests\TransferInitiatorDetails;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
@@ -40,12 +40,13 @@ class SoV27Communicator
      * @param LoggerInterface|null $logger Optional PSR-3 logger.
      */
     public function __construct(
-        ClientInterface $httpClient,
+        ClientInterface         $httpClient,
         RequestFactoryInterface $requestFactory,
-        StreamFactoryInterface $streamFactory,
-        string $baseUrl,
-        LoggerInterface $logger = null
-    ) {
+        StreamFactoryInterface  $streamFactory,
+        string                  $baseUrl,
+        LoggerInterface         $logger = null
+    )
+    {
         $this->core = new SoCommunicatorCore(
             $httpClient,
             $requestFactory,
@@ -70,7 +71,8 @@ class SoV27Communicator
     public function sendTransferInitiatorDetails(
         TransferInitiatorDetails $transferInitiatorDetails,
         ?string                  $targetUrl = null
-    ): EpsProtocolDetails {
+    ): EpsProtocolDetails
+    {
         throw new \LogicException('Not implemented yet - waiting for XSD 2.7');
     }
 
@@ -90,7 +92,8 @@ class SoV27Communicator
         $vitalityCheckCallback = null,
         string $rawPostStream = 'php://input',
         string $outputStream = 'php://output'
-    ): void {
+    ): void
+    {
         throw new \LogicException('Not implemented yet - waiting for XSD 2.7');
     }
 

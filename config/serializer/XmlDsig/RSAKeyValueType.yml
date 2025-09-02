@@ -1,4 +1,4 @@
-Psa\EpsBankTransfer\Internal\Generated\XmlDsig\RSAKeyValueType:
+Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\RSAKeyValueType:
     properties:
         modulus:
             expose: true

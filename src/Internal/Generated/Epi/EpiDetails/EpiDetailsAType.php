@@ -1,6 +1,6 @@
 <?php
 
-namespace Psa\EpsBankTransfer\Internal\Generated\Epi\EpiDetails;
+namespace Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\EpiDetails;
 
 /**
  * Class representing EpiDetailsAType
@@ -8,24 +8,24 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Epi\EpiDetails;
 class EpiDetailsAType
 {
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\Epi\IdentificationDetails $identificationDetails
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\IdentificationDetails $identificationDetails
      */
     private $identificationDetails = null;
 
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\Epi\PartyDetails $partyDetails
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\PartyDetails $partyDetails
      */
     private $partyDetails = null;
 
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\Epi\PaymentInstructionDetails $paymentInstructionDetails
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\PaymentInstructionDetails $paymentInstructionDetails
      */
     private $paymentInstructionDetails = null;
 
     /**
      * Gets as identificationDetails
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\Epi\IdentificationDetails
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\IdentificationDetails
      */
     public function getIdentificationDetails()
     {
@@ -35,10 +35,10 @@ class EpiDetailsAType
     /**
      * Sets a new identificationDetails
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\Epi\IdentificationDetails $identificationDetails
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\IdentificationDetails $identificationDetails
      * @return self
      */
-    public function setIdentificationDetails(\Psa\EpsBankTransfer\Internal\Generated\Epi\IdentificationDetails $identificationDetails)
+    public function setIdentificationDetails(\Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\IdentificationDetails $identificationDetails)
     {
         $this->identificationDetails = $identificationDetails;
         return $this;
@@ -47,7 +47,7 @@ class EpiDetailsAType
     /**
      * Gets as partyDetails
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\Epi\PartyDetails
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\PartyDetails
      */
     public function getPartyDetails()
     {
@@ -57,10 +57,10 @@ class EpiDetailsAType
     /**
      * Sets a new partyDetails
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\Epi\PartyDetails $partyDetails
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\PartyDetails $partyDetails
      * @return self
      */
-    public function setPartyDetails(\Psa\EpsBankTransfer\Internal\Generated\Epi\PartyDetails $partyDetails)
+    public function setPartyDetails(\Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\PartyDetails $partyDetails)
     {
         $this->partyDetails = $partyDetails;
         return $this;
@@ -69,7 +69,7 @@ class EpiDetailsAType
     /**
      * Gets as paymentInstructionDetails
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\Epi\PaymentInstructionDetails
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\PaymentInstructionDetails
      */
     public function getPaymentInstructionDetails()
     {
@@ -79,10 +79,10 @@ class EpiDetailsAType
     /**
      * Sets a new paymentInstructionDetails
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\Epi\PaymentInstructionDetails $paymentInstructionDetails
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\PaymentInstructionDetails $paymentInstructionDetails
      * @return self
      */
-    public function setPaymentInstructionDetails(\Psa\EpsBankTransfer\Internal\Generated\Epi\PaymentInstructionDetails $paymentInstructionDetails)
+    public function setPaymentInstructionDetails(\Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\PaymentInstructionDetails $paymentInstructionDetails)
     {
         $this->paymentInstructionDetails = $paymentInstructionDetails;
         return $this;

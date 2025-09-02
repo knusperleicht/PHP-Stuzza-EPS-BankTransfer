@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Psa\EpsBankTransfer\Domain;
+namespace Knusperleicht\EpsBankTransfer\Domain;
 
 use DateTimeInterface;
 use Exception;
-use Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\EpsProtocolDetails;
+use Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\EpsProtocolDetails;
 
 /**
  * Domain representation of an EPS Bank Confirmation (v2.6).

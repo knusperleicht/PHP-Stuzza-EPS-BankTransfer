@@ -1,8 +1,8 @@
 <?php
 
-namespace Psa\EpsBankTransfer\Internal\Generated\Payment\V27;
+namespace Knusperleicht\EpsBankTransfer\Internal\Generated\Payment\V27;
 
-use Psa\EpsBankTransfer\Internal\Generated\Payment\V27\ShopConfirmationDetails\ShopConfirmationDetailsAType;
+use Knusperleicht\EpsBankTransfer\Internal\Generated\Payment\V27\ShopConfirmationDetails\ShopConfirmationDetailsAType;
 
 /**
  * Class representing ShopConfirmationDetails

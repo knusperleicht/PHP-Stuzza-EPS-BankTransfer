@@ -1,32 +1,32 @@
 <?php
 declare(strict_types=1);
 
-namespace Psa\EpsBankTransfer\Requests;
+namespace Knusperleicht\EpsBankTransfer\Requests;
 
 use DateInterval;
 use DateTime;
 use Exception;
-use Psa\EpsBankTransfer\Internal\Generated\AustrianRules\AustrianRulesDetails;
-use Psa\EpsBankTransfer\Internal\Generated\Epi\BeneficiaryPartyDetails;
-use Psa\EpsBankTransfer\Internal\Generated\Epi\BfiPartyDetails;
-use Psa\EpsBankTransfer\Internal\Generated\Epi\EpiDetails;
-use Psa\EpsBankTransfer\Internal\Generated\Epi\IdentificationDetails;
-use Psa\EpsBankTransfer\Internal\Generated\Epi\InstructedAmount;
-use Psa\EpsBankTransfer\Internal\Generated\Epi\PartyDetails;
-use Psa\EpsBankTransfer\Internal\Generated\Epi\PaymentInstructionDetails;
-use Psa\EpsBankTransfer\Internal\Generated\Payment\V26\PaymentInitiatorDetails;
-use Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\AuthenticationDetails;
-use Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\EpsProtocolDetails;
-use Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\TransactionNokUrl;
-use Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\TransactionOkUrl;
-use Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\TransferInitiatorDetails as V6TransferInitiatorDetails;
-use Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\TransferMsgDetails;
-use Psa\EpsBankTransfer\Requests\Parts\PaymentFlowUrls;
-use Psa\EpsBankTransfer\Requests\Parts\WebshopArticle;
-use Psa\EpsBankTransfer\Requests\Parts\ObscurityConfig;
-use Psa\EpsBankTransfer\Utilities\Fingerprint;
-use Psa\EpsBankTransfer\Utilities\MoneyFormatter;
 use InvalidArgumentException;
+use Knusperleicht\EpsBankTransfer\Internal\Generated\AustrianRules\AustrianRulesDetails;
+use Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\BeneficiaryPartyDetails;
+use Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\BfiPartyDetails;
+use Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\EpiDetails;
+use Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\IdentificationDetails;
+use Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\InstructedAmount;
+use Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\PartyDetails;
+use Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\PaymentInstructionDetails;
+use Knusperleicht\EpsBankTransfer\Internal\Generated\Payment\V26\PaymentInitiatorDetails;
+use Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\AuthenticationDetails;
+use Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\EpsProtocolDetails;
+use Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\TransactionNokUrl;
+use Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\TransactionOkUrl;
+use Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\TransferInitiatorDetails as V6TransferInitiatorDetails;
+use Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\TransferMsgDetails;
+use Knusperleicht\EpsBankTransfer\Requests\Parts\ObscurityConfig;
+use Knusperleicht\EpsBankTransfer\Requests\Parts\PaymentFlowUrls;
+use Knusperleicht\EpsBankTransfer\Requests\Parts\WebshopArticle;
+use Knusperleicht\EpsBankTransfer\Utilities\Fingerprint;
+use Knusperleicht\EpsBankTransfer\Utilities\MoneyFormatter;
 
 /**
  * EPS payment order message
@@ -143,14 +143,14 @@ class TransferInitiatorDetails
      * @param ObscurityConfig|null $obscurityConfig Optional obscurity configuration for hash generation
      */
 
-    public function __construct(string          $userId,
-                                string          $secret,
-                                string          $bfiBicIdentifier,
-                                string          $beneficiaryNameAddressText,
-                                string          $beneficiaryAccountIdentifier,
-                                string          $referenceIdentifier,
-                                                $instructedAmount,
-                                PaymentFlowUrls $transferMsgDetails,
+    public function __construct(string           $userId,
+                                string           $secret,
+                                string           $bfiBicIdentifier,
+                                string           $beneficiaryNameAddressText,
+                                string           $beneficiaryAccountIdentifier,
+                                string           $referenceIdentifier,
+                                                 $instructedAmount,
+                                PaymentFlowUrls  $transferMsgDetails,
                                 ?string          $date = null,
                                 ?ObscurityConfig $obscurityConfig = null)
     {
@@ -238,16 +238,16 @@ class TransferInitiatorDetails
 
         $transactionOkUrl = new TransactionOkUrl($this->transferMsgDetails->getTransactionOkUrl());
         $transferMsgDetails->setTransactionOkUrl($transactionOkUrl);
-        
+
         $transactionNokUrl = new TransactionNokUrl($this->transferMsgDetails->getTransactionNokUrl());
         $transferMsgDetails->setTransactionNokUrl($transactionNokUrl);
-        
+
         $transferInitiatorDetails->setTransferMsgDetails($transferMsgDetails);
 
         if (!empty($this->webshopArticles)) {
             $articles = [];
             foreach ($this->webshopArticles as $article) {
-                $webshopArticle = new \Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\WebshopArticle();
+                $webshopArticle = new \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\WebshopArticle();
                 $webshopArticle->setArticleName($article->name);
                 $webshopArticle->setArticleCount($article->count);
                 $webshopArticle->setArticlePrice($article->price);

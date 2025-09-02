@@ -46,7 +46,7 @@ The `SoCommunicator` provides endpoint URLs as constants: `TEST_MODE_URL` for te
 
 Example:
 ```php
-use Psa\EpsBankTransfer\Api\SoCommunicator;
+use Knusperleicht\EpsBankTransfer\Api\SoCommunicator;
 use GuzzleHttp\Client;
 use Http\Discovery\Psr17FactoryDiscovery;
 

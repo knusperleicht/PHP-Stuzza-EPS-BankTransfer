@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Psa\EpsBankTransfer\Utilities;
+namespace Knusperleicht\EpsBankTransfer\Utilities;
 
 class Fingerprint
 {
@@ -16,7 +16,7 @@ class Fingerprint
 
     public static function generateSHA256Fingerprint(string $pin, string $creationDateTime,
                                                      string $transactionId, string $merchantIban,
-                                                      $amountValue, string $amountCurrency,
+                                                            $amountValue, string $amountCurrency,
                                                      string $userId, ?string $refundReference = null): string
     {
         $inputData = $pin .

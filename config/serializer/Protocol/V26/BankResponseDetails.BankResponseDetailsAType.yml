@@ -1,4 +1,4 @@
-Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\BankResponseDetails\BankResponseDetailsAType:
+Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\BankResponseDetails\BankResponseDetailsAType:
     properties:
         clientRedirectUrl:
             expose: true
@@ -19,7 +19,7 @@ Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\BankResponseDetails\BankResp
             accessor:
                 getter: getErrorDetails
                 setter: setErrorDetails
-            type: Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\ErrorDetails
+            type: Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\ErrorDetails
         transactionId:
             expose: true
             access_type: public_method

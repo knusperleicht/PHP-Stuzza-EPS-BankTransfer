@@ -1,8 +1,8 @@
 <?php
 
-namespace Psa\EpsBankTransfer\Internal\Generated\Epi;
+namespace Knusperleicht\EpsBankTransfer\Internal\Generated\Epi;
 
-use Psa\EpsBankTransfer\Internal\Generated\Epi\PaymentInstructionDetails\PaymentInstructionDetailsAType;
+use Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\PaymentInstructionDetails\PaymentInstructionDetailsAType;
 
 /**
  * Class representing PaymentInstructionDetails

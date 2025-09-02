@@ -1,6 +1,6 @@
 <?php
 
-namespace Psa\EpsBankTransfer\Internal\Generated\XmlDsig;
+namespace Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig;
 
 /**
  * Class representing TransformsType
@@ -11,7 +11,7 @@ namespace Psa\EpsBankTransfer\Internal\Generated\XmlDsig;
 class TransformsType
 {
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\Transform[] $transform
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\Transform[] $transform
      */
     private $transform = [
         
@@ -21,9 +21,9 @@ class TransformsType
      * Adds as transform
      *
      * @return self
-     * @param \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\Transform $transform
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\Transform $transform
      */
-    public function addToTransform(\Psa\EpsBankTransfer\Internal\Generated\XmlDsig\Transform $transform)
+    public function addToTransform(\Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\Transform $transform)
     {
         $this->transform[] = $transform;
         return $this;
@@ -54,7 +54,7 @@ class TransformsType
     /**
      * Gets as transform
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\Transform[]
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\Transform[]
      */
     public function getTransform()
     {
@@ -64,7 +64,7 @@ class TransformsType
     /**
      * Sets a new transform
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\Transform[] $transform
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\Transform[] $transform
      * @return self
      */
     public function setTransform(array $transform)

@@ -1,6 +1,6 @@
 <?php
 
-namespace Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\WebshopDetails;
+namespace Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\WebshopDetails;
 
 /**
  * Class representing WebshopDetailsAType
@@ -8,7 +8,7 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\WebshopDetails;
 class WebshopDetailsAType
 {
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\WebshopArticle[] $webshopArticle
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\WebshopArticle[] $webshopArticle
      */
     private $webshopArticle = [
         
@@ -18,9 +18,9 @@ class WebshopDetailsAType
      * Adds as webshopArticle
      *
      * @return self
-     * @param \Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\WebshopArticle $webshopArticle
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\WebshopArticle $webshopArticle
      */
-    public function addToWebshopArticle(\Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\WebshopArticle $webshopArticle)
+    public function addToWebshopArticle(\Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\WebshopArticle $webshopArticle)
     {
         $this->webshopArticle[] = $webshopArticle;
         return $this;
@@ -51,7 +51,7 @@ class WebshopDetailsAType
     /**
      * Gets as webshopArticle
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\WebshopArticle[]
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\WebshopArticle[]
      */
     public function getWebshopArticle()
     {
@@ -61,7 +61,7 @@ class WebshopDetailsAType
     /**
      * Sets a new webshopArticle
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\WebshopArticle[] $webshopArticle
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\WebshopArticle[] $webshopArticle
      * @return self
      */
     public function setWebshopArticle(array $webshopArticle)

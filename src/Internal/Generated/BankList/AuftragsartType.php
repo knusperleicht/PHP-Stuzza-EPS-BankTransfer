@@ -1,6 +1,6 @@
 <?php
 
-namespace Psa\EpsBankTransfer\Internal\Generated\BankList;
+namespace Knusperleicht\EpsBankTransfer\Internal\Generated\BankList;
 
 /**
  * Class representing AuftragsartType

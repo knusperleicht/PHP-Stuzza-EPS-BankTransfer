@@ -1,13 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace Psa\EpsBankTransfer\Requests;
+namespace Knusperleicht\EpsBankTransfer\Requests;
+
 use Exception;
-use Psa\EpsBankTransfer\Internal\Generated\Refund\Amount;
-use Psa\EpsBankTransfer\Internal\Generated\Refund\AuthenticationDetails;
-use Psa\EpsBankTransfer\Internal\Generated\Refund\EpsRefundRequest;
-use Psa\EpsBankTransfer\Utilities\Fingerprint;
-use Psa\EpsBankTransfer\Utilities\MoneyFormatter;
+use Knusperleicht\EpsBankTransfer\Internal\Generated\Refund\Amount;
+use Knusperleicht\EpsBankTransfer\Internal\Generated\Refund\AuthenticationDetails;
+use Knusperleicht\EpsBankTransfer\Internal\Generated\Refund\EpsRefundRequest;
+use Knusperleicht\EpsBankTransfer\Utilities\Fingerprint;
+use Knusperleicht\EpsBankTransfer\Utilities\MoneyFormatter;
 
 class RefundRequest
 {

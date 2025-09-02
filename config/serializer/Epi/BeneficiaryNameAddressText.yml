@@ -1,4 +1,4 @@
-Psa\EpsBankTransfer\Internal\Generated\Epi\BeneficiaryNameAddressText:
+Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\BeneficiaryNameAddressText:
     xml_root_name: BeneficiaryNameAddressText
     xml_root_namespace: 'http://www.stuzza.at/namespaces/eps/epi/2013/02'
     properties:

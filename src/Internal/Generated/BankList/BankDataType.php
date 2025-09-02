@@ -1,6 +1,6 @@
 <?php
 
-namespace Psa\EpsBankTransfer\Internal\Generated\BankList;
+namespace Knusperleicht\EpsBankTransfer\Internal\Generated\BankList;
 
 /**
  * Class representing BankDataType
@@ -31,7 +31,7 @@ class BankDataType
     private $epsUrl = null;
 
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\BankList\AuftragsartType[] $zahlungsweiseNat
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\BankList\AuftragsartType[] $zahlungsweiseNat
      */
     private $zahlungsweiseNat = [
         
@@ -134,9 +134,9 @@ class BankDataType
      * Adds as zahlungsweiseNat
      *
      * @return self
-     * @param \Psa\EpsBankTransfer\Internal\Generated\BankList\AuftragsartType $zahlungsweiseNat
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\BankList\AuftragsartType $zahlungsweiseNat
      */
-    public function addToZahlungsweiseNat(\Psa\EpsBankTransfer\Internal\Generated\BankList\AuftragsartType $zahlungsweiseNat)
+    public function addToZahlungsweiseNat(\Knusperleicht\EpsBankTransfer\Internal\Generated\BankList\AuftragsartType $zahlungsweiseNat)
     {
         $this->zahlungsweiseNat[] = $zahlungsweiseNat;
         return $this;
@@ -167,7 +167,7 @@ class BankDataType
     /**
      * Gets as zahlungsweiseNat
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\BankList\AuftragsartType[]
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\BankList\AuftragsartType[]
      */
     public function getZahlungsweiseNat()
     {
@@ -177,7 +177,7 @@ class BankDataType
     /**
      * Sets a new zahlungsweiseNat
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\BankList\AuftragsartType[] $zahlungsweiseNat
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\BankList\AuftragsartType[] $zahlungsweiseNat
      * @return self
      */
     public function setZahlungsweiseNat(array $zahlungsweiseNat)

@@ -1,6 +1,6 @@
 <?php
 
-namespace Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\TransactionOkUrl;
+namespace Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\TransactionOkUrl;
 
 /**
  * Class representing TransactionOkUrlAType

@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Psa\EpsBankTransfer\Tests\Domain;
+namespace Knusperleicht\EpsBankTransfer\Tests\Domain;
 
 use DateTimeImmutable;
-use Psa\EpsBankTransfer\Domain\BankConfirmationDetails;
+use Knusperleicht\EpsBankTransfer\Domain\BankConfirmationDetails;
 use PHPUnit\Framework\TestCase;
-use Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\EpsProtocolDetails;
+use Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\EpsProtocolDetails;
 
 class BankConfirmationDetailsTest extends TestCase
 {
@@ -102,8 +102,8 @@ class BankConfirmationDetailsTest extends TestCase
 
     private function ensureV26ProtocolStub(): void
     {
-        if (!class_exists('Psa\\EpsBankTransfer\\Internal\\Generated\\Protocol\\V26\\EpsProtocolDetails')) {
-            eval('namespace Psa\\EpsBankTransfer\\Internal\\Generated\\Protocol\\V26; abstract class EpsProtocolDetails { public function __construct() {} abstract public function getBankConfirmationDetails(); }');
+        if (!class_exists('Knusperleicht\\EpsBankTransfer\\Internal\\Generated\\Protocol\\V26\\EpsProtocolDetails')) {
+            eval('namespace Knusperleicht\\EpsBankTransfer\\Internal\\Generated\\Protocol\\V26; abstract class EpsProtocolDetails { public function __construct() {} abstract public function getBankConfirmationDetails(); }');
         }
     }
 }

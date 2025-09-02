@@ -1,6 +1,6 @@
 <?php
 
-namespace Psa\EpsBankTransfer\Internal\Generated\Payment\V27\PaymentConfirmationDetails;
+namespace Knusperleicht\EpsBankTransfer\Internal\Generated\Payment\V27\PaymentConfirmationDetails;
 
 /**
  * Class representing PaymentConfirmationDetailsAType
@@ -18,12 +18,12 @@ class PaymentConfirmationDetailsAType
     private $unstructuredRemittanceIdentifier = null;
 
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\Payment\V27\PaymentInitiatorDetails $paymentInitiatorDetails
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\Payment\V27\PaymentInitiatorDetails $paymentInitiatorDetails
      */
     private $paymentInitiatorDetails = null;
 
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\Payment\V27\PayConApprovingUnitDetails $payConApprovingUnitDetails
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\Payment\V27\PayConApprovingUnitDetails $payConApprovingUnitDetails
      */
     private $payConApprovingUnitDetails = null;
 
@@ -43,12 +43,12 @@ class PaymentConfirmationDetailsAType
     private $statusCode = null;
 
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\Payment\V27\StatusReason $statusReason
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\Payment\V27\StatusReason $statusReason
      */
     private $statusReason = null;
 
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\Signature $signature
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\Signature $signature
      */
     private $signature = null;
 
@@ -99,7 +99,7 @@ class PaymentConfirmationDetailsAType
     /**
      * Gets as paymentInitiatorDetails
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\Payment\V27\PaymentInitiatorDetails
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\Payment\V27\PaymentInitiatorDetails
      */
     public function getPaymentInitiatorDetails()
     {
@@ -109,10 +109,10 @@ class PaymentConfirmationDetailsAType
     /**
      * Sets a new paymentInitiatorDetails
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\Payment\V27\PaymentInitiatorDetails $paymentInitiatorDetails
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\Payment\V27\PaymentInitiatorDetails $paymentInitiatorDetails
      * @return self
      */
-    public function setPaymentInitiatorDetails(?\Psa\EpsBankTransfer\Internal\Generated\Payment\V27\PaymentInitiatorDetails $paymentInitiatorDetails = null)
+    public function setPaymentInitiatorDetails(?\Knusperleicht\EpsBankTransfer\Internal\Generated\Payment\V27\PaymentInitiatorDetails $paymentInitiatorDetails = null)
     {
         $this->paymentInitiatorDetails = $paymentInitiatorDetails;
         return $this;
@@ -121,7 +121,7 @@ class PaymentConfirmationDetailsAType
     /**
      * Gets as payConApprovingUnitDetails
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\Payment\V27\PayConApprovingUnitDetails
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\Payment\V27\PayConApprovingUnitDetails
      */
     public function getPayConApprovingUnitDetails()
     {
@@ -131,10 +131,10 @@ class PaymentConfirmationDetailsAType
     /**
      * Sets a new payConApprovingUnitDetails
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\Payment\V27\PayConApprovingUnitDetails $payConApprovingUnitDetails
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\Payment\V27\PayConApprovingUnitDetails $payConApprovingUnitDetails
      * @return self
      */
-    public function setPayConApprovingUnitDetails(\Psa\EpsBankTransfer\Internal\Generated\Payment\V27\PayConApprovingUnitDetails $payConApprovingUnitDetails)
+    public function setPayConApprovingUnitDetails(\Knusperleicht\EpsBankTransfer\Internal\Generated\Payment\V27\PayConApprovingUnitDetails $payConApprovingUnitDetails)
     {
         $this->payConApprovingUnitDetails = $payConApprovingUnitDetails;
         return $this;
@@ -209,7 +209,7 @@ class PaymentConfirmationDetailsAType
     /**
      * Gets as statusReason
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\Payment\V27\StatusReason
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\Payment\V27\StatusReason
      */
     public function getStatusReason()
     {
@@ -219,10 +219,10 @@ class PaymentConfirmationDetailsAType
     /**
      * Sets a new statusReason
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\Payment\V27\StatusReason $statusReason
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\Payment\V27\StatusReason $statusReason
      * @return self
      */
-    public function setStatusReason(?\Psa\EpsBankTransfer\Internal\Generated\Payment\V27\StatusReason $statusReason = null)
+    public function setStatusReason(?\Knusperleicht\EpsBankTransfer\Internal\Generated\Payment\V27\StatusReason $statusReason = null)
     {
         $this->statusReason = $statusReason;
         return $this;
@@ -231,7 +231,7 @@ class PaymentConfirmationDetailsAType
     /**
      * Gets as signature
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\Signature
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\Signature
      */
     public function getSignature()
     {
@@ -241,10 +241,10 @@ class PaymentConfirmationDetailsAType
     /**
      * Sets a new signature
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\Signature $signature
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\Signature $signature
      * @return self
      */
-    public function setSignature(?\Psa\EpsBankTransfer\Internal\Generated\XmlDsig\Signature $signature = null)
+    public function setSignature(?\Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\Signature $signature = null)
     {
         $this->signature = $signature;
         return $this;

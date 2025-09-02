@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Psa\EpsBankTransfer\Utilities;
+namespace Knusperleicht\EpsBankTransfer\Utilities;
 
 use InvalidArgumentException;
 

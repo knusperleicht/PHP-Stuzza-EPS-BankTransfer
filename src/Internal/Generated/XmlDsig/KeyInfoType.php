@@ -1,6 +1,6 @@
 <?php
 
-namespace Psa\EpsBankTransfer\Internal\Generated\XmlDsig;
+namespace Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig;
 
 /**
  * Class representing KeyInfoType
@@ -23,35 +23,35 @@ class KeyInfoType
     ];
 
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\KeyValue[] $keyValue
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\KeyValue[] $keyValue
      */
     private $keyValue = [
         
     ];
 
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\RetrievalMethod[] $retrievalMethod
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\RetrievalMethod[] $retrievalMethod
      */
     private $retrievalMethod = [
         
     ];
 
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\X509Data[] $x509Data
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\X509Data[] $x509Data
      */
     private $x509Data = [
         
     ];
 
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\PGPData[] $pGPData
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\PGPData[] $pGPData
      */
     private $pGPData = [
         
     ];
 
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\SPKIData[] $sPKIData
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\SPKIData[] $sPKIData
      */
     private $sPKIData = [
         
@@ -146,9 +146,9 @@ class KeyInfoType
      * Adds as keyValue
      *
      * @return self
-     * @param \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\KeyValue $keyValue
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\KeyValue $keyValue
      */
-    public function addToKeyValue(\Psa\EpsBankTransfer\Internal\Generated\XmlDsig\KeyValue $keyValue)
+    public function addToKeyValue(\Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\KeyValue $keyValue)
     {
         $this->keyValue[] = $keyValue;
         return $this;
@@ -179,7 +179,7 @@ class KeyInfoType
     /**
      * Gets as keyValue
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\KeyValue[]
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\KeyValue[]
      */
     public function getKeyValue()
     {
@@ -189,7 +189,7 @@ class KeyInfoType
     /**
      * Sets a new keyValue
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\KeyValue[] $keyValue
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\KeyValue[] $keyValue
      * @return self
      */
     public function setKeyValue(?array $keyValue = null)
@@ -202,9 +202,9 @@ class KeyInfoType
      * Adds as retrievalMethod
      *
      * @return self
-     * @param \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\RetrievalMethod $retrievalMethod
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\RetrievalMethod $retrievalMethod
      */
-    public function addToRetrievalMethod(\Psa\EpsBankTransfer\Internal\Generated\XmlDsig\RetrievalMethod $retrievalMethod)
+    public function addToRetrievalMethod(\Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\RetrievalMethod $retrievalMethod)
     {
         $this->retrievalMethod[] = $retrievalMethod;
         return $this;
@@ -235,7 +235,7 @@ class KeyInfoType
     /**
      * Gets as retrievalMethod
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\RetrievalMethod[]
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\RetrievalMethod[]
      */
     public function getRetrievalMethod()
     {
@@ -245,7 +245,7 @@ class KeyInfoType
     /**
      * Sets a new retrievalMethod
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\RetrievalMethod[] $retrievalMethod
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\RetrievalMethod[] $retrievalMethod
      * @return self
      */
     public function setRetrievalMethod(?array $retrievalMethod = null)
@@ -258,9 +258,9 @@ class KeyInfoType
      * Adds as x509Data
      *
      * @return self
-     * @param \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\X509Data $x509Data
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\X509Data $x509Data
      */
-    public function addToX509Data(\Psa\EpsBankTransfer\Internal\Generated\XmlDsig\X509Data $x509Data)
+    public function addToX509Data(\Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\X509Data $x509Data)
     {
         $this->x509Data[] = $x509Data;
         return $this;
@@ -291,7 +291,7 @@ class KeyInfoType
     /**
      * Gets as x509Data
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\X509Data[]
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\X509Data[]
      */
     public function getX509Data()
     {
@@ -301,7 +301,7 @@ class KeyInfoType
     /**
      * Sets a new x509Data
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\X509Data[] $x509Data
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\X509Data[] $x509Data
      * @return self
      */
     public function setX509Data(?array $x509Data = null)
@@ -314,9 +314,9 @@ class KeyInfoType
      * Adds as pGPData
      *
      * @return self
-     * @param \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\PGPData $pGPData
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\PGPData $pGPData
      */
-    public function addToPGPData(\Psa\EpsBankTransfer\Internal\Generated\XmlDsig\PGPData $pGPData)
+    public function addToPGPData(\Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\PGPData $pGPData)
     {
         $this->pGPData[] = $pGPData;
         return $this;
@@ -347,7 +347,7 @@ class KeyInfoType
     /**
      * Gets as pGPData
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\PGPData[]
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\PGPData[]
      */
     public function getPGPData()
     {
@@ -357,7 +357,7 @@ class KeyInfoType
     /**
      * Sets a new pGPData
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\PGPData[] $pGPData
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\PGPData[] $pGPData
      * @return self
      */
     public function setPGPData(?array $pGPData = null)
@@ -370,9 +370,9 @@ class KeyInfoType
      * Adds as sPKIData
      *
      * @return self
-     * @param \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\SPKIData $sPKIData
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\SPKIData $sPKIData
      */
-    public function addToSPKIData(\Psa\EpsBankTransfer\Internal\Generated\XmlDsig\SPKIData $sPKIData)
+    public function addToSPKIData(\Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\SPKIData $sPKIData)
     {
         $this->sPKIData[] = $sPKIData;
         return $this;
@@ -403,7 +403,7 @@ class KeyInfoType
     /**
      * Gets as sPKIData
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\SPKIData[]
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\SPKIData[]
      */
     public function getSPKIData()
     {
@@ -413,7 +413,7 @@ class KeyInfoType
     /**
      * Sets a new sPKIData
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\SPKIData[] $sPKIData
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\SPKIData[] $sPKIData
      * @return self
      */
     public function setSPKIData(?array $sPKIData = null)

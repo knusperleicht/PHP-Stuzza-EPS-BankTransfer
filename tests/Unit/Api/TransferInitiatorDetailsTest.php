@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace Psa\EpsBankTransfer\Tests\Api;
+namespace Knusperleicht\EpsBankTransfer\Tests\Api;
 
-use Psa\EpsBankTransfer\Api\SoCommunicator;
-use Psa\EpsBankTransfer\Domain\ProtocolDetails;
-use Psa\EpsBankTransfer\Exceptions\XmlValidationException;
-use Psa\EpsBankTransfer\Requests\Parts\ObscurityConfig;
-use Psa\EpsBankTransfer\Requests\Parts\PaymentFlowUrls;
-use Psa\EpsBankTransfer\Requests\TransferInitiatorDetails;
-use Psa\EpsBankTransfer\Tests\Helper\SoCommunicatorTestTrait;
+use Knusperleicht\EpsBankTransfer\Api\SoCommunicator;
+use Knusperleicht\EpsBankTransfer\Domain\ProtocolDetails;
+use Knusperleicht\EpsBankTransfer\Exceptions\XmlValidationException;
+use Knusperleicht\EpsBankTransfer\Requests\Parts\ObscurityConfig;
+use Knusperleicht\EpsBankTransfer\Requests\Parts\PaymentFlowUrls;
+use Knusperleicht\EpsBankTransfer\Requests\TransferInitiatorDetails;
+use Knusperleicht\EpsBankTransfer\Tests\Helper\SoCommunicatorTestTrait;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Psa\EpsBankTransfer\Internal\Generated\Payment\V27\ShopConfirmationDetails;
+namespace Knusperleicht\EpsBankTransfer\Internal\Generated\Payment\V27\ShopConfirmationDetails;
 
 /**
  * Class representing ShopConfirmationDetailsAType

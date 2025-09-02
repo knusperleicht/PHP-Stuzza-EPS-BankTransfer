@@ -1,4 +1,4 @@
-Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\TransferMsgDetails\TransferMsgDetailsAType:
+Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\TransferMsgDetails\TransferMsgDetailsAType:
     properties:
         confirmationUrl:
             expose: true
@@ -19,7 +19,7 @@ Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\TransferMsgDetails\TransferM
             accessor:
                 getter: getTransactionOkUrl
                 setter: setTransactionOkUrl
-            type: Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\TransactionOkUrl
+            type: Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\TransactionOkUrl
         transactionNokUrl:
             expose: true
             access_type: public_method
@@ -29,4 +29,4 @@ Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\TransferMsgDetails\TransferM
             accessor:
                 getter: getTransactionNokUrl
                 setter: setTransactionNokUrl
-            type: Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\TransactionNokUrl
+            type: Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\TransactionNokUrl

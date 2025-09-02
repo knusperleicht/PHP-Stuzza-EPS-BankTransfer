@@ -1,6 +1,6 @@
 <?php
 
-namespace Psa\EpsBankTransfer\Internal\Generated\XmlDsig;
+namespace Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig;
 
 /**
  * Class representing SignedInfoType
@@ -16,17 +16,17 @@ class SignedInfoType
     private $id = null;
 
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\CanonicalizationMethod $canonicalizationMethod
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\CanonicalizationMethod $canonicalizationMethod
      */
     private $canonicalizationMethod = null;
 
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\SignatureMethod $signatureMethod
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\SignatureMethod $signatureMethod
      */
     private $signatureMethod = null;
 
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\Reference[] $reference
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\Reference[] $reference
      */
     private $reference = [
         
@@ -57,7 +57,7 @@ class SignedInfoType
     /**
      * Gets as canonicalizationMethod
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\CanonicalizationMethod
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\CanonicalizationMethod
      */
     public function getCanonicalizationMethod()
     {
@@ -67,10 +67,10 @@ class SignedInfoType
     /**
      * Sets a new canonicalizationMethod
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\CanonicalizationMethod $canonicalizationMethod
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\CanonicalizationMethod $canonicalizationMethod
      * @return self
      */
-    public function setCanonicalizationMethod(\Psa\EpsBankTransfer\Internal\Generated\XmlDsig\CanonicalizationMethod $canonicalizationMethod)
+    public function setCanonicalizationMethod(\Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\CanonicalizationMethod $canonicalizationMethod)
     {
         $this->canonicalizationMethod = $canonicalizationMethod;
         return $this;
@@ -79,7 +79,7 @@ class SignedInfoType
     /**
      * Gets as signatureMethod
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\SignatureMethod
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\SignatureMethod
      */
     public function getSignatureMethod()
     {
@@ -89,10 +89,10 @@ class SignedInfoType
     /**
      * Sets a new signatureMethod
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\SignatureMethod $signatureMethod
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\SignatureMethod $signatureMethod
      * @return self
      */
-    public function setSignatureMethod(\Psa\EpsBankTransfer\Internal\Generated\XmlDsig\SignatureMethod $signatureMethod)
+    public function setSignatureMethod(\Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\SignatureMethod $signatureMethod)
     {
         $this->signatureMethod = $signatureMethod;
         return $this;
@@ -102,9 +102,9 @@ class SignedInfoType
      * Adds as reference
      *
      * @return self
-     * @param \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\Reference $reference
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\Reference $reference
      */
-    public function addToReference(\Psa\EpsBankTransfer\Internal\Generated\XmlDsig\Reference $reference)
+    public function addToReference(\Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\Reference $reference)
     {
         $this->reference[] = $reference;
         return $this;
@@ -135,7 +135,7 @@ class SignedInfoType
     /**
      * Gets as reference
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\Reference[]
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\Reference[]
      */
     public function getReference()
     {
@@ -145,7 +145,7 @@ class SignedInfoType
     /**
      * Sets a new reference
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\Reference[] $reference
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\Reference[] $reference
      * @return self
      */
     public function setReference(array $reference)

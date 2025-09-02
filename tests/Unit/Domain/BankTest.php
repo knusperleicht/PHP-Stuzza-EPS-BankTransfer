@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Psa\EpsBankTransfer\Tests\Domain;
+namespace Knusperleicht\EpsBankTransfer\Tests\Domain;
 
-use Psa\EpsBankTransfer\Domain\Bank;
+use Knusperleicht\EpsBankTransfer\Domain\Bank;
 use PHPUnit\Framework\TestCase;
 
 class BankTest extends TestCase

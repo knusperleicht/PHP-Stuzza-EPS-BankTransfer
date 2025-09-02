@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Psa\EpsBankTransfer\Exceptions;
+namespace Knusperleicht\EpsBankTransfer\Exceptions;
 
 class BankListException extends EpsException
 {

@@ -1,4 +1,4 @@
-Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\TransferInitiatorDetails\TransferInitiatorDetailsAType:
+Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\TransferInitiatorDetails\TransferInitiatorDetailsAType:
     properties:
         paymentInitiatorDetails:
             expose: true
@@ -9,7 +9,7 @@ Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\TransferInitiatorDetails\Tra
             accessor:
                 getter: getPaymentInitiatorDetails
                 setter: setPaymentInitiatorDetails
-            type: Psa\EpsBankTransfer\Internal\Generated\Payment\V26\PaymentInitiatorDetails
+            type: Knusperleicht\EpsBankTransfer\Internal\Generated\Payment\V26\PaymentInitiatorDetails
         transferMsgDetails:
             expose: true
             access_type: public_method
@@ -19,7 +19,7 @@ Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\TransferInitiatorDetails\Tra
             accessor:
                 getter: getTransferMsgDetails
                 setter: setTransferMsgDetails
-            type: Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\TransferMsgDetails
+            type: Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\TransferMsgDetails
         webshopDetails:
             expose: true
             access_type: public_method
@@ -29,7 +29,7 @@ Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\TransferInitiatorDetails\Tra
             accessor:
                 getter: getWebshopDetails
                 setter: setWebshopDetails
-            type: array<Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\WebshopArticle>
+            type: array<Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\WebshopArticle>
             xml_list:
                 inline: false
                 entry_name: WebshopArticle
@@ -64,4 +64,4 @@ Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\TransferInitiatorDetails\Tra
             accessor:
                 getter: getAuthenticationDetails
                 setter: setAuthenticationDetails
-            type: Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\AuthenticationDetails
+            type: Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\AuthenticationDetails

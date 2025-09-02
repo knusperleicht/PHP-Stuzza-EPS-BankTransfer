@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Psa\EpsBankTransfer\Domain;
+namespace Knusperleicht\EpsBankTransfer\Domain;
 
 class VitalityCheckDetails
 {
@@ -69,10 +69,10 @@ class VitalityCheckDetails
     }
 
     /**
-     * @param \Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\VitalityCheckDetails $vitalityCheckDetails
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\VitalityCheckDetails $vitalityCheckDetails
      * @return self
      */
-    public static function fromV26(\Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\VitalityCheckDetails $vitalityCheckDetails): self
+    public static function fromV26(\Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\VitalityCheckDetails $vitalityCheckDetails): self
     {
         return new self(
             $vitalityCheckDetails->getRemittanceIdentifier(),

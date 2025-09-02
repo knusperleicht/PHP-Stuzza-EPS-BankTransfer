@@ -1,8 +1,8 @@
 <?php
 
-namespace Psa\EpsBankTransfer\Internal\Generated\Epi;
+namespace Knusperleicht\EpsBankTransfer\Internal\Generated\Epi;
 
-use Psa\EpsBankTransfer\Internal\Generated\Epi\DateOptionDetails\DateOptionDetailsAType;
+use Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\DateOptionDetails\DateOptionDetailsAType;
 
 /**
  * Class representing DateOptionDetails

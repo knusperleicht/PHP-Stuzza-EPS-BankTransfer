@@ -1,6 +1,6 @@
 <?php
 
-namespace Psa\EpsBankTransfer\Internal\Generated\XmlDsig;
+namespace Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig;
 
 /**
  * Class representing RetrievalMethodType
@@ -21,7 +21,7 @@ class RetrievalMethodType
     private $type = null;
 
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\Transform[] $transforms
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\Transform[] $transforms
      */
     private $transforms = null;
 
@@ -73,9 +73,9 @@ class RetrievalMethodType
      * Adds as transform
      *
      * @return self
-     * @param \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\Transform $transform
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\Transform $transform
      */
-    public function addToTransforms(\Psa\EpsBankTransfer\Internal\Generated\XmlDsig\Transform $transform)
+    public function addToTransforms(\Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\Transform $transform)
     {
         $this->transforms[] = $transform;
         return $this;
@@ -106,7 +106,7 @@ class RetrievalMethodType
     /**
      * Gets as transforms
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\Transform[]
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\Transform[]
      */
     public function getTransforms()
     {
@@ -116,7 +116,7 @@ class RetrievalMethodType
     /**
      * Sets a new transforms
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\Transform[] $transforms
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\Transform[] $transforms
      * @return self
      */
     public function setTransforms(?array $transforms = null)

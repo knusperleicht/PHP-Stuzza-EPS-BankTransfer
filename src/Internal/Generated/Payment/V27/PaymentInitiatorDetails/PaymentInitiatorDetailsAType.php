@@ -1,6 +1,6 @@
 <?php
 
-namespace Psa\EpsBankTransfer\Internal\Generated\Payment\V27\PaymentInitiatorDetails;
+namespace Knusperleicht\EpsBankTransfer\Internal\Generated\Payment\V27\PaymentInitiatorDetails;
 
 /**
  * Class representing PaymentInitiatorDetailsAType
@@ -8,19 +8,19 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Payment\V27\PaymentInitiatorDet
 class PaymentInitiatorDetailsAType
 {
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\Epi\EpiDetails $epiDetails
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\EpiDetails $epiDetails
      */
     private $epiDetails = null;
 
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\AustrianRules\AustrianRulesDetails $austrianRulesDetails
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\AustrianRules\AustrianRulesDetails $austrianRulesDetails
      */
     private $austrianRulesDetails = null;
 
     /**
      * Gets as epiDetails
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\Epi\EpiDetails
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\EpiDetails
      */
     public function getEpiDetails()
     {
@@ -30,10 +30,10 @@ class PaymentInitiatorDetailsAType
     /**
      * Sets a new epiDetails
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\Epi\EpiDetails $epiDetails
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\EpiDetails $epiDetails
      * @return self
      */
-    public function setEpiDetails(\Psa\EpsBankTransfer\Internal\Generated\Epi\EpiDetails $epiDetails)
+    public function setEpiDetails(\Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\EpiDetails $epiDetails)
     {
         $this->epiDetails = $epiDetails;
         return $this;
@@ -42,7 +42,7 @@ class PaymentInitiatorDetailsAType
     /**
      * Gets as austrianRulesDetails
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\AustrianRules\AustrianRulesDetails
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\AustrianRules\AustrianRulesDetails
      */
     public function getAustrianRulesDetails()
     {
@@ -52,10 +52,10 @@ class PaymentInitiatorDetailsAType
     /**
      * Sets a new austrianRulesDetails
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\AustrianRules\AustrianRulesDetails $austrianRulesDetails
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\AustrianRules\AustrianRulesDetails $austrianRulesDetails
      * @return self
      */
-    public function setAustrianRulesDetails(?\Psa\EpsBankTransfer\Internal\Generated\AustrianRules\AustrianRulesDetails $austrianRulesDetails = null)
+    public function setAustrianRulesDetails(?\Knusperleicht\EpsBankTransfer\Internal\Generated\AustrianRules\AustrianRulesDetails $austrianRulesDetails = null)
     {
         $this->austrianRulesDetails = $austrianRulesDetails;
         return $this;

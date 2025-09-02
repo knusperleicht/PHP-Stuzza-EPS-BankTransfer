@@ -1,6 +1,6 @@
 <?php
 
-namespace Psa\EpsBankTransfer\Internal\Generated\AustrianRules;
+namespace Knusperleicht\EpsBankTransfer\Internal\Generated\AustrianRules;
 
 /**
  * Class representing Message

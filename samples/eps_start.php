@@ -6,11 +6,11 @@ require_once('../vendor/autoload.php');
 // You can omit passing this constant to use the default.
 const EPS_INTERFACE_VERSION = '2.6';
 
-use Psa\EpsBankTransfer\Api\SoCommunicator;
-use Psa\EpsBankTransfer\Exceptions\EpsException;
-use Psa\EpsBankTransfer\Requests\Parts\WebshopArticle;
-use Psa\EpsBankTransfer\Requests\TransferInitiatorDetails;
-use Psa\EpsBankTransfer\Requests\Parts\PaymentFlowUrls;
+use Knusperleicht\EpsBankTransfer\Api\SoCommunicator;
+use Knusperleicht\EpsBankTransfer\Exceptions\EpsException;
+use Knusperleicht\EpsBankTransfer\Requests\Parts\WebshopArticle;
+use Knusperleicht\EpsBankTransfer\Requests\TransferInitiatorDetails;
+use Knusperleicht\EpsBankTransfer\Requests\Parts\PaymentFlowUrls;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Symfony\Component\HttpClient\Psr18Client;
 
@@ -59,7 +59,7 @@ $initiateTransferRequest = new TransferInitiatorDetails(
 $initiateTransferRequest->setExpirationMinutes(60);
 
 // Optional: enable obscurity (hash suffix) if desired
-//use Psa\EpsBankTransfer\Requests\Parts\ObscurityConfig;
+//use Knusperleicht\EpsBankTransfer\Requests\Parts\ObscurityConfig;
 //$initiateTransferRequest->setObscurityConfig(new ObscurityConfig(8, 'my-custom-seed'));
 
 // Optional: Include ONE (not both!) of the following remittance fields.

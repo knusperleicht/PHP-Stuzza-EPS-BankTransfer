@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Psa\EpsBankTransfer\Tests\Domain;
+namespace Knusperleicht\EpsBankTransfer\Tests\Domain;
 
-use Psa\EpsBankTransfer\Domain\RefundResponse;
+use Knusperleicht\EpsBankTransfer\Domain\RefundResponse;
 use PHPUnit\Framework\TestCase;
-use Psa\EpsBankTransfer\Internal\Generated\Refund\EpsRefundResponse;
+use Knusperleicht\EpsBankTransfer\Internal\Generated\Refund\EpsRefundResponse;
 
 class RefundResponseTest extends TestCase
 {
@@ -58,8 +58,8 @@ class RefundResponseTest extends TestCase
 
     private function ensureRefundEpsClassExists(): void
     {
-        if (!class_exists('Psa\\EpsBankTransfer\\Internal\\Generated\\Refund\\EpsRefundResponse')) {
-            eval('namespace Psa\\EpsBankTransfer\\Internal\\Generated\\Refund; abstract class EpsRefundResponse { abstract public function getStatusCode(): string; abstract public function getErrorMsg(): ?string; }');
+        if (!class_exists('Knusperleicht\\EpsBankTransfer\\Internal\\Generated\\Refund\\EpsRefundResponse')) {
+            eval('namespace Knusperleicht\\EpsBankTransfer\\Internal\\Generated\\Refund; abstract class EpsRefundResponse { abstract public function getStatusCode(): string; abstract public function getErrorMsg(): ?string; }');
         }
     }
 }

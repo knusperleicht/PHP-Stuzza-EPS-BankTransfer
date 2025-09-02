@@ -1,4 +1,4 @@
-Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\UserId:
+Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\UserId:
     xml_root_name: UserId
     xml_root_namespace: 'http://www.stuzza.at/namespaces/eps/protocol/2014/10'
     properties:

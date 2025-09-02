@@ -1,4 +1,4 @@
-Psa\EpsBankTransfer\Internal\Generated\Epi\BfiPartyDetails\BfiPartyDetailsAType:
+Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\BfiPartyDetails\BfiPartyDetailsAType:
     properties:
         bfiBicIdentifier:
             expose: true

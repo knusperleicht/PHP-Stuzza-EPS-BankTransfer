@@ -1,4 +1,4 @@
-Psa\EpsBankTransfer\Internal\Generated\XmlDsig\TransformType:
+Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\TransformType:
     properties:
         algorithm:
             expose: true

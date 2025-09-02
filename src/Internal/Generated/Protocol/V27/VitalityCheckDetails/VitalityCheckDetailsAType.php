@@ -1,6 +1,6 @@
 <?php
 
-namespace Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\VitalityCheckDetails;
+namespace Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\VitalityCheckDetails;
 
 /**
  * Class representing VitalityCheckDetailsAType

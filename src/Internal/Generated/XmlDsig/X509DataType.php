@@ -1,6 +1,6 @@
 <?php
 
-namespace Psa\EpsBankTransfer\Internal\Generated\XmlDsig;
+namespace Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig;
 
 /**
  * Class representing X509DataType
@@ -11,7 +11,7 @@ namespace Psa\EpsBankTransfer\Internal\Generated\XmlDsig;
 class X509DataType
 {
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\X509IssuerSerialType[] $x509IssuerSerial
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\X509IssuerSerialType[] $x509IssuerSerial
      */
     private $x509IssuerSerial = [
         
@@ -49,9 +49,9 @@ class X509DataType
      * Adds as x509IssuerSerial
      *
      * @return self
-     * @param \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\X509IssuerSerialType $x509IssuerSerial
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\X509IssuerSerialType $x509IssuerSerial
      */
-    public function addToX509IssuerSerial(\Psa\EpsBankTransfer\Internal\Generated\XmlDsig\X509IssuerSerialType $x509IssuerSerial)
+    public function addToX509IssuerSerial(\Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\X509IssuerSerialType $x509IssuerSerial)
     {
         $this->x509IssuerSerial[] = $x509IssuerSerial;
         return $this;
@@ -82,7 +82,7 @@ class X509DataType
     /**
      * Gets as x509IssuerSerial
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\X509IssuerSerialType[]
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\X509IssuerSerialType[]
      */
     public function getX509IssuerSerial()
     {
@@ -92,7 +92,7 @@ class X509DataType
     /**
      * Sets a new x509IssuerSerial
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\X509IssuerSerialType[] $x509IssuerSerial
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\X509IssuerSerialType[] $x509IssuerSerial
      * @return self
      */
     public function setX509IssuerSerial(?array $x509IssuerSerial = null)

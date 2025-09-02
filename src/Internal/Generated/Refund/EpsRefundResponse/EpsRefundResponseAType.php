@@ -1,6 +1,6 @@
 <?php
 
-namespace Psa\EpsBankTransfer\Internal\Generated\Refund\EpsRefundResponse;
+namespace Knusperleicht\EpsBankTransfer\Internal\Generated\Refund\EpsRefundResponse;
 
 /**
  * Class representing EpsRefundResponseAType

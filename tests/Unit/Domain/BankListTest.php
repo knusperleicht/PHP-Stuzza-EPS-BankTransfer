@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Psa\EpsBankTransfer\Tests\Domain;
+namespace Knusperleicht\EpsBankTransfer\Tests\Domain;
 
-use Psa\EpsBankTransfer\Domain\Bank;
-use Psa\EpsBankTransfer\Domain\BankList;
+use Knusperleicht\EpsBankTransfer\Domain\Bank;
+use Knusperleicht\EpsBankTransfer\Domain\BankList;
 use PHPUnit\Framework\TestCase;
-use Psa\EpsBankTransfer\Internal\Generated\BankList\EpsSOBankListProtocol;
+use Knusperleicht\EpsBankTransfer\Internal\Generated\BankList\EpsSOBankListProtocol;
 
 class BankListTest extends TestCase
 {
@@ -62,8 +62,8 @@ class BankListTest extends TestCase
 
     private function ensureProtocolStubExists(): void
     {
-        if (!class_exists('Psa\\EpsBankTransfer\\Internal\\Generated\\BankList\\EpsSOBankListProtocol')) {
-            eval('namespace Psa\\EpsBankTransfer\\Internal\\Generated\\BankList; abstract class EpsSOBankListProtocol { public function __construct() {} public abstract function getBank(): array; }');
+        if (!class_exists('Knusperleicht\\EpsBankTransfer\\Internal\\Generated\\BankList\\EpsSOBankListProtocol')) {
+            eval('namespace Knusperleicht\\EpsBankTransfer\\Internal\\Generated\\BankList; abstract class EpsSOBankListProtocol { public function __construct() {} public abstract function getBank(): array; }');
         }
     }
 }

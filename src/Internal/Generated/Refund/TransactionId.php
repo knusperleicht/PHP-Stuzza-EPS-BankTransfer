@@ -1,6 +1,6 @@
 <?php
 
-namespace Psa\EpsBankTransfer\Internal\Generated\Refund;
+namespace Knusperleicht\EpsBankTransfer\Internal\Generated\Refund;
 
 /**
  * Class representing TransactionId

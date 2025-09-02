@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace Psa\EpsBankTransfer\Tests\Api;
+namespace Knusperleicht\EpsBankTransfer\Tests\Api;
 
 use DateTime;
-use Psa\EpsBankTransfer\Domain\BankConfirmationDetails;
-use Psa\EpsBankTransfer\Domain\VitalityCheckDetails;
-use Psa\EpsBankTransfer\Exceptions\CallbackResponseException;
-use Psa\EpsBankTransfer\Exceptions\EpsException;
-use Psa\EpsBankTransfer\Exceptions\InvalidCallbackException;
-use Psa\EpsBankTransfer\Exceptions\XmlValidationException;
-use Psa\EpsBankTransfer\Tests\Helper\SoCommunicatorTestTrait;
-use Psa\EpsBankTransfer\Utilities\XmlValidator;
+use Knusperleicht\EpsBankTransfer\Domain\BankConfirmationDetails;
+use Knusperleicht\EpsBankTransfer\Domain\VitalityCheckDetails;
+use Knusperleicht\EpsBankTransfer\Exceptions\CallbackResponseException;
+use Knusperleicht\EpsBankTransfer\Exceptions\EpsException;
+use Knusperleicht\EpsBankTransfer\Exceptions\InvalidCallbackException;
+use Knusperleicht\EpsBankTransfer\Exceptions\XmlValidationException;
+use Knusperleicht\EpsBankTransfer\Tests\Helper\SoCommunicatorTestTrait;
+use Knusperleicht\EpsBankTransfer\Utilities\XmlValidator;
 use PHPUnit\Framework\TestCase;
 
 class ConfirmationCallbackTest extends TestCase

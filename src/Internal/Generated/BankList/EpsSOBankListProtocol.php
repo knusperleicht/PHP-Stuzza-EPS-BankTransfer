@@ -1,8 +1,8 @@
 <?php
 
-namespace Psa\EpsBankTransfer\Internal\Generated\BankList;
+namespace Knusperleicht\EpsBankTransfer\Internal\Generated\BankList;
 
-use Psa\EpsBankTransfer\Internal\Generated\BankList\EpsSOBankListProtocol\EpsSOBankListProtocolAType;
+use Knusperleicht\EpsBankTransfer\Internal\Generated\BankList\EpsSOBankListProtocol\EpsSOBankListProtocolAType;
 
 /**
  * Class representing EpsSOBankListProtocol

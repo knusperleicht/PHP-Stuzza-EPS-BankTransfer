@@ -1,6 +1,6 @@
 <?php
 
-namespace Psa\EpsBankTransfer\Internal\Generated\XmlDsig;
+namespace Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig;
 
 /**
  * Class representing SignaturePropertiesType
@@ -16,7 +16,7 @@ class SignaturePropertiesType
     private $id = null;
 
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\SignatureProperty[] $signatureProperty
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\SignatureProperty[] $signatureProperty
      */
     private $signatureProperty = [
         
@@ -48,9 +48,9 @@ class SignaturePropertiesType
      * Adds as signatureProperty
      *
      * @return self
-     * @param \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\SignatureProperty $signatureProperty
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\SignatureProperty $signatureProperty
      */
-    public function addToSignatureProperty(\Psa\EpsBankTransfer\Internal\Generated\XmlDsig\SignatureProperty $signatureProperty)
+    public function addToSignatureProperty(\Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\SignatureProperty $signatureProperty)
     {
         $this->signatureProperty[] = $signatureProperty;
         return $this;
@@ -81,7 +81,7 @@ class SignaturePropertiesType
     /**
      * Gets as signatureProperty
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\SignatureProperty[]
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\SignatureProperty[]
      */
     public function getSignatureProperty()
     {
@@ -91,7 +91,7 @@ class SignaturePropertiesType
     /**
      * Sets a new signatureProperty
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\SignatureProperty[] $signatureProperty
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\SignatureProperty[] $signatureProperty
      * @return self
      */
     public function setSignatureProperty(array $signatureProperty)

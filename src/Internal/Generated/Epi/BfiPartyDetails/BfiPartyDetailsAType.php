@@ -1,6 +1,6 @@
 <?php
 
-namespace Psa\EpsBankTransfer\Internal\Generated\Epi\BfiPartyDetails;
+namespace Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\BfiPartyDetails;
 
 /**
  * Class representing BfiPartyDetailsAType

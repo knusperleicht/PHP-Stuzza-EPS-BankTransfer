@@ -1,4 +1,4 @@
-Psa\EpsBankTransfer\Internal\Generated\XmlDsig\SignedInfoType:
+Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\SignedInfoType:
     properties:
         id:
             expose: true
@@ -18,7 +18,7 @@ Psa\EpsBankTransfer\Internal\Generated\XmlDsig\SignedInfoType:
             accessor:
                 getter: getCanonicalizationMethod
                 setter: setCanonicalizationMethod
-            type: Psa\EpsBankTransfer\Internal\Generated\XmlDsig\CanonicalizationMethod
+            type: Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\CanonicalizationMethod
         signatureMethod:
             expose: true
             access_type: public_method
@@ -28,7 +28,7 @@ Psa\EpsBankTransfer\Internal\Generated\XmlDsig\SignedInfoType:
             accessor:
                 getter: getSignatureMethod
                 setter: setSignatureMethod
-            type: Psa\EpsBankTransfer\Internal\Generated\XmlDsig\SignatureMethod
+            type: Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\SignatureMethod
         reference:
             expose: true
             access_type: public_method
@@ -42,4 +42,4 @@ Psa\EpsBankTransfer\Internal\Generated\XmlDsig\SignedInfoType:
                 inline: true
                 entry_name: Reference
                 namespace: 'http://www.w3.org/2000/09/xmldsig#'
-            type: array<Psa\EpsBankTransfer\Internal\Generated\XmlDsig\Reference>
+            type: array<Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\Reference>

@@ -1,6 +1,6 @@
 <?php
 
-namespace Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\AuthenticationDetails;
+namespace Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\AuthenticationDetails;
 
 /**
  * Class representing AuthenticationDetailsAType
@@ -18,7 +18,7 @@ class AuthenticationDetailsAType
     private $sHA256Fingerprint = null;
 
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\Signature $signature
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\Signature $signature
      */
     private $signature = null;
 
@@ -69,7 +69,7 @@ class AuthenticationDetailsAType
     /**
      * Gets as signature
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\Signature
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\Signature
      */
     public function getSignature()
     {
@@ -79,10 +79,10 @@ class AuthenticationDetailsAType
     /**
      * Sets a new signature
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\Signature $signature
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\Signature $signature
      * @return self
      */
-    public function setSignature(?\Psa\EpsBankTransfer\Internal\Generated\XmlDsig\Signature $signature = null)
+    public function setSignature(?\Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\Signature $signature = null)
     {
         $this->signature = $signature;
         return $this;

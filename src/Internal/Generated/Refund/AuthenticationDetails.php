@@ -1,8 +1,8 @@
 <?php
 
-namespace Psa\EpsBankTransfer\Internal\Generated\Refund;
+namespace Knusperleicht\EpsBankTransfer\Internal\Generated\Refund;
 
-use Psa\EpsBankTransfer\Internal\Generated\Refund\AuthenticationDetails\AuthenticationDetailsAType;
+use Knusperleicht\EpsBankTransfer\Internal\Generated\Refund\AuthenticationDetails\AuthenticationDetailsAType;
 
 /**
  * Class representing AuthenticationDetails

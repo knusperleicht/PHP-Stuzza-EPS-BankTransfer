@@ -1,6 +1,6 @@
 <?php
 
-namespace Psa\EpsBankTransfer\Internal\Generated\AustrianRules\AustrianRulesDetails;
+namespace Knusperleicht\EpsBankTransfer\Internal\Generated\AustrianRules\AustrianRulesDetails;
 
 /**
  * Class representing AustrianRulesDetailsAType
@@ -18,7 +18,7 @@ class AustrianRulesDetailsAType
     private $paymentDescription = null;
 
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\AustrianRules\TradeCategoryDetails $tradeCategoryDetails
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\AustrianRules\TradeCategoryDetails $tradeCategoryDetails
      */
     private $tradeCategoryDetails = null;
 
@@ -84,7 +84,7 @@ class AustrianRulesDetailsAType
     /**
      * Gets as tradeCategoryDetails
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\AustrianRules\TradeCategoryDetails
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\AustrianRules\TradeCategoryDetails
      */
     public function getTradeCategoryDetails()
     {
@@ -94,10 +94,10 @@ class AustrianRulesDetailsAType
     /**
      * Sets a new tradeCategoryDetails
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\AustrianRules\TradeCategoryDetails $tradeCategoryDetails
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\AustrianRules\TradeCategoryDetails $tradeCategoryDetails
      * @return self
      */
-    public function setTradeCategoryDetails(?\Psa\EpsBankTransfer\Internal\Generated\AustrianRules\TradeCategoryDetails $tradeCategoryDetails = null)
+    public function setTradeCategoryDetails(?\Knusperleicht\EpsBankTransfer\Internal\Generated\AustrianRules\TradeCategoryDetails $tradeCategoryDetails = null)
     {
         $this->tradeCategoryDetails = $tradeCategoryDetails;
         return $this;

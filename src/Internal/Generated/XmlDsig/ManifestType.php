@@ -1,6 +1,6 @@
 <?php
 
-namespace Psa\EpsBankTransfer\Internal\Generated\XmlDsig;
+namespace Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig;
 
 /**
  * Class representing ManifestType
@@ -16,7 +16,7 @@ class ManifestType
     private $id = null;
 
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\Reference[] $reference
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\Reference[] $reference
      */
     private $reference = [
         
@@ -48,9 +48,9 @@ class ManifestType
      * Adds as reference
      *
      * @return self
-     * @param \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\Reference $reference
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\Reference $reference
      */
-    public function addToReference(\Psa\EpsBankTransfer\Internal\Generated\XmlDsig\Reference $reference)
+    public function addToReference(\Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\Reference $reference)
     {
         $this->reference[] = $reference;
         return $this;
@@ -81,7 +81,7 @@ class ManifestType
     /**
      * Gets as reference
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\Reference[]
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\Reference[]
      */
     public function getReference()
     {
@@ -91,7 +91,7 @@ class ManifestType
     /**
      * Sets a new reference
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\Reference[] $reference
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\Reference[] $reference
      * @return self
      */
     public function setReference(array $reference)

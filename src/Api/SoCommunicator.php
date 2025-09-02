@@ -1,19 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace Psa\EpsBankTransfer\Api;
+namespace Knusperleicht\EpsBankTransfer\Api;
 
-use Psa\EpsBankTransfer\Domain\BankList;
-use Psa\EpsBankTransfer\Domain\ProtocolDetails;
-use Psa\EpsBankTransfer\Domain\RefundResponse;
-use Psa\EpsBankTransfer\Exceptions\BankListException;
-use Psa\EpsBankTransfer\Exceptions\CallbackResponseException;
-use Psa\EpsBankTransfer\Exceptions\InvalidCallbackException;
-use Psa\EpsBankTransfer\Exceptions\XmlValidationException;
-use Psa\EpsBankTransfer\Internal\V26\SoV26Communicator;
-use Psa\EpsBankTransfer\Internal\V27\SoV27Communicator;
-use Psa\EpsBankTransfer\Requests\RefundRequest;
-use Psa\EpsBankTransfer\Requests\TransferInitiatorDetails;
+use Knusperleicht\EpsBankTransfer\Domain\BankList;
+use Knusperleicht\EpsBankTransfer\Domain\ProtocolDetails;
+use Knusperleicht\EpsBankTransfer\Domain\RefundResponse;
+use Knusperleicht\EpsBankTransfer\Exceptions\BankListException;
+use Knusperleicht\EpsBankTransfer\Exceptions\CallbackResponseException;
+use Knusperleicht\EpsBankTransfer\Exceptions\InvalidCallbackException;
+use Knusperleicht\EpsBankTransfer\Exceptions\XmlValidationException;
+use Knusperleicht\EpsBankTransfer\Internal\V26\SoV26Communicator;
+use Knusperleicht\EpsBankTransfer\Internal\V27\SoV27Communicator;
+use Knusperleicht\EpsBankTransfer\Requests\RefundRequest;
+use Knusperleicht\EpsBankTransfer\Requests\TransferInitiatorDetails;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
@@ -57,12 +57,13 @@ class SoCommunicator implements SoCommunicatorInterface
      * @param LoggerInterface|null $logger Optional PSR-3 logger for diagnostics.
      */
     public function __construct(
-        ClientInterface $httpClient,
+        ClientInterface         $httpClient,
         RequestFactoryInterface $requestFactory,
-        StreamFactoryInterface $streamFactory,
-        string $baseUrl = self::LIVE_MODE_URL,
-        LoggerInterface $logger = null
-    ) {
+        StreamFactoryInterface  $streamFactory,
+        string                  $baseUrl = self::LIVE_MODE_URL,
+        LoggerInterface         $logger = null
+    )
+    {
         $this->httpClient = $httpClient;
         $this->requestFactory = $requestFactory;
         $this->streamFactory = $streamFactory;
@@ -163,8 +164,8 @@ class SoCommunicator implements SoCommunicatorInterface
      */
     public function sendTransferInitiatorDetails(
         TransferInitiatorDetails $transferInitiatorDetails,
-        string $version = '2.6',
-        ?string $targetUrl = null
+        string                   $version = '2.6',
+        ?string                  $targetUrl = null
     ): ProtocolDetails
     {
         $this->assertValidVersion($version);

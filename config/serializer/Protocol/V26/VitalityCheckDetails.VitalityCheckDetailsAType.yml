@@ -1,4 +1,4 @@
-Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\VitalityCheckDetails\VitalityCheckDetailsAType:
+Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\VitalityCheckDetails\VitalityCheckDetailsAType:
     properties:
         remittanceIdentifier:
             expose: true

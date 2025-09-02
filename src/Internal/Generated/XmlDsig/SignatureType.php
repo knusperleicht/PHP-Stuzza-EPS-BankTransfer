@@ -1,6 +1,6 @@
 <?php
 
-namespace Psa\EpsBankTransfer\Internal\Generated\XmlDsig;
+namespace Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig;
 
 /**
  * Class representing SignatureType
@@ -16,22 +16,22 @@ class SignatureType
     private $id = null;
 
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\SignedInfo $signedInfo
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\SignedInfo $signedInfo
      */
     private $signedInfo = null;
 
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\SignatureValue $signatureValue
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\SignatureValue $signatureValue
      */
     private $signatureValue = null;
 
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\KeyInfo $keyInfo
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\KeyInfo $keyInfo
      */
     private $keyInfo = null;
 
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\ObjectXsd[] $object
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\ObjectXsd[] $object
      */
     private $object = [
         
@@ -62,7 +62,7 @@ class SignatureType
     /**
      * Gets as signedInfo
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\SignedInfo
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\SignedInfo
      */
     public function getSignedInfo()
     {
@@ -72,10 +72,10 @@ class SignatureType
     /**
      * Sets a new signedInfo
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\SignedInfo $signedInfo
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\SignedInfo $signedInfo
      * @return self
      */
-    public function setSignedInfo(\Psa\EpsBankTransfer\Internal\Generated\XmlDsig\SignedInfo $signedInfo)
+    public function setSignedInfo(\Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\SignedInfo $signedInfo)
     {
         $this->signedInfo = $signedInfo;
         return $this;
@@ -84,7 +84,7 @@ class SignatureType
     /**
      * Gets as signatureValue
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\SignatureValue
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\SignatureValue
      */
     public function getSignatureValue()
     {
@@ -94,10 +94,10 @@ class SignatureType
     /**
      * Sets a new signatureValue
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\SignatureValue $signatureValue
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\SignatureValue $signatureValue
      * @return self
      */
-    public function setSignatureValue(\Psa\EpsBankTransfer\Internal\Generated\XmlDsig\SignatureValue $signatureValue)
+    public function setSignatureValue(\Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\SignatureValue $signatureValue)
     {
         $this->signatureValue = $signatureValue;
         return $this;
@@ -106,7 +106,7 @@ class SignatureType
     /**
      * Gets as keyInfo
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\KeyInfo
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\KeyInfo
      */
     public function getKeyInfo()
     {
@@ -116,10 +116,10 @@ class SignatureType
     /**
      * Sets a new keyInfo
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\KeyInfo $keyInfo
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\KeyInfo $keyInfo
      * @return self
      */
-    public function setKeyInfo(?\Psa\EpsBankTransfer\Internal\Generated\XmlDsig\KeyInfo $keyInfo = null)
+    public function setKeyInfo(?\Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\KeyInfo $keyInfo = null)
     {
         $this->keyInfo = $keyInfo;
         return $this;
@@ -129,9 +129,9 @@ class SignatureType
      * Adds as object
      *
      * @return self
-     * @param \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\ObjectXsd $object
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\ObjectXsd $object
      */
-    public function addToObject(\Psa\EpsBankTransfer\Internal\Generated\XmlDsig\ObjectXsd $object)
+    public function addToObject(\Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\ObjectXsd $object)
     {
         $this->object[] = $object;
         return $this;
@@ -162,7 +162,7 @@ class SignatureType
     /**
      * Gets as object
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\ObjectXsd[]
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\ObjectXsd[]
      */
     public function getObject()
     {
@@ -172,7 +172,7 @@ class SignatureType
     /**
      * Sets a new object
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\ObjectXsd[] $object
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\ObjectXsd[] $object
      * @return self
      */
     public function setObject(?array $object = null)

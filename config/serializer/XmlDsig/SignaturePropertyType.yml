@@ -1,4 +1,4 @@
-Psa\EpsBankTransfer\Internal\Generated\XmlDsig\SignaturePropertyType:
+Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\SignaturePropertyType:
     properties:
         target:
             expose: true

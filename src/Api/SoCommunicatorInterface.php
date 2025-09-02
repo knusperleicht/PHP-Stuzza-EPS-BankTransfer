@@ -1,19 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace Psa\EpsBankTransfer\Api;
+namespace Knusperleicht\EpsBankTransfer\Api;
 
 use InvalidArgumentException;
+use Knusperleicht\EpsBankTransfer\Domain\BankList;
+use Knusperleicht\EpsBankTransfer\Domain\ProtocolDetails;
+use Knusperleicht\EpsBankTransfer\Domain\RefundResponse;
+use Knusperleicht\EpsBankTransfer\Exceptions\BankListException;
+use Knusperleicht\EpsBankTransfer\Exceptions\CallbackResponseException;
+use Knusperleicht\EpsBankTransfer\Exceptions\InvalidCallbackException;
+use Knusperleicht\EpsBankTransfer\Exceptions\XmlValidationException;
+use Knusperleicht\EpsBankTransfer\Requests\RefundRequest;
+use Knusperleicht\EpsBankTransfer\Requests\TransferInitiatorDetails;
 use LogicException;
-use Psa\EpsBankTransfer\Domain\BankList;
-use Psa\EpsBankTransfer\Domain\ProtocolDetails;
-use Psa\EpsBankTransfer\Domain\RefundResponse;
-use Psa\EpsBankTransfer\Exceptions\BankListException;
-use Psa\EpsBankTransfer\Exceptions\CallbackResponseException;
-use Psa\EpsBankTransfer\Exceptions\InvalidCallbackException;
-use Psa\EpsBankTransfer\Exceptions\XmlValidationException;
-use Psa\EpsBankTransfer\Requests\RefundRequest;
-use Psa\EpsBankTransfer\Requests\TransferInitiatorDetails;
 
 /**
  * Public API interface for interacting with the EPS Scheme Operator (SO).

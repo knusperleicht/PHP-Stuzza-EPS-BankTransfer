@@ -1,6 +1,6 @@
 <?php
 
-namespace Psa\EpsBankTransfer\Internal\Generated\Epi\PartyDetails;
+namespace Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\PartyDetails;
 
 /**
  * Class representing PartyDetailsAType
@@ -8,19 +8,19 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Epi\PartyDetails;
 class PartyDetailsAType
 {
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\Epi\BfiPartyDetails $bfiPartyDetails
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\BfiPartyDetails $bfiPartyDetails
      */
     private $bfiPartyDetails = null;
 
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\Epi\BeneficiaryPartyDetails $beneficiaryPartyDetails
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\BeneficiaryPartyDetails $beneficiaryPartyDetails
      */
     private $beneficiaryPartyDetails = null;
 
     /**
      * Gets as bfiPartyDetails
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\Epi\BfiPartyDetails
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\BfiPartyDetails
      */
     public function getBfiPartyDetails()
     {
@@ -30,10 +30,10 @@ class PartyDetailsAType
     /**
      * Sets a new bfiPartyDetails
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\Epi\BfiPartyDetails $bfiPartyDetails
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\BfiPartyDetails $bfiPartyDetails
      * @return self
      */
-    public function setBfiPartyDetails(\Psa\EpsBankTransfer\Internal\Generated\Epi\BfiPartyDetails $bfiPartyDetails)
+    public function setBfiPartyDetails(\Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\BfiPartyDetails $bfiPartyDetails)
     {
         $this->bfiPartyDetails = $bfiPartyDetails;
         return $this;
@@ -42,7 +42,7 @@ class PartyDetailsAType
     /**
      * Gets as beneficiaryPartyDetails
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\Epi\BeneficiaryPartyDetails
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\BeneficiaryPartyDetails
      */
     public function getBeneficiaryPartyDetails()
     {
@@ -52,10 +52,10 @@ class PartyDetailsAType
     /**
      * Sets a new beneficiaryPartyDetails
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\Epi\BeneficiaryPartyDetails $beneficiaryPartyDetails
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\BeneficiaryPartyDetails $beneficiaryPartyDetails
      * @return self
      */
-    public function setBeneficiaryPartyDetails(\Psa\EpsBankTransfer\Internal\Generated\Epi\BeneficiaryPartyDetails $beneficiaryPartyDetails)
+    public function setBeneficiaryPartyDetails(\Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\BeneficiaryPartyDetails $beneficiaryPartyDetails)
     {
         $this->beneficiaryPartyDetails = $beneficiaryPartyDetails;
         return $this;

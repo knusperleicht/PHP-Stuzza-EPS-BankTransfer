@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Psa\EpsBankTransfer\Responses;
+namespace Knusperleicht\EpsBankTransfer\Responses;
 
-use Psa\EpsBankTransfer\Internal\Generated\Payment\V26\ShopConfirmationDetails;
-use Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\EpsProtocolDetails;
+use Knusperleicht\EpsBankTransfer\Internal\Generated\Payment\V26\ShopConfirmationDetails;
+use Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\EpsProtocolDetails;
 
 class ShopResponseDetails
 {
@@ -38,7 +38,7 @@ class ShopResponseDetails
     public function toV26(): EpsProtocolDetails
     {
         $epsProtocolDetails = new EpsProtocolDetails();
-        $shopResponseDetails = new \Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\ShopResponseDetails();
+        $shopResponseDetails = new \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\ShopResponseDetails();
 
         if (!empty($this->errorMessage)) {
             $shopResponseDetails->setErrorMsg($this->errorMessage);

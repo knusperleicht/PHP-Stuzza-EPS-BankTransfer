@@ -1,6 +1,6 @@
 <?php
 
-namespace Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\TransferMsgDetails;
+namespace Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\TransferMsgDetails;
 
 /**
  * Class representing TransferMsgDetailsAType
@@ -13,12 +13,12 @@ class TransferMsgDetailsAType
     private $confirmationUrl = null;
 
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\TransactionOkUrl $transactionOkUrl
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\TransactionOkUrl $transactionOkUrl
      */
     private $transactionOkUrl = null;
 
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\TransactionNokUrl $transactionNokUrl
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\TransactionNokUrl $transactionNokUrl
      */
     private $transactionNokUrl = null;
 
@@ -47,7 +47,7 @@ class TransferMsgDetailsAType
     /**
      * Gets as transactionOkUrl
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\TransactionOkUrl
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\TransactionOkUrl
      */
     public function getTransactionOkUrl()
     {
@@ -57,10 +57,10 @@ class TransferMsgDetailsAType
     /**
      * Sets a new transactionOkUrl
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\TransactionOkUrl $transactionOkUrl
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\TransactionOkUrl $transactionOkUrl
      * @return self
      */
-    public function setTransactionOkUrl(\Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\TransactionOkUrl $transactionOkUrl)
+    public function setTransactionOkUrl(\Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\TransactionOkUrl $transactionOkUrl)
     {
         $this->transactionOkUrl = $transactionOkUrl;
         return $this;
@@ -69,7 +69,7 @@ class TransferMsgDetailsAType
     /**
      * Gets as transactionNokUrl
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\TransactionNokUrl
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\TransactionNokUrl
      */
     public function getTransactionNokUrl()
     {
@@ -79,10 +79,10 @@ class TransferMsgDetailsAType
     /**
      * Sets a new transactionNokUrl
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\TransactionNokUrl $transactionNokUrl
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\TransactionNokUrl $transactionNokUrl
      * @return self
      */
-    public function setTransactionNokUrl(\Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\TransactionNokUrl $transactionNokUrl)
+    public function setTransactionNokUrl(\Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\TransactionNokUrl $transactionNokUrl)
     {
         $this->transactionNokUrl = $transactionNokUrl;
         return $this;

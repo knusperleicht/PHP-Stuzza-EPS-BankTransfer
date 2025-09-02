@@ -1,4 +1,4 @@
-Psa\EpsBankTransfer\Internal\Generated\XmlDsig\X509IssuerSerialType:
+Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\X509IssuerSerialType:
     properties:
         x509IssuerName:
             expose: true

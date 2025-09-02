@@ -1,4 +1,4 @@
-Psa\EpsBankTransfer\Internal\Generated\XmlDsig\RetrievalMethodType:
+Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\RetrievalMethodType:
     properties:
         uRI:
             expose: true
@@ -27,7 +27,7 @@ Psa\EpsBankTransfer\Internal\Generated\XmlDsig\RetrievalMethodType:
             accessor:
                 getter: getTransforms
                 setter: setTransforms
-            type: array<Psa\EpsBankTransfer\Internal\Generated\XmlDsig\Transform>
+            type: array<Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\Transform>
             xml_list:
                 inline: false
                 entry_name: Transform

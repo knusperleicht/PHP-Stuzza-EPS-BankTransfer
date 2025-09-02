@@ -1,6 +1,6 @@
 <?php
 
-namespace Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\EpsProtocolDetails;
+namespace Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\EpsProtocolDetails;
 
 /**
  * Class representing EpsProtocolDetailsAType
@@ -13,52 +13,52 @@ class EpsProtocolDetailsAType
     private $sessionLanguage = null;
 
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\TransferInitiatorDetails $transferInitiatorDetails
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\TransferInitiatorDetails $transferInitiatorDetails
      */
     private $transferInitiatorDetails = null;
 
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\BankResponseDetails $bankResponseDetails
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\BankResponseDetails $bankResponseDetails
      */
     private $bankResponseDetails = null;
 
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\VitalityCheckDetails $vitalityCheckDetails
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\VitalityCheckDetails $vitalityCheckDetails
      */
     private $vitalityCheckDetails = null;
 
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\BankConfirmationDetails $bankConfirmationDetails
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\BankConfirmationDetails $bankConfirmationDetails
      */
     private $bankConfirmationDetails = null;
 
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\ShopResponseDetails $shopResponseDetails
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\ShopResponseDetails $shopResponseDetails
      */
     private $shopResponseDetails = null;
 
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\TransactionDetailsRequest $transactionDetailsRequest
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\TransactionDetailsRequest $transactionDetailsRequest
      */
     private $transactionDetailsRequest = null;
 
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\TransactionDetailsResponse $transactionDetailsResponse
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\TransactionDetailsResponse $transactionDetailsResponse
      */
     private $transactionDetailsResponse = null;
 
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\ConfirmationStatusRequest $confirmationStatusRequest
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\ConfirmationStatusRequest $confirmationStatusRequest
      */
     private $confirmationStatusRequest = null;
 
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\ConfirmationStatusResponse $confirmationStatusResponse
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\ConfirmationStatusResponse $confirmationStatusResponse
      */
     private $confirmationStatusResponse = null;
 
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\StatusMsg $statusMsg
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\StatusMsg $statusMsg
      */
     private $statusMsg = null;
 
@@ -87,7 +87,7 @@ class EpsProtocolDetailsAType
     /**
      * Gets as transferInitiatorDetails
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\TransferInitiatorDetails
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\TransferInitiatorDetails
      */
     public function getTransferInitiatorDetails()
     {
@@ -97,10 +97,10 @@ class EpsProtocolDetailsAType
     /**
      * Sets a new transferInitiatorDetails
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\TransferInitiatorDetails $transferInitiatorDetails
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\TransferInitiatorDetails $transferInitiatorDetails
      * @return self
      */
-    public function setTransferInitiatorDetails(?\Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\TransferInitiatorDetails $transferInitiatorDetails = null)
+    public function setTransferInitiatorDetails(?\Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\TransferInitiatorDetails $transferInitiatorDetails = null)
     {
         $this->transferInitiatorDetails = $transferInitiatorDetails;
         return $this;
@@ -109,7 +109,7 @@ class EpsProtocolDetailsAType
     /**
      * Gets as bankResponseDetails
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\BankResponseDetails
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\BankResponseDetails
      */
     public function getBankResponseDetails()
     {
@@ -119,10 +119,10 @@ class EpsProtocolDetailsAType
     /**
      * Sets a new bankResponseDetails
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\BankResponseDetails $bankResponseDetails
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\BankResponseDetails $bankResponseDetails
      * @return self
      */
-    public function setBankResponseDetails(?\Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\BankResponseDetails $bankResponseDetails = null)
+    public function setBankResponseDetails(?\Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\BankResponseDetails $bankResponseDetails = null)
     {
         $this->bankResponseDetails = $bankResponseDetails;
         return $this;
@@ -131,7 +131,7 @@ class EpsProtocolDetailsAType
     /**
      * Gets as vitalityCheckDetails
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\VitalityCheckDetails
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\VitalityCheckDetails
      */
     public function getVitalityCheckDetails()
     {
@@ -141,10 +141,10 @@ class EpsProtocolDetailsAType
     /**
      * Sets a new vitalityCheckDetails
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\VitalityCheckDetails $vitalityCheckDetails
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\VitalityCheckDetails $vitalityCheckDetails
      * @return self
      */
-    public function setVitalityCheckDetails(?\Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\VitalityCheckDetails $vitalityCheckDetails = null)
+    public function setVitalityCheckDetails(?\Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\VitalityCheckDetails $vitalityCheckDetails = null)
     {
         $this->vitalityCheckDetails = $vitalityCheckDetails;
         return $this;
@@ -153,7 +153,7 @@ class EpsProtocolDetailsAType
     /**
      * Gets as bankConfirmationDetails
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\BankConfirmationDetails
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\BankConfirmationDetails
      */
     public function getBankConfirmationDetails()
     {
@@ -163,10 +163,10 @@ class EpsProtocolDetailsAType
     /**
      * Sets a new bankConfirmationDetails
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\BankConfirmationDetails $bankConfirmationDetails
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\BankConfirmationDetails $bankConfirmationDetails
      * @return self
      */
-    public function setBankConfirmationDetails(?\Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\BankConfirmationDetails $bankConfirmationDetails = null)
+    public function setBankConfirmationDetails(?\Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\BankConfirmationDetails $bankConfirmationDetails = null)
     {
         $this->bankConfirmationDetails = $bankConfirmationDetails;
         return $this;
@@ -175,7 +175,7 @@ class EpsProtocolDetailsAType
     /**
      * Gets as shopResponseDetails
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\ShopResponseDetails
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\ShopResponseDetails
      */
     public function getShopResponseDetails()
     {
@@ -185,10 +185,10 @@ class EpsProtocolDetailsAType
     /**
      * Sets a new shopResponseDetails
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\ShopResponseDetails $shopResponseDetails
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\ShopResponseDetails $shopResponseDetails
      * @return self
      */
-    public function setShopResponseDetails(?\Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\ShopResponseDetails $shopResponseDetails = null)
+    public function setShopResponseDetails(?\Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\ShopResponseDetails $shopResponseDetails = null)
     {
         $this->shopResponseDetails = $shopResponseDetails;
         return $this;
@@ -197,7 +197,7 @@ class EpsProtocolDetailsAType
     /**
      * Gets as transactionDetailsRequest
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\TransactionDetailsRequest
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\TransactionDetailsRequest
      */
     public function getTransactionDetailsRequest()
     {
@@ -207,10 +207,10 @@ class EpsProtocolDetailsAType
     /**
      * Sets a new transactionDetailsRequest
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\TransactionDetailsRequest $transactionDetailsRequest
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\TransactionDetailsRequest $transactionDetailsRequest
      * @return self
      */
-    public function setTransactionDetailsRequest(?\Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\TransactionDetailsRequest $transactionDetailsRequest = null)
+    public function setTransactionDetailsRequest(?\Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\TransactionDetailsRequest $transactionDetailsRequest = null)
     {
         $this->transactionDetailsRequest = $transactionDetailsRequest;
         return $this;
@@ -219,7 +219,7 @@ class EpsProtocolDetailsAType
     /**
      * Gets as transactionDetailsResponse
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\TransactionDetailsResponse
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\TransactionDetailsResponse
      */
     public function getTransactionDetailsResponse()
     {
@@ -229,10 +229,10 @@ class EpsProtocolDetailsAType
     /**
      * Sets a new transactionDetailsResponse
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\TransactionDetailsResponse $transactionDetailsResponse
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\TransactionDetailsResponse $transactionDetailsResponse
      * @return self
      */
-    public function setTransactionDetailsResponse(?\Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\TransactionDetailsResponse $transactionDetailsResponse = null)
+    public function setTransactionDetailsResponse(?\Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\TransactionDetailsResponse $transactionDetailsResponse = null)
     {
         $this->transactionDetailsResponse = $transactionDetailsResponse;
         return $this;
@@ -241,7 +241,7 @@ class EpsProtocolDetailsAType
     /**
      * Gets as confirmationStatusRequest
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\ConfirmationStatusRequest
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\ConfirmationStatusRequest
      */
     public function getConfirmationStatusRequest()
     {
@@ -251,10 +251,10 @@ class EpsProtocolDetailsAType
     /**
      * Sets a new confirmationStatusRequest
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\ConfirmationStatusRequest $confirmationStatusRequest
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\ConfirmationStatusRequest $confirmationStatusRequest
      * @return self
      */
-    public function setConfirmationStatusRequest(?\Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\ConfirmationStatusRequest $confirmationStatusRequest = null)
+    public function setConfirmationStatusRequest(?\Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\ConfirmationStatusRequest $confirmationStatusRequest = null)
     {
         $this->confirmationStatusRequest = $confirmationStatusRequest;
         return $this;
@@ -263,7 +263,7 @@ class EpsProtocolDetailsAType
     /**
      * Gets as confirmationStatusResponse
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\ConfirmationStatusResponse
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\ConfirmationStatusResponse
      */
     public function getConfirmationStatusResponse()
     {
@@ -273,10 +273,10 @@ class EpsProtocolDetailsAType
     /**
      * Sets a new confirmationStatusResponse
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\ConfirmationStatusResponse $confirmationStatusResponse
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\ConfirmationStatusResponse $confirmationStatusResponse
      * @return self
      */
-    public function setConfirmationStatusResponse(?\Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\ConfirmationStatusResponse $confirmationStatusResponse = null)
+    public function setConfirmationStatusResponse(?\Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\ConfirmationStatusResponse $confirmationStatusResponse = null)
     {
         $this->confirmationStatusResponse = $confirmationStatusResponse;
         return $this;
@@ -285,7 +285,7 @@ class EpsProtocolDetailsAType
     /**
      * Gets as statusMsg
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\StatusMsg
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\StatusMsg
      */
     public function getStatusMsg()
     {
@@ -295,10 +295,10 @@ class EpsProtocolDetailsAType
     /**
      * Sets a new statusMsg
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\StatusMsg $statusMsg
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\StatusMsg $statusMsg
      * @return self
      */
-    public function setStatusMsg(?\Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\StatusMsg $statusMsg = null)
+    public function setStatusMsg(?\Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\StatusMsg $statusMsg = null)
     {
         $this->statusMsg = $statusMsg;
         return $this;

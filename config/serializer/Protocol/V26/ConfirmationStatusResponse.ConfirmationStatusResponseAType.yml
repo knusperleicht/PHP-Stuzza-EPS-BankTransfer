@@ -1,4 +1,4 @@
-Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\ConfirmationStatusResponse\ConfirmationStatusResponseAType:
+Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\ConfirmationStatusResponse\ConfirmationStatusResponseAType:
     properties:
         sessionId:
             expose: true
@@ -19,7 +19,7 @@ Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\ConfirmationStatusResponse\C
             accessor:
                 getter: getPaymentConfirmationDetails
                 setter: setPaymentConfirmationDetails
-            type: Psa\EpsBankTransfer\Internal\Generated\Payment\V26\PaymentConfirmationDetails
+            type: Knusperleicht\EpsBankTransfer\Internal\Generated\Payment\V26\PaymentConfirmationDetails
         errorDetails:
             expose: true
             access_type: public_method
@@ -29,4 +29,4 @@ Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\ConfirmationStatusResponse\C
             accessor:
                 getter: getErrorDetails
                 setter: setErrorDetails
-            type: Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\ErrorDetails
+            type: Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\ErrorDetails

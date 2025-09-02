@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Psa\EpsBankTransfer\Tests\Helper;
+namespace Knusperleicht\EpsBankTransfer\Tests\Helper;
 
-use Psa\EpsBankTransfer\Api\SoCommunicator;
+use Knusperleicht\EpsBankTransfer\Api\SoCommunicator;
 use GuzzleHttp\Psr7\HttpFactory;
 
 trait SoCommunicatorTestTrait

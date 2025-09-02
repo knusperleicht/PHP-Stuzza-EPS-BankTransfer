@@ -1,6 +1,6 @@
 <?php
 
-namespace Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\BankResponseDetails;
+namespace Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\BankResponseDetails;
 
 /**
  * Class representing BankResponseDetailsAType
@@ -13,7 +13,7 @@ class BankResponseDetailsAType
     private $clientRedirectUrl = null;
 
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\ErrorDetails $errorDetails
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\ErrorDetails $errorDetails
      */
     private $errorDetails = null;
 
@@ -52,7 +52,7 @@ class BankResponseDetailsAType
     /**
      * Gets as errorDetails
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\ErrorDetails
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\ErrorDetails
      */
     public function getErrorDetails()
     {
@@ -62,10 +62,10 @@ class BankResponseDetailsAType
     /**
      * Sets a new errorDetails
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\ErrorDetails $errorDetails
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\ErrorDetails $errorDetails
      * @return self
      */
-    public function setErrorDetails(\Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\ErrorDetails $errorDetails)
+    public function setErrorDetails(\Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\ErrorDetails $errorDetails)
     {
         $this->errorDetails = $errorDetails;
         return $this;

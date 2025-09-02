@@ -1,6 +1,6 @@
 <?php
 
-namespace Psa\EpsBankTransfer\Internal\Generated\Epi\DateOptionDetails;
+namespace Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\DateOptionDetails;
 
 /**
  * Class representing DateOptionDetailsAType

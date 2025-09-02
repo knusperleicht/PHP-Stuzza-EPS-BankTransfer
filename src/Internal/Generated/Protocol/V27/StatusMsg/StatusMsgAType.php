@@ -1,6 +1,6 @@
 <?php
 
-namespace Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\StatusMsg;
+namespace Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\StatusMsg;
 
 /**
  * Class representing StatusMsgAType

@@ -1,4 +1,4 @@
-Psa\EpsBankTransfer\Internal\Generated\XmlDsig\KeyValueType:
+Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\KeyValueType:
     properties:
         dSAKeyValue:
             expose: true
@@ -9,7 +9,7 @@ Psa\EpsBankTransfer\Internal\Generated\XmlDsig\KeyValueType:
             accessor:
                 getter: getDSAKeyValue
                 setter: setDSAKeyValue
-            type: Psa\EpsBankTransfer\Internal\Generated\XmlDsig\DSAKeyValue
+            type: Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\DSAKeyValue
         rSAKeyValue:
             expose: true
             access_type: public_method
@@ -19,4 +19,4 @@ Psa\EpsBankTransfer\Internal\Generated\XmlDsig\KeyValueType:
             accessor:
                 getter: getRSAKeyValue
                 setter: setRSAKeyValue
-            type: Psa\EpsBankTransfer\Internal\Generated\XmlDsig\RSAKeyValue
+            type: Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\RSAKeyValue

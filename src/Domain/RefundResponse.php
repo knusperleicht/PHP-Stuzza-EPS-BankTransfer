@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Psa\EpsBankTransfer\Domain;
+namespace Knusperleicht\EpsBankTransfer\Domain;
 
-use Psa\EpsBankTransfer\Internal\Generated\Refund\EpsRefundResponse;
+use Knusperleicht\EpsBankTransfer\Internal\Generated\Refund\EpsRefundResponse;
 
 /**
  * Result of an EPS refund request mapped into a domain object.
@@ -37,7 +37,14 @@ class RefundResponse
     }
 
     /** Status code of the refund request as returned by the SO. */
-    public function getStatusCode(): string { return $this->statusCode; }
+    public function getStatusCode(): string
+    {
+        return $this->statusCode;
+    }
+
     /** Optional error message returned by the SO. */
-    public function getErrorMessage(): ?string { return $this->errorMessage; }
+    public function getErrorMessage(): ?string
+    {
+        return $this->errorMessage;
+    }
 }

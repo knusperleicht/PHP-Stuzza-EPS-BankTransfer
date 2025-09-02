@@ -1,4 +1,4 @@
-Psa\EpsBankTransfer\Internal\Generated\Epi\IdentificationDetails\IdentificationDetailsAType:
+Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\IdentificationDetails\IdentificationDetailsAType:
     properties:
         date:
             expose: true

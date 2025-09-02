@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Psa\EpsBankTransfer\Internal;
+namespace Knusperleicht\EpsBankTransfer\Internal;
 
-use Psa\EpsBankTransfer\Exceptions\UnknownRemittanceIdentifierException;
-use Psa\EpsBankTransfer\Serializer\SerializerFactory;
 use JMS\Serializer\SerializerInterface;
+use Knusperleicht\EpsBankTransfer\Exceptions\UnknownRemittanceIdentifierException;
+use Knusperleicht\EpsBankTransfer\Serializer\SerializerFactory;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
@@ -34,18 +34,19 @@ class SoCommunicatorCore
     private $baseUrl;
 
     public function __construct(
-        ClientInterface $httpClient,
+        ClientInterface         $httpClient,
         RequestFactoryInterface $requestFactory,
-        StreamFactoryInterface $streamFactory,
-        string $baseUrl,
-        ?LoggerInterface $logger = null
-    ) {
-        $this->httpClient     = $httpClient;
+        StreamFactoryInterface  $streamFactory,
+        string                  $baseUrl,
+        ?LoggerInterface        $logger = null
+    )
+    {
+        $this->httpClient = $httpClient;
         $this->requestFactory = $requestFactory;
-        $this->streamFactory  = $streamFactory;
-        $this->baseUrl        = $baseUrl;
-        $this->logger         = $logger;
-        $this->serializer     = SerializerFactory::create();
+        $this->streamFactory = $streamFactory;
+        $this->baseUrl = $baseUrl;
+        $this->logger = $logger;
+        $this->serializer = SerializerFactory::create();
     }
 
     public function getBaseUrl(): string

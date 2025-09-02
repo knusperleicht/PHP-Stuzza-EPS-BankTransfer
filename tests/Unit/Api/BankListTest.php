@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace Psa\EpsBankTransfer\Tests\Api;
+namespace Knusperleicht\EpsBankTransfer\Tests\Api;
 
-use Psa\EpsBankTransfer\Api\SoCommunicator;
-use Psa\EpsBankTransfer\Domain\Bank;
-use Psa\EpsBankTransfer\Domain\BankList;
-use Psa\EpsBankTransfer\Exceptions\BankListException;
-use Psa\EpsBankTransfer\Exceptions\XmlValidationException;
-use Psa\EpsBankTransfer\Tests\Helper\SoCommunicatorTestTrait;
+use Knusperleicht\EpsBankTransfer\Api\SoCommunicator;
+use Knusperleicht\EpsBankTransfer\Domain\Bank;
+use Knusperleicht\EpsBankTransfer\Domain\BankList;
+use Knusperleicht\EpsBankTransfer\Exceptions\BankListException;
+use Knusperleicht\EpsBankTransfer\Exceptions\XmlValidationException;
+use Knusperleicht\EpsBankTransfer\Tests\Helper\SoCommunicatorTestTrait;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 

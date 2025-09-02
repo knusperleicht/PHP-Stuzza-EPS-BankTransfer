@@ -1,6 +1,6 @@
 <?php
 
-namespace Psa\EpsBankTransfer\Internal\Generated\Epi\IdentificationDetails;
+namespace Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\IdentificationDetails;
 
 /**
  * Class representing IdentificationDetailsAType

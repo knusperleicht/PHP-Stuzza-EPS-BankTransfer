@@ -1,8 +1,8 @@
 <?php
 
-namespace Psa\EpsBankTransfer\Internal\Generated\Payment\V26;
+namespace Knusperleicht\EpsBankTransfer\Internal\Generated\Payment\V26;
 
-use Psa\EpsBankTransfer\Internal\Generated\Payment\V26\PayConApprovingUnitDetails\PayConApprovingUnitDetailsAType;
+use Knusperleicht\EpsBankTransfer\Internal\Generated\Payment\V26\PayConApprovingUnitDetails\PayConApprovingUnitDetailsAType;
 
 /**
  * Class representing PayConApprovingUnitDetails

@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Psa\EpsBankTransfer\Tests\Api;
+namespace Knusperleicht\EpsBankTransfer\Tests\Api;
 
 use PHPUnit\Framework\TestCase;
-use Psa\EpsBankTransfer\Requests\TransferInitiatorDetails;
-use Psa\EpsBankTransfer\Requests\Parts\PaymentFlowUrls;
-use Psa\EpsBankTransfer\Requests\Parts\ObscurityConfig;
-use Psa\EpsBankTransfer\Tests\Helper\SoCommunicatorTestTrait;
+use Knusperleicht\EpsBankTransfer\Requests\TransferInitiatorDetails;
+use Knusperleicht\EpsBankTransfer\Requests\Parts\PaymentFlowUrls;
+use Knusperleicht\EpsBankTransfer\Requests\Parts\ObscurityConfig;
+use Knusperleicht\EpsBankTransfer\Tests\Helper\SoCommunicatorTestTrait;
 
 class SendTransferInitiatorObscurityTest extends TestCase
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Psa\EpsBankTransfer\Internal\Generated\Refund\EpsRefundRequest;
+namespace Knusperleicht\EpsBankTransfer\Internal\Generated\Refund\EpsRefundRequest;
 
 /**
  * Class representing EpsRefundRequestAType
@@ -23,7 +23,7 @@ class EpsRefundRequestAType
     private $merchantIBAN = null;
 
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\Refund\Amount $amount
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\Refund\Amount $amount
      */
     private $amount = null;
 
@@ -33,7 +33,7 @@ class EpsRefundRequestAType
     private $refundReference = null;
 
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\Refund\AuthenticationDetails $authenticationDetails
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\Refund\AuthenticationDetails $authenticationDetails
      */
     private $authenticationDetails = null;
 
@@ -106,7 +106,7 @@ class EpsRefundRequestAType
     /**
      * Gets as amount
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\Refund\Amount
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\Refund\Amount
      */
     public function getAmount()
     {
@@ -116,10 +116,10 @@ class EpsRefundRequestAType
     /**
      * Sets a new amount
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\Refund\Amount $amount
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\Refund\Amount $amount
      * @return self
      */
-    public function setAmount(\Psa\EpsBankTransfer\Internal\Generated\Refund\Amount $amount)
+    public function setAmount(\Knusperleicht\EpsBankTransfer\Internal\Generated\Refund\Amount $amount)
     {
         $this->amount = $amount;
         return $this;
@@ -150,7 +150,7 @@ class EpsRefundRequestAType
     /**
      * Gets as authenticationDetails
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\Refund\AuthenticationDetails
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\Refund\AuthenticationDetails
      */
     public function getAuthenticationDetails()
     {
@@ -160,10 +160,10 @@ class EpsRefundRequestAType
     /**
      * Sets a new authenticationDetails
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\Refund\AuthenticationDetails $authenticationDetails
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\Refund\AuthenticationDetails $authenticationDetails
      * @return self
      */
-    public function setAuthenticationDetails(\Psa\EpsBankTransfer\Internal\Generated\Refund\AuthenticationDetails $authenticationDetails)
+    public function setAuthenticationDetails(\Knusperleicht\EpsBankTransfer\Internal\Generated\Refund\AuthenticationDetails $authenticationDetails)
     {
         $this->authenticationDetails = $authenticationDetails;
         return $this;

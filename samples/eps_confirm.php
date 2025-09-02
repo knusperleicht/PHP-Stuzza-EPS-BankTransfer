@@ -6,11 +6,11 @@ require_once('../vendor/autoload.php');
 // You can omit passing this constant to use the default.
 const EPS_INTERFACE_VERSION = '2.6';
 
-use Psa\EpsBankTransfer\Api\SoCommunicator;
-use Psa\EpsBankTransfer\Domain\BankConfirmationDetails;
-use Psa\EpsBankTransfer\Domain\VitalityCheckDetails;
+use Knusperleicht\EpsBankTransfer\Api\SoCommunicator;
+use Knusperleicht\EpsBankTransfer\Domain\BankConfirmationDetails;
+use Knusperleicht\EpsBankTransfer\Domain\VitalityCheckDetails;
 use Nyholm\Psr7\Factory\Psr17Factory;
-use Psa\EpsBankTransfer\Exceptions\EpsException;
+use Knusperleicht\EpsBankTransfer\Exceptions\EpsException;
 use Symfony\Component\HttpClient\Psr18Client;
 
 // This endpoint is called by the EPS Scheme Operator (SO):

@@ -6,9 +6,9 @@ require_once('../vendor/autoload.php');
 // You can omit passing this constant to use the default.
 const EPS_INTERFACE_VERSION = '2.6';
 
-use Psa\EpsBankTransfer\Api\SoCommunicator;
-use Psa\EpsBankTransfer\Exceptions\EpsException;
-use Psa\EpsBankTransfer\Requests\RefundRequest;
+use Knusperleicht\EpsBankTransfer\Api\SoCommunicator;
+use Knusperleicht\EpsBankTransfer\Exceptions\EpsException;
+use Knusperleicht\EpsBankTransfer\Requests\RefundRequest;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Symfony\Component\HttpClient\Psr18Client;
 

@@ -1,4 +1,4 @@
-Psa\EpsBankTransfer\Internal\Generated\BankList\ErrorDataType:
+Knusperleicht\EpsBankTransfer\Internal\Generated\BankList\ErrorDataType:
     properties:
         errorCode:
             expose: true

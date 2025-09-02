@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Psa\EpsBankTransfer\Tests\Domain;
+namespace Knusperleicht\EpsBankTransfer\Tests\Domain;
 
-use Psa\EpsBankTransfer\Domain\ProtocolDetails;
+use Knusperleicht\EpsBankTransfer\Domain\ProtocolDetails;
 use PHPUnit\Framework\TestCase;
-use Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\EpsProtocolDetails;
+use Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\EpsProtocolDetails;
 
 class ProtocolDetailsTest extends TestCase
 {
@@ -22,7 +22,7 @@ class ProtocolDetailsTest extends TestCase
     {
         $this->ensureV26Stubs();
         // Case with error details present
-        $v26 = new class extends \Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\EpsProtocolDetails {
+        $v26 = new class extends \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\EpsProtocolDetails {
             public function __construct() {}
             public function getBankResponseDetails() {
                 return new class {
@@ -39,7 +39,7 @@ class ProtocolDetailsTest extends TestCase
         $this->assertSame('epsTID-26', $pd->getTransactionId());
 
         // Case without error details
-        $v26no = new class extends \Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\EpsProtocolDetails {
+        $v26no = new class extends \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\EpsProtocolDetails {
             public function __construct() {}
             public function getBankResponseDetails(): object
             {
@@ -79,15 +79,15 @@ class ProtocolDetailsTest extends TestCase
 
     private function ensureV26Stubs(): void
     {
-        if (!class_exists('Psa\\EpsBankTransfer\\Internal\\Generated\\Protocol\\V26\\EpsProtocolDetails')) {
-            eval('namespace Psa\\EpsBankTransfer\\Internal\\Generated\\Protocol\\V26; abstract class EpsProtocolDetails { public function __construct() {} abstract public function getBankResponseDetails(); }');
+        if (!class_exists('Knusperleicht\\EpsBankTransfer\\Internal\\Generated\\Protocol\\V26\\EpsProtocolDetails')) {
+            eval('namespace Knusperleicht\\EpsBankTransfer\\Internal\\Generated\\Protocol\\V26; abstract class EpsProtocolDetails { public function __construct() {} abstract public function getBankResponseDetails(); }');
         }
     }
 
     private function ensureV27Stubs(): void
     {
-        if (!class_exists('Psa\\EpsBankTransfer\\Internal\\Generated\\Protocol\\V27\\EpsProtocolDetails')) {
-            eval('namespace Psa\\EpsBankTransfer\\Internal\\Generated\\Protocol\\V27; abstract class EpsProtocolDetails { public function __construct() {} abstract public function getBankResponseDetails(); }');
+        if (!class_exists('Knusperleicht\\EpsBankTransfer\\Internal\\Generated\\Protocol\\V27\\EpsProtocolDetails')) {
+            eval('namespace Knusperleicht\\EpsBankTransfer\\Internal\\Generated\\Protocol\\V27; abstract class EpsProtocolDetails { public function __construct() {} abstract public function getBankResponseDetails(); }');
         }
     }
 }

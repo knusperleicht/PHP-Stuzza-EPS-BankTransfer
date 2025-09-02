@@ -1,4 +1,4 @@
-Psa\EpsBankTransfer\Internal\Generated\Epi\OrderingCustomerIdentifier:
+Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\OrderingCustomerIdentifier:
     xml_root_name: OrderingCustomerIdentifier
     xml_root_namespace: 'http://www.stuzza.at/namespaces/eps/epi/2013/02'
     properties:

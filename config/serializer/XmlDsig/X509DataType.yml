@@ -1,4 +1,4 @@
-Psa\EpsBankTransfer\Internal\Generated\XmlDsig\X509DataType:
+Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\X509DataType:
     properties:
         x509IssuerSerial:
             expose: true
@@ -13,7 +13,7 @@ Psa\EpsBankTransfer\Internal\Generated\XmlDsig\X509DataType:
                 inline: true
                 entry_name: X509IssuerSerial
                 namespace: 'http://www.w3.org/2000/09/xmldsig#'
-            type: array<Psa\EpsBankTransfer\Internal\Generated\XmlDsig\X509IssuerSerialType>
+            type: array<Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\X509IssuerSerialType>
         x509SKI:
             expose: true
             access_type: public_method

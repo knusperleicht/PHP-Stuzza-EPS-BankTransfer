@@ -1,8 +1,8 @@
 <?php
 
-namespace Psa\EpsBankTransfer\Internal\Generated\AustrianRules;
+namespace Knusperleicht\EpsBankTransfer\Internal\Generated\AustrianRules;
 
-use Psa\EpsBankTransfer\Internal\Generated\AustrianRules\TradeCategoryDetails\TradeCategoryDetailsAType;
+use Knusperleicht\EpsBankTransfer\Internal\Generated\AustrianRules\TradeCategoryDetails\TradeCategoryDetailsAType;
 
 /**
  * Class representing TradeCategoryDetails

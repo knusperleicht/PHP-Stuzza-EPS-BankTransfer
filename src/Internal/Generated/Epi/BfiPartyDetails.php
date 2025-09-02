@@ -1,8 +1,8 @@
 <?php
 
-namespace Psa\EpsBankTransfer\Internal\Generated\Epi;
+namespace Knusperleicht\EpsBankTransfer\Internal\Generated\Epi;
 
-use Psa\EpsBankTransfer\Internal\Generated\Epi\BfiPartyDetails\BfiPartyDetailsAType;
+use Knusperleicht\EpsBankTransfer\Internal\Generated\Epi\BfiPartyDetails\BfiPartyDetailsAType;
 
 /**
  * Class representing BfiPartyDetails

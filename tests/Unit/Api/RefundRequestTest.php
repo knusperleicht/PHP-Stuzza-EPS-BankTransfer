@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Psa\EpsBankTransfer\Tests\Api;
+namespace Knusperleicht\EpsBankTransfer\Tests\Api;
 
-use Psa\EpsBankTransfer\Api\SoCommunicator;
-use Psa\EpsBankTransfer\Domain\RefundResponse;
-use Psa\EpsBankTransfer\Exceptions\XmlValidationException;
-use Psa\EpsBankTransfer\Requests\RefundRequest;
-use Psa\EpsBankTransfer\Tests\Helper\SoCommunicatorTestTrait;
+use Knusperleicht\EpsBankTransfer\Api\SoCommunicator;
+use Knusperleicht\EpsBankTransfer\Domain\RefundResponse;
+use Knusperleicht\EpsBankTransfer\Exceptions\XmlValidationException;
+use Knusperleicht\EpsBankTransfer\Requests\RefundRequest;
+use Knusperleicht\EpsBankTransfer\Tests\Helper\SoCommunicatorTestTrait;
 use PHPUnit\Framework\TestCase;
 
 class RefundRequestTest extends TestCase

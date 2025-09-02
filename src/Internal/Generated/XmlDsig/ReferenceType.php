@@ -1,6 +1,6 @@
 <?php
 
-namespace Psa\EpsBankTransfer\Internal\Generated\XmlDsig;
+namespace Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig;
 
 /**
  * Class representing ReferenceType
@@ -26,12 +26,12 @@ class ReferenceType
     private $type = null;
 
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\Transform[] $transforms
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\Transform[] $transforms
      */
     private $transforms = null;
 
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\DigestMethod $digestMethod
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\DigestMethod $digestMethod
      */
     private $digestMethod = null;
 
@@ -110,9 +110,9 @@ class ReferenceType
      * Adds as transform
      *
      * @return self
-     * @param \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\Transform $transform
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\Transform $transform
      */
-    public function addToTransforms(\Psa\EpsBankTransfer\Internal\Generated\XmlDsig\Transform $transform)
+    public function addToTransforms(\Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\Transform $transform)
     {
         $this->transforms[] = $transform;
         return $this;
@@ -143,7 +143,7 @@ class ReferenceType
     /**
      * Gets as transforms
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\Transform[]
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\Transform[]
      */
     public function getTransforms()
     {
@@ -153,7 +153,7 @@ class ReferenceType
     /**
      * Sets a new transforms
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\Transform[] $transforms
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\Transform[] $transforms
      * @return self
      */
     public function setTransforms(?array $transforms = null)
@@ -165,7 +165,7 @@ class ReferenceType
     /**
      * Gets as digestMethod
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\DigestMethod
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\DigestMethod
      */
     public function getDigestMethod()
     {
@@ -175,10 +175,10 @@ class ReferenceType
     /**
      * Sets a new digestMethod
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\DigestMethod $digestMethod
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\DigestMethod $digestMethod
      * @return self
      */
-    public function setDigestMethod(\Psa\EpsBankTransfer\Internal\Generated\XmlDsig\DigestMethod $digestMethod)
+    public function setDigestMethod(\Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\DigestMethod $digestMethod)
     {
         $this->digestMethod = $digestMethod;
         return $this;

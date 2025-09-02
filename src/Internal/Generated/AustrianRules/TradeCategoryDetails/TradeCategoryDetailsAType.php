@@ -1,6 +1,6 @@
 <?php
 
-namespace Psa\EpsBankTransfer\Internal\Generated\AustrianRules\TradeCategoryDetails;
+namespace Knusperleicht\EpsBankTransfer\Internal\Generated\AustrianRules\TradeCategoryDetails;
 
 /**
  * Class representing TradeCategoryDetailsAType

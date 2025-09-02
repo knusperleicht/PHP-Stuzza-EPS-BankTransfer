@@ -1,6 +1,6 @@
 <?php
 
-namespace Psa\EpsBankTransfer\Internal\Generated\Payment\V27;
+namespace Knusperleicht\EpsBankTransfer\Internal\Generated\Payment\V27;
 
 /**
  * Class representing ApprovingUnitIdentifier

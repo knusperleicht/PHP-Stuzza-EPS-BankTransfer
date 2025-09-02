@@ -1,8 +1,8 @@
 <?php
 
-namespace Psa\EpsBankTransfer\Internal\Generated\Protocol\V26;
+namespace Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26;
 
-use Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\TransferMsgDetails\TransferMsgDetailsAType;
+use Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\TransferMsgDetails\TransferMsgDetailsAType;
 
 /**
  * Class representing TransferMsgDetails

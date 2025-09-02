@@ -1,24 +1,24 @@
 <?php
 declare(strict_types=1);
 
-namespace Psa\EpsBankTransfer\Internal\V26;
+namespace Knusperleicht\EpsBankTransfer\Internal\V26;
 
 use Exception;
-use Psa\EpsBankTransfer\Domain\BankConfirmationDetails;
-use Psa\EpsBankTransfer\Domain\VitalityCheckDetails;
-use Psa\EpsBankTransfer\Exceptions\CallbackResponseException;
-use Psa\EpsBankTransfer\Exceptions\EpsException;
-use Psa\EpsBankTransfer\Exceptions\InvalidCallbackException;
-use Psa\EpsBankTransfer\Exceptions\XmlValidationException;
-use Psa\EpsBankTransfer\Internal\Generated\BankList\EpsSOBankListProtocol;
-use Psa\EpsBankTransfer\Internal\Generated\Protocol\V26\EpsProtocolDetails;
-use Psa\EpsBankTransfer\Internal\Generated\Refund\EpsRefundResponse;
-use Psa\EpsBankTransfer\Internal\SoCommunicatorCore;
-use Psa\EpsBankTransfer\Requests\RefundRequest;
-use Psa\EpsBankTransfer\Requests\TransferInitiatorDetails;
-use Psa\EpsBankTransfer\Responses\ShopResponseDetails;
-use Psa\EpsBankTransfer\Utilities\XmlValidator;
 use JMS\Serializer\SerializerInterface;
+use Knusperleicht\EpsBankTransfer\Domain\BankConfirmationDetails;
+use Knusperleicht\EpsBankTransfer\Domain\VitalityCheckDetails;
+use Knusperleicht\EpsBankTransfer\Exceptions\CallbackResponseException;
+use Knusperleicht\EpsBankTransfer\Exceptions\EpsException;
+use Knusperleicht\EpsBankTransfer\Exceptions\InvalidCallbackException;
+use Knusperleicht\EpsBankTransfer\Exceptions\XmlValidationException;
+use Knusperleicht\EpsBankTransfer\Internal\Generated\BankList\EpsSOBankListProtocol;
+use Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\EpsProtocolDetails;
+use Knusperleicht\EpsBankTransfer\Internal\Generated\Refund\EpsRefundResponse;
+use Knusperleicht\EpsBankTransfer\Internal\SoCommunicatorCore;
+use Knusperleicht\EpsBankTransfer\Requests\RefundRequest;
+use Knusperleicht\EpsBankTransfer\Requests\TransferInitiatorDetails;
+use Knusperleicht\EpsBankTransfer\Responses\ShopResponseDetails;
+use Knusperleicht\EpsBankTransfer\Utilities\XmlValidator;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
@@ -34,7 +34,7 @@ use Psr\Log\LoggerInterface;
 class SoV26Communicator
 {
     public const BANKLIST = '/data/haendler/v2_6';
-    public const REFUND   = '/refund/eps/v2_6';
+    public const REFUND = '/refund/eps/v2_6';
     public const TRANSFER = '/transinit/eps/v2_6';
     public const VERSION = '2.6';
 
@@ -54,12 +54,13 @@ class SoV26Communicator
      * @param LoggerInterface|null $logger Optional PSR-3 logger
      */
     public function __construct(
-        ClientInterface $httpClient,
+        ClientInterface         $httpClient,
         RequestFactoryInterface $requestFactory,
-        StreamFactoryInterface $streamFactory,
-        string $baseUrl,
-        LoggerInterface $logger = null
-    ) {
+        StreamFactoryInterface  $streamFactory,
+        string                  $baseUrl,
+        LoggerInterface         $logger = null
+    )
+    {
         $this->core = new SoCommunicatorCore(
             $httpClient,
             $requestFactory,
@@ -288,9 +289,9 @@ class SoV26Communicator
      * @param string $outputStream Output stream URI
      * @throws CallbackResponseException When callback does not return true
      */
-    private function handleBankConfirmation(callable $callback, string $rawXml,
+    private function handleBankConfirmation(callable                $callback, string $rawXml,
                                             BankConfirmationDetails $confirmation,
-                                            string $outputStream): void
+                                            string                  $outputStream): void
     {
         $shopConfirmationDetails = new ShopResponseDetails();
         $shopConfirmationDetails->setSessionId($confirmation->getSessionId());

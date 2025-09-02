@@ -1,4 +1,4 @@
-Psa\EpsBankTransfer\Internal\Generated\BankList\BankDataType:
+Knusperleicht\EpsBankTransfer\Internal\Generated\BankList\BankDataType:
     properties:
         bic:
             expose: true
@@ -53,7 +53,7 @@ Psa\EpsBankTransfer\Internal\Generated\BankList\BankDataType:
                 inline: true
                 entry_name: zahlungsweiseNat
                 namespace: 'http://www.eps.or.at/epsSO/epsSOBankListProtocol/201008'
-            type: array<Psa\EpsBankTransfer\Internal\Generated\BankList\AuftragsartType>
+            type: array<Knusperleicht\EpsBankTransfer\Internal\Generated\BankList\AuftragsartType>
         zahlungsweiseInt:
             expose: true
             access_type: public_method

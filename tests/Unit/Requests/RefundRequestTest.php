@@ -1,19 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace Psa\EpsBankTransfer\Tests\Requests;
+namespace Knusperleicht\EpsBankTransfer\Tests\Requests;
 
 use DateTime;
 use Exception;
-use Psa\EpsBankTransfer\Internal\Generated\Refund\Amount;
-use Psa\EpsBankTransfer\Internal\Generated\Refund\AuthenticationDetails;
-use Psa\EpsBankTransfer\Internal\Generated\Refund\EpsRefundRequest;
-use Psa\EpsBankTransfer\Serializer\SerializerFactory;
-use Psa\EpsBankTransfer\Tests\Helper\XmlFixtureTestTrait;
-use Psa\EpsBankTransfer\Utilities\Fingerprint;
+use Knusperleicht\EpsBankTransfer\Internal\Generated\Refund\Amount;
+use Knusperleicht\EpsBankTransfer\Internal\Generated\Refund\AuthenticationDetails;
+use Knusperleicht\EpsBankTransfer\Internal\Generated\Refund\EpsRefundRequest;
+use Knusperleicht\EpsBankTransfer\Serializer\SerializerFactory;
+use Knusperleicht\EpsBankTransfer\Tests\Helper\XmlFixtureTestTrait;
+use Knusperleicht\EpsBankTransfer\Utilities\Fingerprint;
 use JMS\Serializer\SerializerInterface;
 use PHPUnit\Framework\TestCase;
-use Psa\EpsBankTransfer\Utilities\MoneyFormatter;
+use Knusperleicht\EpsBankTransfer\Utilities\MoneyFormatter;
 
 class RefundRequestTest extends TestCase
 {

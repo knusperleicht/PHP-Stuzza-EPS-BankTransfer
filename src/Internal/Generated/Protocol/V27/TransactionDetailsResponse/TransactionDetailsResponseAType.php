@@ -1,6 +1,6 @@
 <?php
 
-namespace Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\TransactionDetailsResponse;
+namespace Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\TransactionDetailsResponse;
 
 /**
  * Class representing TransactionDetailsResponseAType
@@ -8,34 +8,34 @@ namespace Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\TransactionDetails
 class TransactionDetailsResponseAType
 {
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\Payment\V27\PaymentInitiatorDetails $paymentInitiatorDetails
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\Payment\V27\PaymentInitiatorDetails $paymentInitiatorDetails
      */
     private $paymentInitiatorDetails = null;
 
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\TransferMsgDetails $transferMsgDetails
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\TransferMsgDetails $transferMsgDetails
      */
     private $transferMsgDetails = null;
 
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\WebshopArticle[] $webshopDetails
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\WebshopArticle[] $webshopDetails
      */
     private $webshopDetails = null;
 
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\Signature $signature
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\Signature $signature
      */
     private $signature = null;
 
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\ErrorDetails $errorDetails
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\ErrorDetails $errorDetails
      */
     private $errorDetails = null;
 
     /**
      * Gets as paymentInitiatorDetails
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\Payment\V27\PaymentInitiatorDetails
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\Payment\V27\PaymentInitiatorDetails
      */
     public function getPaymentInitiatorDetails()
     {
@@ -45,10 +45,10 @@ class TransactionDetailsResponseAType
     /**
      * Sets a new paymentInitiatorDetails
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\Payment\V27\PaymentInitiatorDetails $paymentInitiatorDetails
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\Payment\V27\PaymentInitiatorDetails $paymentInitiatorDetails
      * @return self
      */
-    public function setPaymentInitiatorDetails(?\Psa\EpsBankTransfer\Internal\Generated\Payment\V27\PaymentInitiatorDetails $paymentInitiatorDetails = null)
+    public function setPaymentInitiatorDetails(?\Knusperleicht\EpsBankTransfer\Internal\Generated\Payment\V27\PaymentInitiatorDetails $paymentInitiatorDetails = null)
     {
         $this->paymentInitiatorDetails = $paymentInitiatorDetails;
         return $this;
@@ -57,7 +57,7 @@ class TransactionDetailsResponseAType
     /**
      * Gets as transferMsgDetails
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\TransferMsgDetails
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\TransferMsgDetails
      */
     public function getTransferMsgDetails()
     {
@@ -67,10 +67,10 @@ class TransactionDetailsResponseAType
     /**
      * Sets a new transferMsgDetails
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\TransferMsgDetails $transferMsgDetails
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\TransferMsgDetails $transferMsgDetails
      * @return self
      */
-    public function setTransferMsgDetails(?\Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\TransferMsgDetails $transferMsgDetails = null)
+    public function setTransferMsgDetails(?\Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\TransferMsgDetails $transferMsgDetails = null)
     {
         $this->transferMsgDetails = $transferMsgDetails;
         return $this;
@@ -80,9 +80,9 @@ class TransactionDetailsResponseAType
      * Adds as webshopArticle
      *
      * @return self
-     * @param \Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\WebshopArticle $webshopArticle
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\WebshopArticle $webshopArticle
      */
-    public function addToWebshopDetails(\Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\WebshopArticle $webshopArticle)
+    public function addToWebshopDetails(\Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\WebshopArticle $webshopArticle)
     {
         $this->webshopDetails[] = $webshopArticle;
         return $this;
@@ -113,7 +113,7 @@ class TransactionDetailsResponseAType
     /**
      * Gets as webshopDetails
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\WebshopArticle[]
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\WebshopArticle[]
      */
     public function getWebshopDetails()
     {
@@ -123,7 +123,7 @@ class TransactionDetailsResponseAType
     /**
      * Sets a new webshopDetails
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\WebshopArticle[] $webshopDetails
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\WebshopArticle[] $webshopDetails
      * @return self
      */
     public function setWebshopDetails(?array $webshopDetails = null)
@@ -135,7 +135,7 @@ class TransactionDetailsResponseAType
     /**
      * Gets as signature
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\Signature
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\Signature
      */
     public function getSignature()
     {
@@ -145,10 +145,10 @@ class TransactionDetailsResponseAType
     /**
      * Sets a new signature
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\XmlDsig\Signature $signature
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\Signature $signature
      * @return self
      */
-    public function setSignature(?\Psa\EpsBankTransfer\Internal\Generated\XmlDsig\Signature $signature = null)
+    public function setSignature(?\Knusperleicht\EpsBankTransfer\Internal\Generated\XmlDsig\Signature $signature = null)
     {
         $this->signature = $signature;
         return $this;
@@ -157,7 +157,7 @@ class TransactionDetailsResponseAType
     /**
      * Gets as errorDetails
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\ErrorDetails
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\ErrorDetails
      */
     public function getErrorDetails()
     {
@@ -167,10 +167,10 @@ class TransactionDetailsResponseAType
     /**
      * Sets a new errorDetails
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\ErrorDetails $errorDetails
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\ErrorDetails $errorDetails
      * @return self
      */
-    public function setErrorDetails(?\Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\ErrorDetails $errorDetails = null)
+    public function setErrorDetails(?\Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\ErrorDetails $errorDetails = null)
     {
         $this->errorDetails = $errorDetails;
         return $this;

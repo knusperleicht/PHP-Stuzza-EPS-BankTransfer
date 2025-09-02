@@ -1,4 +1,4 @@
-Psa\EpsBankTransfer\Internal\Generated\AustrianRules\AustrianRulesDetails\AustrianRulesDetailsAType:
+Knusperleicht\EpsBankTransfer\Internal\Generated\AustrianRules\AustrianRulesDetails\AustrianRulesDetailsAType:
     properties:
         realization:
             expose: true
@@ -29,7 +29,7 @@ Psa\EpsBankTransfer\Internal\Generated\AustrianRules\AustrianRulesDetails\Austri
             accessor:
                 getter: getTradeCategoryDetails
                 setter: setTradeCategoryDetails
-            type: Psa\EpsBankTransfer\Internal\Generated\AustrianRules\TradeCategoryDetails
+            type: Knusperleicht\EpsBankTransfer\Internal\Generated\AustrianRules\TradeCategoryDetails
         digSig:
             expose: true
             access_type: public_method

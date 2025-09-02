@@ -1,6 +1,6 @@
 <?php
 
-namespace Psa\EpsBankTransfer\Internal\Generated\Protocol\V27\ShopResponseDetails;
+namespace Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\ShopResponseDetails;
 
 /**
  * Class representing ShopResponseDetailsAType
@@ -13,7 +13,7 @@ class ShopResponseDetailsAType
     private $sessionId = null;
 
     /**
-     * @var \Psa\EpsBankTransfer\Internal\Generated\Payment\V27\ShopConfirmationDetails $shopConfirmationDetails
+     * @var \Knusperleicht\EpsBankTransfer\Internal\Generated\Payment\V27\ShopConfirmationDetails $shopConfirmationDetails
      */
     private $shopConfirmationDetails = null;
 
@@ -47,7 +47,7 @@ class ShopResponseDetailsAType
     /**
      * Gets as shopConfirmationDetails
      *
-     * @return \Psa\EpsBankTransfer\Internal\Generated\Payment\V27\ShopConfirmationDetails
+     * @return \Knusperleicht\EpsBankTransfer\Internal\Generated\Payment\V27\ShopConfirmationDetails
      */
     public function getShopConfirmationDetails()
     {
@@ -57,10 +57,10 @@ class ShopResponseDetailsAType
     /**
      * Sets a new shopConfirmationDetails
      *
-     * @param \Psa\EpsBankTransfer\Internal\Generated\Payment\V27\ShopConfirmationDetails $shopConfirmationDetails
+     * @param \Knusperleicht\EpsBankTransfer\Internal\Generated\Payment\V27\ShopConfirmationDetails $shopConfirmationDetails
      * @return self
      */
-    public function setShopConfirmationDetails(?\Psa\EpsBankTransfer\Internal\Generated\Payment\V27\ShopConfirmationDetails $shopConfirmationDetails = null)
+    public function setShopConfirmationDetails(?\Knusperleicht\EpsBankTransfer\Internal\Generated\Payment\V27\ShopConfirmationDetails $shopConfirmationDetails = null)
     {
         $this->shopConfirmationDetails = $shopConfirmationDetails;
         return $this;
