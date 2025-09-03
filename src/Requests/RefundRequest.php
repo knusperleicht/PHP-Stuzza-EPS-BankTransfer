@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Knusperleicht\EpsBankTransfer\Requests;
 
+use DateTime;
 use Exception;
 use Knusperleicht\EpsBankTransfer\Internal\Generated\Refund\Amount;
 use Knusperleicht\EpsBankTransfer\Internal\Generated\Refund\AuthenticationDetails;
@@ -96,7 +97,7 @@ class RefundRequest
     {
         $refundRequest = new EpsRefundRequest();
 
-        $refundRequest->setCreDtTm(new \DateTime($this->creDtTm));
+        $refundRequest->setCreDtTm(new DateTime($this->creDtTm));
         $refundRequest->setTransactionId($this->transactionId);
         $refundRequest->setMerchantIBAN($this->merchantIban);
 

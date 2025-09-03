@@ -24,7 +24,7 @@ class Fingerprint
      * @param string $userId Merchant UserID (Merchant ID).
      * @return string Uppercase hexadecimal MD5 hash string.
      */
-    public static function generatMD5Fingerprint(
+    public static function generateMD5Fingerprint(
         string $secret, string $date, string $reference,
         string $account, string $remittance, string $amount,
         string $currency, string $userId): string

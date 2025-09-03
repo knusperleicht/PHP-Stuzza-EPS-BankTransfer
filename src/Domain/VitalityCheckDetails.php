@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Knusperleicht\EpsBankTransfer\Domain;
 
+use InvalidArgumentException;
 use Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\VitalityCheckDetails as V26Details;
 use Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V27\VitalityCheckDetails as V27Details;
 
@@ -35,7 +36,7 @@ class VitalityCheckDetails
      * @param string|null $remittanceIdentifier Structured remittance reference.
      * @param string|null $unstructuredRemittanceIdentifier Free-text remittance reference.
      * @param string|null $orderingCustomerIdentifier Optional ordering customer identifier (v2.7).
-     * @throws \InvalidArgumentException When neither or both remittance identifiers are provided.
+     * @throws InvalidArgumentException When neither or both remittance identifiers are provided.
      */
     public function __construct(
         ?string $remittanceIdentifier = null,
@@ -44,12 +45,12 @@ class VitalityCheckDetails
     )
     {
         if ($remittanceIdentifier === null && $unstructuredRemittanceIdentifier === null) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'VitalityCheckDetails must have either remittanceIdentifier or unstructuredRemittanceIdentifier'
             );
         }
         if ($remittanceIdentifier !== null && $unstructuredRemittanceIdentifier !== null) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'VitalityCheckDetails cannot have both remittanceIdentifier and unstructuredRemittanceIdentifier'
             );
         }

@@ -25,26 +25,90 @@ class BankListTest extends TestCase
     {
         $this->ensureProtocolStubExists();
         $proto = new class extends EpsSOBankListProtocol {
-            public function __construct() {}
-            public function getBank(): array {
+            public function __construct()
+            {
+            }
+
+            public function getBank(): array
+            {
                 return [
                     new class {
-                        public function getBic(){return 'GAWIATW1XXX';}
-                        public function getBezeichnung(){return 'Hypo Tirol';}
-                        public function getEpsUrl(){return 'https://eps.example/hypo';}
-                        public function getLand(){return 'AT';}
+                        public function getBic()
+                        {
+                            return 'GAWIATW1XXX';
+                        }
+
+                        public function getBezeichnung()
+                        {
+                            return 'Hypo Tirol';
+                        }
+
+                        public function getEpsUrl()
+                        {
+                            return 'https://eps.example/hypo';
+                        }
+
+                        public function getLand()
+                        {
+                            return 'AT';
+                        }
+
+                        public function getZahlungsweiseNat()
+                        {
+                            return [];
+                        }
+
+                        public function getZahlungsweiseInt()
+                        {
+                            return null;
+                        }
+
+                        public function getApp2app()
+                        {
+                            return false;
+                        }
                     },
                     new class {
-                        public function getBic(){return 'BAWATW1XXX';}
-                        public function getBezeichnung(){return 'BAWAG';}
-                        public function getEpsUrl(){return null;}
-                        public function getLand(){return '';}
+                        public function getBic()
+                        {
+                            return 'BAWATW1XXX';
+                        }
+
+                        public function getBezeichnung()
+                        {
+                            return 'BAWAG';
+                        }
+
+                        public function getEpsUrl()
+                        {
+                            return null;
+                        }
+
+                        public function getLand()
+                        {
+                            return '';
+                        }
+
+                        public function getZahlungsweiseNat()
+                        {
+                            return [];
+                        }
+
+                        public function getZahlungsweiseInt()
+                        {
+                            return null;
+                        }
+
+                        public function getApp2app()
+                        {
+                            return false;
+                        }
                     },
                 ];
             }
         };
 
-        $list = BankList::fromV26($proto);
+        $list = BankList::from($proto);
         $banks = $list->getBanks();
 
         $this->assertCount(2, $banks);

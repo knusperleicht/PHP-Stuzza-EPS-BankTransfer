@@ -190,7 +190,7 @@ class TransferInitiatorDetails
 
     public function getMD5Fingerprint(): string
     {
-        return Fingerprint::generatMD5Fingerprint(
+        return Fingerprint::generateMD5Fingerprint(
             $this->secret,
             $this->date,
             $this->referenceIdentifier,

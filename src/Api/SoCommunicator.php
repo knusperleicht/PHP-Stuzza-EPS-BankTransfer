@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Knusperleicht\EpsBankTransfer\Api;
 
+use InvalidArgumentException;
 use Knusperleicht\EpsBankTransfer\Domain\BankList;
 use Knusperleicht\EpsBankTransfer\Domain\ProtocolDetails;
 use Knusperleicht\EpsBankTransfer\Domain\RefundResponse;
@@ -125,10 +126,12 @@ class SoCommunicator implements SoCommunicatorInterface
                 throw new BankListException('Error: ' . $raw->getErrorDetails()->getErrorMsg());
             }
 
-            return BankList::fromV26($raw);
+            return BankList::from($raw);
         }
 
-        $this->getV27()->getBanks($targetUrl); // throws exception at this time
+        $raw = $this->getV27()->getBanks($targetUrl);
+        return BankList::from($raw);
+
     }
 
     /**
@@ -235,13 +238,13 @@ class SoCommunicator implements SoCommunicatorInterface
      * Ensure the provided interface version is supported.
      *
      * @param string $version Version string (e.g., "2.6" or "2.7").
-     * @throws \InvalidArgumentException When the version is not supported.
+     * @throws InvalidArgumentException When the version is not supported.
      */
     private function assertValidVersion(string $version): void
     {
         $allowed = ['2.6', '2.7'];
         if (!in_array($version, $allowed, true)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 sprintf('Unsupported version "%s". Allowed versions are: %s', $version, implode(', ', $allowed))
             );
         }

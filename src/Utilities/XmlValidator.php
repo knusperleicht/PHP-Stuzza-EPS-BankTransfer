@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Knusperleicht\EpsBankTransfer\Utilities;
 
+use DOMDocument;
+use Exception;
 use Knusperleicht\EpsBankTransfer\Exceptions\XmlValidationException;
 
 /**
@@ -25,7 +27,7 @@ class XmlValidator
      * @return bool True if validation succeeds.
      * @throws XmlValidationException When the XML is empty, malformed, or invalid.
      */
-    public static function validateBankList($xml): bool
+    public static function validateBankList(string $xml): bool
     {
         return self::validateXml($xml, self::gtXSD('epsSOBankListProtocol.xsd'));
     }
@@ -53,7 +55,7 @@ class XmlValidator
      * @return bool True if validation succeeds.
      * @throws XmlValidationException When XML is empty, malformed, or invalid.
      */
-    public static function validateEpsRefund($xml, string $version = '2.6'): bool
+    public static function validateEpsRefund(string $xml, string $version = '2.6'): bool
     {
         $mappedVersion = self::VERSION_MAPPING[$version] ?? 'V26';
         $filename = "EPSRefund-{$mappedVersion}.xsd";
@@ -82,15 +84,15 @@ class XmlValidator
      * @return bool True if validation succeeds.
      * @throws XmlValidationException When parsing or schema validation fails.
      */
-    private static function validateXml($xml, $xsd): bool
+    private static function validateXml(string $xml, string $xsd): bool
     {
         if (empty($xml)) {
             throw new XmlValidationException('XML is empty');
         }
-        $doc = new \DOMDocument();
+        $doc = new DOMDocument();
         try {
             $doc->loadXML($xml);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw new XmlValidationException('Failed to load XML: ' . $e->getMessage());
         }
         $prevState = libxml_use_internal_errors(true);

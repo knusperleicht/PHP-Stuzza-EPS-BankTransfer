@@ -64,3 +64,13 @@ Knusperleicht\EpsBankTransfer\Internal\Generated\BankList\BankDataType:
                 getter: getZahlungsweiseInt
                 setter: setZahlungsweiseInt
             type: string
+        app2app:
+            expose: true
+            access_type: public_method
+            serialized_name: app2app
+            xml_element:
+                namespace: 'http://www.eps.or.at/epsSO/epsSOBankListProtocol/201008'
+            accessor:
+                getter: getApp2app
+                setter: setApp2app
+            type: bool

@@ -43,6 +43,11 @@ class BankDataType
     private $zahlungsweiseInt = null;
 
     /**
+     * @var bool $app2app
+     */
+    private $app2app = null;
+
+    /**
      * Gets as bic
      *
      * @return string
@@ -205,6 +210,28 @@ class BankDataType
     public function setZahlungsweiseInt($zahlungsweiseInt)
     {
         $this->zahlungsweiseInt = $zahlungsweiseInt;
+        return $this;
+    }
+
+    /**
+     * Gets as app2app
+     *
+     * @return bool
+     */
+    public function getApp2app()
+    {
+        return $this->app2app;
+    }
+
+    /**
+     * Sets a new app2app
+     *
+     * @param bool $app2app
+     * @return self
+     */
+    public function setApp2app($app2app)
+    {
+        $this->app2app = $app2app;
         return $this;
     }
 }

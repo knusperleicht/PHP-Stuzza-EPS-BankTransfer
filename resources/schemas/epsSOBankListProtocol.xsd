@@ -44,6 +44,7 @@
       </xsd:element>
       <xsd:element name="zahlungsweiseNat" type="auftragsart" maxOccurs="3" />
       <xsd:element name="zahlungsweiseInt" type="auftragsartInt" minOccurs="0" />
+      <xsd:element name="app2app" type="xsd:boolean" minOccurs="0"/>
     </xsd:sequence>
   </xsd:complexType>
   <xsd:complexType name="errorData">

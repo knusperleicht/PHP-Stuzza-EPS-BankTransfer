@@ -22,6 +22,15 @@ class Bank
     /** @var string */
     private $countryCode;
 
+    /** @var array<string> */
+    private $nationalPaymentTypes;
+
+    /** @var string|null */
+    private $internationalPaymentType;
+
+    /** @var bool|null */
+    private $app2app;
+
     /**
      * Create a bank value object.
      *
@@ -29,13 +38,27 @@ class Bank
      * @param string $name Display name of the bank.
      * @param string|null $url Optional EPS URL for the bank.
      * @param string $countryCode ISO country code for the bank.
+     * @param array<string> $nationalPaymentTypes Array of national payment types (EPG, EPN, EPF).
+     * @param string|null $internationalPaymentType International payment type (EPG only).
+     * @param bool|null $app2app Whether app2app is supported.
      */
-    public function __construct(string $bic, string $name, ?string $url = null, string $countryCode = '')
+    public function __construct(
+        string  $bic,
+        string  $name,
+        ?string $url = null,
+        string  $countryCode = '',
+        array   $nationalPaymentTypes = [],
+        ?string $internationalPaymentType = null,
+        ?bool   $app2app = null
+    )
     {
         $this->bic = $bic;
         $this->name = $name;
         $this->url = $url;
         $this->countryCode = $countryCode;
+        $this->nationalPaymentTypes = $nationalPaymentTypes;
+        $this->internationalPaymentType = $internationalPaymentType;
+        $this->app2app = $app2app;
     }
 
     /**
@@ -68,5 +91,29 @@ class Bank
     public function getCountryCode(): string
     {
         return $this->countryCode;
+    }
+
+    /**
+     * @return array<string>
+     */
+    public function getNationalPaymentTypes(): array
+    {
+        return $this->nationalPaymentTypes;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getInternationalPaymentType(): ?string
+    {
+        return $this->internationalPaymentType;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function isApp2app(): ?bool
+    {
+        return $this->app2app;
     }
 }

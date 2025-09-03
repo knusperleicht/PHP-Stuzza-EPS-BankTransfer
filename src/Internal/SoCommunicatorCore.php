@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Knusperleicht\EpsBankTransfer\Internal;
 
+use InvalidArgumentException;
 use JMS\Serializer\SerializerInterface;
 use Knusperleicht\EpsBankTransfer\Exceptions\UnknownRemittanceIdentifierException;
 use Knusperleicht\EpsBankTransfer\Requests\TransferInitiatorDetails;
@@ -13,6 +14,7 @@ use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
+use UnexpectedValueException;
 
 class SoCommunicatorCore
 {
@@ -145,7 +147,7 @@ class SoCommunicatorCore
         }
 
         if (empty($obscuritySeed)) {
-            throw new \UnexpectedValueException('No security seed set when using security suffix.');
+            throw new UnexpectedValueException('No security seed set when using security suffix.');
         }
 
         $hash = hash('sha256', $string . $obscuritySeed);
@@ -200,7 +202,7 @@ class SoCommunicatorCore
         if ($transferInitiatorDetails->getRemittanceIdentifier() !== null) {
             $base = $transferInitiatorDetails->getRemittanceIdentifier();
             if ($suffixLength > 0 && strlen($base) + $suffixLength > 35) {
-                throw new \InvalidArgumentException('RemittanceIdentifier too long for configured obscurity length. Max total 35 characters.');
+                throw new InvalidArgumentException('RemittanceIdentifier too long for configured obscurity length. Max total 35 characters.');
             }
             $transferInitiatorDetails->setRemittanceIdentifier(
                 $this->appendHash(
@@ -214,7 +216,7 @@ class SoCommunicatorCore
         if ($transferInitiatorDetails->getUnstructuredRemittanceIdentifier() !== null) {
             $base = $transferInitiatorDetails->getUnstructuredRemittanceIdentifier();
             if ($suffixLength > 0 && strlen($base) + $suffixLength > 140) {
-                throw new \InvalidArgumentException('UnstructuredRemittanceIdentifier too long for configured obscurity length. Max total 140 characters.');
+                throw new InvalidArgumentException('UnstructuredRemittanceIdentifier too long for configured obscurity length. Max total 140 characters.');
             }
             $transferInitiatorDetails->setUnstructuredRemittanceIdentifier(
                 $this->appendHash(

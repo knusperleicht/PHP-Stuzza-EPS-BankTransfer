@@ -92,14 +92,21 @@ try {
     $bankList = $soCommunicator->getBanks($config['interface_version'] ?? null);
     foreach ($bankList->getBanks() as $bank) {
         // You could render this as a dropdown in your checkout
-        echo $bank->getBic() . ' - ' . $bank->getName() . "\n";
+        echo "BIC: " . $bank->getBic() . "\n";
+        echo "Name: " . $bank->getName() . "\n";
+        echo "URL: " . $bank->getUrl() . "\n";
+        echo "Country: " . $bank->getCountryCode() . "\n";
+        echo "National Payment Types: " . implode(', ', $bank->getNationalPaymentTypes()) . "\n";
+        echo "International Payment Type: " . ($bank->getInternationalPaymentType() ?? 'N/A') . "\n";
+        echo "App2App: " . ($bank->isApp2app() ? 'Yes' : 'No') . "\n";
+        echo "-------------------\n";
     }
 
     // Example: Preselect a bank using orderingCustomerOfiIdentifier (per EPS spec v2.6)
     // Rather than overriding the endpoint URL directly, we set the customer's bank selection via 
     // orderingCustomerOfiIdentifier to ensure proper routing to the bank.
     // In your UI, let the customer select their bank; here we just take the first as a demo:
-    $banks = $bankList->getBanks();
+    $banks = $bankList->getBanks($config['interface_version'] ?? null);
     if (!empty($banks)) {
         // orderingCustomerOfiIdentifier expects the bank identifier (typically BIC).
         // Please select a bank from the list above and call:

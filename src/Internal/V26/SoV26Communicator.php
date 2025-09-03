@@ -4,25 +4,16 @@ declare(strict_types=1);
 namespace Knusperleicht\EpsBankTransfer\Internal\V26;
 
 use Exception;
-use JMS\Serializer\SerializerInterface;
 use Knusperleicht\EpsBankTransfer\Domain\BankConfirmationDetails;
 use Knusperleicht\EpsBankTransfer\Domain\VitalityCheckDetails;
-use Knusperleicht\EpsBankTransfer\Exceptions\CallbackResponseException;
-use Knusperleicht\EpsBankTransfer\Exceptions\EpsException;
-use Knusperleicht\EpsBankTransfer\Exceptions\InvalidCallbackException;
 use Knusperleicht\EpsBankTransfer\Exceptions\XmlValidationException;
+use Knusperleicht\EpsBankTransfer\Internal\AbstractSoCommunicator;
 use Knusperleicht\EpsBankTransfer\Internal\Generated\BankList\EpsSOBankListProtocol;
 use Knusperleicht\EpsBankTransfer\Internal\Generated\Protocol\V26\EpsProtocolDetails;
 use Knusperleicht\EpsBankTransfer\Internal\Generated\Refund\EpsRefundResponse;
-use Knusperleicht\EpsBankTransfer\Internal\SoCommunicatorCore;
 use Knusperleicht\EpsBankTransfer\Requests\RefundRequest;
-use Knusperleicht\EpsBankTransfer\Requests\TransferInitiatorDetails;
 use Knusperleicht\EpsBankTransfer\Responses\ShopResponseDetails;
 use Knusperleicht\EpsBankTransfer\Utilities\XmlValidator;
-use Psr\Http\Client\ClientInterface;
-use Psr\Http\Message\RequestFactoryInterface;
-use Psr\Http\Message\StreamFactoryInterface;
-use Psr\Log\LoggerInterface;
 
 /**
  * Internal communicator for EPS interface version 2.6.
@@ -31,7 +22,7 @@ use Psr\Log\LoggerInterface;
  * required by the EPS Scheme Operator for v2.6 endpoints (bank list, transfer
  * initiator, refund, confirmations).
  */
-class SoV26Communicator extends \Knusperleicht\EpsBankTransfer\Internal\AbstractSoCommunicator
+class SoV26Communicator extends AbstractSoCommunicator
 {
     public const BANKLIST = '/data/haendler/v2_6';
     public const REFUND = '/refund/eps/v2_6';
@@ -73,22 +64,9 @@ class SoV26Communicator extends \Knusperleicht\EpsBankTransfer\Internal\Abstract
         return $this->serializer->serialize($details->toV26(), 'xml');
     }
 
-
-    /**
-     * Retrieve the EPS bank list (v2.6).
-     *
-     * @param string|null $targetUrl Optional override of the bank list endpoint
-     * @return EpsSOBankListProtocol Parsed list of SO banks
-     * @throws XmlValidationException When response XML is not valid
-     */
-    public function getBanks(?string $targetUrl = null): EpsSOBankListProtocol
+    protected function getBankListPath(): string
     {
-        $targetUrl = $targetUrl ?? $this->core->getBaseUrl() . self::BANKLIST;
-        $body = $this->core->getUrl($targetUrl, 'Requesting bank list');
-
-        XmlValidator::validateBankList($body);
-
-        return $this->serializer->deserialize($body, EpsSOBankListProtocol::class, 'xml');
+        return self::BANKLIST;
     }
 
     /**

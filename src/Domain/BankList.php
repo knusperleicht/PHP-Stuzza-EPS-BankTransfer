@@ -31,7 +31,7 @@ class BankList
      * @param EpsSOBankListProtocol $protocol Parsed XSD object.
      * @return self
      */
-    public static function fromV26(EpsSOBankListProtocol $protocol): self
+    public static function from(EpsSOBankListProtocol $protocol): self
     {
         $banks = [];
         foreach ($protocol->getBank() as $bank) {
@@ -39,7 +39,10 @@ class BankList
                 $bank->getBic(),
                 $bank->getBezeichnung(),
                 $bank->getEpsUrl(),
-                $bank->getLand()
+                $bank->getLand(),
+                $bank->getZahlungsweiseNat(),
+                $bank->getZahlungsweiseInt(),
+                $bank->getApp2app()
             );
         }
         return new self($banks);

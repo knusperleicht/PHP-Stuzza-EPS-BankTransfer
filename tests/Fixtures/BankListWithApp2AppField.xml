@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<epsSOBankListProtocol xmlns="http://www.eps.or.at/epsSO/epsSOBankListProtocol/201008">
+    <bank>
+        <bic>BKAUATWWXXX</bic>
+        <bezeichnung>Bank Austria</bezeichnung>
+        <land>AT</land>
+        <epsUrl>https://routing.eps.or.at/appl/epsSO/transinit/eps/v2_7/bbd44f4d-609b-454e-8d5a-e0d1ac21f15a</epsUrl>
+        <zahlungsweiseNat>EPG</zahlungsweiseNat>
+        <zahlungsweiseNat>EPN</zahlungsweiseNat>
+        <zahlungsweiseInt>EPG</zahlungsweiseInt>
+        <app2app>false</app2app>
+    </bank>
+    <bank>
+        <bic>BAWAATWWXXX</bic>
+        <bezeichnung>BAWAG AG</bezeichnung>
+        <land>AT</land>
+        <epsUrl>https://routing.eps.or.at/appl/epsSO/transinit/eps/v2_7/64669764-e6fc-401c-8f3d-26e9169ba6ff</epsUrl>
+        <zahlungsweiseNat>EPG</zahlungsweiseNat>
+        <zahlungsweiseNat>EPN</zahlungsweiseNat>
+        <zahlungsweiseInt>EPG</zahlungsweiseInt>
+        <app2app>false</app2app>
+    </bank>
+    <bank>
+        <bic>ASPKAT2LXXX</bic>
+        <bezeichnung>Erste Bank und Sparkassen</bezeichnung>
+        <land>AT</land>
+        <epsUrl>https://routing.eps.or.at/appl/epsSO/transinit/eps/v2_7/1d48e2f7-604c-4d1d-894e-170635d1a645</epsUrl>
+        <zahlungsweiseNat>EPG</zahlungsweiseNat>
+        <zahlungsweiseNat>EPN</zahlungsweiseNat>
+        <zahlungsweiseInt>EPG</zahlungsweiseInt>
+        <app2app>false</app2app>
+    </bank>
+</epsSOBankListProtocol>

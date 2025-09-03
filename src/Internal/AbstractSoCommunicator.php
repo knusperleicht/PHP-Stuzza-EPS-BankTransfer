@@ -11,6 +11,7 @@ use Knusperleicht\EpsBankTransfer\Exceptions\CallbackResponseException;
 use Knusperleicht\EpsBankTransfer\Exceptions\EpsException;
 use Knusperleicht\EpsBankTransfer\Exceptions\InvalidCallbackException;
 use Knusperleicht\EpsBankTransfer\Exceptions\XmlValidationException;
+use Knusperleicht\EpsBankTransfer\Internal\Generated\BankList\EpsSOBankListProtocol;
 use Knusperleicht\EpsBankTransfer\Responses\ShopResponseDetails;
 use Knusperleicht\EpsBankTransfer\Utilities\XmlValidator;
 use Psr\Http\Client\ClientInterface;
@@ -32,6 +33,15 @@ abstract class AbstractSoCommunicator
     /** @var SerializerInterface */
     protected $serializer;
 
+    /**
+     * Constructs a new SO communicator instance.
+     *
+     * @param ClientInterface $httpClient HTTP client for making requests
+     * @param RequestFactoryInterface $requestFactory Factory for creating PSR-7 requests
+     * @param StreamFactoryInterface $streamFactory Factory for creating PSR-7 streams
+     * @param string $baseUrl Base URL for all API endpoints
+     * @param LoggerInterface|null $logger Optional logger for debug output
+     */
     public function __construct(
         ClientInterface         $httpClient,
         RequestFactoryInterface $requestFactory,
@@ -77,13 +87,13 @@ abstract class AbstractSoCommunicator
     /**
      * Handle incoming EPS confirmation/vitality callback request (shared flow).
      *
-     * @param callable|null $confirmationCallback
-     * @param callable|null $vitalityCheckCallback
-     * @param string $rawPostStream
-     * @param string $outputStream
-     * @throws InvalidCallbackException
-     * @throws XmlValidationException
-     * @throws CallbackResponseException
+     * @param callable|null $confirmationCallback Callback for handling bank confirmations
+     * @param callable|null $vitalityCheckCallback Callback for handling vitality checks
+     * @param string $rawPostStream Stream to read raw POST data from
+     * @param string $outputStream Stream to write response to
+     * @throws InvalidCallbackException If callbacks are invalid
+     * @throws XmlValidationException If XML is invalid
+     * @throws CallbackResponseException If callback response is invalid
      */
     public function handleConfirmationUrl(
         $confirmationCallback = null,
@@ -124,6 +134,15 @@ abstract class AbstractSoCommunicator
         }
     }
 
+    /**
+     * Handle vitality check callback.
+     *
+     * @param callable|null $callback Callback function to handle vitality check
+     * @param string $rawXml Raw XML from request
+     * @param VitalityCheckDetails $vitality Parsed vitality check details
+     * @param string $outputStream Stream to write response to
+     * @throws CallbackResponseException If callback doesn't return true
+     */
     protected function handleVitalityCheck(?callable $callback, string $rawXml, VitalityCheckDetails $vitality, string $outputStream): void
     {
         if ($callback !== null) {
@@ -134,6 +153,15 @@ abstract class AbstractSoCommunicator
         file_put_contents($outputStream, $rawXml);
     }
 
+    /**
+     * Handle bank confirmation callback.
+     *
+     * @param callable $callback Callback function to handle bank confirmation
+     * @param string $rawXml Raw XML from request
+     * @param BankConfirmationDetails $confirmation Parsed bank confirmation details
+     * @param string $outputStream Stream to write response to
+     * @throws CallbackResponseException If callback doesn't return true
+     */
     protected function handleBankConfirmation(callable $callback, string $rawXml, BankConfirmationDetails $confirmation, string $outputStream): void
     {
         $shopConfirmationDetails = new ShopResponseDetails();
@@ -149,6 +177,12 @@ abstract class AbstractSoCommunicator
         file_put_contents($outputStream, $xml);
     }
 
+    /**
+     * Handle exceptions during confirmation processing.
+     *
+     * @param Exception $e Exception that occurred
+     * @param string $outputStream Stream to write error response to
+     */
     protected function handleException(Exception $e, string $outputStream): void
     {
         $shopConfirmationDetails = new ShopResponseDetails();
@@ -162,12 +196,80 @@ abstract class AbstractSoCommunicator
         file_put_contents($outputStream, $this->shopResponseXml($shopConfirmationDetails));
     }
 
-    // Abstract hooks to be implemented by concrete versioned communicators
+    /**
+     * Retrieve the EPS bank list (shared for all versions).
+     *
+     * @param string|null $targetUrl Optional override of the bank list endpoint
+     * @return EpsSOBankListProtocol Parsed list of SO banks
+     * @throws XmlValidationException When response XML is not valid
+     */
+    public function getBanks(?string $targetUrl = null): EpsSOBankListProtocol
+    {
+        $targetUrl = $targetUrl ?? $this->core->getBaseUrl() . $this->getBankListPath();
+        $body = $this->core->getUrl($targetUrl, 'Requesting bank list');
+
+        XmlValidator::validateBankList($body);
+
+        return $this->serializer->deserialize($body, EpsSOBankListProtocol::class, 'xml');
+    }
+
+    /**
+     * Get the version string for this communicator.
+     *
+     * @return string Version identifier (e.g. "2.6")
+     */
     abstract protected function getVersion(): string;
+
+    /**
+     * Get the path for transfer initiator endpoint.
+     *
+     * @return string URL path
+     */
     abstract protected function getTransferPath(): string;
+
+    /**
+     * Get the path for bank list endpoint.
+     *
+     * @return string URL path
+     */
+    abstract protected function getBankListPath(): string;
+
+    /**
+     * Get the fully qualified class name for protocol details.
+     *
+     * @return string FQCN of protocol details class
+     */
     abstract protected function protocolClassFqn(): string;
+
+    /**
+     * Serialize transfer initiator details to XML.
+     *
+     * @param mixed $transferInitiatorDetails Request details object
+     * @return string Serialized XML
+     */
     abstract protected function serializeTransferInitiator($transferInitiatorDetails): string;
+
+    /**
+     * Extract vitality check details from protocol.
+     *
+     * @param mixed $protocol Protocol details object
+     * @return VitalityCheckDetails|null Extracted details or null if not present
+     */
     abstract protected function vitalityFromProtocol($protocol): ?VitalityCheckDetails;
+
+    /**
+     * Extract bank confirmation details from protocol.
+     *
+     * @param mixed $protocol Protocol details object
+     * @return BankConfirmationDetails|null Extracted details or null if not present
+     */
     abstract protected function bankConfirmationFromProtocol($protocol): ?BankConfirmationDetails;
+
+    /**
+     * Generate XML response for shop confirmation.
+     *
+     * @param ShopResponseDetails $details Response details
+     * @return string Generated XML
+     */
     abstract protected function shopResponseXml(ShopResponseDetails $details): string;
 }

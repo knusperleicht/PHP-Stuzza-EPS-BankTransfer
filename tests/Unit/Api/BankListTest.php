@@ -51,7 +51,10 @@ class BankListTest extends TestCase
                 'TESTBANKXXX',
                 'Testbank',
                 'https://routing.eps.or.at/appl/epsSO/transinit/eps/v2_6/23ea3d14-278c-4e81-a021-d7b77492b611',
-                'AT'
+                'AT',
+                ['EPG'],
+                null,
+                false
             ),
         ], $banks->getBanks());
 
@@ -59,12 +62,86 @@ class BankListTest extends TestCase
         $this->assertStringContainsString('/v2_6', $lastUrl);
     }
 
+    public function testGetBanksHandlesApp2AppFieldGracefully(): void
+    {
+        $this->mockResponse(200, $this->loadFixture('BankListWithApp2AppField.xml'));
+
+        $list = $this->target->getBanks('2.6');
+        $this->assertInstanceOf(BankList::class, $list);
+
+        $this->assertEquals([
+            new Bank(
+                'BKAUATWWXXX',
+                'Bank Austria',
+                'https://routing.eps.or.at/appl/epsSO/transinit/eps/v2_7/bbd44f4d-609b-454e-8d5a-e0d1ac21f15a',
+                'AT',
+                ['EPG', 'EPN'],
+                'EPG',
+                false
+            ),
+            new Bank(
+                'BAWAATWWXXX',
+                'BAWAG AG',
+                'https://routing.eps.or.at/appl/epsSO/transinit/eps/v2_7/64669764-e6fc-401c-8f3d-26e9169ba6ff',
+                'AT',
+                ['EPG', 'EPN'],
+                'EPG',
+                false
+            ),
+            new Bank(
+                'ASPKAT2LXXX',
+                'Erste Bank und Sparkassen',
+                'https://routing.eps.or.at/appl/epsSO/transinit/eps/v2_7/1d48e2f7-604c-4d1d-894e-170635d1a645',
+                'AT',
+                ['EPG', 'EPN'],
+                'EPG',
+                false
+            ),
+        ], $list->getBanks());
+
+        $lastUrl = $this->http->getLastRequestInfo()['url'];
+        $this->assertStringContainsString('/v2_6', $lastUrl);
+    }
+
     public function testGetBanksV27Throws(): void
     {
-        $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage('Not implemented yet - use version 2.6');
+        $this->mockResponse(200, $this->loadFixture('BankListWithApp2AppField.xml'));
 
-        $this->target->getBanks('2.7');
+        $list = $this->target->getBanks('2.7');
+        $this->assertInstanceOf(BankList::class, $list);
+
+        $this->assertEquals([
+            new Bank(
+                'BKAUATWWXXX',
+                'Bank Austria',
+                'https://routing.eps.or.at/appl/epsSO/transinit/eps/v2_7/bbd44f4d-609b-454e-8d5a-e0d1ac21f15a',
+                'AT',
+                ['EPG', 'EPN'],
+                'EPG',
+                false
+            ),
+            new Bank(
+                'BAWAATWWXXX',
+                'BAWAG AG',
+                'https://routing.eps.or.at/appl/epsSO/transinit/eps/v2_7/64669764-e6fc-401c-8f3d-26e9169ba6ff',
+                'AT',
+                ['EPG', 'EPN'],
+                'EPG',
+                false
+            ),
+            new Bank(
+                'ASPKAT2LXXX',
+                'Erste Bank und Sparkassen',
+                'https://routing.eps.or.at/appl/epsSO/transinit/eps/v2_7/1d48e2f7-604c-4d1d-894e-170635d1a645',
+                'AT',
+                ['EPG', 'EPN'],
+                'EPG',
+                false
+            ),
+        ], $list->getBanks());
+
+        $lastUrl = $this->http->getLastRequestInfo()['url'];
+        $this->assertStringContainsString('/v2_7', $lastUrl);
     }
 
     /**
@@ -83,7 +160,10 @@ class BankListTest extends TestCase
                 'TESTBANKXXX',
                 'Testbank',
                 'https://routing.eps.or.at/appl/epsSO/transinit/eps/v2_6/23ea3d14-278c-4e81-a021-d7b77492b611',
-                'AT'
+                'AT',
+                ['EPG'],
+                null,
+                false
             ),
         ], $banks->getBanks());
         $this->assertEquals($expectedUrl, $this->http->getLastRequestInfo()['url']);
